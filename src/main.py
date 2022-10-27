@@ -1,12 +1,12 @@
 """
     A script for generating a solution to a CST scheduling problem
 """
-import constraint
 from constraint import Problem
 
 from events.event import Event
 from rounds.knockout_rounds import QuarterFinal, SemiFinal, Final
 from constraints.constraint import same_venue_overlapping_time, no_later_rounds_before_earlier_rounds
+
 
 def solve():
     """
