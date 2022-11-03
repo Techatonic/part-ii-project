@@ -1,0 +1,142 @@
+{
+  "sports": [
+    {
+      "name": "football",
+      "possible_venues": [
+        {
+          "name": "Stamford Bridge",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "earliest_match_start_time": 12,
+          "latest_match_end_time": 22
+        },
+        {
+          "name": "Olympic Stadium",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "earliest_match_start_time": 11,
+          "latest_match_end_time": 22
+        },
+        {
+          "name": "Emirates Stadium",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "earliest_match_start_time": 14,
+          "latest_match_end_time": 21
+        },
+        {
+          "name": "Tottenham Hotspur Stadium",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "earliest_match_start_time": 12,
+          "latest_match_end_time": 22
+        }
+      ],
+      "num_of_teams": 32,
+      "num_of_teams_per_game": 2,
+      "is_knockout": true,
+      "group_stage": null,
+      "min_start_day": 1,
+      "max_end_day": 8
+    },
+    {
+      "name": "tennis",
+      "possible_venues": [
+        {
+          "name": "Wimbledon_Centre_Court",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "earliest_match_start_time": 12,
+          "latest_match_end_time": 22
+        },
+        {
+          "name": "Wimbledon_Court_1",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "earliest_match_start_time": 12,
+          "latest_match_end_time": 22
+        },
+        {
+          "name": "Wimbledon_Court_2",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "earliest_match_start_time": 12,
+          "latest_match_end_time": 22
+        },
+        {
+          "name": "Wimbledon_Court_3",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "earliest_match_start_time": 12,
+          "latest_match_end_time": 22
+        },
+        {
+          "name": "Wimbledon_Court_4",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "earliest_match_start_time": 12,
+          "latest_match_end_time": 22
+        },
+        {
+          "name": "Wimbledon_Court_5",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "earliest_match_start_time": 12,
+          "latest_match_end_time": 22
+        },
+        {
+          "name": "Wimbledon_Court_6",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "earliest_match_start_time": 12,
+          "latest_match_end_time": 22
+        }
+      ],
+      "num_of_teams": 64,
+      "num_of_teams_per_game": 2,
+      "is_knockout": true,
+      "group_stage": null,
+      "min_start_day": 1,
+      "max_end_day": 14
+    },
+    {
+      "name": "boxing_heavyweight",
+      "possible_venues": [
+        {
+          "name": "Excel_1",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "earliest_match_start_time": 12,
+          "latest_match_end_time": 20
+        },
+        {
+          "name": "Excel_2",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "earliest_match_start_time": 12,
+          "latest_match_end_time": 20
+        }
+      ],
+      "num_of_teams": 32,
+      "num_of_teams_per_game": 2,
+      "is_knockout": true,
+      "group_stage": null,
+      "min_start_day": 1,
+      "max_end_day": 6
+    }
+  ],
+  "general_constraints": []
+}

@@ -1,0 +1,4 @@
+1. Make time defined by hours
+2. Cut out duplication in schema
+3. Add functionality for different sports
+4.
