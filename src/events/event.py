@@ -14,6 +14,9 @@ class Event:
         self.duration = duration
 
     def __str__(self) -> str:
+        return self.__repr__()
+
+    def __repr__(self) -> str:
         return f"""{{
             event_id: {self.sport + "_" + str(self.event_num)},
             sport: {self.sport},

@@ -3,6 +3,7 @@
 """
 import time
 
+from src.games.complete_games import CompleteGames
 from src.python_constraint_scheduler import solve
 from src.input_handling.input_reader import read_input
 from src.input_handling.parse_input import parse_input
@@ -13,14 +14,14 @@ def main():
 
     [tournament_length, sports] = parse_input(input_json)
 
-    print(tournament_length)
-    print(sports)
-    print(sports[0])
-    # result = solve(sports, tournament_length)
+    complete_games = CompleteGames(tournament_length, sports)
 
-    # for key in result:
-    #    pass
-    # Add event to complete Games
+    result = solve(sports, tournament_length)
+
+    for key in result:
+        complete_games.add_event_time(result[key])
+
+    print(complete_games)
 
 
 if __name__ == "__main__":

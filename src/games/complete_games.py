@@ -5,10 +5,13 @@ class CompleteGames:
         self.days_of_tournament = days_of_tournament
         self.sports = sports
 
-    def set_event_times(self, events):
-        self.events = events
+    def add_event_time(self, event):
+        self.events.append(event)
 
     def __str__(self) -> str:
+        return self.__repr__()
+
+    def __repr__(self) -> str:
         return f"""{{
             days_of_tournament: {self.days_of_tournament},
             sports: {self.sports},

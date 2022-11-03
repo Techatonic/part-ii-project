@@ -18,6 +18,9 @@ class Sport:
         self.group_stage = group_stage
 
     def __str__(self):
+        return self.__repr__()
+
+    def __repr__(self) -> str:
         return f"""{{
             sport: {self.name},
             venues: {self.possible_venues},
