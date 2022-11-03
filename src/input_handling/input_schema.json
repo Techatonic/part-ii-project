@@ -1,0 +1,87 @@
+{
+  "type": "object",
+  "required": [],
+  "properties": {
+    "sports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "venues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "location_coordinates": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                },
+                "location_address": {
+                  "type": "string"
+                },
+                "location_postcode": {
+                  "type": "string"
+                },
+                "min_start_time": {
+                  "type": "number"
+                },
+                "max_finish_time": {
+                  "type": "number"
+                },
+                "capacity": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "num_teams": {
+            "type": "number"
+          },
+          "num_teams_per_game": {
+            "type": "number"
+          },
+          "is_knockout": {
+            "type": "boolean"
+          },
+          "group_stage": {
+            "type": ["object", "null"]
+          },
+          "min_start_day": {
+            "type": ["number", "null"]
+          },
+          "max_finish_day": {
+            "type": ["number", "null"]
+          },
+          "min_start_time": {
+            "type": ["number", "null"]
+          },
+          "max_finish_time": {
+            "type": ["number", "null"]
+          },
+          "match_duration": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "general_constraints": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "tournament_length": {
+      "type": "number"
+    }
+  }
+}

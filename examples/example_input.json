@@ -2,141 +2,164 @@
   "sports": [
     {
       "name": "football",
-      "possible_venues": [
+      "venues": [
         {
           "name": "Stamford Bridge",
           "location_coordinates": [51.4817, -0.1910],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
-          "earliest_match_start_time": 12,
-          "latest_match_end_time": 22
+          "min_start_time": 12,
+          "max_finish_time": 22,
+          "capacity": 40000
         },
         {
           "name": "Olympic Stadium",
           "location_coordinates": [51.4817, -0.1910],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
-          "earliest_match_start_time": 11,
-          "latest_match_end_time": 22
+          "min_start_time": 11,
+          "max_finish_time": 22,
+          "capacity": 40000
         },
         {
           "name": "Emirates Stadium",
           "location_coordinates": [51.4817, -0.1910],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
-          "earliest_match_start_time": 14,
-          "latest_match_end_time": 21
+          "min_start_time": 14,
+          "max_finish_time": 21,
+          "capacity": 40000
         },
         {
           "name": "Tottenham Hotspur Stadium",
           "location_coordinates": [51.4817, -0.1910],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
-          "earliest_match_start_time": 12,
-          "latest_match_end_time": 22
+          "min_start_time": 12,
+          "max_finish_time": 22,
+          "capacity": 40000
         }
       ],
-      "num_of_teams": 32,
-      "num_of_teams_per_game": 2,
+      "num_teams": 32,
+      "num_teams_per_game": 2,
       "is_knockout": true,
       "group_stage": null,
       "min_start_day": 1,
-      "max_end_day": 8
+      "max_finish_day": 8,
+      "min_start_time": 12,
+      "max_finish_time": 22,
+      "duration": 1.5
     },
     {
       "name": "tennis",
-      "possible_venues": [
+      "venues": [
         {
           "name": "Wimbledon_Centre_Court",
           "location_coordinates": [51.4817, -0.1910],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
-          "earliest_match_start_time": 12,
-          "latest_match_end_time": 22
+          "min_start_time": 12,
+          "max_finish_time": 22,
+          "capacity": 20000
         },
         {
           "name": "Wimbledon_Court_1",
           "location_coordinates": [51.4817, -0.1910],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
-          "earliest_match_start_time": 12,
-          "latest_match_end_time": 22
+          "min_start_time": 12,
+          "max_finish_time": 22,
+          "capacity": 20000
         },
         {
           "name": "Wimbledon_Court_2",
           "location_coordinates": [51.4817, -0.1910],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
-          "earliest_match_start_time": 12,
-          "latest_match_end_time": 22
+          "min_start_time": 12,
+          "max_finish_time": 22,
+          "capacity": 10000
         },
         {
           "name": "Wimbledon_Court_3",
           "location_coordinates": [51.4817, -0.1910],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
-          "earliest_match_start_time": 12,
-          "latest_match_end_time": 22
+          "min_start_time": 12,
+          "max_finish_time": 22,
+          "capacity": 5000
         },
         {
           "name": "Wimbledon_Court_4",
           "location_coordinates": [51.4817, -0.1910],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
-          "earliest_match_start_time": 12,
-          "latest_match_end_time": 22
+          "min_start_time": 12,
+          "max_finish_time": 22,
+          "capacity": 2000
         },
         {
           "name": "Wimbledon_Court_5",
           "location_coordinates": [51.4817, -0.1910],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
-          "earliest_match_start_time": 12,
-          "latest_match_end_time": 22
+          "min_start_time": 12,
+          "max_finish_time": 22,
+          "capacity": 2000
         },
         {
           "name": "Wimbledon_Court_6",
           "location_coordinates": [51.4817, -0.1910],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
-          "earliest_match_start_time": 12,
-          "latest_match_end_time": 22
+          "min_start_time": 12,
+          "max_finish_time": 22,
+          "capacity": 2000
         }
       ],
-      "num_of_teams": 64,
-      "num_of_teams_per_game": 2,
+      "num_teams": 64,
+      "num_teams_per_game": 2,
       "is_knockout": true,
       "group_stage": null,
       "min_start_day": 1,
-      "max_end_day": 14
+      "max_finish_day": 14,
+      "min_start_time": 12,
+      "max_finish_time": 23,
+      "duration": 3
     },
     {
       "name": "boxing_heavyweight",
-      "possible_venues": [
+      "venues": [
         {
           "name": "Excel_1",
           "location_coordinates": [51.4817, -0.1910],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
-          "earliest_match_start_time": 12,
-          "latest_match_end_time": 20
+          "min_start_time": 12,
+          "max_finish_time": 20,
+          "capacity": 20000
         },
         {
           "name": "Excel_2",
           "location_coordinates": [51.4817, -0.1910],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
-          "earliest_match_start_time": 12,
-          "latest_match_end_time": 20
+          "min_start_time": 12,
+          "max_finish_time": 20,
+          "capacity": 20000
         }
       ],
-      "num_of_teams": 32,
-      "num_of_teams_per_game": 2,
+      "num_teams": 32,
+      "num_teams_per_game": 2,
       "is_knockout": true,
       "group_stage": null,
       "min_start_day": 1,
-      "max_end_day": 6
+      "max_finish_day": 6,
+      "min_start_time": 14,
+      "max_finish_time": 18,
+      "duration": 1
     }
   ],
-  "general_constraints": []
+  "general_constraints": [],
+  "tournament_length": 14
 }

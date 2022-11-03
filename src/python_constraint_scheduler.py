@@ -1,10 +1,10 @@
 import math
 
-from constraint import Problem, RecursiveBacktrackingSolver
+from constraint import Problem
 
-from constraints.constraint import same_venue_overlapping_time, no_later_rounds_before_earlier_rounds
-from events.event import Event
-from rounds.knockout_rounds import QuarterFinal, SemiFinal, Final, RoundOf16
+from .constraints.constraint import same_venue_overlapping_time, no_later_rounds_before_earlier_rounds
+from .events.event import Event
+from .rounds.knockout_rounds import QuarterFinal, SemiFinal, Final, RoundOf16
 
 
 def solve(sports, days_of_tournament):
