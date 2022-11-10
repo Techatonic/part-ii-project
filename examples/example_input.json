@@ -44,7 +44,7 @@
           "max_matches_per_day": 1
         }
       ],
-      "num_teams": 32,
+      "num_teams": 8,
       "num_teams_per_game": 2,
       "is_knockout": true,
       "group_stage": null,
@@ -98,7 +98,7 @@
           "max_matches_per_day": 1
         }
       ],
-      "num_teams": 32,
+      "num_teams": 8,
       "num_teams_per_game": 2,
       "is_knockout": true,
       "group_stage": null,
@@ -132,7 +132,7 @@
           "max_matches_per_day": 5
         }
       ],
-      "num_teams": 32,
+      "num_teams": 8,
       "num_teams_per_game": 2,
       "is_knockout": true,
       "group_stage": null,

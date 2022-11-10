@@ -11,13 +11,16 @@ def no_later_rounds_before_earlier_rounds(a, b):
             a.round.round_index < b.round.round_index and b.day < a.day)
 
 
-def same_venue_max_matches_per_day(variable_list):
+def same_venue_max_matches_per_day(*variables):
     venues = {}
-    for event in variable_list:
+    for event in variables:
         if not (event.venue.name in venues):
-            venues[event.venue.name] = 1
+            venues[event.venue.name] = {event.day: 1}
         else:
-            venues[event.venue.name] += 1
-            if venues[event.venue.name] > event.venue.max_matches_per_day:
+            if not (event.day in venues[event.venue.name]):
+                venues[event.venue.name][event.day] = 1
+            else:
+                venues[event.venue.name][event.day] += 1
+            if venues[event.venue.name][event.day] > event.venue.max_matches_per_day:
                 return False
     return True

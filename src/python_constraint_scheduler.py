@@ -30,7 +30,6 @@ def solve(sports, tournament_length):
         # Define the variables
         # Add matches
         round_order = generate_round_order(sport.num_teams, sport.num_teams_per_game)
-        total_number_of_matches = sum([round_type.num_matches for round_type in round_order])
         variable_list = []
 
         match_num = 1
@@ -39,10 +38,10 @@ def solve(sports, tournament_length):
                 options = []
                 for venue in venues:
                     for day in range(min_start_day, max_finish_day + 1):
-                        # for time in range(min_start_time, math.ceil(max_finish_time - sport.match_duration)):
-                        for time in range(12, 15):
+                        for time in range(12, 14):
+                            # for time in range(min_start_time, math.ceil(max_finish_time - sport.match_duration)):
                             # TODO Bring back multiple times in day
-                            options.append(Event(sport_name, match_num, venue=venue, event_round=event_round,
+                            options.append(Event(sport, match_num, venue=venue, event_round=event_round,
                                                  day=day, start_time=time, duration=sport.match_duration))
 
                 csp_problem.addVariable(sport_name + "_" + str(match_num), options)
@@ -65,5 +64,22 @@ def solve(sports, tournament_length):
         total_events.append(result)
 
     # TODO Run CSP across all events in all sports
+    total_csp_problem = Problem()
+    variable_list = []
+    for sport in total_events:
+        for event_name in sport:
+            options = []
+            event_temp = deepcopy(sport[event_name])
+            min_start_time = max(event_temp.sport.min_start_time, event_temp.venue.min_start_time)
+            max_finish_time = min(event_temp.sport.max_finish_time, event_temp.venue.max_finish_time)
+            for time in range(min_start_time, max_finish_time):
+                event_temp.start_time = time
+                options.append(event_temp)
+            total_csp_problem.addVariable(event_name, options)
+            variable_list.append(event_name)
 
-    return total_events
+    # Add total sport constraints
+    total_csp_problem.addConstraint(same_venue_max_matches_per_day)
+
+    result = total_csp_problem.getSolution()
+    return result
