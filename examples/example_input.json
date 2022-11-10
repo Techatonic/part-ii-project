@@ -96,39 +96,9 @@
           "max_finish_time": 22,
           "capacity": 5000,
           "max_matches_per_day": 1
-        },
-        {
-          "name": "Wimbledon_Court_4",
-          "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
-          "min_start_time": 12,
-          "max_finish_time": 22,
-          "capacity": 2000,
-          "max_matches_per_day": 1
-        },
-        {
-          "name": "Wimbledon_Court_5",
-          "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
-          "min_start_time": 12,
-          "max_finish_time": 22,
-          "capacity": 2000,
-          "max_matches_per_day": 1
-        },
-        {
-          "name": "Wimbledon_Court_6",
-          "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
-          "min_start_time": 12,
-          "max_finish_time": 22,
-          "capacity": 2000,
-          "max_matches_per_day": 1
         }
       ],
-      "num_teams": 64,
+      "num_teams": 32,
       "num_teams_per_game": 2,
       "is_knockout": true,
       "group_stage": null,
@@ -167,7 +137,7 @@
       "is_knockout": true,
       "group_stage": null,
       "min_start_day": 1,
-      "max_finish_day": 6,
+      "max_finish_day": 14,
       "min_start_time": 14,
       "max_finish_time": 18,
       "duration": 1

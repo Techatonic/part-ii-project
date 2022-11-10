@@ -17,9 +17,9 @@ def main():
     complete_games = CompleteGames(tournament_length, sports)
 
     result = solve(sports, tournament_length)
-
-    for key in result:
-        complete_games.add_event_time(result[key])
+    print(result)
+    for event in result:
+        complete_games.add_event_time(event)
 
     print(complete_games)
 
