@@ -4,3 +4,5 @@
    duration of a football match which I could just preset to 1.5 hours since that never changes. But having it as
    customisable means if something like that does change (e.g. the commonwealth games decides to do 2 hour football
    matches) then we support that with this program.
+
+Use pre-written objects but use defaults so they don't need to enter obvious details

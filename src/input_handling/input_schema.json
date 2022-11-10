@@ -40,6 +40,9 @@
                 },
                 "capacity": {
                   "type": "number"
+                },
+                "max_matches_per_day": {
+                  "type": "number"
                 }
               }
             }

@@ -10,7 +10,8 @@
           "location_postcode": "SW6 1HS",
           "min_start_time": 12,
           "max_finish_time": 22,
-          "capacity": 40000
+          "capacity": 40000,
+          "max_matches_per_day": 1
         },
         {
           "name": "Olympic Stadium",
@@ -19,7 +20,8 @@
           "location_postcode": "SW6 1HS",
           "min_start_time": 11,
           "max_finish_time": 22,
-          "capacity": 40000
+          "capacity": 40000,
+          "max_matches_per_day": 1
         },
         {
           "name": "Emirates Stadium",
@@ -28,7 +30,8 @@
           "location_postcode": "SW6 1HS",
           "min_start_time": 14,
           "max_finish_time": 21,
-          "capacity": 40000
+          "capacity": 40000,
+          "max_matches_per_day": 1
         },
         {
           "name": "Tottenham Hotspur Stadium",
@@ -37,7 +40,8 @@
           "location_postcode": "SW6 1HS",
           "min_start_time": 12,
           "max_finish_time": 22,
-          "capacity": 40000
+          "capacity": 40000,
+          "max_matches_per_day": 1
         }
       ],
       "num_teams": 32,
@@ -60,7 +64,8 @@
           "location_postcode": "SW6 1HS",
           "min_start_time": 12,
           "max_finish_time": 22,
-          "capacity": 20000
+          "capacity": 20000,
+          "max_matches_per_day": 1
         },
         {
           "name": "Wimbledon_Court_1",
@@ -69,7 +74,8 @@
           "location_postcode": "SW6 1HS",
           "min_start_time": 12,
           "max_finish_time": 22,
-          "capacity": 20000
+          "capacity": 20000,
+          "max_matches_per_day": 1
         },
         {
           "name": "Wimbledon_Court_2",
@@ -78,7 +84,8 @@
           "location_postcode": "SW6 1HS",
           "min_start_time": 12,
           "max_finish_time": 22,
-          "capacity": 10000
+          "capacity": 10000,
+          "max_matches_per_day": 1
         },
         {
           "name": "Wimbledon_Court_3",
@@ -87,7 +94,8 @@
           "location_postcode": "SW6 1HS",
           "min_start_time": 12,
           "max_finish_time": 22,
-          "capacity": 5000
+          "capacity": 5000,
+          "max_matches_per_day": 1
         },
         {
           "name": "Wimbledon_Court_4",
@@ -96,7 +104,8 @@
           "location_postcode": "SW6 1HS",
           "min_start_time": 12,
           "max_finish_time": 22,
-          "capacity": 2000
+          "capacity": 2000,
+          "max_matches_per_day": 1
         },
         {
           "name": "Wimbledon_Court_5",
@@ -105,7 +114,8 @@
           "location_postcode": "SW6 1HS",
           "min_start_time": 12,
           "max_finish_time": 22,
-          "capacity": 2000
+          "capacity": 2000,
+          "max_matches_per_day": 1
         },
         {
           "name": "Wimbledon_Court_6",
@@ -114,7 +124,8 @@
           "location_postcode": "SW6 1HS",
           "min_start_time": 12,
           "max_finish_time": 22,
-          "capacity": 2000
+          "capacity": 2000,
+          "max_matches_per_day": 1
         }
       ],
       "num_teams": 64,
@@ -137,7 +148,8 @@
           "location_postcode": "SW6 1HS",
           "min_start_time": 12,
           "max_finish_time": 20,
-          "capacity": 20000
+          "capacity": 20000,
+          "max_matches_per_day": 5
         },
         {
           "name": "Excel_2",
@@ -146,7 +158,8 @@
           "location_postcode": "SW6 1HS",
           "min_start_time": 12,
           "max_finish_time": 20,
-          "capacity": 20000
+          "capacity": 20000,
+          "max_matches_per_day": 5
         }
       ],
       "num_teams": 32,

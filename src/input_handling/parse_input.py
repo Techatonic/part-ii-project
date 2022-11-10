@@ -33,7 +33,7 @@ def parse_input(json_input):
 
 def parse_venue(venue):
     return Venue(venue['name'], venue['location_coordinates'], venue['location_address'], venue['location_postcode'],
-                 venue['min_start_time'], venue['max_finish_time'], venue['capacity'])
+                 venue['capacity'], venue['min_start_time'], venue['max_finish_time'], venue['max_matches_per_day'])
 
 
 def parse_group_stage(group_stage):
