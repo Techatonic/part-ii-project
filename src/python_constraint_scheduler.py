@@ -1,4 +1,3 @@
-import math
 from copy import deepcopy
 
 from constraint import Problem
