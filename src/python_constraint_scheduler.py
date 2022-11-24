@@ -36,12 +36,16 @@ def solve(sports, tournament_length):
         for event_round in round_order:
             for _ in range(event_round.num_matches):
                 options = []
-                # TODO Shuffle venues here - see if there is a performance boost
+                # Shuffle venues, days and times
                 random.shuffle(venues)
+                day_order = list(range(min_start_day, max_finish_day + 1))
+                random.shuffle(day_order)
+                time_order = list(range(min_start_time, math.ceil(max_finish_time - sport.match_duration)))
+                random.shuffle(time_order)
 
                 for venue in venues:
-                    for day in range(min_start_day, max_finish_day + 1):
-                        for time in range(min_start_time, math.ceil(max_finish_time - sport.match_duration)):
+                    for day in day_order:
+                        for time in time_order:
                             options.append(Event(sport, match_num, venue=venue, event_round=event_round,
                                                  day=day, start_time=time, duration=sport.match_duration))
 
@@ -60,13 +64,17 @@ def solve(sports, tournament_length):
                     csp_problem.addConstraint(no_later_rounds_before_earlier_rounds, matches_involved)
                     # Max matches per day per venue
                     csp_problem.addConstraint(same_venue_max_matches_per_day)
+                    # TODO Add sufficient_rest_between_matches constraint
 
         result = csp_problem.getSolution()
+        print("Done: " + sport.name)
 
         # Add all sport-specific events to list of all events
         total_events.append(result)
 
-    # TODO Run CSP across all events in all sports
+    print("Done individual sports. Beginning all sports")
+
+    # Run CSP across all events in all sports
     total_csp_problem = Problem()
     variable_list = []
     for sport in total_events:
@@ -74,18 +82,16 @@ def solve(sports, tournament_length):
             options = []
             min_start_time = max(sport[event_name].sport.min_start_time, sport[event_name].venue.min_start_time)
             max_finish_time = min(sport[event_name].sport.max_finish_time, sport[event_name].venue.max_finish_time)
-            # for time in range(min_start_time, max_finish_time):
-            for time in range(12, 15):
+            for time in range(min_start_time, max_finish_time):
+                # for time in range(12, 15):
                 event_temp = deepcopy(sport[event_name])
                 event_temp.start_time = time
                 options.append(event_temp)
-            # print(options)
             total_csp_problem.addVariable(event_name, options)
             variable_list.append(event_name)
 
     # Add total sport constraints
     total_csp_problem.addConstraint(same_venue_max_matches_per_day)
 
-    # print(variable_list)
     result = total_csp_problem.getSolution()
     return result

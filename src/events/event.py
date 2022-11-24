@@ -4,7 +4,7 @@ class Event:
     """
 
     def __init__(
-            self, sport, event_num, venue, event_round, day, start_time, duration) -> None:
+            self, sport, event_num, venue, event_round, day, start_time, duration, teams_involved=None) -> None:
         self.round = event_round
         self.sport = sport
         self.event_num = event_num
@@ -12,6 +12,8 @@ class Event:
         self.day = day
         self.start_time = start_time
         self.duration = duration
+        # TODO Add teams involved to schema, example inputs and scheduler
+        self.teams_involved = teams_involved
 
     def __str__(self) -> str:
         return self.__repr__()
@@ -24,4 +26,6 @@ class Event:
             venue: {self.venue.name},
             day: {self.day},
             start_time: {self.start_time},
-            duration: {self.duration}\n}}"""
+            duration: {self.duration},
+            teams_involved: {self.teams_involved}
+        \n}}"""

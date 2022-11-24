@@ -5,7 +5,8 @@ class CompleteGames:
         self.days_of_tournament = days_of_tournament
         self.sports = sports
 
-    def add_event_time(self, event):
+    def add_event(self, event):
+        # print(event)
         self.events.append(event)
 
     def __str__(self) -> str:

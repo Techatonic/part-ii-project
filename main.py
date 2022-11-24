@@ -20,8 +20,9 @@ def main(json_path):
     complete_games = CompleteGames(tournament_length, sports)
 
     result = solve(sports, tournament_length)
-    for event in result:
-        complete_games.add_event_time(event)
+
+    for event_key in result:
+        complete_games.add_event(result[event_key])
 
     print(complete_games)
 
