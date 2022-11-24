@@ -8,6 +8,12 @@ class Round:
         self.num_matches = num_matches
         self.round_index = round_index
 
+    def __str__(self) -> str:
+        return self.__repr__()
+
+    def __repr__(self) -> str:
+        return self.round_name
+
 
 knockout_rounds = [
     Round("Final", 1, 0),

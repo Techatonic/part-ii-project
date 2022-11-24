@@ -12,7 +12,7 @@ from src.input_handling.input_reader import read_input
 from src.input_handling.parse_input import parse_input
 
 
-def main(json_path):
+def main(json_path, export_path=None):
     input_json = read_input(json_path)
 
     [tournament_length, sports] = parse_input(input_json)
@@ -24,22 +24,32 @@ def main(json_path):
     for event_key in result:
         complete_games.add_event(result[event_key])
 
-    print(complete_games)
+    if export_path is not None:
+        try:
+            complete_games.export(export_path)
+        except:
+            handle_error("Export failed. Please try again ensuring a valid output path is given")
 
 
 if __name__ == "__main__":
     # Setup command line arguments
     parser = ArgumentParser('Automated Event Scheduler')
-    parser.add_argument("path", type=str, help="read json input from this path")
+    parser.add_argument("--import_path", required=True, type=str, help="read json input from this path")
+    parser.add_argument("--export_path", required=False, type=str, help="export json output to this path")
     args = None
     try:
         args = parser.parse_args()
     except:
         handle_error("Invalid input. Please ensure you provide all required arguments")
 
-    if not os.path.exists(args.path):
+    if not os.path.exists(args.import_path):
         handle_error("Path does not exist")
     start_time = time.time()
-    main(args.path)
+
+    if args.export_path:
+        main(args.import_path, args.export_path)
+    else:
+        main(args.import_path)
+
     end_time = time.time()
     print("\nTime Taken: " + str(end_time - start_time))

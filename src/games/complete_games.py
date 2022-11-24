@@ -1,20 +1,34 @@
+import json
+
+
 class CompleteGames:
-    events = []
+    complete_games = {}
 
     def __init__(self, days_of_tournament, sports):
-        self.days_of_tournament = days_of_tournament
-        self.sports = sports
+        self.complete_games["days_of_tournament"] = days_of_tournament
+        self.complete_games["sports"] = sports
+        self.complete_games["events"] = []
 
     def add_event(self, event):
-        # print(event)
-        self.events.append(event)
+        self.complete_games["events"].append(event)
 
     def __str__(self) -> str:
         return self.__repr__()
 
     def __repr__(self) -> str:
-        return f"""{{
-            days_of_tournament: {self.days_of_tournament},
-            sports: {self.sports},
-            events: {self.events}
-        \n}}"""
+        return json.dumps(self.complete_games, indent=4, default=lambda o: o.__dict__, skipkeys=True)
+
+    def export(self, path) -> None:
+        for event in self.complete_games["events"]:
+            event.round = event.round.round_name
+            event.sport = event.sport.name
+            event.venue = event.venue.name
+
+        dict_to_export = {
+            "events": self.complete_games["events"]
+        }
+
+        with open(path, "w") as file:
+            json.dump(dict_to_export, file, indent=4, default=lambda o: o.__dict__, skipkeys=True)
+        print(self.complete_games)
+        print("Export successful to: " + path)
