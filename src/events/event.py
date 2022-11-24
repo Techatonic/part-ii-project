@@ -19,9 +19,9 @@ class Event:
     def __repr__(self) -> str:
         return f"""{{
             event_id: {self.sport.name + "_" + str(self.event_num)},
-            sport: {self.sport.__str__},
+            sport: {self.sport.name},
             round: {self.round.round_name},
-            venue: {self.venue},
+            venue: {self.venue.name},
             day: {self.day},
             start_time: {self.start_time},
             duration: {self.duration}\n}}"""

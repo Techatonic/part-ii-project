@@ -30,7 +30,12 @@ if __name__ == "__main__":
     # Setup command line arguments
     parser = ArgumentParser('Automated Event Scheduler')
     parser.add_argument("path", type=str, help="read json input from this path")
-    args = parser.parse_args()
+    args = None
+    try:
+        args = parser.parse_args()
+    except:
+        handle_error("Invalid input. Please ensure you provide all required arguments")
+
     if not os.path.exists(args.path):
         handle_error("Path does not exist")
     start_time = time.time()

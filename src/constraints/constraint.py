@@ -22,5 +22,7 @@ def same_venue_max_matches_per_day(*variables):
             else:
                 venues[event.venue.name][event.day] += 1
             if venues[event.venue.name][event.day] > event.venue.max_matches_per_day:
+                # print(venues)
                 return False
+    # print("Works: ", venues)
     return True
