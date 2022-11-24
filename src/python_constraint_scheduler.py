@@ -32,17 +32,12 @@ def solve(sports, tournament_length):
         round_order = generate_round_order(sport.num_teams, sport.num_teams_per_game)
         variable_list = []
 
-        most_recent_venue = None
-
         match_num = 1
         for event_round in round_order:
             for _ in range(event_round.num_matches):
                 options = []
                 # TODO Shuffle venues here - see if there is a performance boost
                 random.shuffle(venues)
-                if most_recent_venue is not None:
-                    venues.remove(most_recent_venue)
-                    venues.append(most_recent_venue)
 
                 for venue in venues:
                     for day in range(min_start_day, max_finish_day + 1):
