@@ -1,3 +1,6 @@
+from src.error_handling.handle_error import handle_error
+
+
 class Venue:
     """
         Class defining a generic venue
@@ -27,3 +30,11 @@ class Venue:
             capacity: {self.capacity} 
             max matches per day: {self.max_matches_per_day}
             \n}}"""
+
+
+def convert_string_to_venue_instance(venue_string, venues):
+    for venue in venues:
+        if venue_string == venue.name:
+            return venue
+
+    handle_error("No venue of this name found: " + venue_string)

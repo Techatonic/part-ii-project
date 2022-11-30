@@ -1,34 +1,66 @@
-from ..sports.sport import Sport
-from ..venues.venue import Venue
+from ..error_handling.handle_error import handle_error
+from ..events.event import Event
+from ..rounds.knockout_rounds import convert_string_to_round_instance
+from ..sports.sport import Sport, convert_string_to_sport_instance
+from ..venues.venue import Venue, convert_string_to_venue_instance
 
 
 def parse_input(json_input):
-    days_of_tournament = json_input['tournament_length']
-    sports = []
+    try:
+        days_of_tournament = json_input['tournament_length']
+        generic_constraints = json_input['general_constraints']
+        sports = []
 
-    for sport in json_input['sports']:
-        venues = []
-        for venue in sport['venues']:
-            venues.append(parse_venue(venue))
+        for sport in json_input['sports']:
+            venues = []
+            for venue in sport['venues']:
+                venues.append(parse_venue(venue))
 
-        group_stage = None
-        if group_stage is not None:
-            group_stage = parse_group_stage(sport['group_stage'])
+            group_stage = None
+            if group_stage is not None:
+                group_stage = parse_group_stage(sport['group_stage'])
 
-        sports.append(Sport(
-            sport['name'],
-            venues,
-            sport['num_teams'],
-            sport['num_teams_per_game'],
-            sport['duration'],
-            sport['is_knockout'],
-            group_stage,
-            sport['min_start_day'],
-            sport['max_finish_day'],
-            sport['min_start_time'],
-            sport['max_finish_time']
-        ))
-    return [days_of_tournament, sports]
+            sports.append(Sport(
+                sport['name'],
+                venues,
+                sport['num_teams'],
+                sport['num_teams_per_game'],
+                sport['duration'],
+                sport['is_knockout'],
+                group_stage,
+                sport['min_start_day'],
+                sport['max_finish_day'],
+                sport['min_start_time'],
+                sport['max_finish_time'],
+                sport['constraints']
+            ))
+        return [days_of_tournament, sports, generic_constraints]
+    except:
+        handle_error("Parsing failed")
+
+
+def parse_input_constraint_checker(json_input):
+    try:
+        [days_of_tournament, sports, generic_constraints] = parse_input(json_input)
+
+        venues = [venue for x in sports for venue in x.possible_venues]
+
+        events = []
+
+        for event in json_input['events']:
+            events.append(Event(
+                convert_string_to_sport_instance(event["sport"], sports),
+                event["event_num"],
+                convert_string_to_venue_instance(event["venue"], venues),
+                convert_string_to_round_instance(event["round"]),
+                event["day"],
+                event["start_time"],
+                event["duration"],
+                # TODO Add teams involved
+            ))
+        return [days_of_tournament, sports, events, generic_constraints]
+    except:
+        handle_error("Parsing failed")
 
 
 def parse_venue(venue):

@@ -1,0 +1,228 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/main",
+    "definitions": {
+        "main": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "sports": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SportElement"
+                    }
+                },
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Event"
+                    }
+                },
+                "general_constraints": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ConstraintEnum"
+                    }
+                },
+                "tournament_length": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "events",
+                "general_constraints",
+                "sports",
+                "tournament_length"
+            ],
+            "title": "Welcome2"
+        },
+        "Event": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "round": {
+                    "$ref": "#/definitions/Round"
+                },
+                "sport": {
+                    "$ref": "#/definitions/SportEnum"
+                },
+                "event_num": {
+                    "type": "integer"
+                },
+                "venue": {
+                    "type": "string"
+                },
+                "day": {
+                    "type": "integer"
+                },
+                "start_time": {
+                    "type": "integer"
+                },
+                "duration": {
+                    "type": "number"
+                },
+                "teams_involved": {
+                    "type": "null"
+                }
+            },
+            "required": [
+                "day",
+                "duration",
+                "event_num",
+                "round",
+                "sport",
+                "start_time",
+                "teams_involved",
+                "venue"
+            ],
+            "title": "Event"
+        },
+        "SportElement": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "$ref": "#/definitions/SportEnum"
+                },
+                "venues": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Venue"
+                    }
+                },
+                "num_teams": {
+                    "type": "integer"
+                },
+                "num_teams_per_game": {
+                    "type": "integer"
+                },
+                "is_knockout": {
+                    "type": "boolean"
+                },
+                "group_stage": {
+                    "type": "null"
+                },
+                "min_start_day": {
+                    "type": "integer"
+                },
+                "max_finish_day": {
+                    "type": "integer"
+                },
+                "min_start_time": {
+                    "type": "integer"
+                },
+                "max_finish_time": {
+                    "type": "integer"
+                },
+                "duration": {
+                    "type": "number"
+                },
+                "constraints": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ConstraintEnum"
+                    }
+                }
+            },
+            "required": [
+                "constraints",
+                "duration",
+                "group_stage",
+                "is_knockout",
+                "max_finish_day",
+                "max_finish_time",
+                "min_start_day",
+                "min_start_time",
+                "name",
+                "num_teams",
+                "num_teams_per_game",
+                "venues"
+            ],
+            "title": "SportElement"
+        },
+        "Venue": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "location_coordinates": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "location_address": {
+                    "$ref": "#/definitions/LocationAddress"
+                },
+                "location_postcode": {
+                    "$ref": "#/definitions/LocationPostcode"
+                },
+                "min_start_time": {
+                    "type": "integer"
+                },
+                "max_finish_time": {
+                    "type": "integer"
+                },
+                "capacity": {
+                    "type": "integer"
+                },
+                "max_matches_per_day": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "capacity",
+                "location_address",
+                "location_coordinates",
+                "location_postcode",
+                "max_finish_time",
+                "max_matches_per_day",
+                "min_start_time",
+                "name"
+            ],
+            "title": "Venue"
+        },
+        "Round": {
+            "type": "string",
+            "enum": [
+                "Final",
+                "Semi Final",
+                "Quarter Final"
+            ],
+            "title": "Round"
+        },
+        "SportEnum": {
+            "type": "string",
+            "enum": [
+                "boxing_heavyweight",
+                "football",
+                "tennis"
+            ],
+            "title": "SportEnum"
+        },
+        "LocationAddress": {
+            "type": "string",
+            "enum": [
+                "Fulham Rd., London SW6 1HS"
+            ],
+            "title": "LocationAddress"
+        },
+        "LocationPostcode": {
+            "type": "string",
+            "enum": [
+                "SW6 1HS"
+            ],
+            "title": "LocationPostcode"
+        },
+        "ConstraintEnum": {
+            "type": "string",
+            "enum": [
+                "same_venue_overlapping_time",
+                "no_later_rounds_before_earlier_rounds",
+                "same_venue_max_matches_per_day"
+            ]
+        }
+    }
+}

@@ -1,0 +1,214 @@
+{
+    "events": [
+        {
+            "round": "Final",
+            "sport": "boxing_heavyweight",
+            "event_num": 1,
+            "venue": "Excel_1",
+            "day": 4,
+            "start_time": 17,
+            "duration": 1,
+            "teams_involved": null
+        },
+        {
+            "round": "Semi Final",
+            "sport": "boxing_heavyweight",
+            "event_num": 2,
+            "venue": "Excel_2",
+            "day": 3,
+            "start_time": 17,
+            "duration": 1,
+            "teams_involved": null
+        },
+        {
+            "round": "Semi Final",
+            "sport": "boxing_heavyweight",
+            "event_num": 3,
+            "venue": "Excel_2",
+            "day": 3,
+            "start_time": 17,
+            "duration": 1,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "boxing_heavyweight",
+            "event_num": 4,
+            "venue": "Excel_2",
+            "day": 2,
+            "start_time": 17,
+            "duration": 1,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "boxing_heavyweight",
+            "event_num": 5,
+            "venue": "Excel_1",
+            "day": 2,
+            "start_time": 17,
+            "duration": 1,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "boxing_heavyweight",
+            "event_num": 6,
+            "venue": "Excel_1",
+            "day": 1,
+            "start_time": 17,
+            "duration": 1,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "boxing_heavyweight",
+            "event_num": 7,
+            "venue": "Excel_2",
+            "day": 1,
+            "start_time": 17,
+            "duration": 1,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "football",
+            "event_num": 4,
+            "venue": "Emirates Stadium",
+            "day": 4,
+            "start_time": 19,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "football",
+            "event_num": 5,
+            "venue": "Emirates Stadium",
+            "day": 1,
+            "start_time": 19,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Final",
+            "sport": "tennis",
+            "event_num": 1,
+            "venue": "Wimbledon_Court_2",
+            "day": 6,
+            "start_time": 19,
+            "duration": 3,
+            "teams_involved": null
+        },
+        {
+            "round": "Semi Final",
+            "sport": "tennis",
+            "event_num": 2,
+            "venue": "Wimbledon_Court_1",
+            "day": 5,
+            "start_time": 19,
+            "duration": 3,
+            "teams_involved": null
+        },
+        {
+            "round": "Semi Final",
+            "sport": "tennis",
+            "event_num": 3,
+            "venue": "Wimbledon_Court_2",
+            "day": 5,
+            "start_time": 19,
+            "duration": 3,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "tennis",
+            "event_num": 4,
+            "venue": "Wimbledon_Centre_Court",
+            "day": 4,
+            "start_time": 19,
+            "duration": 3,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "tennis",
+            "event_num": 5,
+            "venue": "Wimbledon_Court_3",
+            "day": 1,
+            "start_time": 19,
+            "duration": 3,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "tennis",
+            "event_num": 6,
+            "venue": "Wimbledon_Court_2",
+            "day": 1,
+            "start_time": 19,
+            "duration": 3,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "tennis",
+            "event_num": 7,
+            "venue": "Wimbledon_Court_1",
+            "day": 2,
+            "start_time": 19,
+            "duration": 3,
+            "teams_involved": null
+        },
+        {
+            "round": "Final",
+            "sport": "football",
+            "event_num": 1,
+            "venue": "Stamford Bridge",
+            "day": 8,
+            "start_time": 20,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Semi Final",
+            "sport": "football",
+            "event_num": 2,
+            "venue": "Stamford Bridge",
+            "day": 5,
+            "start_time": 20,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Semi Final",
+            "sport": "football",
+            "event_num": 3,
+            "venue": "Tottenham Hotspur Stadium",
+            "day": 7,
+            "start_time": 20,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "football",
+            "event_num": 6,
+            "venue": "Olympic Stadium",
+            "day": 3,
+            "start_time": 20,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "football",
+            "event_num": 7,
+            "venue": "Olympic Stadium",
+            "day": 4,
+            "start_time": 20,
+            "duration": 1.5,
+            "teams_involved": null
+        }
+    ]
+}

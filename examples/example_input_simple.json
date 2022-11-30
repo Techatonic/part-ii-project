@@ -52,9 +52,17 @@
       "max_finish_day": 5,
       "min_start_time": 12,
       "max_finish_time": 22,
-      "duration": 1.5
+      "duration": 1.5,
+      "constraints": [
+        "same_venue_overlapping_time",
+        "no_later_rounds_before_earlier_rounds",
+        "same_venue_max_matches_per_day"
+      ]
     }
   ],
-  "general_constraints": [],
+  "general_constraints": [
+    "same_venue_overlapping_time",
+    "same_venue_max_matches_per_day"
+  ],
   "tournament_length": 14
 }

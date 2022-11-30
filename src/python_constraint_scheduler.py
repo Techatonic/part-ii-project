@@ -5,12 +5,12 @@ from copy import deepcopy
 from constraint import Problem
 
 from .constraints.constraint import same_venue_overlapping_time, no_later_rounds_before_earlier_rounds, \
-    same_venue_max_matches_per_day
+    same_venue_max_matches_per_day, get_constraint, ConstraintType
 from .events.event import Event
 from .rounds.knockout_rounds import generate_round_order
 
 
-def solve(sports, tournament_length):
+def solve(sports, tournament_length, general_constraints):
     """
         Method to solve the CSP scheduling problem
     """
@@ -40,10 +40,14 @@ def solve(sports, tournament_length):
                 random.shuffle(venues)
                 day_order = list(range(min_start_day, max_finish_day + 1))
                 random.shuffle(day_order)
-                time_order = list(range(min_start_time, math.ceil(max_finish_time - sport.match_duration)))
-                random.shuffle(time_order)
 
                 for venue in venues:
+                    min_start_time = max(min_start_time, venue.min_start_time)
+                    max_finish_time = min(max_finish_time, venue.max_finish_time)
+                    time_order = list(range(min_start_time, math.ceil(max_finish_time - sport.match_duration)))
+                    if venue.name == "Stamford Bridge" and event_round.round_index == 0:
+                        print(time_order)
+                    random.shuffle(time_order)
                     for day in day_order:
                         for time in time_order:
                             options.append(Event(sport, match_num, venue=venue, event_round=event_round,
@@ -53,18 +57,18 @@ def solve(sports, tournament_length):
                 variable_list.append(sport_name + "_" + str(match_num))
                 match_num += 1
 
-        # Add binary constraints
-        for match_1 in variable_list:
-            for match_2 in variable_list:
-                if match_1 != match_2:
-                    matches_involved = [match_1, match_2]
-                    # No overlapping matches in the same venue
-                    csp_problem.addConstraint(same_venue_overlapping_time, matches_involved)
-                    # No matches where a latter stage is taking place before an earlier stage
-                    csp_problem.addConstraint(no_later_rounds_before_earlier_rounds, matches_involved)
-                    # Max matches per day per venue
-                    csp_problem.addConstraint(same_venue_max_matches_per_day)
-                    # TODO Add sufficient_rest_between_matches constraint
+        for sport_specific_constraint in sport.constraints:
+            constraint = get_constraint(sport_specific_constraint)
+            if constraint.constraint_type == ConstraintType.UNARY:
+                for event in variable_list:
+                    csp_problem.addConstraint(constraint.function, [event])
+            elif constraint.constraint_type == ConstraintType.BINARY:
+                for event_1 in range(len(variable_list)):
+                    for event_2 in range(event_1 + 1, len(variable_list)):
+                        csp_problem.addConstraint(constraint.function,
+                                                  [variable_list[event_1], variable_list[event_2]])
+            else:
+                csp_problem.addConstraint(constraint.function)
 
         result = csp_problem.getSolution()
         print("Done: " + sport.name)
@@ -82,8 +86,7 @@ def solve(sports, tournament_length):
             options = []
             min_start_time = max(sport[event_name].sport.min_start_time, sport[event_name].venue.min_start_time)
             max_finish_time = min(sport[event_name].sport.max_finish_time, sport[event_name].venue.max_finish_time)
-            for time in range(min_start_time, max_finish_time):
-                # for time in range(12, 15):
+            for time in range(min_start_time, max_finish_time - math.ceil(sport[event_name].sport.match_duration) + 1):
                 event_temp = deepcopy(sport[event_name])
                 event_temp.start_time = time
                 options.append(event_temp)
@@ -91,7 +94,18 @@ def solve(sports, tournament_length):
             variable_list.append(event_name)
 
     # Add total sport constraints
-    total_csp_problem.addConstraint(same_venue_max_matches_per_day)
+    for general_constraint in general_constraints:
+        constraint = get_constraint(general_constraint)
+        if constraint.constraint_type == ConstraintType.UNARY:
+            for event in variable_list:
+                total_csp_problem.addConstraint(constraint.function, [event])
+        elif constraint.constraint_type == ConstraintType.BINARY:
+            for event_1 in range(len(variable_list)):
+                for event_2 in range(event_1 + 1, len(variable_list)):
+                    total_csp_problem.addConstraint(constraint.function,
+                                                    [variable_list[event_1], variable_list[event_2]])
+        else:
+            total_csp_problem.addConstraint(constraint.function)
 
     result = total_csp_problem.getSolution()
     return result

@@ -1,3 +1,6 @@
+from src.error_handling.handle_error import handle_error
+
+
 class Round:
     """
         Defines a generic round of a tournament
@@ -35,3 +38,11 @@ def generate_round_order(num_teams, num_teams_per_game):
         teams *= num_teams_per_game
         index += 1
     return rounds
+
+
+def convert_string_to_round_instance(round_string):
+    for round_instance in knockout_rounds:
+        if round_string == round_instance.round_name:
+            return round_instance
+
+    handle_error("No round of this name found: " + round_string)
