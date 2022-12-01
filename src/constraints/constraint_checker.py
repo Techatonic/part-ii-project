@@ -66,7 +66,7 @@ def binary_constraint_check(constraint, events):
 
 def all_event_constraint_check(constraint, events):
     conflicts = []
-    print(events)
+    # print(events)
     if not constraint.function(events):
         conflicts.append([constraint.string_name, events])
 

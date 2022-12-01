@@ -36,6 +36,9 @@ class Sport:
             constraints: {self.constraints}
             \n}}"""
 
+    def __eq__(self, other):
+        return self.name == other.name
+
 
 def convert_string_to_sport_instance(sport_string, sports):
     for sport in sports:

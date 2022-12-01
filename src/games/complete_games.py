@@ -18,6 +18,11 @@ class CompleteGames:
     def __repr__(self) -> str:
         return json.dumps(self.complete_games, indent=4, default=lambda o: o.__dict__, skipkeys=True)
 
+    def __eq__(self, other):
+        return self.complete_games["days_of_tournament"] == other.complete_games["days_of_tournament"] and \
+               self.complete_games["sports"] == other.complete_games["sports"] and \
+               self.complete_games["events"] == other.complete_games["events"]
+
     def export(self, path) -> None:
         for event in self.complete_games["events"]:
             event.round = event.round.round_name

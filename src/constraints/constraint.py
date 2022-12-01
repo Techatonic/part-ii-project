@@ -1,14 +1,15 @@
 from enum import Enum
-import pprint
 
 from src.error_handling.handle_error import handle_error
 
 
 def same_venue_overlapping_time(a, b):
-    return not (a.venue == b.venue and a.day == b.day and (
+    if not (a.venue == b.venue and a.day == b.day and (
             (a.start_time <= b.start_time < a.start_time + a.duration) or
             (b.start_time <= a.start_time < b.start_time + b.duration)
-    ))
+    )):
+        return True
+    return False
 
 
 def no_later_rounds_before_earlier_rounds(a, b):
@@ -51,6 +52,9 @@ class Constraint:
         self.string_name = string_name
         self.function = function
         self.constraint_type = constraint_type
+
+    def __eq__(self, other):
+        return self.string_name == other.string_name
 
 
 # Dictionary of constraints

@@ -29,3 +29,8 @@ class Event:
             duration: {self.duration},
             teams_involved: {self.teams_involved}
         \n}}"""
+
+    # Uses hash instead of __eq__ because Event classes are turned into Variable classes by the python-constraint module
+    def __hash__(self):
+        hash((self.round, self.sport, self.event_num, self.venue, self.day, self.start_time, self.duration,
+              self.teams_involved))

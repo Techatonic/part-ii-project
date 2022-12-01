@@ -17,6 +17,9 @@ class Round:
     def __repr__(self) -> str:
         return self.round_name
 
+    def __eq__(self, other):
+        return self.round_name == other.round_name
+
 
 knockout_rounds = [
     Round("Final", 1, 0),
