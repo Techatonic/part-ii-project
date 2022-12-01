@@ -5,7 +5,7 @@
             "sport": "boxing_heavyweight",
             "event_num": 1,
             "venue": "Excel_1",
-            "day": 9,
+            "day": 4,
             "start_time": 17,
             "duration": 1,
             "teams_involved": null
@@ -15,7 +15,7 @@
             "sport": "boxing_heavyweight",
             "event_num": 2,
             "venue": "Excel_1",
-            "day": 2,
+            "day": 3,
             "start_time": 17,
             "duration": 1,
             "teams_involved": null
@@ -25,8 +25,8 @@
             "sport": "boxing_heavyweight",
             "event_num": 3,
             "venue": "Excel_1",
-            "day": 5,
-            "start_time": 17,
+            "day": 3,
+            "start_time": 16,
             "duration": 1,
             "teams_involved": null
         },
@@ -34,19 +34,9 @@
             "round": "Quarter Final",
             "sport": "boxing_heavyweight",
             "event_num": 4,
-            "venue": "Excel_2",
-            "day": 1,
+            "venue": "Excel_1",
+            "day": 2,
             "start_time": 17,
-            "duration": 1,
-            "teams_involved": null
-        },
-        {
-            "round": "Quarter Final",
-            "sport": "boxing_heavyweight",
-            "event_num": 6,
-            "venue": "Excel_2",
-            "day": 1,
-            "start_time": 16,
             "duration": 1,
             "teams_involved": null
         },
@@ -63,7 +53,7 @@
         {
             "round": "Quarter Final",
             "sport": "boxing_heavyweight",
-            "event_num": 7,
+            "event_num": 6,
             "venue": "Excel_1",
             "day": 1,
             "start_time": 16,
@@ -71,23 +61,13 @@
             "teams_involved": null
         },
         {
-            "round": "Semi Final",
-            "sport": "football",
-            "event_num": 3,
-            "venue": "Emirates Stadium",
-            "day": 6,
-            "start_time": 19,
-            "duration": 1.5,
-            "teams_involved": null
-        },
-        {
             "round": "Quarter Final",
-            "sport": "football",
-            "event_num": 4,
-            "venue": "Emirates Stadium",
-            "day": 2,
-            "start_time": 19,
-            "duration": 1.5,
+            "sport": "boxing_heavyweight",
+            "event_num": 7,
+            "venue": "Excel_1",
+            "day": 1,
+            "start_time": 15,
+            "duration": 1,
             "teams_involved": null
         },
         {
@@ -95,7 +75,7 @@
             "sport": "football",
             "event_num": 6,
             "venue": "Emirates Stadium",
-            "day": 1,
+            "day": 3,
             "start_time": 19,
             "duration": 1.5,
             "teams_involved": null
@@ -105,7 +85,7 @@
             "sport": "tennis",
             "event_num": 1,
             "venue": "Wimbledon_Court_1",
-            "day": 14,
+            "day": 11,
             "start_time": 19,
             "duration": 3,
             "teams_involved": null
@@ -114,6 +94,46 @@
             "round": "Semi Final",
             "sport": "tennis",
             "event_num": 2,
+            "venue": "Wimbledon_Centre_Court",
+            "day": 4,
+            "start_time": 19,
+            "duration": 3,
+            "teams_involved": null
+        },
+        {
+            "round": "Semi Final",
+            "sport": "tennis",
+            "event_num": 3,
+            "venue": "Wimbledon_Centre_Court",
+            "day": 7,
+            "start_time": 19,
+            "duration": 3,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "tennis",
+            "event_num": 4,
+            "venue": "Wimbledon_Court_1",
+            "day": 3,
+            "start_time": 19,
+            "duration": 3,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "tennis",
+            "event_num": 5,
+            "venue": "Wimbledon_Court_1",
+            "day": 2,
+            "start_time": 19,
+            "duration": 3,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "tennis",
+            "event_num": 6,
             "venue": "Wimbledon_Court_3",
             "day": 3,
             "start_time": 19,
@@ -121,51 +141,11 @@
             "teams_involved": null
         },
         {
-            "round": "Semi Final",
-            "sport": "tennis",
-            "event_num": 3,
-            "venue": "Wimbledon_Court_2",
-            "day": 9,
-            "start_time": 19,
-            "duration": 3,
-            "teams_involved": null
-        },
-        {
-            "round": "Quarter Final",
-            "sport": "tennis",
-            "event_num": 4,
-            "venue": "Wimbledon_Court_1",
-            "day": 1,
-            "start_time": 19,
-            "duration": 3,
-            "teams_involved": null
-        },
-        {
-            "round": "Quarter Final",
-            "sport": "tennis",
-            "event_num": 5,
-            "venue": "Wimbledon_Centre_Court",
-            "day": 2,
-            "start_time": 19,
-            "duration": 3,
-            "teams_involved": null
-        },
-        {
-            "round": "Quarter Final",
-            "sport": "tennis",
-            "event_num": 6,
-            "venue": "Wimbledon_Court_3",
-            "day": 2,
-            "start_time": 19,
-            "duration": 3,
-            "teams_involved": null
-        },
-        {
             "round": "Quarter Final",
             "sport": "tennis",
             "event_num": 7,
             "venue": "Wimbledon_Court_2",
-            "day": 2,
+            "day": 1,
             "start_time": 19,
             "duration": 3,
             "teams_involved": null
@@ -174,7 +154,17 @@
             "round": "Final",
             "sport": "football",
             "event_num": 1,
-            "venue": "Tottenham Hotspur Stadium",
+            "venue": "Stamford Bridge",
+            "day": 8,
+            "start_time": 20,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Semi Final",
+            "sport": "football",
+            "event_num": 2,
+            "venue": "Stamford Bridge",
             "day": 7,
             "start_time": 20,
             "duration": 1.5,
@@ -183,8 +173,8 @@
         {
             "round": "Semi Final",
             "sport": "football",
-            "event_num": 2,
-            "venue": "Stamford Bridge",
+            "event_num": 3,
+            "venue": "Olympic Stadium",
             "day": 4,
             "start_time": 20,
             "duration": 1.5,
@@ -193,9 +183,19 @@
         {
             "round": "Quarter Final",
             "sport": "football",
+            "event_num": 4,
+            "venue": "Olympic Stadium",
+            "day": 2,
+            "start_time": 20,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "football",
             "event_num": 5,
-            "venue": "Tottenham Hotspur Stadium",
-            "day": 3,
+            "venue": "Stamford Bridge",
+            "day": 2,
             "start_time": 20,
             "duration": 1.5,
             "teams_involved": null
@@ -204,8 +204,8 @@
             "round": "Quarter Final",
             "sport": "football",
             "event_num": 7,
-            "venue": "Stamford Bridge",
-            "day": 3,
+            "venue": "Tottenham Hotspur Stadium",
+            "day": 2,
             "start_time": 20,
             "duration": 1.5,
             "teams_involved": null

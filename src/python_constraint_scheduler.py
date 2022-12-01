@@ -4,8 +4,7 @@ from copy import deepcopy
 
 from constraint import Problem
 
-from .constraints.constraint import same_venue_overlapping_time, no_later_rounds_before_earlier_rounds, \
-    same_venue_max_matches_per_day, get_constraint, ConstraintType
+from .constraints.constraint import get_constraint, ConstraintType
 from .events.event import Event
 from .rounds.knockout_rounds import generate_round_order
 
