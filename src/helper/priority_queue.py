@@ -4,16 +4,16 @@ import heapq
 class PriorityQueue:
     def __init__(self, variables_dict=None):
         if variables_dict is None:
-            variables_dict = []
-        self.queue = [QueueNode(variable, variables_dict[variable]) for variable in variables_dict]
-        heapq.heapify(self.queue)
+            variables_dict = {}
+        self.variables = [QueueNode(variable, variables_dict[variable]) for variable in variables_dict]
+        heapq.heapify(self.variables)
 
     def add(self, variable_name, domain):
-        self.queue.append(QueueNode(variable_name, domain))
-        heapq.heapify(self.queue)
+        self.variables.append(QueueNode(variable_name, domain))
+        heapq.heapify(self.variables)
 
-    def remove(self):
-        return heapq.heappop(self.queue)
+    def pop(self):
+        return heapq.heappop(self.variables)
 
 
 class QueueNode:
