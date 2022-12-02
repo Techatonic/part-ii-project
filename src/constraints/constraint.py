@@ -54,7 +54,7 @@ class Constraint:
         self.constraint_type = constraint_type
 
     def __eq__(self, other):
-        return self.string_name == other.string_name
+        return self.string_name == other.string_name and self.sport_constraint == other.sport_constraint
 
 
 # Dictionary of constraints

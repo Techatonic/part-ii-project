@@ -15,16 +15,7 @@ def constraint_checker(tournament_length, sports, events, general_constraints):
             sport_specific_events = [event for event in events if event.sport.name == sport.name]
 
             constraint = constraints_list[constraint_string]
-            # print(constraint)
-
-            if constraint.constraint_type == ConstraintType.UNARY:
-                result = unary_constraint_check(constraint, sport_specific_events)
-            elif constraint.constraint_type == ConstraintType.BINARY:
-                result = binary_constraint_check(constraint, sport_specific_events)
-            else:
-                result = all_event_constraint_check(constraint, sport_specific_events)
-
-            conflicts += result
+            conflicts += constraint_check(constraint, sport_specific_events)
 
     for constraint_string in general_constraints:
         if not (constraint_string in constraints_list):
@@ -32,15 +23,19 @@ def constraint_checker(tournament_length, sports, events, general_constraints):
             return
 
         constraint = constraints_list[constraint_string]
-        if constraint.constraint_type == ConstraintType.UNARY:
-            result = unary_constraint_check(constraint, events)
-        elif constraint.constraint_type == ConstraintType.BINARY:
-            result = binary_constraint_check(constraint, events)
-        else:
-            result = all_event_constraint_check(constraint, events)
-        conflicts += result
+        conflicts += constraint_check(constraint, events)
 
     return conflicts
+
+
+def constraint_check(constraint, events):
+    if constraint.constraint_type == ConstraintType.UNARY:
+        result = unary_constraint_check(constraint, events)
+    elif constraint.constraint_type == ConstraintType.BINARY:
+        result = binary_constraint_check(constraint, events)
+    else:
+        result = all_event_constraint_check(constraint, events)
+    return result
 
 
 def unary_constraint_check(constraint, events):
@@ -58,8 +53,8 @@ def binary_constraint_check(constraint, events):
         for event_2 in range(event_1 + 1, len(events)):
             if not constraint.function(events[event_1], events[event_2]):
                 conflicts.append([constraint.string_name,
-                                  [events[event_1].sport.name + "_" + str(events[event_1].event_num),
-                                   events[event_2].sport.name + "_" + str(events[event_2].event_num)]])
+                                  [events[event_1].sport.name, str(events[event_1].event_num),
+                                   str(events[event_2].event_num)]])
 
     return conflicts
 
