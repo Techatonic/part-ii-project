@@ -21,7 +21,7 @@ def solve(sports, tournament_length, general_constraints):
 
         sport_name = sport.name
         venues = sport.possible_venues
-        min_start_day = sport.min_start_day
+        min_start_day = 0 if sport.min_start_day is None else sport.min_start_day
         max_finish_day = tournament_length if sport.max_finish_day is None else sport.max_finish_day
         min_start_time = sport.min_start_time
         max_finish_time = sport.max_finish_time

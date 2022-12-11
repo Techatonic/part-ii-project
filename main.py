@@ -8,10 +8,10 @@ from argparse import ArgumentParser
 from src.constraints.constraint_checker import constraint_checker
 from src.error_handling.handle_error import handle_error
 from src.games.complete_games import CompleteGames
-from src.python_constraint_scheduler import solve as python_constraint_solver
+from src.python_constraint_scheduler import solve as python_module_constraint_solver
 from src.input_handling.input_reader import read_and_validate_input
 from src.input_handling.parse_input import parse_input, parse_input_constraint_checker
-from src.python_customised_scheduler import python_customised_solver
+from src.python_customised_scheduler import solve as python_customised_solver
 
 
 def main(input_path, export_path=None, constraint_checker_flag=False, use_python_module=False):
@@ -46,7 +46,7 @@ def run_solver(input_path, use_python_module, export_path=None):
 
     result = None
     if use_python_module:
-        result = python_constraint_solver(sports, tournament_length, general_constraints)
+        result = python_module_constraint_solver(sports, tournament_length, general_constraints)
     else:
         result = python_customised_solver(sports, tournament_length, general_constraints)
 
