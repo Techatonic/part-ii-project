@@ -48,8 +48,10 @@ class CSPProblem:
     def __solve_variable(self, assignments, queue):
         assignments = copy.deepcopy(assignments)
         queue = copy.deepcopy(queue)
+        print(len(queue.variables))
         while len(queue.variables) > 0:
             variable = queue.pop()
+            # print("Domain size: ", len(variable.domain))
             for option in variable.domain:
                 # print("\nNew option for: ", variable.variable)
                 assignments[variable.variable] = option
@@ -62,7 +64,8 @@ class CSPProblem:
                 satisfies_all_constraints = self.__test_constraints(assignments, constraints_to_check)
                 if satisfies_all_constraints:
                     # TODO Remove from all other domains affected
-                    # self.__trim_queue(queue, {variable.variable: assignments[variable.variable]}, constraints_to_check)
+                    # if self.__trim_queue(queue, {variable.variable: assignments[variable.variable]},
+                    #                     constraints_to_check):
                     # TODO Check is trim has successfully occurred in place
                     result = self.__solve_variable(assignments, queue)
                     if result is not None:
@@ -71,9 +74,10 @@ class CSPProblem:
                 del assignments[variable.variable]
 
             return None
-
+        print("Returning assignments")
         return assignments  # We have a valid assignment, return it
 
+    # TODO This is basically the same as constraint_check in constraint_checker.py (except this is multiple constraints). Possibly merge them
     def __test_constraints(self, assignments, constraints: list[Constraint]):
         events = list(assignments.values())
         conflicts = []
@@ -88,9 +92,31 @@ class CSPProblem:
         return len(conflicts) == 0
 
     def __trim_queue(self, queue, most_recent_assignment, constraints):
-        for variable in queue.variables:
-            variable.domain = list(filter(
-                lambda option: self.__test_constraints(most_recent_assignment, constraints),
-                variable.domain
-            ))
+        """
+        Trims domain of variables on the queue based on newest assignment
+        Returns True if all variables still have possible assignments (i.e. len(domain) > 0)
+        :param queue:
+        :param most_recent_assignment:
+        :param constraints:
+        :return:
+        """
+        temp_queue = copy.deepcopy(queue)
+        for variable in temp_queue.variables:
+            print("Domain before: ", len(variable.domain))
+            domain = []
+            for option in variable.domain:
+                assignments_to_check = most_recent_assignment
+                assignments_to_check[variable.variable] = option
+                if self.__test_constraints(assignments_to_check, constraints):
+                    domain.append(domain)
+
+            variable.domain = domain
+            if len(variable.domain) == 0:
+                return False
+
+            print("Domain after: ", len(variable.domain))
+
+        # All domains have length > 0, so we know it's safe to trim the original queue
+        queue.variables = temp_queue.variables
         heapq.heapify(queue.variables)
+        return True
