@@ -1,5 +1,7 @@
 import heapq
 
+from src.events.event import Event
+
 
 class PriorityQueue:
     def __init__(self, variables_dict=None):
@@ -17,9 +19,12 @@ class PriorityQueue:
 
 
 class QueueNode:
-    def __init__(self, variable, domain):
+    def __init__(self, variable, domain: list[Event]):
         self.variable = variable
         self.domain = domain
 
     def __lt__(self, other):
         return len(self.domain) < len(other.domain)
+
+    def __eq__(self, other):
+        return self.variable == other.variable and self.domain == other.domain

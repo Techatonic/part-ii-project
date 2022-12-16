@@ -1,5 +1,6 @@
 from src.constraints.constraint import constraints_list, ConstraintType, Constraint
 from src.error_handling.handle_error import handle_error
+from src.events.event import Event
 
 
 def constraint_checker(tournament_length, sports, events, general_constraints):
@@ -36,6 +37,10 @@ def constraint_check(constraint: Constraint, events):
     else:
         result = all_event_constraint_check(constraint, events)
     return result
+
+
+def valid_constraint_check(constraint: Constraint, events: list[Event]):
+    return len(constraint_check(constraint, events)) == 0
 
 
 def unary_constraint_check(constraint: Constraint, events):
