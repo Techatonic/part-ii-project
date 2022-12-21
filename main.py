@@ -16,14 +16,14 @@ from src.solvers.customised_solver import CustomisedSolver
 from src.solvers.module_solver import ModuleSolver
 
 
-def main(input_path, export_path=None, constraint_checker_flag=False, use_python_module=False):
+def main(input_path: str, export_path: str | None = None, constraint_checker_flag: bool = False, use_python_module: bool = False) -> None:
     if constraint_checker_flag:
         run_constraint_checker(input_path)
     else:
         run_solver(input_path, use_python_module, export_path)
 
 
-def run_constraint_checker(input_path):
+def run_constraint_checker(input_path: str) -> None:
     input_json = read_and_validate_input(input_path, 'src/input_handling/input_schema_constraint_checker.json')
 
     [tournament_length, sports, events, general_constraints] = parse_input_constraint_checker(input_json)
@@ -39,7 +39,7 @@ def run_constraint_checker(input_path):
     exit()
 
 
-def run_solver(input_path, use_python_module, export_path=None):
+def run_solver(input_path: str, use_python_module: bool, export_path: str | None = None) -> None:
     input_json = read_and_validate_input(input_path, 'src/input_handling/input_schema.json')
 
     [tournament_length, sports, general_constraints] = parse_input(input_json)

@@ -1,15 +1,18 @@
 import math
 import random
 from copy import deepcopy
+from typing import Dict
 
-from src.constraints.constraint import get_constraint_from_string, ConstraintType
+from src.constraints.constraint import get_constraint_from_string, ConstraintType, Constraint, ConstraintFunction
 from src.solvers.customised_solver import CustomisedSolver
 from src.events.event import Event
-from src.rounds.knockout_rounds import generate_round_order
-from src.solvers.solver import Solver
+from src.rounds.knockout_rounds import generate_round_order, Round
+from src.sports.sport import Sport
+from src.venues.venue import Venue
 
 
-def solve(solver, sports, tournament_length, general_constraints):
+def solve(solver, sports: list[Sport], tournament_length: int, general_constraints: list[str]) -> dict[
+                                                                                                      str, Event] | None:
     """
     Method to solve the CSP scheduling problem
     :param solver
@@ -19,21 +22,21 @@ def solve(solver, sports, tournament_length, general_constraints):
     :return result: List[Event] | None
     """
 
-    total_events = []
+    total_events: list[dict[str, Event]] = []
 
     for sport in sports:
         csp_problem = solver()
 
-        sport_name = sport.name
-        venues = sport.possible_venues
-        min_start_day = 0 if sport.min_start_day is None else sport.min_start_day
-        max_finish_day = tournament_length if sport.max_finish_day is None else sport.max_finish_day
+        sport_name: str = sport.name
+        venues: list[Venue] = sport.possible_venues
+        min_start_day: int = 0 if sport.min_start_day is None else sport.min_start_day
+        max_finish_day: int = tournament_length if sport.max_finish_day is None else sport.max_finish_day
 
         # Define the variables
         # Add matches
-        round_order = generate_round_order(sport.num_teams, sport.num_teams_per_game)
-        variable_list = []
+        round_order: list[Round] = generate_round_order(sport.num_teams, sport.num_teams_per_game)
 
+        variable_list = []
         match_num = 1
         for event_round in round_order:
             for _ in range(event_round.num_matches):
@@ -58,7 +61,7 @@ def solve(solver, sports, tournament_length, general_constraints):
                 match_num += 1
 
         for sport_specific_constraint in sport.constraints:
-            constraint = get_constraint_from_string(sport_specific_constraint)
+            constraint: ConstraintFunction = get_constraint_from_string(sport_specific_constraint)
             if constraint.constraint_type == ConstraintType.UNARY:
                 for event in variable_list:
                     csp_problem.add_constraint(constraint.string_name, [event], sport)
@@ -70,7 +73,7 @@ def solve(solver, sports, tournament_length, general_constraints):
             else:
                 csp_problem.add_constraint(constraint.string_name, sport=sport)
 
-        result = csp_problem.solve()
+        result: dict[str, Event] = csp_problem.solve()
         # print("Done: " + sport.name)
         if result is None:
             return None
@@ -80,21 +83,21 @@ def solve(solver, sports, tournament_length, general_constraints):
     # print("Done individual sports. Beginning all sports")
 
     # Run CSP across all events in all sports
-    total_csp_problem = CustomisedSolver()
+    total_csp_problem = solver()
     variable_list = []
     # print("Add variables")
-    for sport in total_events:
-        for event_name in sport:
+    for sport_events in total_events:
+        for sport_event in sport_events:
             options = []
-            min_start_time = max(sport[event_name].sport.min_start_time, sport[event_name].venue.min_start_time)
-            max_finish_time = min(sport[event_name].sport.max_finish_time, sport[event_name].venue.max_finish_time)
+            min_start_time = max(sport_events[sport_event].sport.min_start_time, sport_events[sport_event].venue.min_start_time)
+            max_finish_time = min(sport_events[sport_event].sport.max_finish_time, sport_events[sport_event].venue.max_finish_time)
             for time in range(min_start_time,
-                              max_finish_time - math.ceil(sport[event_name].sport.match_duration) + 1):
-                event_temp = deepcopy(sport[event_name])
+                              max_finish_time - math.ceil(sport_events[sport_event].sport.match_duration) + 1):
+                event_temp = deepcopy(sport_events[sport_event])
                 event_temp.start_time = time
                 options.append(event_temp)
-            total_csp_problem.add_variable(event_name, options)
-            variable_list.append(event_name)
+            total_csp_problem.add_variable(sport_events[sport_event].event_id, options)
+            variable_list.append(sport_events[sport_event].event_id)
 
     # Add total sport constraints
     for general_constraint in general_constraints:
@@ -110,5 +113,5 @@ def solve(solver, sports, tournament_length, general_constraints):
         else:
             total_csp_problem.add_constraint(constraint.string_name)
 
-    result = total_csp_problem.solve()
+    result: dict[str, Event] = total_csp_problem.solve()
     return result

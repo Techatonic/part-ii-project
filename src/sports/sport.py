@@ -1,11 +1,15 @@
+from src.error_handling.handle_error import handle_error
+from src.venues.venue import Venue
+
+
 class Sport:
     """
         Class defining a generic sport
     """
 
-    def __init__(self, name, possible_venues, num_teams, num_teams_per_game, match_duration, is_knockout=True,
-                 group_stage=None, min_start_day=1, max_finish_day=None, min_start_time=10, max_finish_time=22,
-                 constraints=None):
+    def __init__(self, name, possible_venues:list[Venue], num_teams:int, num_teams_per_game:int, match_duration:float,
+                 is_knockout=True,group_stage=None, min_start_day=1, max_finish_day=None, min_start_time=10,
+                 max_finish_time=22,constraints=None) -> None:
         self.name = name
         self.possible_venues = possible_venues
         self.num_teams = num_teams
@@ -38,11 +42,13 @@ class Sport:
             constraints: {self.constraints}
             \n}}"""
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return self.name == other.name
 
 
-def convert_string_to_sport_instance(sport_string, sports):
+def convert_string_to_sport_instance(sport_string, sports) -> Sport:
     for sport in sports:
         if sport_string == sport.name:
             return sport
+
+    handle_error("Sport '" + sport_string + "' does not exist")
