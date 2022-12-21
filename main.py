@@ -1,6 +1,7 @@
 """
     A script for generating a solution to a CST scheduling problem
 """
+# TODO Make all copies use custom deepcopy
 import time
 import os
 from argparse import ArgumentParser
@@ -8,10 +9,11 @@ from argparse import ArgumentParser
 from src.constraints.constraint_checker import constraint_checker
 from src.error_handling.handle_error import handle_error
 from src.games.complete_games import CompleteGames
-from src.python_constraint_scheduler import solve as python_module_constraint_solver
 from src.input_handling.input_reader import read_and_validate_input
 from src.input_handling.parse_input import parse_input, parse_input_constraint_checker
-from src.python_customised_scheduler import solve as python_customised_solver
+from src.scheduler import solve as python_customised_solver
+from src.solvers.customised_solver import CustomisedSolver
+from src.solvers.module_solver import ModuleSolver
 
 
 def main(input_path, export_path=None, constraint_checker_flag=False, use_python_module=False):
@@ -44,11 +46,14 @@ def run_solver(input_path, use_python_module, export_path=None):
 
     complete_games = CompleteGames(tournament_length, sports)
 
-    result = None
+    solver = None
     if use_python_module:
-        result = python_module_constraint_solver(sports, tournament_length, general_constraints)
+        solver = ModuleSolver
     else:
-        result = python_customised_solver(sports, tournament_length, general_constraints)
+        solver = CustomisedSolver
+
+    result = python_customised_solver(solver, sports, tournament_length, general_constraints)
+
 
     if result is None:
         handle_error("No results found")

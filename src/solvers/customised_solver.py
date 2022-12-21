@@ -1,4 +1,4 @@
-from src.constraints.constraint import Constraint, get_constraint, ConstraintType
+from src.constraints.constraint import Constraint, get_constraint_from_string, ConstraintType
 from src.constraints.constraint_checker import constraint_check, valid_constraint_check
 from src.error_handling.handle_error import handle_error
 import copy
@@ -9,7 +9,7 @@ from src.helper.ac3 import ac3
 from src.helper.priority_queue import PriorityQueue
 
 
-class CSPProblem:
+class CustomisedSolver:
     def __init__(self):
         self.queue = PriorityQueue()
         # TODO think about reordering of constraints list so the hardest ones are evaluated first - should improve
@@ -24,7 +24,7 @@ class CSPProblem:
         self.queue.add(new_var, domain)
 
     def add_constraint(self, function_name, variables=None, sport=None):
-        function = get_constraint(function_name)
+        function = get_constraint_from_string(function_name)
         # print(function_name, function, variables, sport)
         self.constraints.append(Constraint(function, variables, sport))
 

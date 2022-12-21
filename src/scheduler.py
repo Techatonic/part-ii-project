@@ -2,15 +2,17 @@ import math
 import random
 from copy import deepcopy
 
-from src.constraints.constraint import get_constraint, ConstraintType
-from src.csp_definitions.csp import CSPProblem
+from src.constraints.constraint import get_constraint_from_string, ConstraintType
+from src.solvers.customised_solver import CustomisedSolver
 from src.events.event import Event
 from src.rounds.knockout_rounds import generate_round_order
+from src.solvers.solver import Solver
 
 
-def solve(sports, tournament_length, general_constraints):
+def solve(solver, sports, tournament_length, general_constraints):
     """
     Method to solve the CSP scheduling problem
+    :param solver: Solver
     :param sports: List[Sport]
     :param tournament_length: int
     :param general_constraints: List[string]
@@ -20,7 +22,7 @@ def solve(sports, tournament_length, general_constraints):
     total_events = []
 
     for sport in sports:
-        csp_problem = CSPProblem()
+        csp_problem = solver()
 
         sport_name = sport.name
         venues = sport.possible_venues
@@ -56,7 +58,7 @@ def solve(sports, tournament_length, general_constraints):
                 match_num += 1
 
         for sport_specific_constraint in sport.constraints:
-            constraint = get_constraint(sport_specific_constraint)
+            constraint = get_constraint_from_string(sport_specific_constraint)
             if constraint.constraint_type == ConstraintType.UNARY:
                 for event in variable_list:
                     csp_problem.add_constraint(constraint.string_name, [event], sport)
@@ -78,7 +80,7 @@ def solve(sports, tournament_length, general_constraints):
     # print("Done individual sports. Beginning all sports")
 
     # Run CSP across all events in all sports
-    total_csp_problem = CSPProblem()
+    total_csp_problem = CustomisedSolver()
     variable_list = []
     # print("Add variables")
     for sport in total_events:
@@ -96,7 +98,7 @@ def solve(sports, tournament_length, general_constraints):
 
     # Add total sport constraints
     for general_constraint in general_constraints:
-        constraint = get_constraint(general_constraint)
+        constraint = get_constraint_from_string(general_constraint)
         if constraint.constraint_type == ConstraintType.UNARY:
             for event in variable_list:
                 total_csp_problem.add_constraint(constraint.string_name, [event])

@@ -98,7 +98,7 @@ constraints_list = {
 }
 
 
-def get_constraint(string):
+def get_constraint_from_string(string):
     if not (string in constraints_list):
         handle_error("Constraint does not exist: " + string)
     return constraints_list[string]
