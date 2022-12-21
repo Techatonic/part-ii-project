@@ -25,20 +25,38 @@ def same_venue_max_matches_per_day(*variables):
     if type(variables) == tuple:
         if len(variables) == 1:
             variables = variables[0]
-    # pprint.pprint(variables)
     for event in variables:
-        # print(event)
-        if not (event.venue.name in venues):
-            venues[event.venue.name] = {event.day: 1}
+        venue_name = event.venue.name
+        if not (venue_name in venues):
+            venues[venue_name] = {event.day: 1}
         else:
-            if not (event.day in venues[event.venue.name]):
-                venues[event.venue.name][event.day] = 1
+            if not (event.day in venues[venue_name]):
+                venues[venue_name][event.day] = 1
             else:
-                venues[event.venue.name][event.day] += 1
-            if venues[event.venue.name][event.day] > event.venue.max_matches_per_day:
-                # print(venues)
+                venues[venue_name][event.day] += 1
+            if venues[venue_name][event.day] > event.venue.max_matches_per_day:
                 return False
-    # print("Works: ", venues)
+    return True
+
+def same_sport_max_matches_per_day(*variables):
+    sports = {}
+    if type(variables) == tuple:
+        if len(variables) == 1:
+            variables = variables[0]
+    for event in variables:
+        sport_name = event.sport.name
+        if not (sport_name in sports):
+            sports[sport_name] = {event.day: 1}
+        else:
+            if not (event.day in sports[sport_name]):
+                sports[sport_name][event.day] = 1
+            else:
+                sports[sport_name][event.day] += 1
+            if sports[sport_name][event.day] > event.sport.max_matches_per_day:
+                return False
+    return True
+
+def time_between_matches(*variables):
     return True
 
 
@@ -94,7 +112,9 @@ constraints_list = {
                                                                 ConstraintType.BINARY),
     "same_venue_max_matches_per_day": ConstraintFunction("same_venue_max_matches_per_day",
                                                          same_venue_max_matches_per_day,
-                                                         ConstraintType.ALL)
+                                                         ConstraintType.ALL),
+    "time_between_matches": ConstraintFunction("time_between_matches", time_between_matches, ConstraintType.ALL),
+    "max_matches_per_day": ConstraintFunction("max_matches_per_day", same_sport_max_matches_per_day, ConstraintType.ALL)
 }
 
 

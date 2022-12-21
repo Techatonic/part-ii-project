@@ -52,14 +52,16 @@
       "is_knockout": true,
       "group_stage": null,
       "min_start_day": 1,
-      "max_finish_day": 3,
+      "max_finish_day": 10,
       "min_start_time": 19,
       "max_finish_time": 22,
       "duration": 1.5,
       "constraints": [
         "same_venue_overlapping_time",
         "no_later_rounds_before_earlier_rounds",
-        "same_venue_max_matches_per_day"
+        "same_venue_max_matches_per_day",
+        "time_between_matches",
+        "max_matches_per_day"
       ]
     }
   ],

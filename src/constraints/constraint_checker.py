@@ -47,7 +47,7 @@ def unary_constraint_check(constraint: Constraint, events):
     conflicts = []
     for event in events:
         if not constraint.constraint.function(event):
-            conflicts.append([constraint.constraint.string_name, [event.event_num]])
+            conflicts.append([constraint.constraint.string_name, [event.event_id]])
 
     return conflicts
 
@@ -59,8 +59,8 @@ def binary_constraint_check(constraint: Constraint, events):
         for event_2 in range(event_1 + 1, len(events)):
             if not constraint.constraint.function(events[event_1], events[event_2]):
                 conflicts.append([constraint.constraint.string_name,
-                                  [events[event_1].sport.name, str(events[event_1].event_num),
-                                   str(events[event_2].event_num)]])
+                                  [events[event_1].sport.name, str(events[event_1].event_id),
+                                   str(events[event_2].event_id)]])
 
     return conflicts
 

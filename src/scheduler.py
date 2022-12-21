@@ -12,7 +12,7 @@ from src.solvers.solver import Solver
 def solve(solver, sports, tournament_length, general_constraints):
     """
     Method to solve the CSP scheduling problem
-    :param solver: Solver
+    :param solver
     :param sports: List[Sport]
     :param tournament_length: int
     :param general_constraints: List[string]

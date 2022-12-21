@@ -18,6 +18,8 @@ class Sport:
         self.max_finish_time = max_finish_time
         self.group_stage = group_stage
         self.constraints = constraints
+        self.max_matches_per_day = 1 if "max_matches_per_day" in self.constraints else None
+        self.time_between_matches = 2 if "time_between_matches" in self.constraints else None
 
     def __str__(self):
         return self.__repr__()

@@ -3,7 +3,7 @@
         {
             "round": "Quarter Final",
             "sport": "football",
-            "event_num": 5,
+            "event_id": 5,
             "venue": "Emirates Stadium",
             "day": 3,
             "start_time": 14,
@@ -13,7 +13,7 @@
         {
             "round": "Quarter Final",
             "sport": "football",
-            "event_num": 4,
+            "event_id": 4,
             "venue": "Emirates Stadium",
             "day": 1,
             "start_time": 14,
@@ -23,7 +23,7 @@
         {
             "round": "Semi Final",
             "sport": "football",
-            "event_num": 2,
+            "event_id": 2,
             "venue": "Emirates Stadium",
             "day": 4,
             "start_time": 14,
@@ -33,7 +33,7 @@
         {
             "round": "Semi Final",
             "sport": "football",
-            "event_num": 3,
+            "event_id": 3,
             "venue": "Tottenham Hotspur Stadium",
             "day": 4,
             "start_time": 12,
@@ -43,7 +43,7 @@
         {
             "round": "Final",
             "sport": "football",
-            "event_num": 1,
+            "event_id": 1,
             "venue": "Tottenham Hotspur Stadium",
             "day": 5,
             "start_time": 12,
@@ -53,7 +53,7 @@
         {
             "round": "Quarter Final",
             "sport": "football",
-            "event_num": 6,
+            "event_id": 6,
             "venue": "Stamford Bridge",
             "day": 3,
             "start_time": 12,
@@ -63,7 +63,7 @@
         {
             "round": "Quarter Final",
             "sport": "football",
-            "event_num": 7,
+            "event_id": 7,
             "venue": "Olympic Stadium",
             "day": 1,
             "start_time": 12,

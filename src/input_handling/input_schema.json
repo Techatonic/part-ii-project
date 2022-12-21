@@ -164,7 +164,8 @@
               [
                 "same_venue_overlapping_time",
                 "no_later_rounds_before_earlier_rounds",
-                "same_venue_max_matches_per_day"
+                "same_venue_max_matches_per_day",
+                "time_between_matches"
               ]
             ]
           }
