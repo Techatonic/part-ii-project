@@ -1,10 +1,11 @@
 from enum import Enum
 
 from src.error_handling.handle_error import handle_error
+from src.events.event import Event
 from src.sports.sport import Sport
 
 
-def same_venue_overlapping_time(a, b):
+def same_venue_overlapping_time(a, b) -> bool:
     if not (a.venue == b.venue and a.day == b.day and (
             (a.start_time <= b.start_time < a.start_time + a.duration) or
             (b.start_time <= a.start_time < b.start_time + b.duration)
@@ -13,14 +14,14 @@ def same_venue_overlapping_time(a, b):
     return False
 
 
-def no_later_rounds_before_earlier_rounds(a, b):
+def no_later_rounds_before_earlier_rounds(a, b) -> bool:
     return a.sport == b.sport and \
         (a.round.round_index == b.round.round_index or
          a.round.round_index > b.round.round_index and a.day < b.day or
          a.round.round_index < b.round.round_index and b.day < a.day)
 
 
-def same_venue_max_matches_per_day(*variables):
+def same_venue_max_matches_per_day(*variables:list[Event]) -> bool:
     venues = {}
     if type(variables) == tuple:
         if len(variables) == 1:
@@ -38,7 +39,7 @@ def same_venue_max_matches_per_day(*variables):
                 return False
     return True
 
-def same_sport_max_matches_per_day(*variables):
+def same_sport_max_matches_per_day(*variables:list[Event]) -> bool:
     sports = {}
     if type(variables) == tuple:
         if len(variables) == 1:
@@ -72,7 +73,7 @@ class ConstraintFunction:
         self.function = function
         self.constraint_type = constraint_type
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         # TODO Fix this
         return self.string_name == other.string_name
 
@@ -94,7 +95,7 @@ class Constraint:
                 "Invalid number of variables for constraint. At the moment, only unary,"
                 " binary and all constraints are permitted")
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"""{{
             constraint: {self.constraint.string_name},
             variables: {self.variables},
@@ -118,13 +119,13 @@ constraints_list = {
 }
 
 
-def get_constraint_from_string(string):
+def get_constraint_from_string(string:str) -> ConstraintFunction:
     if not (string in constraints_list):
         handle_error("Constraint does not exist: " + string)
     return constraints_list[string]
 
 
-def get_constraint_string_from_lambda(function):
+def get_constraint_string_from_lambda(function) -> str:
     for key in constraints_list:
         if constraints_list[key].function == function:
             return key
