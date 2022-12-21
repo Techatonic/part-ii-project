@@ -17,6 +17,15 @@ class PriorityQueue:
     def pop(self):
         return heapq.heappop(self.variables)
 
+    def set(self, variables):
+        self.variables = variables
+        heapq.heapify(self.variables)
+
+    def __copy__(self):
+        new_queue = PriorityQueue()
+        new_queue.set([QueueNode(variable.variable, variable.domain) for variable in self.variables])
+        return new_queue
+
 
 class QueueNode:
     def __init__(self, variable, domain: list[Event]):

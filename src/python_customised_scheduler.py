@@ -26,8 +26,6 @@ def solve(sports, tournament_length, general_constraints):
         venues = sport.possible_venues
         min_start_day = 0 if sport.min_start_day is None else sport.min_start_day
         max_finish_day = tournament_length if sport.max_finish_day is None else sport.max_finish_day
-        min_start_time = sport.min_start_time
-        max_finish_time = sport.max_finish_time
 
         # Define the variables
         # Add matches
@@ -44,11 +42,9 @@ def solve(sports, tournament_length, general_constraints):
                 random.shuffle(day_order)
 
                 for venue in venues:
-                    min_start_time = max(min_start_time, venue.min_start_time)
-                    max_finish_time = min(max_finish_time, venue.max_finish_time)
+                    min_start_time = max(sport.min_start_time, venue.min_start_time)
+                    max_finish_time = min(sport.max_finish_time, venue.max_finish_time)
                     time_order = list(range(min_start_time, math.ceil(max_finish_time - sport.match_duration)))
-                    if venue.name == "Stamford Bridge" and event_round.round_index == 0:
-                        print(time_order)
                     random.shuffle(time_order)
                     for day in day_order:
                         for time in time_order:
@@ -73,20 +69,19 @@ def solve(sports, tournament_length, general_constraints):
                 csp_problem.add_constraint(constraint.string_name, sport=sport)
 
         result = csp_problem.solve()
-        print("Done: " + sport.name)
+        # print("Done: " + sport.name)
         if result is None:
             return None
         # Add all sport-specific events to list of all events
         total_events.append(result)
 
-    print("Done individual sports. Beginning all sports")
+    # print("Done individual sports. Beginning all sports")
 
     # Run CSP across all events in all sports
     total_csp_problem = CSPProblem()
     variable_list = []
-    print("Add variables")
+    # print("Add variables")
     for sport in total_events:
-        print(total_events)
         for event_name in sport:
             options = []
             min_start_time = max(sport[event_name].sport.min_start_time, sport[event_name].venue.min_start_time)

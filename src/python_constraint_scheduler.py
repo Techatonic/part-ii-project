@@ -23,8 +23,6 @@ def solve(sports, tournament_length, general_constraints):
         venues = sport.possible_venues
         min_start_day = 0 if sport.min_start_day is None else sport.min_start_day
         max_finish_day = tournament_length if sport.max_finish_day is None else sport.max_finish_day
-        min_start_time = sport.min_start_time
-        max_finish_time = sport.max_finish_time
 
         # Define the variables
         # Add matches
@@ -41,11 +39,9 @@ def solve(sports, tournament_length, general_constraints):
                 random.shuffle(day_order)
 
                 for venue in venues:
-                    min_start_time = max(min_start_time, venue.min_start_time)
-                    max_finish_time = min(max_finish_time, venue.max_finish_time)
+                    min_start_time = max(sport.min_start_time, venue.min_start_time)
+                    max_finish_time = min(sport.max_finish_time, venue.max_finish_time)
                     time_order = list(range(min_start_time, math.ceil(max_finish_time - sport.match_duration)))
-                    if venue.name == "Stamford Bridge" and event_round.round_index == 0:
-                        print(time_order)
                     random.shuffle(time_order)
                     for day in day_order:
                         for time in time_order:

@@ -5,7 +5,8 @@ import copy
 import heapq
 
 from src.events.event import Event
-from src.helper.priority_queue import PriorityQueue, QueueNode
+from src.helper.ac3 import ac3
+from src.helper.priority_queue import PriorityQueue
 
 
 class CSPProblem:
@@ -28,6 +29,10 @@ class CSPProblem:
         self.constraints.append(Constraint(function, variables, sport))
 
     def solve(self):
+        # print(set(option.venue.name for option in self.queue.variables[0].domain))
+        # print(set(option.day for option in self.queue.variables[0].domain))
+        # print(set(option.start_time for option in self.queue.variables[0].domain))
+
         # Add all events to constraints for all events
         self.constraints = self.__add_all_events_to_constraints()
 
@@ -42,14 +47,17 @@ class CSPProblem:
             if self.constraints[constraint].variables is not None:
                 continue
             self.constraints[constraint].variables = events
-            print()
-            print(self.constraints[constraint].variables)
+            # print()
+            # print(self.constraints[constraint].variables)
         return self.constraints
 
-    def __solve_variable(self, assignments, queue):
+    def __solve_variable(self, assignments, queue: PriorityQueue):
+        # print([[i.variable, len(i.domain)] for i in self.queue.variables])
+
         assignments = copy.deepcopy(assignments)
-        queue = copy.deepcopy(queue)
-        print(len(queue.variables))
+        # queue = copy.deepcopy(queue)
+        queue = queue.__copy__()
+        # print(len(queue.variables))
         while len(queue.variables) > 0:
             variable = queue.pop()
             # print("Domain size: ", len(variable.domain))
@@ -64,11 +72,8 @@ class CSPProblem:
                                         variable.variable in constraint.variables]
                 satisfies_all_constraints = self.__test_constraints(assignments, constraints_to_check)
                 if satisfies_all_constraints:
-                    # TODO Remove from all other domains affected
-                    # if self.__trim_queue(queue, {variable.variable: assignments[variable.variable]},
-                    #                     constraints_to_check):
-                    if self.__arc_consistency(queue, self.constraints):
-                        # TODO Check is trim has successfully occurred in place
+                    # Remove from all other domains affected
+                    if ac3(queue, self.constraints):
                         result = self.__solve_variable(assignments, queue)
                         if result is not None:
                             return result
@@ -76,7 +81,7 @@ class CSPProblem:
                 del assignments[variable.variable]
 
             return None
-        print("Returning assignments")
+        # print("Returning assignments")
         return assignments  # We have a valid assignment, return it
 
     # TODO This is basically the same as constraint_check in constraint_checker.py (except this is multiple constraints). Possibly merge them
@@ -92,71 +97,3 @@ class CSPProblem:
                 events = list(filter(lambda event: event.sport == constraint.sport, events))
                 conflicts += constraint_check(constraint, events)
         return len(conflicts) == 0
-
-    # def __trim_queue(self, queue, most_recent_assignment, constraints):
-    #     """
-    #     Trims domain of variables on the queue based on newest assignment
-    #     Returns True if all variables still have possible assignments (i.e. len(domain) > 0)
-    #     :param queue:
-    #     :param most_recent_assignment:
-    #     :param constraints:
-    #     :return:
-    #     """
-    #     temp_queue = copy.deepcopy(queue)
-    #     for variable in temp_queue.variables:
-    #         print("Domain before: ", len(variable.domain))
-    #         domain = []
-    #         for option in variable.domain:
-    #             assignments_to_check = most_recent_assignment
-    #             assignments_to_check[variable.variable] = option
-    #             if self.__test_constraints(assignments_to_check, constraints):
-    #                 domain.append(domain)
-    #
-    #         variable.domain = domain
-    #         if len(variable.domain) == 0:
-    #             return False
-    #
-    #         print("Domain after: ", len(variable.domain))
-    #
-    #     # All domains have length > 0, so we know it's safe to trim the original queue
-    #     queue.variables = temp_queue.variables
-    #     heapq.heapify(queue.variables)
-    #     return True
-
-    def __arc_consistency(self, queue: PriorityQueue, constraints: list[Constraint]):
-        queue = copy.deepcopy(queue)
-        unary_constraints = list(
-            filter(lambda constraint: constraint.constraint_type == ConstraintType.UNARY, constraints))
-        binary_constraints = list(
-            filter(lambda constraint: constraint.constraint_type == ConstraintType.BINARY, constraints))
-        for variable in queue.variables:
-            for unary_constraint in unary_constraints:
-                variable.domain = [option for option in variable.domain if constraint_check(unary_constraint, [option])]
-
-        worklist = [(x, y) for x in queue.variables for y in queue.variables if x != y]
-
-        while len(worklist) > 0:
-            (x, y) = worklist.pop(0)
-            if self.__arc_reduce(x, y, binary_constraints):
-                if len(x.domain) == 0:
-                    print("AC-3 return false - ", x.variable)
-                    return False
-                # Add to worklist
-                worklist += [(x, z) for z in queue.variables if z != y and z != x]
-        return True
-
-    def __arc_reduce(self, x, y, binary_constraints):
-        made_change = False
-        for x_option in x.domain:
-            found_valid_pair = False
-            for y_option in y.domain:
-                if all(valid_constraint_check(binary_constraint, [x_option, y_option]) for binary_constraint in
-                       binary_constraints):
-                    found_valid_pair = True
-                    break
-            if not found_valid_pair:
-                # print()
-                # print(x_option)
-                x.domain.remove(x_option)
-                made_change = True
-        return made_change

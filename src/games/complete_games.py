@@ -20,8 +20,8 @@ class CompleteGames:
 
     def __eq__(self, other):
         return self.complete_games["days_of_tournament"] == other.complete_games["days_of_tournament"] and \
-               self.complete_games["sports"] == other.complete_games["sports"] and \
-               self.complete_games["events"] == other.complete_games["events"]
+            self.complete_games["sports"] == other.complete_games["sports"] and \
+            self.complete_games["events"] == other.complete_games["events"]
 
     def export(self, path) -> None:
         for event in self.complete_games["events"]:
@@ -35,5 +35,5 @@ class CompleteGames:
 
         with open(path, "w") as file:
             json.dump(dict_to_export, file, indent=4, default=lambda o: o.__dict__, skipkeys=True)
-        print(json.dumps(dict_to_export, indent=4, default=lambda o: o.__dict__, skipkeys=True))
+        # print(json.dumps(dict_to_export, indent=4, default=lambda o: o.__dict__, skipkeys=True))
         print("Export successful to: " + path)
