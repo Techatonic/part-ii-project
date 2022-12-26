@@ -11,12 +11,13 @@ from src.error_handling.handle_error import handle_error
 from src.games.complete_games import CompleteGames
 from src.input_handling.input_reader import read_and_validate_input
 from src.input_handling.parse_input import parse_input, parse_input_constraint_checker
-from src.scheduler import solve as python_customised_solver
+from src.scheduler import solve
 from src.solvers.customised_solver import CustomisedSolver
 from src.solvers.module_solver import ModuleSolver
 
 
-def main(input_path: str, export_path: str | None = None, constraint_checker_flag: bool = False, use_python_module: bool = False) -> None:
+def main(input_path: str, export_path: str | None = None, constraint_checker_flag: bool = False,
+         use_python_module: bool = False) -> None:
     if constraint_checker_flag:
         run_constraint_checker(input_path)
     else:
@@ -52,8 +53,7 @@ def run_solver(input_path: str, use_python_module: bool, export_path: str | None
     else:
         solver = CustomisedSolver
 
-    result = python_customised_solver(solver, sports, tournament_length, general_constraints)
-
+    result = solve(solver, sports, tournament_length, general_constraints)
 
     if result is None:
         handle_error("No results found")
@@ -91,4 +91,4 @@ if __name__ == "__main__":
         main(args.import_path, constraint_checker_flag=args.c)
 
     end_time = time.time()
-    print("Time Taken: " + str(end_time - start_time))
+    # print("Time Taken: " + str(end_time - start_time))

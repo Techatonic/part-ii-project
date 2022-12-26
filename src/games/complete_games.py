@@ -36,4 +36,4 @@ class CompleteGames:
         with open(path, "w") as file:
             json.dump(dict_to_export, file, indent=4, default=lambda o: o.__dict__, skipkeys=True)
         # print(json.dumps(dict_to_export, indent=4, default=lambda o: o.__dict__, skipkeys=True))
-        print("Export successful to: " + path)
+        # print("Export successful to: " + path)

@@ -1,3 +1,5 @@
+from typing import List, Any
+
 from src.constraints.constraint import constraints_list, ConstraintType, Constraint
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
@@ -28,7 +30,6 @@ def constraint_checker(tournament_length:int, sports:list[Sport], events:list[Ev
 
 
 def constraint_check(constraint: Constraint, events: list[Event]) -> list:
-    # print(constraint.constraint_type)
     if constraint.constraint_type == ConstraintType.UNARY:
         result = unary_constraint_check(constraint, events)
     elif constraint.constraint_type == ConstraintType.BINARY:
@@ -51,7 +52,7 @@ def unary_constraint_check(constraint: Constraint, events) -> list:
     return conflicts
 
 
-def binary_constraint_check(constraint: Constraint, events) -> bool:
+def binary_constraint_check(constraint: Constraint, events) -> list:
     conflicts = []
 
     for event_1 in range(len(events)):

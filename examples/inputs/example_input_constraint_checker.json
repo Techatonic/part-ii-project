@@ -377,7 +377,7 @@
         }
   ],
   "general_constraints": [
-    "same_venue_overlapping_time",
+    "same_venue_overlapping_time_constraint_checker",
     "same_venue_max_matches_per_day"
   ],
   "tournament_length": 14

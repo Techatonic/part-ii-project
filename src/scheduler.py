@@ -1,21 +1,21 @@
 import math
 import random
 from copy import deepcopy
-from typing import Dict
+from typing import Type
 
-from src.constraints.constraint import get_constraint_from_string, ConstraintType, Constraint, ConstraintFunction
-from src.solvers.customised_solver import CustomisedSolver
+from src.constraints.constraint import get_constraint_from_string, ConstraintType, ConstraintFunction
 from src.events.event import Event
 from src.rounds.knockout_rounds import generate_round_order, Round
+from src.solvers.solver import Solver
 from src.sports.sport import Sport
 from src.venues.venue import Venue
 
 
-def solve(solver, sports: list[Sport], tournament_length: int, general_constraints: list[str]) -> dict[
-                                                                                                      str, Event] | None:
+def solve(solver: Type[Solver], sports: list[Sport], tournament_length: int, general_constraints: list[str]) -> dict[
+                                                                                                                    str, Event] | None:
     """
     Method to solve the CSP scheduling problem
-    :param solver
+    :param solver: Type[Solver]
     :param sports: List[Sport]
     :param tournament_length: int
     :param general_constraints: List[string]
@@ -89,8 +89,10 @@ def solve(solver, sports: list[Sport], tournament_length: int, general_constrain
     for sport_events in total_events:
         for sport_event in sport_events:
             options = []
-            min_start_time = max(sport_events[sport_event].sport.min_start_time, sport_events[sport_event].venue.min_start_time)
-            max_finish_time = min(sport_events[sport_event].sport.max_finish_time, sport_events[sport_event].venue.max_finish_time)
+            min_start_time = max(sport_events[sport_event].sport.min_start_time,
+                                 sport_events[sport_event].venue.min_start_time)
+            max_finish_time = min(sport_events[sport_event].sport.max_finish_time,
+                                  sport_events[sport_event].venue.max_finish_time)
             for time in range(min_start_time,
                               max_finish_time - math.ceil(sport_events[sport_event].sport.match_duration) + 1):
                 event_temp = deepcopy(sport_events[sport_event])
