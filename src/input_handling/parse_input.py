@@ -50,7 +50,7 @@ def parse_input_constraint_checker(json_input):
         for event in json_input['events']:
             events.append(Event(
                 convert_string_to_sport_instance(event["sport"], sports),
-                event["event_num"],
+                event["event_id"],
                 convert_string_to_venue_instance(event["venue"], venues),
                 convert_string_to_round_instance(event["round"]),
                 event["day"],

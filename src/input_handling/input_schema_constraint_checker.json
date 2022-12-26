@@ -46,7 +46,7 @@
                 "sport": {
                     "$ref": "#/definitions/SportEnum"
                 },
-                "event_num": {
+                "event_id": {
                     "type": "integer"
                 },
                 "venue": {
@@ -68,7 +68,7 @@
             "required": [
                 "day",
                 "duration",
-                "event_num",
+                "event_id",
                 "round",
                 "sport",
                 "start_time",
@@ -221,7 +221,8 @@
             "enum": [
                 "same_venue_overlapping_time",
                 "no_later_rounds_before_earlier_rounds",
-                "same_venue_max_matches_per_day"
+                "same_venue_max_matches_per_day",
+                "time_between_matches"
             ]
         }
     }

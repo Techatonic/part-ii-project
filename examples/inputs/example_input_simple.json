@@ -1,0 +1,70 @@
+{
+  "sports": [
+    {
+      "name": "football",
+      "venues": [
+        {
+          "name": "Stamford Bridge",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "min_start_time": 12,
+          "max_finish_time": 22,
+          "capacity": 40000,
+          "max_matches_per_day": 1
+        },
+        {
+          "name": "Olympic Stadium",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "min_start_time": 11,
+          "max_finish_time": 22,
+          "capacity": 40000,
+          "max_matches_per_day": 1
+        },
+        {
+          "name": "Emirates Stadium",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "min_start_time": 14,
+          "max_finish_time": 21,
+          "capacity": 40000,
+          "max_matches_per_day": 1
+        },
+        {
+          "name": "Tottenham Hotspur Stadium",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "min_start_time": 12,
+          "max_finish_time": 22,
+          "capacity": 40000,
+          "max_matches_per_day": 1
+        }
+      ],
+      "num_teams": 8,
+      "num_teams_per_game": 2,
+      "is_knockout": true,
+      "group_stage": null,
+      "min_start_day": 1,
+      "max_finish_day": 5,
+      "min_start_time": 12,
+      "max_finish_time": 22,
+      "duration": 1.5,
+      "constraints": [
+        "same_venue_overlapping_time",
+        "no_later_rounds_before_earlier_rounds",
+        "same_venue_max_matches_per_day",
+        "time_between_matches",
+        "max_matches_per_day"
+      ]
+    }
+  ],
+  "general_constraints": [
+    "same_venue_overlapping_time",
+    "same_venue_max_matches_per_day"
+  ],
+  "tournament_length": 14
+}

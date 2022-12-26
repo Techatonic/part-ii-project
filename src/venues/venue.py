@@ -6,9 +6,8 @@ class Venue:
         Class defining a generic venue
     """
 
-    def __init__(self, name, coordinates=None, address=None, postcode=None, capacity=None, min_start_time=1,
-                 max_finish_time=24,
-                 max_matches_per_day=1):
+    def __init__(self, name: str, coordinates: list[int]|None=None, address:str|None=None, postcode:str|None=None,
+                 capacity:int|None=None, min_start_time=1, max_finish_time=24, max_matches_per_day = 1) -> None:
         self.name = name
         self.coordinates = coordinates
         self.address = address
@@ -32,14 +31,12 @@ class Venue:
             max matches per day: {self.max_matches_per_day}
             \n}}"""
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return self.name == other.name
 
 
-def convert_string_to_venue_instance(venue_string, venues):
+def convert_string_to_venue_instance(venue_string, venues) -> str:
     for venue in venues:
-        # print(venue_string)
-        # print(venue)
         if venue_string == venue.name:
             return venue
 
