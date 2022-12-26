@@ -1,61 +1,81 @@
 {
     "events": [
         {
-            "round": "Semi Final",
+            "round": "Round of 16",
             "sport": "football",
-            "event_id": 3,
-            "venue": "Stamford Bridge",
-            "day": 6,
-            "start_time": 18,
-            "duration": 1.5,
-            "teams_involved": null
-        },
-        {
-            "round": "Final",
-            "sport": "football",
-            "event_id": 1,
-            "venue": "Emirates Stadium",
-            "day": 7,
-            "start_time": 18,
-            "duration": 1.5,
-            "teams_involved": null
-        },
-        {
-            "round": "Quarter Final",
-            "sport": "football",
-            "event_id": 7,
+            "event_id": 11,
             "venue": "Olympic Stadium",
-            "day": 6,
-            "start_time": 18,
-            "duration": 1.5,
-            "teams_involved": null
-        },
-        {
-            "round": "Quarter Final",
-            "sport": "football",
-            "event_id": 4,
-            "venue": "Tottenham Hotspur Stadium",
-            "day": 5,
-            "start_time": 18,
-            "duration": 1.5,
-            "teams_involved": null
-        },
-        {
-            "round": "Quarter Final",
-            "sport": "football",
-            "event_id": 5,
-            "venue": "Stamford Bridge",
             "day": 3,
             "start_time": 18,
             "duration": 1.5,
             "teams_involved": null
         },
         {
-            "round": "Semi Final",
+            "round": "Round of 16",
             "sport": "football",
-            "event_id": 2,
+            "event_id": 12,
+            "venue": "Olympic Stadium",
+            "day": 1,
+            "start_time": 18,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Round of 16",
+            "sport": "football",
+            "event_id": 15,
+            "venue": "Tottenham Hotspur Stadium",
+            "day": 1,
+            "start_time": 18,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Round of 16",
+            "sport": "football",
+            "event_id": 10,
+            "venue": "Olympic Stadium",
+            "day": 2,
+            "start_time": 18,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Round of 16",
+            "sport": "football",
+            "event_id": 9,
+            "venue": "Olympic Stadium",
+            "day": 4,
+            "start_time": 18,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Round of 16",
+            "sport": "football",
+            "event_id": 13,
+            "venue": "Stamford Bridge",
+            "day": 1,
+            "start_time": 18,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Round of 16",
+            "sport": "football",
+            "event_id": 14,
             "venue": "Emirates Stadium",
-            "day": 6,
+            "day": 1,
+            "start_time": 18,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Round of 16",
+            "sport": "football",
+            "event_id": 8,
+            "venue": "Stamford Bridge",
+            "day": 2,
             "start_time": 18,
             "duration": 1.5,
             "teams_involved": null
@@ -65,7 +85,67 @@
             "sport": "football",
             "event_id": 6,
             "venue": "Tottenham Hotspur Stadium",
-            "day": 3,
+            "day": 7,
+            "start_time": 18,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "football",
+            "event_id": 7,
+            "venue": "Tottenham Hotspur Stadium",
+            "day": 6,
+            "start_time": 18,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "football",
+            "event_id": 5,
+            "venue": "Tottenham Hotspur Stadium",
+            "day": 5,
+            "start_time": 18,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Quarter Final",
+            "sport": "football",
+            "event_id": 4,
+            "venue": "Stamford Bridge",
+            "day": 5,
+            "start_time": 18,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Semi Final",
+            "sport": "football",
+            "event_id": 3,
+            "venue": "Stamford Bridge",
+            "day": 8,
+            "start_time": 18,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Semi Final",
+            "sport": "football",
+            "event_id": 2,
+            "venue": "Olympic Stadium",
+            "day": 8,
+            "start_time": 18,
+            "duration": 1.5,
+            "teams_involved": null
+        },
+        {
+            "round": "Final",
+            "sport": "football",
+            "event_id": 1,
+            "venue": "Tottenham Hotspur Stadium",
+            "day": 9,
             "start_time": 18,
             "duration": 1.5,
             "teams_involved": null

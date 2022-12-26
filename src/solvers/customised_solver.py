@@ -24,12 +24,13 @@ class CustomisedSolver:
             handle_error("Domain is not a list")
         self.queue.add(new_var, domain)
 
-    def add_constraint(self, function_name:str, variables:list[str]|None=None, sport:Sport|None=None) -> None:
+    def add_constraint(self, function_name: str, variables: list[str] | None = None,
+                       sport: Sport | None = None) -> None:
         function = get_constraint_from_string(function_name)
         # print(function_name, function, variables, sport)
         self.constraints.append(Constraint(function, variables, sport))
 
-    def solve(self) -> dict[str, Event]|None:
+    def solve(self) -> dict[str, Event] | None:
         # print(set(option.venue.name for option in self.queue.variables[0].domain))
         # print(set(option.day for option in self.queue.variables[0].domain))
         # print(set(option.start_time for option in self.queue.variables[0].domain))
@@ -52,13 +53,14 @@ class CustomisedSolver:
             # print(self.constraints[constraint].variables)
         return self.constraints
 
-    def __solve_variable(self, assignments, queue: PriorityQueue) -> dict[str, Event]|None:
+    def __solve_variable(self, assignments, queue: PriorityQueue) -> dict[str, Event] | None:
         # print([[i.variable, len(i.domain)] for i in self.queue.variables])
 
-        assignments:dict[str, Event] = copy.deepcopy(assignments)
+        assignments: dict[str, Event] = copy.deepcopy(assignments)
         # queue = copy.deepcopy(queue)
         queue = queue.__copy__()
         # print(len(queue.variables))
+        # print(sum(len(x.domain) for x in queue.variables))
         while len(queue.variables) > 0:
             variable = queue.pop()
             for option in variable.domain:
@@ -84,7 +86,7 @@ class CustomisedSolver:
 
     # TODO This is basically the same as constraint_check in constraint_checker.py (except this is multiple constraints). Possibly merge them
     def __test_constraints(self, assignments, constraints: list[Constraint]) -> bool:
-        events:list[Event] = list(assignments.values())
+        events: list[Event] = list(assignments.values())
         conflicts = []
         for constraint in constraints:
             is_general_constraint = constraint.sport is None

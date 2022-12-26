@@ -3,6 +3,7 @@ from itertools import groupby
 
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
+from src.helper.helper import convert_possible_tuple_to_list
 from src.sports.sport import Sport
 
 
@@ -16,11 +17,11 @@ def same_venue_overlapping_time_constraint_check(a, b) -> bool:
 
 
 def same_venue_overlapping_time(*variables: list[Event]) -> bool:
-    if type(variables) == tuple:
-        if len(variables) == 1:
-            variables = variables[0]
+    variables = convert_possible_tuple_to_list(variables)
 
     venues = {}
+    # print("\n" * 5)
+    # print(variables)
     for event in variables:
         venue_name = event.venue.name
         if not venue_name in venues:
@@ -47,31 +48,31 @@ def no_later_rounds_before_earlier_rounds_constraint_check(a, b) -> bool:
 
 
 def no_later_rounds_before_earlier_rounds(*variables: list[Event]) -> bool:
-    if type(variables) == tuple:
-        if len(variables) == 1:
-            variables = variables[0]
+    variables = convert_possible_tuple_to_list(variables)
+
     sports = {}
     for variable in variables:
         if not (variable.sport.name in sports):
             sports[variable.sport.name] = [variable]
         else:
             sports[variable.sport.name].append(variable)
-    # variables_by_sport = [list(v) for k, v in groupby(variables, lambda x: x.sport.name)]
     variables_by_sport = sports.values()
+
     for sport_variables in variables_by_sport:
-        sport_variables.sort(key=lambda event: event.day)
+        sport_variables.sort(key=lambda event: (event.day, event.start_time, event.duration))
         for event_1 in range(len(sport_variables)):
-            for event_2 in range(event_1, len(sport_variables)):
-                if sport_variables[event_1].round.round_index < sport_variables[event_2].round.round_index:
+            for event_2 in range(event_1 + 1, len(sport_variables)):
+                if sport_variables[event_1].round.round_index < sport_variables[event_2].round.round_index or \
+                        sport_variables[event_1].day == sport_variables[event_2].day and sport_variables[
+                    event_2].round.round_index != sport_variables[event_1].round.round_index:
                     return False
     return True
 
 
 def same_venue_max_matches_per_day(*variables: list[Event]) -> bool:
+    variables = convert_possible_tuple_to_list(variables)
     venues = {}
-    if type(variables) == tuple:
-        if len(variables) == 1:
-            variables = variables[0]
+
     for event in variables:
         venue_name = event.venue.name
         if not (venue_name in venues):
@@ -88,9 +89,7 @@ def same_venue_max_matches_per_day(*variables: list[Event]) -> bool:
 
 def same_sport_max_matches_per_day(*variables: list[Event]) -> bool:
     sports = {}
-    if type(variables) == tuple:
-        if len(variables) == 1:
-            variables = variables[0]
+    variables = convert_possible_tuple_to_list(variables)
     for event in variables:
         sport_name = event.sport.name
         if not (sport_name in sports):

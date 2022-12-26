@@ -1,14 +1,14 @@
 from src.constraints.constraint import get_constraint_from_string
 from src.events.event import Event
 from src.solvers.solver import Solver
-from constraint import Problem
+from constraint import Problem, BacktrackingSolver
 
 from src.sports.sport import Sport
 
 
 class ModuleSolver(Solver):
     def __init__(self):
-        self.csp = Problem()
+        self.csp: Problem = Problem(BacktrackingSolver(False))
 
     def add_variable(self, new_var: str, domain: list[Event]) -> None:
         self.csp.addVariable(new_var, domain)
@@ -22,5 +22,4 @@ class ModuleSolver(Solver):
             self.csp.addConstraint(constraint_function.function, variables)
 
     def solve(self) -> dict[str, Event] | None:
-        print("Asking to solve")
         return self.csp.getSolution()
