@@ -34,3 +34,7 @@ class Event:
     def __hash__(self):
         hash((self.round, self.sport, self.event_id, self.venue, self.day, self.start_time, self.duration,
               self.teams_involved))
+
+    def __copy__(self):
+        return Event(self.sport, self.event_id, self.venue, self.round, self.day, self.start_time, self.duration,
+                     self.teams_involved)

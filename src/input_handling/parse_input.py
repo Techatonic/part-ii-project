@@ -23,7 +23,7 @@ def parse_input(json_input):
             sports.append(Sport(
                 sport['name'],
                 venues,
-                sport['num_teams'],
+                sport['teams'],
                 sport['num_teams_per_game'],
                 sport['duration'],
                 sport['is_knockout'],

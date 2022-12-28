@@ -14,7 +14,7 @@
           "min_start_time": 12,
           "max_finish_time": 22,
           "capacity": 40000,
-          "max_matches_per_day": 1
+          "max_matches_per_day": 2
         },
         {
           "name": "Olympic Stadium",
@@ -24,7 +24,7 @@
           "min_start_time": 11,
           "max_finish_time": 22,
           "capacity": 40000,
-          "max_matches_per_day": 1
+          "max_matches_per_day": 2
         },
         {
           "name": "Emirates Stadium",
@@ -34,7 +34,7 @@
           "min_start_time": 14,
           "max_finish_time": 22,
           "capacity": 40000,
-          "max_matches_per_day": 1
+          "max_matches_per_day": 2
         },
         {
           "name": "Tottenham Hotspur Stadium",
@@ -44,22 +44,49 @@
           "min_start_time": 12,
           "max_finish_time": 22,
           "capacity": 40000,
-          "max_matches_per_day": 1
+          "max_matches_per_day": 2
+        },
+        {
+          "name": "The Hive",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "min_start_time": 12,
+          "max_finish_time": 22,
+          "capacity": 40000,
+          "max_matches_per_day": 2
+        },
+        {
+          "name": "Etihad Stadium",
+          "location_coordinates": [51.4817, -0.1910],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "min_start_time": 12,
+          "max_finish_time": 22,
+          "capacity": 40000,
+          "max_matches_per_day": 2
         }
       ],
-      "num_teams": 16,
+      "teams": [
+        "Brazil", "Argentina", "France", "Belgium", "England", "Netherlands", "Croatia",
+        "Italy", "Portugal", "Spain", "Morocco", "Switzerland", "USA", "Germany", "Mexico", "Uruguay",
+        "Colombia", "Denmark", "Senegal", "Japan", "Peru", "Poland", "Sweden",
+        "Iran", "South Korea", "Ukraine", "Australia", "Wales", "Serbia", "Tunisia", "Chile", "Costa Rica"
+      ],
       "num_teams_per_game": 2,
       "is_knockout": true,
       "group_stage": null,
       "min_start_day": 1,
       "max_finish_day": 10,
-      "min_start_time": 18,
+      "min_start_time": 12,
       "max_finish_time": 22,
       "duration": 1.5,
       "constraints": [
         "same_venue_overlapping_time",
-        "no_later_rounds_before_earlier_rounds",
-        "same_venue_max_matches_per_day"
+        "same_venue_max_matches_per_day",
+        "team_time_between_matches",
+        "venue_time_between_matches",
+        "no_later_rounds_before_earlier_rounds"
       ]
     }
   ],

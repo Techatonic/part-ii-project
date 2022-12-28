@@ -44,7 +44,9 @@
           "max_matches_per_day": 1
         }
       ],
-      "num_teams": 8,
+      "teams": [
+        "Great Britain", "Brazil", "Argentina", "France", "Belgium", "Netherlands", "Croatia", "Italy"
+      ],
       "num_teams_per_game": 2,
       "is_knockout": true,
       "group_stage": null,
@@ -54,8 +56,8 @@
       "max_finish_time": 22,
       "duration": 1.5,
       "constraints": [
-        "same_venue_overlapping_time",
-        "no_later_rounds_before_earlier_rounds",
+        "same_venue_overlapping_time_constraint_check",
+        "no_later_rounds_before_earlier_rounds_constraint_check",
         "same_venue_max_matches_per_day",
         "time_between_matches",
         "max_matches_per_day"
@@ -105,7 +107,10 @@
           "max_matches_per_day": 1
         }
       ],
-      "num_teams": 8,
+      "teams": [
+        "Carlos Alcaraz", "Rafael Nadal", "Casper Ruud", "Stefanos Tsitsipas",
+        "Novak Djokovic", "Felix Auger-Aliassime", "Daniil Medvedev", "Andrey Rublev"
+      ],
       "num_teams_per_game": 2,
       "is_knockout": true,
       "group_stage": null,
@@ -115,8 +120,8 @@
       "max_finish_time": 23,
       "duration": 3,
       "constraints": [
-        "same_venue_overlapping_time",
-        "no_later_rounds_before_earlier_rounds",
+        "same_venue_overlapping_time_constraint_check",
+        "no_later_rounds_before_earlier_rounds_constraint_check",
         "same_venue_max_matches_per_day",
         "time_between_matches",
         "max_matches_per_day"
@@ -146,7 +151,9 @@
           "max_matches_per_day": 5
         }
       ],
-      "num_teams": 8,
+      "teams": [
+        "Oleksandr Usyk", "Tyson Fury", "Deontay Wilder", "Anthony Joshua", "Joe Joyce", "Andy Ruiz Jr", "Dillian Whyte", "Luis Ortiz"
+      ],
       "num_teams_per_game": 2,
       "is_knockout": true,
       "group_stage": null,
@@ -156,8 +163,8 @@
       "max_finish_time": 18,
       "duration": 1,
       "constraints": [
-        "same_venue_overlapping_time",
-        "no_later_rounds_before_earlier_rounds",
+        "same_venue_overlapping_time_constraint_check",
+        "no_later_rounds_before_earlier_rounds_constraint_check",
         "same_venue_max_matches_per_day",
         "time_between_matches",
         "max_matches_per_day"
@@ -377,7 +384,7 @@
         }
   ],
   "general_constraints": [
-    "same_venue_overlapping_time_constraint_checker",
+    "same_venue_overlapping_time_constraint_check",
     "same_venue_max_matches_per_day"
   ],
   "tournament_length": 14

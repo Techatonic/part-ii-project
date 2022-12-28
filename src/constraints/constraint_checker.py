@@ -1,12 +1,10 @@
-from typing import List, Any
-
-from src.constraints.constraint import constraints_list, ConstraintType, Constraint
+from src.constraints.constraint import ConstraintType, Constraint, constraints_list
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.sports.sport import Sport
 
 
-def constraint_checker(tournament_length:int, sports:list[Sport], events:list[Event], general_constraints:list[str]) -> list:
+def constraint_checker(sports: list[Sport], events: list[Event], general_constraints: list[str]) -> list:
     conflicts = []
 
     for sport in sports:

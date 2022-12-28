@@ -7,12 +7,13 @@ class Sport:
         Class defining a generic sport
     """
 
-    def __init__(self, name, possible_venues:list[Venue], num_teams:int, num_teams_per_game:int, match_duration:float,
-                 is_knockout=True,group_stage=None, min_start_day=1, max_finish_day=None, min_start_time=10,
-                 max_finish_time=22,constraints=None) -> None:
+    def __init__(self, name, possible_venues: list[Venue], teams: list[str], num_teams_per_game: int,
+                 match_duration: float, is_knockout=True, group_stage=None, min_start_day=1, max_finish_day=None,
+                 min_start_time=10, max_finish_time=22, constraints=None) -> None:
         self.name = name
         self.possible_venues = possible_venues
-        self.num_teams = num_teams
+        self.teams = teams
+        self.num_teams = len(teams)
         self.num_teams_per_game = num_teams_per_game
         self.match_duration = match_duration
         self.is_knockout = is_knockout
@@ -32,7 +33,7 @@ class Sport:
         return f"""{{
             sport: {self.name},
             venues: {self.possible_venues},
-            number of teams: {self.num_teams},
+            teams: {self.teams},
             teams per game: {self.num_teams_per_game},
             match duration: {self.match_duration},
             is knockout?: {self.is_knockout},

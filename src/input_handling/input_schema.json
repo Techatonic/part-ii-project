@@ -20,7 +20,7 @@
         "required": [
           "name",
           "venues",
-          "num_teams",
+          "teams",
           "num_teams_per_game",
           "is_knockout",
           "group_stage",
@@ -109,9 +109,14 @@
               }
             }
           },
-          "num_teams": {
-            "type": "integer",
-            "title": "The num_teams Schema"
+          "teams": {
+            "type": "array",
+            "title": "The teams Schema",
+            "items": {
+              "type": "string",
+              "title": "Team name",
+              "examples": ["Great Britain", "Novak Djokovic"]
+            }
           },
           "num_teams_per_game": {
             "type": "integer",

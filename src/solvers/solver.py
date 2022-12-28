@@ -6,7 +6,7 @@ from src.sports.sport import Sport
 
 class Solver(ABC):
     @abstractmethod
-    def __init__(self) -> None:
+    def __init__(self, forward_check) -> None:
         pass
 
     @abstractmethod
@@ -14,9 +14,10 @@ class Solver(ABC):
         pass
 
     @abstractmethod
-    def add_constraint(self, function_name:str, variables:list[str] | None=None, sport:Sport | None=None) -> None:
+    def add_constraint(self, function_name: str, variables: list[str] | None = None,
+                       sport: Sport | None = None) -> None:
         pass
 
     @abstractmethod
-    def solve(self) -> dict[str, Event]|None:
+    def solve(self) -> dict[str, Event] | None:
         pass

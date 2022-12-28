@@ -17,19 +17,19 @@ from src.solvers.module_solver import ModuleSolver
 
 
 def main(input_path: str, export_path: str | None = None, constraint_checker_flag: bool = False,
-         use_python_module: bool = False) -> None:
+         use_python_module: bool = False, forward_check=False) -> None:
     if constraint_checker_flag:
         run_constraint_checker(input_path)
     else:
-        run_solver(input_path, use_python_module, export_path)
+        run_solver(input_path, use_python_module, forward_check, export_path)
 
 
 def run_constraint_checker(input_path: str) -> None:
     input_json = read_and_validate_input(input_path, 'src/input_handling/input_schema_constraint_checker.json')
 
-    [tournament_length, sports, events, general_constraints] = parse_input_constraint_checker(input_json)
+    [_, sports, events, general_constraints] = parse_input_constraint_checker(input_json)
 
-    conflicts = constraint_checker(tournament_length, sports, events, general_constraints)
+    conflicts = constraint_checker(sports, events, general_constraints)
 
     if len(conflicts) == 0:
         print("No conflicts found - all constraints are satisfied")
@@ -40,7 +40,7 @@ def run_constraint_checker(input_path: str) -> None:
     exit()
 
 
-def run_solver(input_path: str, use_python_module: bool, export_path: str | None = None) -> None:
+def run_solver(input_path: str, use_python_module: bool, forward_check: bool, export_path: str | None = None, ) -> None:
     input_json = read_and_validate_input(input_path, 'src/input_handling/input_schema.json')
 
     [tournament_length, sports, general_constraints] = parse_input(input_json)
@@ -53,7 +53,7 @@ def run_solver(input_path: str, use_python_module: bool, export_path: str | None
     else:
         solver = CustomisedSolver
 
-    result = solve(solver, sports, tournament_length, general_constraints)
+    result = solve(solver, sports, tournament_length, general_constraints, forward_check)
 
     if result is None:
         handle_error("No results found")
@@ -75,6 +75,7 @@ if __name__ == "__main__":
     parser.add_argument("--export_path", required=False, type=str, help="export json output to this path")
     parser.add_argument("-c", action='store_true', help="run input_path on constraint checker")
     parser.add_argument("-m", action='store_true', help="run on python-constraint CSP solver")
+    parser.add_argument("-forward_check", action='store_true', help="run forward checking algorithm on solver")
     args = None
     try:
         args = parser.parse_args()
@@ -86,7 +87,8 @@ if __name__ == "__main__":
     start_time = time.time()
 
     if args.export_path:
-        main(args.import_path, args.export_path, constraint_checker_flag=args.c, use_python_module=args.m)
+        main(args.import_path, args.export_path, constraint_checker_flag=args.c, use_python_module=args.m,
+             forward_check=args.forward_check)
     else:
         main(args.import_path, constraint_checker_flag=args.c)
 

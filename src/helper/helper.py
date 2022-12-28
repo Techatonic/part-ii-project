@@ -12,3 +12,10 @@ def convert_possible_tuple_to_list(lst):
                 else:
                     handle_error("Unknown Error in constraint. Please try again")
     return lst
+
+
+def copy_assignments(assignments: dict[str, Event]):
+    new_assignments = {}
+    for key in assignments:
+        new_assignments[key] = assignments[key].__copy__()
+    return new_assignments

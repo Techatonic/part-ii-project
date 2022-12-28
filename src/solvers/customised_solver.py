@@ -1,21 +1,20 @@
-from src.constraints.constraint import Constraint, get_constraint_from_string, ConstraintType
-from src.constraints.constraint_checker import constraint_check, valid_constraint_check
+from src.constraints.constraint import Constraint, get_constraint_from_string
+from src.constraints.constraint_checker import constraint_check
 from src.error_handling.handle_error import handle_error
-import copy
-import heapq
 
 from src.events.event import Event
 from src.helper.ac3 import ac3
+from src.helper.helper import copy_assignments
 from src.helper.priority_queue import PriorityQueue
 from src.sports.sport import Sport
 
 
 class CustomisedSolver:
-    def __init__(self) -> None:
+    def __init__(self, forward_check=False) -> None:
         self.queue = PriorityQueue()
-        # TODO think about reordering of constraints list so the hardest ones are evaluated first - should improve
-        # TODO performance
+
         self.constraints = []
+        self.forward_check = forward_check
 
     def add_variable(self, new_var: str, domain: list[Event]) -> None:
         if new_var in [variable.variable for variable in self.queue.variables]:
@@ -56,13 +55,14 @@ class CustomisedSolver:
     def __solve_variable(self, assignments, queue: PriorityQueue) -> dict[str, Event] | None:
         # print([[i.variable, len(i.domain)] for i in self.queue.variables])
 
-        assignments: dict[str, Event] = copy.deepcopy(assignments)
-        # queue = copy.deepcopy(queue)
+        assignments: dict[str, Event] = copy_assignments(assignments)
+
         queue = queue.__copy__()
         # print(len(queue.variables))
-        # print(sum(len(x.domain) for x in queue.variables))
         while len(queue.variables) > 0:
             variable = queue.pop()
+            print(sum(len(x.domain) for x in queue.variables) + len(variable.domain),
+                  variable.domain[0].round.round_name)
             for option in variable.domain:
                 assignments[variable.variable] = option
 
@@ -73,7 +73,7 @@ class CustomisedSolver:
                 satisfies_all_constraints = self.__test_constraints(assignments, constraints_to_check)
                 if satisfies_all_constraints:
                     # Remove from all other domains affected
-                    if ac3(queue, self.constraints):
+                    if (not self.forward_check) or ac3(queue, self.constraints):
                         result = self.__solve_variable(assignments, queue)
                         if result is not None:
                             return result
@@ -87,12 +87,8 @@ class CustomisedSolver:
     # TODO This is basically the same as constraint_check in constraint_checker.py (except this is multiple constraints). Possibly merge them
     def __test_constraints(self, assignments, constraints: list[Constraint]) -> bool:
         events: list[Event] = list(assignments.values())
+
         conflicts = []
         for constraint in constraints:
-            is_general_constraint = constraint.sport is None
-            if is_general_constraint:
-                conflicts += constraint_check(constraint, events)
-            else:
-                events = list(filter(lambda event: event.sport == constraint.sport, events))
-                conflicts += constraint_check(constraint, events)
+            conflicts += constraint_check(constraint, events)
         return len(conflicts) == 0

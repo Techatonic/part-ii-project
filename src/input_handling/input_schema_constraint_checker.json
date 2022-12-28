@@ -90,8 +90,14 @@
                         "$ref": "#/definitions/Venue"
                     }
                 },
-                "num_teams": {
-                    "type": "integer"
+                "teams": {
+                    "type": "array",
+                    "title": "The teams Schema",
+                    "items": {
+                        "type": "string",
+                        "title": "Team name",
+                        "examples": ["Great Britain", "Novak Djokovic"]
+                    }
                 },
                 "num_teams_per_game": {
                     "type": "integer"
@@ -134,7 +140,7 @@
                 "min_start_day",
                 "min_start_time",
                 "name",
-                "num_teams",
+                "teams",
                 "num_teams_per_game",
                 "venues"
             ],
@@ -219,10 +225,11 @@
         "ConstraintEnum": {
             "type": "string",
             "enum": [
-                "same_venue_overlapping_time",
-                "no_later_rounds_before_earlier_rounds",
+                "same_venue_overlapping_time_constraint_check",
+                "no_later_rounds_before_earlier_rounds_constraint_check",
                 "same_venue_max_matches_per_day",
-                "time_between_matches"
+                "time_between_matches",
+                "max_matches_per_day"
             ]
         }
     }

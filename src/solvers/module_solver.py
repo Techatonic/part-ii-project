@@ -7,8 +7,8 @@ from src.sports.sport import Sport
 
 
 class ModuleSolver(Solver):
-    def __init__(self):
-        self.csp: Problem = Problem(BacktrackingSolver(False))
+    def __init__(self, forward_check: bool) -> None:
+        self.csp: Problem = Problem(BacktrackingSolver(forward_check))
 
     def add_variable(self, new_var: str, domain: list[Event]) -> None:
         self.csp.addVariable(new_var, domain)
