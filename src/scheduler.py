@@ -41,7 +41,6 @@ def solve(solver: Type[Solver], sports: list[Sport], tournament_length: int, gen
         match_num = 1
         matches = [[sport.teams[2 * i], sport.teams[2 * i + 1]] for i in range(sport.num_teams // 2)]
         for event_round in round_order:
-            # print(event_round.round_name)
             if round_order.index(event_round) > 0:
                 matches = [x + y for x, y in zip(matches[0::2], matches[1::2])]
             for match in matches:
@@ -55,7 +54,7 @@ def solve(solver: Type[Solver], sports: list[Sport], tournament_length: int, gen
                 if specific_min_start_day >= specific_max_finish_day and len(round_order) > 1:
                     handle_error("Insufficient number of days given for sport: ", sport.name)
                 day_order = list(range(specific_min_start_day, specific_max_finish_day + 1))
-                print(day_order)
+                random.shuffle(day_order)
 
                 for venue in venues:
                     min_start_time = max(sport.min_start_time, venue.min_start_time)

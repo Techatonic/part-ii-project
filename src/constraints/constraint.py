@@ -1,8 +1,11 @@
+from collections import OrderedDict
 from enum import Enum
+from bisect import insort
 
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.helper.helper import convert_possible_tuple_to_list
+from src.rounds.knockout_rounds import knockout_rounds
 from src.sports.sport import Sport
 
 
@@ -95,20 +98,24 @@ def no_later_rounds_before_earlier_rounds(*variables: list[Event]) -> bool:
     sports = {}
     for variable in variables:
         if not (variable.sport.name in sports):
-            sports[variable.sport.name] = [variable]
+            sports[variable.sport.name] = {variable.round.round_index: [variable]}
         else:
-            sports[variable.sport.name].append(variable)
+            if not (variable.round.round_index in sports[variable.sport.name]):
+                sports[variable.sport.name][variable.round.round_index] = [variable]
+            else:
+                sports[variable.sport.name][variable.round.round_index].append(variable)
     variables_by_sport = sports.values()
 
     for sport_variables in variables_by_sport:
-        sport_variables.sort(key=lambda event: (event.day, event.start_time, event.duration))
-        for event_1 in range(len(sport_variables)):
-            for event_2 in range(event_1 + 1, len(sport_variables)):
-                if sport_variables[event_1].round.round_index < sport_variables[event_2].round.round_index or \
-                        sport_variables[event_1].day == sport_variables[event_2].day and sport_variables[
-                    event_2].round.round_index != sport_variables[event_1].round.round_index:
-                    print("Failed")
-                    return False
+        for _round in set(sport_variables.keys()):
+            vals = sport_variables[_round]
+            sport_variables[_round] = [min(vals, key=lambda event: event.day).day,
+                                       max(vals, key=lambda event: event.day).day]
+        sorted_rounds = list(reversed(sorted(set(sport_variables.keys()))))
+
+        for index in range(len(sorted_rounds) - 1):
+            if sport_variables[sorted_rounds[index]][1] >= sport_variables[sorted_rounds[index + 1]][0]:
+                return False
     return True
 
 

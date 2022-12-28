@@ -81,7 +81,6 @@ class CustomisedSolver:
                 del assignments[variable.variable]
 
             return None
-        # print("Returning assignments")
         return assignments  # We have a valid assignment, return it
 
     # TODO This is basically the same as constraint_check in constraint_checker.py (except this is multiple constraints). Possibly merge them
