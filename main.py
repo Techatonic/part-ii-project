@@ -64,7 +64,8 @@ def run_solver(input_path: str, use_python_module: bool, forward_check: bool, ex
     if export_path is not None:
         try:
             complete_games.export(export_path)
-        except:
+        except Exception as e:
+            print(e)
             handle_error("Export failed. Please try again ensuring a valid output path is given")
 
 

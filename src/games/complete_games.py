@@ -7,10 +7,13 @@ class CompleteGames:
     def __init__(self, days_of_tournament, sports):
         self.complete_games["days_of_tournament"] = days_of_tournament
         self.complete_games["sports"] = sports
-        self.complete_games["events"] = []
+        self.complete_games["events"] = {}
 
     def add_event(self, event):
-        self.complete_games["events"].append(event)
+        if event.sport.name in self.complete_games["events"]:
+            self.complete_games["events"][event.sport.name].append(event)
+        else:
+            self.complete_games["events"][event.sport.name] = [event]
 
     def __str__(self) -> str:
         return self.__repr__()
@@ -24,10 +27,11 @@ class CompleteGames:
             self.complete_games["events"] == other.complete_games["events"]
 
     def export(self, path) -> None:
-        for event in self.complete_games["events"]:
-            event.round = event.round.round_name
-            event.sport = event.sport.name
-            event.venue = event.venue.name
+        for sport in self.complete_games["events"]:
+            for event in self.complete_games["events"][sport]:
+                event.round = event.round.round_name
+                event.sport = event.sport.name
+                event.venue = event.venue.name
 
         dict_to_export = {
             "events": self.complete_games["events"]
