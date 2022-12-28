@@ -14,6 +14,7 @@ def read_and_validate_input(path: str, schema_path: str) -> dict:
             try:
                 validate(instance=input_json, schema=schema)
             except (ValidationError, SchemaError) as e:
+                print(e)
                 handle_error("JSON Input is Invalid")
 
             return input_json

@@ -62,7 +62,10 @@
                     "type": "number"
                 },
                 "teams_involved": {
-                    "type": "null"
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             },
             "required": [
@@ -195,7 +198,11 @@
             "enum": [
                 "Final",
                 "Semi Final",
-                "Quarter Final"
+                "Quarter Final",
+                "Round of 16",
+                "Round of 32",
+                "Round of 64",
+                "Round of 128"
             ],
             "title": "Round"
         },
@@ -228,8 +235,8 @@
                 "same_venue_overlapping_time_constraint_check",
                 "no_later_rounds_before_earlier_rounds_constraint_check",
                 "same_venue_max_matches_per_day",
-                "time_between_matches",
-                "max_matches_per_day"
+                "team_time_between_matches",
+                "venue_time_between_matches"
             ]
         }
     }

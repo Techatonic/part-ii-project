@@ -45,12 +45,15 @@ def same_venue_overlapping_time(*variables: list[Event]) -> bool:
 
 def team_time_between_matches(*variables: list[Event]) -> bool:
     variables = convert_possible_tuple_to_list(variables)
+    if len(variables) == 0:
+        return True
     teams = {}
     sport = variables[0].sport.name
     for event in variables:
         event_day = event.day
+        if event.teams_involved is None:
+            continue
         for team in event.teams_involved:
-
             if not (team in teams):
                 teams[team] = [event_day]
             else:
@@ -64,6 +67,8 @@ def team_time_between_matches(*variables: list[Event]) -> bool:
 
 def venue_time_between_matches(*variables: list[Event]) -> bool:
     variables = convert_possible_tuple_to_list(variables)
+    if len(variables) == 0:
+        return True
     venues = {}
     sport = variables[0].sport.name
     for event in variables:
