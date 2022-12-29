@@ -61,8 +61,8 @@ class CustomisedSolver:
         # print(len(queue.variables))
         while len(queue.variables) > 0:
             variable = queue.pop()
-            print(sum(len(x.domain) for x in queue.variables) + len(variable.domain),
-                  variable.domain[0].round.round_name)
+            # print(sum(len(x.domain) for x in queue.variables) + len(variable.domain),
+            # variable.domain[0].round.round_name)
             for option in variable.domain:
                 assignments[variable.variable] = option
 
