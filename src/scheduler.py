@@ -2,7 +2,7 @@ import math
 import random
 from typing import Type
 
-from src.constraints.constraint import get_constraint_from_string, ConstraintType, ConstraintFunction, params
+from src.constraints.constraint import get_constraint_from_string, ConstraintType, ConstraintFunction
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.rounds.knockout_rounds import generate_round_order, Round
@@ -11,13 +11,13 @@ from src.sports.sport import Sport
 from src.venues.venue import Venue
 
 
-def solve(solver: Type[Solver], sports: list[Sport], tournament_length: int, general_constraints: list[str],
+def solve(solver: Type[Solver], sports: list[Sport], data: dict, general_constraints: list[str],
           forward_check: bool) -> dict[str, Event] | None:
     """
     Method to solve the CSP scheduling problem
     :param solver: Type[Solver]
     :param sports: List[Sport]
-    :param tournament_length: int
+    :param data: dict
     :param general_constraints: List[string]
     :param forward_check: bool
     :return result: List[Event] | None
@@ -27,15 +27,29 @@ def solve(solver: Type[Solver], sports: list[Sport], tournament_length: int, gen
 
     for sport in sports:
         csp_problem = solver(forward_check=forward_check)
+        csp_problem.data = data
+
+        for optional_constraint in sport.constraints["optional"]:
+            csp_problem.add_optional_constraint(optional_constraint, sport,
+                                                sport.constraints["optional"][optional_constraint])
 
         sport_name: str = sport.name
         venues: list[Venue] = sport.possible_venues
         min_start_day: int = 0 if sport.min_start_day is None else sport.min_start_day
-        max_finish_day: int = tournament_length if sport.max_finish_day is None else sport.max_finish_day
+        max_finish_day: int = csp_problem.data[
+            "tournament_length"] if sport.max_finish_day is None else sport.max_finish_day
 
         # Define the variables
         # Add matches
         round_order: list[Round] = list(reversed(generate_round_order(sport.num_teams, sport.num_teams_per_game)))
+
+        csp_problem.data.update({
+            "sport": sport,
+            "round_order": round_order,
+            "venues": venues,
+            "min_start_day": min_start_day,
+            "max_finish_day": max_finish_day,
+        })
 
         variable_list = []
         match_num = 1
@@ -47,9 +61,9 @@ def solve(solver: Type[Solver], sports: list[Sport], tournament_length: int, gen
                 options = []
                 # Shuffle venues, days and times
                 random.shuffle(venues)
-                specific_min_start_day = min_start_day + params[sport.name]["team_time_between_matches"][
+                specific_min_start_day = min_start_day + sport.constraints["required"]["team_time_between_matches"][
                     "min_time_between_matches"] * (round_order[0].round_index - event_round.round_index)
-                specific_max_finish_day = max_finish_day - params[sport.name]["team_time_between_matches"][
+                specific_max_finish_day = max_finish_day - sport.constraints["required"]["team_time_between_matches"][
                     "min_time_between_matches"] * event_round.round_index
                 if specific_min_start_day >= specific_max_finish_day and len(round_order) > 1:
                     handle_error("Insufficient number of days given for sport: ", sport.name)
@@ -71,18 +85,23 @@ def solve(solver: Type[Solver], sports: list[Sport], tournament_length: int, gen
                 variable_list.append(sport_name + "_" + str(match_num))
                 match_num += 1
 
-        for sport_specific_constraint in sport.constraints:
+        csp_problem.data["num_total_events"] = len(variable_list)
+
+        for sport_specific_constraint in sport.constraints["required"]:
             constraint: ConstraintFunction = get_constraint_from_string(sport_specific_constraint)
             if constraint.constraint_type == ConstraintType.UNARY:
                 for event in variable_list:
-                    csp_problem.add_constraint(constraint.string_name, [event], sport)
+                    csp_problem.add_constraint(constraint.string_name, [event], sport,
+                                               sport.constraints["required"][sport_specific_constraint])
             elif constraint.constraint_type == ConstraintType.BINARY:
                 for event_1 in range(len(variable_list)):
                     for event_2 in range(event_1 + 1, len(variable_list)):
                         csp_problem.add_constraint(constraint.string_name,
-                                                   [variable_list[event_1], variable_list[event_2]], sport)
+                                                   [variable_list[event_1], variable_list[event_2]], sport,
+                                                   sport.constraints["required"][sport_specific_constraint])
             else:
-                csp_problem.add_constraint(constraint.string_name, sport=sport)
+                csp_problem.add_constraint(constraint.string_name, sport=sport,
+                                           params=sport.constraints["required"][sport_specific_constraint])
 
         result: dict[str, Event] = csp_problem.solve()
         # print("Done: " + sport.name)

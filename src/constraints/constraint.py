@@ -1,16 +1,13 @@
-from collections import OrderedDict
 from enum import Enum
-from bisect import insort
 
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.helper.helper import convert_possible_tuple_to_list
-from src.rounds.knockout_rounds import knockout_rounds
 from src.sports.sport import Sport
 
 
 # Constraint Definitions
-def same_venue_overlapping_time_constraint_check(a, b) -> bool:
+def same_venue_overlapping_time_constraint_check(params, a, b) -> bool:
     if not (a.venue == b.venue and a.day == b.day and (
             (a.start_time <= b.start_time < a.start_time + a.duration) or
             (b.start_time <= a.start_time < b.start_time + b.duration)
@@ -19,12 +16,10 @@ def same_venue_overlapping_time_constraint_check(a, b) -> bool:
     return False
 
 
-def same_venue_overlapping_time(*variables: list[Event]) -> bool:
+def same_venue_overlapping_time(params: dict, *variables: list[Event]) -> bool:
     variables = convert_possible_tuple_to_list(variables)
 
     venues = {}
-    # print("\n" * 5)
-    # print(variables)
     for event in variables:
         venue_name = event.venue.name
         if not venue_name in venues:
@@ -43,7 +38,7 @@ def same_venue_overlapping_time(*variables: list[Event]) -> bool:
     return True
 
 
-def team_time_between_matches(*variables: list[Event]) -> bool:
+def team_time_between_matches(params: dict, *variables: list[Event]) -> bool:
     variables = convert_possible_tuple_to_list(variables)
     if len(variables) == 0:
         return True
@@ -58,14 +53,13 @@ def team_time_between_matches(*variables: list[Event]) -> bool:
                 teams[team] = [event_day]
             else:
                 for other_day in teams[team]:
-                    if abs(event_day - other_day) < params[sport]["team_time_between_matches"][
-                        "min_time_between_matches"]:
+                    if abs(event_day - other_day) < params["min_time_between_matches"]:
                         return False
                 teams[team].append(event_day)
     return True
 
 
-def venue_time_between_matches(*variables: list[Event]) -> bool:
+def venue_time_between_matches(params: dict, *variables: list[Event]) -> bool:
     variables = convert_possible_tuple_to_list(variables)
     if len(variables) == 0:
         return True
@@ -81,23 +75,22 @@ def venue_time_between_matches(*variables: list[Event]) -> bool:
             else:
                 for other_time in venues[venue_name][event.day]:
                     if abs(event.start_time + event.duration - other_time) < \
-                            params[sport]["venue_time_between_matches"][
-                                "min_time_between_matches"] or abs(event.start_time - (other_time + event.duration)) < \
-                            params[sport]["venue_time_between_matches"][
-                                "min_time_between_matches"]:
+                            params["min_time_between_matches"] or \
+                            abs(event.start_time - (other_time + event.duration)) < \
+                            params["min_time_between_matches"]:
                         return False
                 venues[venue_name][event.day].append(event.start_time)
     return True
 
 
-def no_later_rounds_before_earlier_rounds_constraint_check(a, b) -> bool:
+def no_later_rounds_before_earlier_rounds_constraint_check(params: dict, a, b) -> bool:
     return a.sport == b.sport and \
         (a.round.round_index == b.round.round_index or
          a.round.round_index > b.round.round_index and a.day <= b.day or
          a.round.round_index < b.round.round_index and b.day <= a.day)
 
 
-def no_later_rounds_before_earlier_rounds(*variables: list[Event]) -> bool:
+def no_later_rounds_before_earlier_rounds(params: dict, *variables: list[Event]) -> bool:
     variables = convert_possible_tuple_to_list(variables)
 
     sports = {}
@@ -124,7 +117,7 @@ def no_later_rounds_before_earlier_rounds(*variables: list[Event]) -> bool:
     return True
 
 
-def same_venue_max_matches_per_day(*variables: list[Event]) -> bool:
+def same_venue_max_matches_per_day(params: dict, *variables: list[Event]) -> bool:
     variables = convert_possible_tuple_to_list(variables)
     venues = {}
 
@@ -142,7 +135,7 @@ def same_venue_max_matches_per_day(*variables: list[Event]) -> bool:
     return True
 
 
-def same_sport_max_matches_per_day(*variables: list[Event]) -> bool:
+def same_sport_max_matches_per_day(params: dict, *variables: list[Event]) -> bool:
     sports = {}
     variables = convert_possible_tuple_to_list(variables)
     for event in variables:
@@ -179,10 +172,11 @@ class ConstraintFunction:
 
 
 class Constraint:
-    def __init__(self, constraint: ConstraintFunction, variables=None, sport: Sport = None):
+    def __init__(self, constraint: ConstraintFunction, variables=None, sport: Sport = None, params: dict = None):
         self.constraint = constraint
         self.variables = variables
         self.sport = sport
+        self.params = params
 
         if self.variables is None:
             self.constraint_type = ConstraintType.ALL
@@ -244,29 +238,29 @@ constraints_list = {
     "max_matches_per_day": ConstraintFunction("max_matches_per_day", same_sport_max_matches_per_day, ConstraintType.ALL)
 }
 
-params = {
-    "football": {
-        "team_time_between_matches": {
-            "min_time_between_matches": 2
-        },
-        "venue_time_between_matches": {
-            "min_time_between_matches": 2
-        }
-    },
-    "tennis": {
-        "team_time_between_matches": {
-            "min_time_between_matches": 2
-        },
-        "venue_time_between_matches": {
-            "min_time_between_matches": 0
-        }
-    },
-    "boxing_heavyweight": {
-        "team_time_between_matches": {
-            "min_time_between_matches": 2
-        },
-        "venue_time_between_matches": {
-            "min_time_between_matches": 0
-        }
-    }
-}
+# params = {
+#     "football": {
+#         "team_time_between_matches": {
+#             "min_time_between_matches": 2
+#         },
+#         "venue_time_between_matches": {
+#             "min_time_between_matches": 2
+#         }
+#     },
+#     "tennis": {
+#         "team_time_between_matches": {
+#             "min_time_between_matches": 2
+#         },
+#         "venue_time_between_matches": {
+#             "min_time_between_matches": 0
+#         }
+#     },
+#     "boxing_heavyweight": {
+#         "team_time_between_matches": {
+#             "min_time_between_matches": 2
+#         },
+#         "venue_time_between_matches": {
+#             "min_time_between_matches": 0
+#         }
+#     }
+# }

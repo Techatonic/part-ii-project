@@ -19,51 +19,51 @@
         {
           "name": "Olympic Stadium",
           "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
+          "location_address": "Queen Elizabeth Olympic Park, London E20 2ST",
+          "location_postcode": "E20 2ST",
           "min_start_time": 11,
           "max_finish_time": 22,
-          "capacity": 40000,
+          "capacity": 66000,
           "max_matches_per_day": 2
         },
         {
           "name": "Emirates Stadium",
           "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
+          "location_address": "Hornsey Rd, London N7 7AJ",
+          "location_postcode": "N7 7AJ",
           "min_start_time": 14,
           "max_finish_time": 22,
-          "capacity": 40000,
+          "capacity": 60260,
           "max_matches_per_day": 2
         },
         {
           "name": "Tottenham Hotspur Stadium",
           "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
+          "location_address": "782 High Rd, London N17 0BX",
+          "location_postcode": "N17 0BX",
           "min_start_time": 12,
           "max_finish_time": 22,
-          "capacity": 40000,
+          "capacity": 62850,
           "max_matches_per_day": 2
         },
         {
           "name": "The Hive",
           "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
+          "location_address": "Camrose Ave, London HA8 6AG",
+          "location_postcode": "HA8 6AG",
           "min_start_time": 12,
           "max_finish_time": 22,
-          "capacity": 40000,
+          "capacity": 6500,
           "max_matches_per_day": 2
         },
         {
           "name": "Etihad Stadium",
           "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
+          "location_address": "Ashton New Rd, Manchester M11 3FF",
+          "location_postcode": "M11 3FF",
           "min_start_time": 12,
           "max_finish_time": 22,
-          "capacity": 40000,
+          "capacity": 53400,
           "max_matches_per_day": 2
         }
       ],
@@ -81,18 +81,45 @@
       "min_start_time": 12,
       "max_finish_time": 22,
       "duration": 1.5,
-      "constraints": [
-        "same_venue_overlapping_time",
-        "same_venue_max_matches_per_day",
-        "team_time_between_matches",
-        "venue_time_between_matches",
-        "no_later_rounds_before_earlier_rounds"
-      ]
+      "constraints": {
+        "required": {
+          "same_venue_overlapping_time": {},
+          "same_venue_max_matches_per_day":  {},
+          "team_time_between_matches":  {
+            "min_time_between_matches": 2
+          },
+          "venue_time_between_matches":  {
+            "min_time_between_matches": 2
+          },
+          "no_later_rounds_before_earlier_rounds": {}
+        },
+        "optional": {
+          "avg_distance_to_travel": {
+            "weight": 1
+          },
+          "avg_rest_between_matches": {
+            "weight": 1
+          },
+          "avg_capacity": {
+            "weight": 1
+          }
+        }
+      }
     }
   ],
-  "general_constraints": [
-    "same_venue_overlapping_time",
-    "same_venue_max_matches_per_day"
-  ],
-  "tournament_length": 14
+  "general_constraints": {
+    "required": {
+      "same_venue_overlapping_time":  {},
+      "same_venue_max_matches_per_day": {}
+    },
+    "optional": {
+      "max_matches_per_day": {
+        "weight": 1
+      }
+    }
+  },
+  "data": {
+    "tournament_length": 14,
+    "athletes_accommodation_postcode": "E15 2ER"
+  }
 }

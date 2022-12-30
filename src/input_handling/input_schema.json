@@ -7,7 +7,7 @@
   "required": [
     "sports",
     "general_constraints",
-    "tournament_length"
+    "data"
   ],
   "properties": {
     "sports": {
@@ -159,42 +159,52 @@
             ]
           },
           "constraints": {
-            "type": "array",
+            "type": "object",
             "title": "The constraints Schema",
-            "items": {
-              "type": "string",
-              "title": "A Schema"
-            },
-            "examples": [
-              [
-                "same_venue_overlapping_time",
-                "no_later_rounds_before_earlier_rounds",
-                "same_venue_max_matches_per_day",
-                "time_between_matches"
-              ]
-            ]
+            "properties": {
+              "required": {
+                "type": "object",
+                "default": {},
+                "title": "The required constraints Schema"
+              },
+              "optional": {
+                "type": "object",
+                "default": {},
+                "title": "The optional constraints Schema"
+              }
+            }
           }
         }
       },
       "general_constraints": {
-        "type": "array",
-        "default": [],
-        "title": "The general_constraints Schema",
-        "items": {
-          "type": "string",
-          "title": "A Schema",
-          "examples": [
-            "same_venue_overlapping_time",
-            "same_venue_max_matches_per_day"
-          ]
-        },
-        "tournament_length": {
-          "type": "integer",
-          "default": 0,
-          "title": "The tournament_length Schema",
-          "examples": [
-            14
-          ]
+        "type": "object",
+        "properties": {
+          "required": {
+            "type": "object",
+            "default": {},
+            "title": "The required constraints Schema"
+          },
+          "optional": {
+            "type": "object",
+            "default": {},
+            "title": "The optional constraints Schema"
+          }
+        }
+      },
+      "data": {
+        "type": "object",
+        "properties": {
+          "tournament_length": {
+            "type": "integer",
+            "default": 0,
+            "title": "The tournament_length Schema",
+            "examples": [
+              14
+            ]
+          },
+          "athletes_accommodation_postcode": {
+            "type": "string"
+          }
         }
       }
     }

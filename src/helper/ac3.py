@@ -52,8 +52,8 @@ def arc_reduce(x, y, binary_constraints):
     for x_option in x.domain:
         found_valid_pair = False
         for y_option in y.domain:
-            if all(valid_constraint_check(binary_constraint, [x_option, y_option]) for binary_constraint in
-                   binary_constraints):
+            if all(valid_constraint_check(binary_constraint.constraint, [x_option, y_option], binary_constraint.params)
+                   for binary_constraint in binary_constraints):
                 found_valid_pair = True
                 break
         if not found_valid_pair:

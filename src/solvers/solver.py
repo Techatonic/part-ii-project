@@ -7,7 +7,7 @@ from src.sports.sport import Sport
 class Solver(ABC):
     @abstractmethod
     def __init__(self, forward_check) -> None:
-        pass
+        self.data = {}
 
     @abstractmethod
     def add_variable(self, new_var: str, domain: list[Event]) -> None:
@@ -15,7 +15,10 @@ class Solver(ABC):
 
     @abstractmethod
     def add_constraint(self, function_name: str, variables: list[str] | None = None,
-                       sport: Sport | None = None) -> None:
+                       sport: Sport | None = None, params: dict = None) -> None:
+        pass
+
+    def add_optional_constraint(self, function_name: str, sport: Sport | None, params: dict = None):
         pass
 
     @abstractmethod

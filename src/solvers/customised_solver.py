@@ -24,10 +24,13 @@ class CustomisedSolver:
         self.queue.add(new_var, domain)
 
     def add_constraint(self, function_name: str, variables: list[str] | None = None,
-                       sport: Sport | None = None) -> None:
+                       sport: Sport | None = None, params: dict = None) -> None:
         function = get_constraint_from_string(function_name)
         # print(function_name, function, variables, sport)
-        self.constraints.append(Constraint(function, variables, sport))
+        self.constraints.append(Constraint(function, variables, sport, params))
+
+    def add_optional_constraint(self, function_name: str, sport: Sport | None, params: object = None):
+        pass
 
     def solve(self) -> dict[str, Event] | None:
         # print(set(option.venue.name for option in self.queue.variables[0].domain))
@@ -78,7 +81,8 @@ class CustomisedSolver:
                         if result is not None:
                             return result
 
-                del assignments[variable.variable]
+                # TODO Check if it's ok to remove the below line
+                # del assignments[variable.variable]
 
             return None
         return assignments  # We have a valid assignment, return it
@@ -89,5 +93,5 @@ class CustomisedSolver:
 
         conflicts = []
         for constraint in constraints:
-            conflicts += constraint_check(constraint.constraint, events)
+            conflicts += constraint_check(constraint.constraint, events, constraint.params)
         return len(conflicts) == 0

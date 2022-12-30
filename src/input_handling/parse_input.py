@@ -7,8 +7,8 @@ from ..venues.venue import Venue, convert_string_to_venue_instance
 
 def parse_input(json_input):
     try:
-        days_of_tournament = json_input['tournament_length']
-        generic_constraints = json_input['general_constraints']
+        data = json_input['data']
+        general_constraints = json_input['general_constraints']
         sports = []
 
         for sport in json_input['sports']:
@@ -34,14 +34,14 @@ def parse_input(json_input):
                 sport['max_finish_time'],
                 sport['constraints']
             ))
-        return [days_of_tournament, sports, generic_constraints]
+        return [sports, general_constraints, data]
     except:
         handle_error("Parsing failed")
 
 
 def parse_input_constraint_checker(json_input):
     try:
-        [days_of_tournament, sports, generic_constraints] = parse_input(json_input)
+        [sports, general_constraints, data] = parse_input(json_input)
 
         venues = [venue for x in sports for venue in x.possible_venues]
 
@@ -58,7 +58,7 @@ def parse_input_constraint_checker(json_input):
                 event["duration"],
                 # TODO Add teams involved
             ))
-        return [days_of_tournament, sports, events, generic_constraints]
+        return [sports, events, general_constraints, data]
     except:
         handle_error("Parsing failed")
 
