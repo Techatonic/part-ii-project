@@ -72,7 +72,7 @@ class CSOPSolver:
         if len(queue.variables) == 0:
             heuristic_val = self.__heuristic(assignments)
             # print(heuristic_val)
-            if heuristic_val > bound_data.bound:
+            if heuristic_val > bound_data.bound or self.__is_acceptable_solution(assignments):
                 bound_data.bound = heuristic_val
                 bound_data.best_solution = assignments
                 print(bound_data)
@@ -87,10 +87,20 @@ class CSOPSolver:
                     self.__solve_variable(assignments, queue, bound_data)
             return None
 
+    def __is_acceptable_solution(self, assignments):
+        events: list[Event] = list(assignments.values())
+        for optional_constraint_heuristic in self.optional_constraints:
+            if not (optional_constraint_heuristic.constraint.function(self, events)[0] >
+                    optional_constraint_heuristic.params["aim"]):
+                print("False")
+                return False
+        print("True")
+        return True
+
     def __heuristic(self, assignments):
         events: list[Event] = list(assignments.values())
         return sum(
-            optional_constraint_heuristic.constraint.function(self, events) for optional_constraint_heuristic in
+            optional_constraint_heuristic.constraint.function(self, events)[1] for optional_constraint_heuristic in
             self.optional_constraints)
 
     def __test_constraints(self, assignments, constraints: list[Constraint]) -> bool:
@@ -98,7 +108,7 @@ class CSOPSolver:
 
         conflicts = []
         for constraint in constraints:
-            conflicts += constraint_check(constraint.constraint, events, constraint.params)
+            conflicts += constraint_check(self, constraint.constraint, events, constraint.params)
         return len(conflicts) == 0
 
 

@@ -93,5 +93,5 @@ class CustomisedSolver:
 
         conflicts = []
         for constraint in constraints:
-            conflicts += constraint_check(constraint.constraint, events, constraint.params)
+            conflicts += constraint_check(self, constraint.constraint, events, constraint.params)
         return len(conflicts) == 0

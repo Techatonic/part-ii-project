@@ -35,7 +35,8 @@ def parse_input(json_input):
                 sport['constraints']
             ))
         return [sports, general_constraints, data]
-    except:
+    except Exception as e:
+        print(e)
         handle_error("Parsing failed")
 
 
@@ -59,7 +60,8 @@ def parse_input_constraint_checker(json_input):
                 # TODO Add teams involved
             ))
         return [sports, events, general_constraints, data]
-    except:
+    except Exception as e:
+        print(e)
         handle_error("Parsing failed")
 
 

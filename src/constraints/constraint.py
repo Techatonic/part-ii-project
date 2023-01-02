@@ -3,11 +3,12 @@ from enum import Enum
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.helper.helper import convert_possible_tuple_to_list
+from src.solvers.solver import Solver
 from src.sports.sport import Sport
 
 
 # Constraint Definitions
-def same_venue_overlapping_time_constraint_check(params, a, b) -> bool:
+def same_venue_overlapping_time_constraint_check(csp_instance: Solver, params, a, b) -> bool:
     if not (a.venue == b.venue and a.day == b.day and (
             (a.start_time <= b.start_time < a.start_time + a.duration) or
             (b.start_time <= a.start_time < b.start_time + b.duration)
@@ -16,7 +17,7 @@ def same_venue_overlapping_time_constraint_check(params, a, b) -> bool:
     return False
 
 
-def same_venue_overlapping_time(params: dict, *variables: list[Event]) -> bool:
+def same_venue_overlapping_time(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
     variables = convert_possible_tuple_to_list(variables)
 
     venues = {}
@@ -38,7 +39,7 @@ def same_venue_overlapping_time(params: dict, *variables: list[Event]) -> bool:
     return True
 
 
-def team_time_between_matches(params: dict, *variables: list[Event]) -> bool:
+def team_time_between_matches(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
     variables = convert_possible_tuple_to_list(variables)
     if len(variables) == 0:
         return True
@@ -59,7 +60,7 @@ def team_time_between_matches(params: dict, *variables: list[Event]) -> bool:
     return True
 
 
-def venue_time_between_matches(params: dict, *variables: list[Event]) -> bool:
+def venue_time_between_matches(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
     variables = convert_possible_tuple_to_list(variables)
     if len(variables) == 0:
         return True
@@ -83,14 +84,14 @@ def venue_time_between_matches(params: dict, *variables: list[Event]) -> bool:
     return True
 
 
-def no_later_rounds_before_earlier_rounds_constraint_check(params: dict, a, b) -> bool:
+def no_later_rounds_before_earlier_rounds_constraint_check(csp_instance: Solver, params: dict, a, b) -> bool:
     return a.sport == b.sport and \
         (a.round.round_index == b.round.round_index or
          a.round.round_index > b.round.round_index and a.day <= b.day or
          a.round.round_index < b.round.round_index and b.day <= a.day)
 
 
-def no_later_rounds_before_earlier_rounds(params: dict, *variables: list[Event]) -> bool:
+def no_later_rounds_before_earlier_rounds(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
     variables = convert_possible_tuple_to_list(variables)
 
     sports = {}
@@ -117,7 +118,7 @@ def no_later_rounds_before_earlier_rounds(params: dict, *variables: list[Event])
     return True
 
 
-def same_venue_max_matches_per_day(params: dict, *variables: list[Event]) -> bool:
+def same_venue_max_matches_per_day(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
     variables = convert_possible_tuple_to_list(variables)
     venues = {}
 
@@ -135,7 +136,7 @@ def same_venue_max_matches_per_day(params: dict, *variables: list[Event]) -> boo
     return True
 
 
-def same_sport_max_matches_per_day(params: dict, *variables: list[Event]) -> bool:
+def same_sport_max_matches_per_day(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
     sports = {}
     variables = convert_possible_tuple_to_list(variables)
     for event in variables:
@@ -150,6 +151,11 @@ def same_sport_max_matches_per_day(params: dict, *variables: list[Event]) -> boo
             if sports[sport_name][event.day] > event.sport.max_matches_per_day:
                 return False
     return True
+
+
+def max_capacity_at_final(csp_instance: Solver, params: dict, event: Event):
+    return not (event.round.round_index == 0) or event.venue == max(csp_instance.data["venues"],
+                                                                    key=lambda venue: venue.capacity)
 
 
 # Constraint class definitions
@@ -235,32 +241,7 @@ constraints_list = {
                                                     ConstraintType.ALL),
     "venue_time_between_matches": ConstraintFunction("venue_time_between_matches", venue_time_between_matches,
                                                      ConstraintType.ALL),
-    "max_matches_per_day": ConstraintFunction("max_matches_per_day", same_sport_max_matches_per_day, ConstraintType.ALL)
+    "max_matches_per_day": ConstraintFunction("max_matches_per_day", same_sport_max_matches_per_day,
+                                              ConstraintType.ALL),
+    "max_capacity_at_final": ConstraintFunction("max_capacity_at_final", max_capacity_at_final, ConstraintType.UNARY)
 }
-
-# params = {
-#     "football": {
-#         "team_time_between_matches": {
-#             "min_time_between_matches": 2
-#         },
-#         "venue_time_between_matches": {
-#             "min_time_between_matches": 2
-#         }
-#     },
-#     "tennis": {
-#         "team_time_between_matches": {
-#             "min_time_between_matches": 2
-#         },
-#         "venue_time_between_matches": {
-#             "min_time_between_matches": 0
-#         }
-#     },
-#     "boxing_heavyweight": {
-#         "team_time_between_matches": {
-#             "min_time_between_matches": 2
-#         },
-#         "venue_time_between_matches": {
-#             "min_time_between_matches": 0
-#         }
-#     }
-# }

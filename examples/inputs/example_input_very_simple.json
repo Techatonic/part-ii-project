@@ -91,17 +91,21 @@
           "venue_time_between_matches":  {
             "min_time_between_matches": 2
           },
-          "no_later_rounds_before_earlier_rounds": {}
+          "no_later_rounds_before_earlier_rounds": {},
+          "max_capacity_at_final": {}
         },
         "optional": {
           "avg_distance_to_travel": {
-            "weight": 1
+            "weight": 1,
+            "aim": 2
           },
           "avg_rest_between_matches": {
-            "weight": 1
+            "weight": 1,
+            "aim": 2
           },
           "avg_capacity": {
-            "weight": 1
+            "weight": 1,
+            "aim": 30000
           }
         }
       }
@@ -114,7 +118,8 @@
     },
     "optional": {
       "max_matches_per_day": {
-        "weight": 1
+        "weight": 1,
+        "aim": 5
       }
     }
   },

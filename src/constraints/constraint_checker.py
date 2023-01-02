@@ -1,11 +1,12 @@
 from src.constraints.constraint import ConstraintType, constraints_list, get_constraint_from_string, ConstraintFunction
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
+from src.solvers.solver import Solver
 from src.sports.sport import Sport
 
 
 def constraint_checker(sports: list[Sport], events: list[Event], general_constraints: list[str],
-                       params: object) -> list:
+                       params: dict) -> list:
     conflicts = []
 
     for sport in sports:
@@ -25,13 +26,13 @@ def constraint_checker(sports: list[Sport], events: list[Event], general_constra
     return conflicts
 
 
-def constraint_check(constraint: ConstraintFunction, events: list[Event], params: object) -> list:
+def constraint_check(csp_instance: Solver, constraint: ConstraintFunction, events: list[Event], params: dict) -> list:
     if constraint.constraint_type == ConstraintType.UNARY:
-        result = unary_constraint_check(constraint, events, params)
+        result = unary_constraint_check(csp_instance, constraint, events, params)
     elif constraint.constraint_type == ConstraintType.BINARY:
-        result = binary_constraint_check(constraint, events, params)
+        result = binary_constraint_check(csp_instance, constraint, events, params)
     else:
-        result = all_event_constraint_check(constraint, events, params)
+        result = all_event_constraint_check(csp_instance, constraint, events, params)
     return result
 
 
@@ -39,21 +40,21 @@ def valid_constraint_check(constraint: ConstraintFunction, events: list[Event], 
     return len(constraint_check(constraint, events, params)) == 0
 
 
-def unary_constraint_check(constraint: ConstraintFunction, events, params: object) -> list:
+def unary_constraint_check(csp_instance: Solver, constraint: ConstraintFunction, events, params: dict) -> list:
     conflicts = []
     for event in events:
-        if not constraint.function(params, event):
+        if not constraint.function(csp_instance, params, event):
             conflicts.append([constraint.string_name, [event.event_id]])
 
     return conflicts
 
 
-def binary_constraint_check(constraint: ConstraintFunction, events, params: object) -> list:
+def binary_constraint_check(csp_instance: Solver, constraint: ConstraintFunction, events, params: dict) -> list:
     conflicts = []
 
     for event_1 in range(len(events)):
         for event_2 in range(event_1 + 1, len(events)):
-            if not constraint.function(params, events[event_1], events[event_2]):
+            if not constraint.function(csp_instance, params, events[event_1], events[event_2]):
                 conflicts.append([constraint.string_name,
                                   [events[event_1].sport.name, str(events[event_1].event_id),
                                    str(events[event_2].event_id)]])
@@ -61,9 +62,9 @@ def binary_constraint_check(constraint: ConstraintFunction, events, params: obje
     return conflicts
 
 
-def all_event_constraint_check(constraint: ConstraintFunction, events, params: object):
+def all_event_constraint_check(csp_instance: Solver, constraint: ConstraintFunction, events, params: dict):
     conflicts = []
-    if not constraint.function(params, events):
+    if not constraint.function(csp_instance, params, events):
         conflicts.append([constraint.string_name, events])
 
     return conflicts
