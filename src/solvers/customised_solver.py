@@ -70,7 +70,6 @@ class CustomisedSolver:
                 assignments[variable.variable] = option
 
                 # Only need to test constraints involving the variable
-                # TODO Eventually we'll need to go through all constraints because of soft constraints
                 constraints_to_check = [constraint for constraint in self.constraints if
                                         variable.variable in constraint.variables]
                 satisfies_all_constraints = self.__test_constraints(assignments, constraints_to_check)

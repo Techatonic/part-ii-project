@@ -97,15 +97,18 @@
         "optional": {
           "avg_distance_to_travel": {
             "weight": 1,
-            "aim": 2
+            "aim": 2,
+            "acceptable": 1
           },
           "avg_rest_between_matches": {
             "weight": 1,
-            "aim": 2
+            "aim": 2,
+            "acceptable": 1
           },
           "avg_capacity": {
-            "weight": 1,
-            "aim": 30000
+            "weight": 10,
+            "aim": 50000,
+            "acceptable": 20000
           }
         }
       }

@@ -184,16 +184,7 @@ class Constraint:
         self.sport = sport
         self.params = params
 
-        if self.variables is None:
-            self.constraint_type = ConstraintType.ALL
-        elif len(self.variables) == 1:
-            self.constraint_type = ConstraintType.UNARY
-        elif len(self.variables) == 2:
-            self.constraint_type = ConstraintType.BINARY
-        else:
-            handle_error(
-                "Invalid number of variables for constraint. At the moment, only unary,"
-                " binary and all constraints are permitted")
+        self.constraint_type = self.constraint.constraint_type
 
     def __str__(self) -> str:
         return f"""{{
@@ -202,6 +193,13 @@ class Constraint:
             sport: {self.sport},
             constraint_type: {self.constraint_type}
         \n}}"""
+
+    def __eq__(self, other):
+        return self.constraint.string_name == other.constraint.string_name and self.sport == other.sport and \
+            self.params == other.params
+
+    def __hash__(self):
+        hash((self.constraint.string_name, self.sport, self.constraint_type, self.params))
 
 
 # Helper Functions

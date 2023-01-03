@@ -57,7 +57,7 @@ def parse_input_constraint_checker(json_input):
                 event["day"],
                 event["start_time"],
                 event["duration"],
-                # TODO Add teams involved
+                event["teams_involved"]
             ))
         return [sports, events, general_constraints, data]
     except Exception as e:

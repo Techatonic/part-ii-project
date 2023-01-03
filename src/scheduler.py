@@ -89,19 +89,10 @@ def solve(solver: Type[Solver], sports: list[Sport], data: dict, general_constra
 
         for sport_specific_constraint in sport.constraints["required"]:
             constraint: ConstraintFunction = get_constraint_from_string(sport_specific_constraint)
-            if constraint.constraint_type == ConstraintType.UNARY:
-                for event in variable_list:
-                    csp_problem.add_constraint(constraint.string_name, [event], sport,
-                                               sport.constraints["required"][sport_specific_constraint])
-            elif constraint.constraint_type == ConstraintType.BINARY:
-                for event_1 in range(len(variable_list)):
-                    for event_2 in range(event_1 + 1, len(variable_list)):
-                        csp_problem.add_constraint(constraint.string_name,
-                                                   [variable_list[event_1], variable_list[event_2]], sport,
-                                                   sport.constraints["required"][sport_specific_constraint])
-            else:
-                csp_problem.add_constraint(constraint.string_name, sport=sport,
-                                           params=sport.constraints["required"][sport_specific_constraint])
+            # TODO This has been changed to make it so you just add the constraint, not the specific events involved.
+            # TODO Fix the effects of this in other places, particularly with the constraint checker functionality
+            csp_problem.add_constraint(constraint.string_name, sport=sport,
+                                       params=sport.constraints["required"][sport_specific_constraint])
 
         result: dict[str, Event] = csp_problem.solve()
         # print("Done: " + sport.name)
@@ -146,4 +137,8 @@ def solve(solver: Type[Solver], sports: list[Sport], data: dict, general_constra
     #         total_csp_problem.add_constraint(constraint.string_name)
     #
     # result: dict[str, Event] = total_csp_problem.solve()
-    return total_events[0]
+
+    print("\n\n\nIn Scheduler: ")
+    # print(total_events)
+
+    # return total_events[0]
