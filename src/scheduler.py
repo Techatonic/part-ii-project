@@ -1,55 +1,67 @@
+import copy
 import math
 import random
 from typing import Type
 
 from src.constraints.constraint import get_constraint_from_string, ConstraintType, ConstraintFunction
+from src.constraints.optional_constraints import maximise_sport_specific_constraints
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
+from src.games.complete_games import CompleteGames
 from src.rounds.knockout_rounds import generate_round_order, Round
-from src.solvers.solver import Solver
+from src.solvers.csop_solver import CSOPSolver
+from src.solvers.customised_solver import CustomisedSolver
+from src.solvers.solver import Solver, SolverType
 from src.sports.sport import Sport
 from src.venues.venue import Venue
 
 
-def solve(solver: Type[Solver], sports: list[Sport], data: dict, general_constraints: list[str],
-          forward_check: bool) -> dict[str, Event] | None:
+def solve(solver: Type[Solver], solver_type: SolverType, sports: list[Sport], data: dict,
+          general_constraints: dict[str, dict],
+          forward_check: bool) -> CompleteGames | None:
     """
     Method to solve the CSP scheduling problem
     :param solver: Type[Solver]
+    :param solver_type: SolverType
     :param sports: List[Sport]
     :param data: dict
     :param general_constraints: List[string]
     :param forward_check: bool
-    :return result: List[Event] | None
+    :return result: dict[str, Event] | None
     """
 
-    total_events: list[dict[str, Event]] = []
+    total_events: dict[str, [dict[str, Event]]] = {}
 
     for sport in sports:
-        csp_problem = solver(forward_check=forward_check)
-        csp_problem.data = data
-
-        for optional_constraint in sport.constraints["optional"]:
-            csp_problem.add_optional_constraint(optional_constraint, sport,
-                                                sport.constraints["optional"][optional_constraint])
-
         sport_name: str = sport.name
         venues: list[Venue] = sport.possible_venues
         min_start_day: int = 0 if sport.min_start_day is None else sport.min_start_day
-        max_finish_day: int = csp_problem.data[
+        max_finish_day: int = data[
             "tournament_length"] if sport.max_finish_day is None else sport.max_finish_day
-
-        # Define the variables
-        # Add matches
         round_order: list[Round] = list(reversed(generate_round_order(sport.num_teams, sport.num_teams_per_game)))
 
-        csp_problem.data.update({
+        csp_data = copy.deepcopy(data)
+        csp_data.update({
+            "domain_type": list[Event],
+            "variable_type": Event,
             "sport": sport,
             "round_order": round_order,
             "venues": venues,
             "min_start_day": min_start_day,
             "max_finish_day": max_finish_day,
+            "solver_type": solver_type,
+            "num_results_to_collect": 10,
+            "comparator": lambda self, other: self.domain[0].round.round_index > other.domain[0].round.round_index or
+                                              self.domain[0].round.round_index == other.domain[0].round.round_index and
+                                              len(self.domain) < len(other.domain),
+            "sport_specific": True,
+            "sports": [sport]
         })
+        csp_problem = solver(csp_data, forward_check=forward_check)
+
+        for optional_constraint in sport.constraints["optional"]:
+            csp_problem.add_optional_constraint(optional_constraint, sport,
+                                                sport.constraints["optional"][optional_constraint])
 
         variable_list = []
         match_num = 1
@@ -94,51 +106,57 @@ def solve(solver: Type[Solver], sports: list[Sport], data: dict, general_constra
             csp_problem.add_constraint(constraint.string_name, sport=sport,
                                        params=sport.constraints["required"][sport_specific_constraint])
 
-        result: dict[str, Event] = csp_problem.solve()
-        # print("Done: " + sport.name)
+        result: list[tuple[float, dict[str, Event]]] | dict[str, Event] = csp_problem.solve()
         if result is None:
             return None
         # Add all sport-specific events to list of all events
-        total_events.append(result)
+        total_events[sport.name] = result
 
-    # print("Done individual sports. Beginning all sports")
+    print("Done individual sports. Beginning all sports")
 
-    # Run CSP across all events in all sports
-    # total_csp_problem = solver(forward_check)
-    # variable_list = []
-    # # print("Add variables")
-    # for sport_events in total_events:
-    #     for sport_event in sport_events:
-    #         options = []
-    #         min_start_time = max(sport_events[sport_event].sport.min_start_time,
-    #                              sport_events[sport_event].venue.min_start_time)
-    #         max_finish_time = min(sport_events[sport_event].sport.max_finish_time,
-    #                               sport_events[sport_event].venue.max_finish_time)
-    #         for time in range(min_start_time,
-    #                           max_finish_time - math.ceil(sport_events[sport_event].sport.match_duration) + 1):
-    #             event_temp = sport_events[sport_event].__copy__()
-    #             event_temp.start_time = time
-    #             options.append(event_temp)
-    #         total_csp_problem.add_variable(sport_events[sport_event].event_id, options)
-    #         variable_list.append(sport_events[sport_event].event_id)
-    #
-    # # Add total sport constraints
-    # for general_constraint in general_constraints:
-    #     constraint = get_constraint_from_string(general_constraint)
-    #     if constraint.constraint_type == ConstraintType.UNARY:
-    #         for event in variable_list:
-    #             total_csp_problem.add_constraint(constraint.string_name, [event])
-    #     elif constraint.constraint_type == ConstraintType.BINARY:
-    #         for event_1 in range(len(variable_list)):
-    #             for event_2 in range(event_1 + 1, len(variable_list)):
-    #                 total_csp_problem.add_constraint(constraint.string_name,
-    #                                                  [variable_list[event_1], variable_list[event_2]])
-    #     else:
-    #         total_csp_problem.add_constraint(constraint.string_name)
-    #
-    # result: dict[str, Event] = total_csp_problem.solve()
+    print()
 
-    print("\n\n\nIn Scheduler: ")
-    # print(total_events)
+    if solver_type in [SolverType.PYTHON_CONSTRAINT_SOLVER, SolverType.CUSTOMISED_SOLVER]:
+        complete_games = CompleteGames(data["tournament_length"], sports)
+        for sport in total_events:
+            for event in total_events[sport]:
+                complete_games.add_event(total_events[sport][event])
+        return complete_games
 
-    # return total_events[0]
+    # Assertion added in case other solvers are created later
+    assert solver_type == SolverType.CSOP_SOLVER
+
+    csp_data = copy.deepcopy(data)
+    csp_data.update({
+        "domain_type": list[tuple[float, dict[str, Event]]],
+        "variable_type": tuple[float, dict[str, Event]],
+        "num_total_events": sum(len(total_events[sport][0][1]) for sport in total_events),
+        "num_results_to_collect": 1,
+        "comparator": lambda self, other: len(self.domain) < len(other.domain),
+        "sport_specific": False,
+        "sports": sports
+    })
+
+    multisport_csp = solver(csp_data, forward_check)
+
+    for sport_key in total_events:
+        sorted_options_by_optimality = sorted(total_events[sport_key], key=lambda option: -option[0])
+        # print(sorted_options_by_optimality)
+        multisport_csp.add_variable(sport_key, sorted_options_by_optimality)
+
+    for required_constraint in general_constraints["required"]:
+        multisport_csp.add_constraint(required_constraint,
+                                      params=general_constraints["required"][required_constraint])
+    for optional_constraint in general_constraints["optional"]:
+        multisport_csp.add_optional_constraint(optional_constraint,
+                                               params=general_constraints["optional"][optional_constraint])
+
+    multisport_csp.add_optional_constraint("maximise_sport_specific_constraints")
+
+    result = multisport_csp.solve()[0][1]
+
+    complete_games = CompleteGames(data["tournament_length"], sports)
+    for sport in result:
+        for event in result[sport][1]:
+            complete_games.add_event(result[sport][1][event])
+    return complete_games

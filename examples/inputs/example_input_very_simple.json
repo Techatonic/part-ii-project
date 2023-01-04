@@ -115,10 +115,7 @@
     }
   ],
   "general_constraints": {
-    "required": {
-      "same_venue_overlapping_time":  {},
-      "same_venue_max_matches_per_day": {}
-    },
+    "required": {},
     "optional": {
       "max_matches_per_day": {
         "weight": 1,

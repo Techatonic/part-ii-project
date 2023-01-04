@@ -2,7 +2,7 @@ from enum import Enum
 
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
-from src.helper.helper import convert_possible_tuple_to_list
+from src.helper.helper import reformat_assignments
 from src.solvers.solver import Solver
 from src.sports.sport import Sport
 
@@ -18,7 +18,7 @@ def same_venue_overlapping_time_constraint_check(csp_instance: Solver, params, a
 
 
 def same_venue_overlapping_time(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
-    variables = convert_possible_tuple_to_list(variables)
+    variables = reformat_assignments(variables)
 
     venues = {}
     for event in variables:
@@ -40,7 +40,7 @@ def same_venue_overlapping_time(csp_instance: Solver, params: dict, *variables: 
 
 
 def team_time_between_matches(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
-    variables = convert_possible_tuple_to_list(variables)
+    variables = reformat_assignments(variables)
     if len(variables) == 0:
         return True
     teams = {}
@@ -61,7 +61,7 @@ def team_time_between_matches(csp_instance: Solver, params: dict, *variables: li
 
 
 def venue_time_between_matches(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
-    variables = convert_possible_tuple_to_list(variables)
+    variables = reformat_assignments(variables)
     if len(variables) == 0:
         return True
     venues = {}
@@ -92,7 +92,7 @@ def no_later_rounds_before_earlier_rounds_constraint_check(csp_instance: Solver,
 
 
 def no_later_rounds_before_earlier_rounds(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
-    variables = convert_possible_tuple_to_list(variables)
+    variables = reformat_assignments(variables)
 
     sports = {}
     for variable in variables:
@@ -119,7 +119,7 @@ def no_later_rounds_before_earlier_rounds(csp_instance: Solver, params: dict, *v
 
 
 def same_venue_max_matches_per_day(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
-    variables = convert_possible_tuple_to_list(variables)
+    variables = reformat_assignments(variables)
     venues = {}
 
     for event in variables:
@@ -138,7 +138,7 @@ def same_venue_max_matches_per_day(csp_instance: Solver, params: dict, *variable
 
 def same_sport_max_matches_per_day(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
     sports = {}
-    variables = convert_possible_tuple_to_list(variables)
+    variables = reformat_assignments(variables)
     for event in variables:
         sport_name = event.sport.name
         if not (sport_name in sports):

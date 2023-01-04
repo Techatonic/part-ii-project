@@ -10,9 +10,9 @@ from src.sports.sport import Sport
 
 
 class CustomisedSolver:
-    def __init__(self, forward_check=False) -> None:
-        self.queue = PriorityQueue()
-
+    def __init__(self, data, forward_check=False) -> None:
+        self.queue = PriorityQueue(data["solver_type"])
+        self.data = data
         self.constraints = []
         self.forward_check = forward_check
 
@@ -29,7 +29,7 @@ class CustomisedSolver:
         # print(function_name, function, variables, sport)
         self.constraints.append(Constraint(function, variables, sport, params))
 
-    def add_optional_constraint(self, function_name: str, sport: Sport | None, params: object = None):
+    def add_optional_constraint(self, function_name: str, sport: Sport | None = None, params: object = None):
         pass
 
     def solve(self) -> dict[str, Event] | None:
@@ -75,7 +75,7 @@ class CustomisedSolver:
                 satisfies_all_constraints = self.__test_constraints(assignments, constraints_to_check)
                 if satisfies_all_constraints:
                     # Remove from all other domains affected
-                    if (not self.forward_check) or ac3(queue, self.constraints):
+                    if (not self.forward_check) or ac3(self, queue, self.constraints):
                         result = self.__solve_variable(assignments, queue)
                         if result is not None:
                             return result

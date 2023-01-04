@@ -15,6 +15,7 @@ from src.scheduler import solve
 from src.solvers.csop_solver import CSOPSolver
 from src.solvers.customised_solver import CustomisedSolver
 from src.solvers.module_solver import ModuleSolver
+from src.solvers.solver import SolverType
 
 
 def main(input_path: str, export_path: str | None = None, constraint_checker_flag: bool = False,
@@ -50,25 +51,26 @@ def run_solver(input_path: str, use_python_module: bool, use_csop_solver: bool, 
     complete_games = CompleteGames(data["tournament_length"], sports)
 
     solver = None
+    solver_type = None
     if use_python_module:
         solver = ModuleSolver
+        solver_type = SolverType.PYTHON_CONSTRAINT_SOLVER
     else:
         if not use_csop_solver:
             solver = CustomisedSolver
+            solver_type = SolverType.CUSTOMISED_SOLVER
         else:
             solver = CSOPSolver
+            solver_type = SolverType.CSOP_SOLVER
 
-    result = solve(solver, sports, data, general_constraints, forward_check)
+    result = solve(solver, solver_type, sports, data, general_constraints, forward_check)
 
     if result is None:
         handle_error("No results found")
 
-    for event_key in result:
-        complete_games.add_event(result[event_key])
-
     if export_path is not None:
         try:
-            complete_games.export(export_path)
+            result.export(export_path)
         except Exception as e:
             print(e)
             handle_error("Export failed. Please try again ensuring a valid output path is given")

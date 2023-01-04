@@ -2,11 +2,11 @@ from bisect import insort
 
 
 class BranchAndBound:
-    def __init__(self):
+    def __init__(self, num_results=100):
         self.best_solutions = []
-        # TODO Add this as an input field - call it something like 'optimality' and say it takes longer to run for
-        # TODO higher values
-        self.num_results = 100
+        # TODO Add this as an input field (curr defined in scheduler) - call it something like 'optimality' and say it
+        #  takes longer to run for higher values
+        self.num_results = num_results
 
     def update_bounds(self, heuristic_val: float, assignments):
         insort(self.best_solutions, (heuristic_val, assignments), key=lambda x: x[0])
