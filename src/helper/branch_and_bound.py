@@ -15,7 +15,7 @@ class BranchAndBound:
         # print([x[0] for x in self.best_solutions])
 
     def get_worst_bound(self):
-        return self.best_solutions[0][0] if len(self.best_solutions) > self.num_results else -float('inf')
+        return self.best_solutions[0][0] if len(self.best_solutions) >= self.num_results else -float('inf')
 
     def get_worst_bound_solution(self):
         return self.best_solutions[0][1] if len(self.best_solutions) > 0 else None

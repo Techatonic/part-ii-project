@@ -1,5 +1,8 @@
 import math
 from bisect import insort
+from enum import Enum
+import operator
+
 import pgeocode
 
 from src.constraints.constraint import ConstraintFunction, ConstraintType
@@ -91,6 +94,12 @@ def avg_distance_to_travel(csp_instance: Solver, *assignments: list[Event]) -> t
 
     curr = sum(match_distances) / len(match_distances)
 
+    # if len(assignments) == csp_instance.data["num_total_events"]:
+    #
+    # print(curr)
+    # print(match_distances)
+    # print()
+
     min_distance = min(csp_instance.data["distances_to_travel"].values())
 
     for new_event in range(csp_instance.data["num_total_events"] - len(match_distances)):
@@ -177,3 +186,12 @@ optional_constraints_list = {
     "maximise_sport_specific_constraints": ConstraintFunction("maximise_sport_specific_constraints",
                                                               maximise_sport_specific_constraints, ConstraintType.ALL)
 }
+
+
+def get_inequality_operator_from_input(inequality: str):
+    if inequality == "MAXIMISE":
+        return operator.gt
+    elif inequality == "MINIMISE":
+        return operator.lt
+    else:
+        handle_error("Inequality operator does not exist")

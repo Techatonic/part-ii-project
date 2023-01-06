@@ -1,3 +1,5 @@
+import copy
+
 from src.constraints.constraint import Constraint, get_constraint_from_string
 from src.constraints.constraint_checker import constraint_check
 from src.error_handling.handle_error import handle_error
@@ -26,8 +28,7 @@ class CustomisedSolver:
     def add_constraint(self, function_name: str, variables: list[str] | None = None,
                        sport: Sport | None = None, params: dict = None) -> None:
         function = get_constraint_from_string(function_name)
-        # print(function_name, function, variables, sport)
-        self.constraints.append(Constraint(function, variables, sport, params))
+        self.constraints.append(Constraint(function, variables, sport, copy.deepcopy(params)))
 
     def add_optional_constraint(self, function_name: str, sport: Sport | None = None, params: object = None):
         pass

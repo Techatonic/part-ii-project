@@ -1,11 +1,12 @@
+import copy
+import time
 from typing import Type
 
 from src.constraints.constraint import Constraint, get_constraint_from_string, ConstraintType
 from src.constraints.constraint_checker import constraint_check
-from src.constraints.optional_constraints import get_optional_constraint_from_string
+from src.constraints.optional_constraints import get_optional_constraint_from_string, get_inequality_operator_from_input
 from src.error_handling.handle_error import handle_error
 
-from src.events.event import Event
 from src.helper.branch_and_bound import BranchAndBound
 from src.helper.helper import copy_assignments
 from src.helper.priority_queue import PriorityQueue
@@ -31,21 +32,29 @@ class CSOPSolver:
     def add_constraint(self, function_name: str, variables: list[str] | None = None,
                        sport: Sport | None = None, params: dict = None) -> None:
         function = get_constraint_from_string(function_name)
-        self.constraints.append(Constraint(function, variables, sport, params))
+        self.constraints.append(Constraint(function, variables, sport, copy.deepcopy(params)))
 
     def add_optional_constraint(self, function_name: str, sport: Sport | None = None, params=None):
-        if params is None:
-            params = {}
-        if not ("weight" in params):
-            params["weight"] = 1
+        params_copy = copy.deepcopy(params)
+        if params_copy is None:
+            params_copy = {}
+        if not ("weight" in params_copy):
+            params_copy["weight"] = 1
+        if "inequality" in params_copy:
+            params_copy["inequality"] = get_inequality_operator_from_input(params_copy["inequality"])
+
         function = get_optional_constraint_from_string(function_name)
-        self.optional_constraints.append(Constraint(function, None, sport, params))
+        self.optional_constraints.append(Constraint(function, None, sport, params_copy))
 
     def solve(self):
+        self.data["start_time"] = time.time()
         self.__preprocess()
 
         bound_data = BranchAndBound(num_results=self.data["num_results_to_collect"])
-        self.__solve_variable({}, self.queue, bound_data)
+        result = self.__solve_variable({}, self.queue, bound_data)
+        if result is None:
+            return None
+        # print(bound_data)
         return bound_data.best_solutions
 
     def __preprocess(self):
@@ -58,7 +67,9 @@ class CSOPSolver:
                         variable.domain.remove(option)
             self.constraints.remove(unary_constraint)
 
-    def __solve_variable(self, assignments, queue: PriorityQueue, bound_data) -> Type[BranchAndBound] | None:
+    def __solve_variable(self, assignments, queue: PriorityQueue, bound_data) -> Type[BranchAndBound] | None | str:
+        if time.time() - self.data["start_time"] > self.data["wait_time"]:
+            raise TimeoutError
         variable_type = self.data["variable_type"]
         assignments: dict[str, variable_type] = copy_assignments(assignments)
         queue = queue.__copy__()
@@ -70,7 +81,9 @@ class CSOPSolver:
                 if bound_data.is_full() and self.__is_acceptable_solution(bound_data.get_worst_bound_solution()):
                     return bound_data
             else:
-                print("Solution found - bound not good enough")
+                # print(heuristic_val, bound_data)
+                # print("Solution found - bound not good enough")
+                pass
         elif len(assignments) == 0 or self.__heuristic(assignments) > bound_data.get_worst_bound():
             variable = queue.pop()
             for option in variable.domain:
@@ -81,13 +94,19 @@ class CSOPSolver:
                     if result is not None:
                         return result
             return None
+        # print("Returning none at end of function")
 
     def __is_acceptable_solution(self, assignments):
         if assignments is None:
             return False
         for optional_constraint_heuristic in self.optional_constraints:
-            if not (optional_constraint_heuristic.constraint.function(self, assignments)[0] >
-                    optional_constraint_heuristic.params["acceptable"]):
+            operation = optional_constraint_heuristic.params["inequality"]
+            # print(operation)
+            if not operation(optional_constraint_heuristic.constraint.function(self, assignments)[0],
+                             optional_constraint_heuristic.params["acceptable"]):
+                print("Failed this function innit", optional_constraint_heuristic.constraint.function, operation,
+                      optional_constraint_heuristic.constraint.function(self, assignments)[0],
+                      optional_constraint_heuristic.params["acceptable"])
                 return False
         return True
 

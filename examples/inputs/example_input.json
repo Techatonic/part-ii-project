@@ -5,63 +5,66 @@
       "venues": [
         {
           "name": "Stamford Bridge",
-          "location_coordinates": [51.4817, -0.1910],
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
           "min_start_time": 12,
           "max_finish_time": 22,
           "capacity": 40000,
-          "max_matches_per_day": 3
+          "max_matches_per_day": 2
         },
         {
           "name": "Olympic Stadium",
           "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
+          "location_address": "Queen Elizabeth Olympic Park, London E20 2ST",
+          "location_postcode": "E20 2ST",
           "min_start_time": 11,
           "max_finish_time": 22,
-          "capacity": 40000,
-          "max_matches_per_day": 3
+          "capacity": 66000,
+          "max_matches_per_day": 2
         },
         {
           "name": "Emirates Stadium",
           "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
+          "location_address": "Hornsey Rd, London N7 7AJ",
+          "location_postcode": "N7 7AJ",
           "min_start_time": 14,
-          "max_finish_time": 21,
-          "capacity": 40000,
-          "max_matches_per_day": 3
+          "max_finish_time": 22,
+          "capacity": 60260,
+          "max_matches_per_day": 2
         },
         {
           "name": "Tottenham Hotspur Stadium",
           "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
+          "location_address": "782 High Rd, London N17 0BX",
+          "location_postcode": "N17 0BX",
           "min_start_time": 12,
           "max_finish_time": 22,
-          "capacity": 40000,
-          "max_matches_per_day": 3
+          "capacity": 62850,
+          "max_matches_per_day": 2
         },
         {
           "name": "The Hive",
           "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
+          "location_address": "Camrose Ave, London HA8 6AG",
+          "location_postcode": "HA8 6AG",
           "min_start_time": 12,
           "max_finish_time": 22,
-          "capacity": 40000,
-          "max_matches_per_day": 3
+          "capacity": 6500,
+          "max_matches_per_day": 2
         },
         {
-          "name": "Etihad Stadium",
+          "name": "Brentford community Stadium",
           "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
+          "location_address": "Lionel Rd S, Brentford TW8 0RU",
+          "location_postcode": "TW8 0RU",
           "min_start_time": 12,
           "max_finish_time": 22,
-          "capacity": 40000,
-          "max_matches_per_day": 3
+          "capacity": 17250,
+          "max_matches_per_day": 2
         }
       ],
       "teams": [
@@ -94,17 +97,17 @@
         "optional": {
           "avg_distance_to_travel": {
             "weight": 1,
-            "aim": 2,
-            "acceptable": 1
+            "inequality": "MINIMISE",
+            "acceptable": 20
           },
           "avg_rest_between_matches": {
             "weight": 1,
-            "aim": 2,
+            "inequality": "MAXIMISE",
             "acceptable": 1
           },
           "avg_capacity": {
-            "weight": 10,
-            "aim": 50000,
+            "weight": 1,
+            "inequality": "MAXIMISE",
             "acceptable": 20000
           }
         }
@@ -155,8 +158,9 @@
         }
       ],
       "teams": [
-        "Carlos Alcaraz", "Rafael Nadal", "Casper Ruud", "Stefanos Tsitsipas",
-        "Novak Djokovic", "Felix Auger-Aliassime", "Daniil Medvedev", "Andrey Rublev"
+        "Carlos Alcaraz", "Rafael Nadal", "Casper Ruud", "Stefanos Tsitsipas", "Novak Djokovic",
+        "Felix Auger-Aliassime", "Daniil Medvedev", "Andrey Rublev", "Taylor Fritz", "Hubert Hurkacz", "Holger Rune",
+        "Alexander Zverev", "Pablo Carreno Busta", "Cameron Norrie", "Jannik Sinner", "Matteo Berrettini"
       ],
       "num_teams_per_game": 2,
       "is_knockout": true,
@@ -182,17 +186,17 @@
         "optional": {
           "avg_distance_to_travel": {
             "weight": 1,
-            "aim": 2,
-            "acceptable": 1
+            "inequality": "MINIMISE",
+            "acceptable": 20
           },
           "avg_rest_between_matches": {
             "weight": 1,
-            "aim": 2,
+            "inequality": "MAXIMISE",
             "acceptable": 1
           },
           "avg_capacity": {
-            "weight": 10,
-            "aim": 15000,
+            "weight": 1,
+            "inequality": "MAXIMISE",
             "acceptable": 12500
           }
         }
@@ -204,8 +208,8 @@
         {
           "name": "Excel_1",
           "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
+          "location_address": "Royal Victoria Dock, 1 Western Gateway, London E16 1XL",
+          "location_postcode": "E16 1XL",
           "min_start_time": 12,
           "max_finish_time": 20,
           "capacity": 20000,
@@ -214,8 +218,8 @@
         {
           "name": "Excel_2",
           "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
+          "location_address": "Royal Victoria Dock, 1 Western Gateway, London E16 1XL",
+          "location_postcode": "E16 1XL",
           "min_start_time": 12,
           "max_finish_time": 20,
           "capacity": 20000,
@@ -249,17 +253,17 @@
         "optional": {
           "avg_distance_to_travel": {
             "weight": 1,
-            "aim": 2,
-            "acceptable": 1
+            "inequality": "MINIMISE",
+            "acceptable": 10
           },
           "avg_rest_between_matches": {
             "weight": 1,
-            "aim": 2,
+            "inequality": "MAXIMISE",
             "acceptable": 1
           },
           "avg_capacity": {
             "weight": 1,
-            "aim": 25000,
+            "inequality": "MAXIMISE",
             "acceptable": 15000
           }
         }
@@ -272,7 +276,7 @@
       "max_matches_per_day": {
         "weight": 1,
         "acceptable": 10,
-        "aim": 5
+        "inequality": "MINIMISE"
       }
     }
   },
