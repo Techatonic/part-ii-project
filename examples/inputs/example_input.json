@@ -74,7 +74,7 @@
       "is_knockout": true,
       "group_stage": null,
       "min_start_day": 1,
-      "max_finish_day": 10,
+      "max_finish_day": 14,
       "min_start_time": 12,
       "max_finish_time": 22,
       "duration": 1.5,
@@ -230,8 +230,8 @@
       "group_stage": null,
       "min_start_day": 1,
       "max_finish_day": 14,
-      "min_start_time": 14,
-      "max_finish_time": 18,
+      "min_start_time": 10,
+      "max_finish_time": 24,
       "duration": 1,
       "constraints": {
         "required": {

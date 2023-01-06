@@ -55,7 +55,7 @@ def solve(solver: Type[Solver], solver_type: SolverType, sports: list[Sport], da
                                               self.domain[0].round.round_index == other.domain[0].round.round_index and
                                               len(self.domain) < len(other.domain),
             "sport_specific": True,
-            "sports": [sport]
+            "sports": [sport],
         })
         csp_problem = solver(csp_data, forward_check=forward_check)
 
@@ -112,10 +112,6 @@ def solve(solver: Type[Solver], solver_type: SolverType, sports: list[Sport], da
         # Add all sport-specific events to list of all events
         total_events[sport.name] = result
 
-    print("Done individual sports. Beginning all sports")
-
-    print()
-
     if solver_type in [SolverType.PYTHON_CONSTRAINT_SOLVER, SolverType.CUSTOMISED_SOLVER]:
         complete_games = CompleteGames(data["tournament_length"], sports)
         for sport in total_events:
@@ -134,7 +130,7 @@ def solve(solver: Type[Solver], solver_type: SolverType, sports: list[Sport], da
         "num_results_to_collect": 1,
         "comparator": lambda self, other: len(self.domain) < len(other.domain),
         "sport_specific": False,
-        "sports": sports
+        "sports": sports,
     })
 
     multisport_csp = solver(csp_data, forward_check)

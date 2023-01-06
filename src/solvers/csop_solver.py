@@ -41,24 +41,11 @@ class CSOPSolver:
         function = get_optional_constraint_from_string(function_name)
         self.optional_constraints.append(Constraint(function, None, sport, params))
 
-    # def __add_all_events_to_constraints(self) -> list[Constraint]:
-    #     events = [variable.variable for variable in self.queue.variables]
-    #     for constraint in range(len(self.constraints)):
-    #         if self.constraints[constraint].variables is not None:
-    #             continue
-    #         self.constraints[constraint].variables = events
-    #     return self.constraints
-
     def solve(self):
-        # Add all events to constraints for all events
-        # TODO Check if it's ok to remove the line below
-        # self.constraints = self.__add_all_events_to_constraints()
-
         self.__preprocess()
 
         bound_data = BranchAndBound(num_results=self.data["num_results_to_collect"])
         self.__solve_variable({}, self.queue, bound_data)
-        print("Returning: ")
         return bound_data.best_solutions
 
     def __preprocess(self):
@@ -107,9 +94,6 @@ class CSOPSolver:
     def __heuristic(self, assignments):
         normalising_factor = sum(optional_constraint_heuristic.params["weight"] for optional_constraint_heuristic in
                                  self.optional_constraints)
-        # print(list(optional_constraint_heuristic.constraint.function(self, assignments)[1] *
-        #           optional_constraint_heuristic.params["weight"] for optional_constraint_heuristic in
-        #           self.optional_constraints))
         return sum(
             optional_constraint_heuristic.constraint.function(self, assignments)[1] *
             optional_constraint_heuristic.params["weight"] for optional_constraint_heuristic in
