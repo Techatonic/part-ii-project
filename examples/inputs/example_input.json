@@ -197,7 +197,7 @@
           "avg_capacity": {
             "weight": 1,
             "inequality": "MAXIMISE",
-            "acceptable": 12500
+            "acceptable": 10000
           }
         }
       }

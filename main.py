@@ -11,8 +11,9 @@ from src.error_handling.handle_error import handle_error
 from src.games.complete_games import CompleteGames
 from src.input_handling.input_reader import read_and_validate_input
 from src.input_handling.parse_input import parse_input, parse_input_constraint_checker
-from src.scheduler import solve
+from src.solvers.csop_scheduler import CSOPScheduler
 from src.solvers.csop_solver import CSOPSolver
+from src.solvers.csp_scheduler import CSPScheduler
 from src.solvers.customised_solver import CustomisedSolver
 from src.solvers.module_solver import ModuleSolver
 from src.solvers.solver import SolverType
@@ -47,23 +48,29 @@ def run_solver(input_path: str, use_python_module: bool, use_csop_solver: bool, 
     input_json = read_and_validate_input(input_path, 'src/input_handling/input_schema.json')
 
     [sports, general_constraints, data] = parse_input(input_json)
+    data["general_constraints"] = general_constraints
 
     complete_games = CompleteGames(data["tournament_length"], sports)
 
     solver = None
     solver_type = None
+    scheduler_type = None
     if use_python_module:
         solver = ModuleSolver
         solver_type = SolverType.PYTHON_CONSTRAINT_SOLVER
+        scheduler_type = CSPScheduler
     else:
         if not use_csop_solver:
             solver = CustomisedSolver
             solver_type = SolverType.CUSTOMISED_SOLVER
+            scheduler_type = CSPScheduler
         else:
             solver = CSOPSolver
             solver_type = SolverType.CSOP_SOLVER
+            scheduler_type = CSOPScheduler
 
-    result = solve(solver, solver_type, sports, data, general_constraints, forward_check)
+    scheduler = scheduler_type(solver, solver_type, sports, data, forward_check)
+    result = scheduler.schedule_events()
 
     if result is None:
         handle_error("No results found")

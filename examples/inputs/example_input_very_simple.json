@@ -97,17 +97,17 @@
         "optional": {
           "avg_distance_to_travel": {
             "weight": 1,
-            "inequality": 2,
+            "inequality": "MINIMISE",
             "acceptable": 1
           },
           "avg_rest_between_matches": {
             "weight": 1,
-            "inequality": 2,
+            "inequality": "MAXIMISE",
             "acceptable": 1
           },
           "avg_capacity": {
             "weight": 10,
-            "inequality": 50000,
+            "inequality": "MAXIMISE",
             "acceptable": 20000
           }
         }
@@ -119,7 +119,7 @@
     "optional": {
       "max_matches_per_day": {
         "weight": 1,
-        "inequality": 5
+        "inequality": "MINIMISE"
       }
     }
   },

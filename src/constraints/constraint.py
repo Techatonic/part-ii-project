@@ -2,7 +2,6 @@ from enum import Enum
 
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
-from src.helper.helper import reformat_assignments
 from src.solvers.solver import Solver
 from src.sports.sport import Sport
 
@@ -17,9 +16,9 @@ def same_venue_overlapping_time_constraint_check(csp_instance: Solver, params, a
     return False
 
 
-def same_venue_overlapping_time(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
-    variables = reformat_assignments(variables)
-
+def same_venue_overlapping_time(csp_instance: Solver, params: dict, variables: dict[str, Event]) -> bool:
+    # variables = reformat_assignments(variables)
+    variables = list(variables.values())
     venues = {}
     for event in variables:
         venue_name = event.venue.name
@@ -39,8 +38,9 @@ def same_venue_overlapping_time(csp_instance: Solver, params: dict, *variables: 
     return True
 
 
-def team_time_between_matches(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
-    variables = reformat_assignments(variables)
+def team_time_between_matches(csp_instance: Solver, params: dict, variables: dict[str, Event]) -> bool:
+    # variables = reformat_assignments(variables)
+    variables = list(variables.values())
     if len(variables) == 0:
         return True
     teams = {}
@@ -60,8 +60,9 @@ def team_time_between_matches(csp_instance: Solver, params: dict, *variables: li
     return True
 
 
-def venue_time_between_matches(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
-    variables = reformat_assignments(variables)
+def venue_time_between_matches(csp_instance: Solver, params: dict, variables: dict[str, Event]) -> bool:
+    # variables = reformat_assignments(variables)
+    variables = list(variables.values())
     if len(variables) == 0:
         return True
     venues = {}
@@ -91,9 +92,9 @@ def no_later_rounds_before_earlier_rounds_constraint_check(csp_instance: Solver,
          a.round.round_index < b.round.round_index and b.day <= a.day)
 
 
-def no_later_rounds_before_earlier_rounds(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
-    variables = reformat_assignments(variables)
-
+def no_later_rounds_before_earlier_rounds(csp_instance: Solver, params: dict, variables: dict[str, Event]) -> bool:
+    # variables = reformat_assignments(variables)
+    variables = list(variables.values())
     sports = {}
     for variable in variables:
         if not (variable.sport.name in sports):
@@ -118,8 +119,9 @@ def no_later_rounds_before_earlier_rounds(csp_instance: Solver, params: dict, *v
     return True
 
 
-def same_venue_max_matches_per_day(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
-    variables = reformat_assignments(variables)
+def same_venue_max_matches_per_day(csp_instance: Solver, params: dict, variables: dict[str, Event]) -> bool:
+    # variables = reformat_assignments(variables)
+    variables = list(variables.values())
     venues = {}
 
     for event in variables:
@@ -136,9 +138,10 @@ def same_venue_max_matches_per_day(csp_instance: Solver, params: dict, *variable
     return True
 
 
-def same_sport_max_matches_per_day(csp_instance: Solver, params: dict, *variables: list[Event]) -> bool:
+def same_sport_max_matches_per_day(csp_instance: Solver, params: dict, variables: dict[str, Event]) -> bool:
     sports = {}
-    variables = reformat_assignments(variables)
+    # variables = reformat_assignments(variables)
+    variables = list(variables.values())
     for event in variables:
         sport_name = event.sport.name
         if not (sport_name in sports):

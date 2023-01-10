@@ -13,7 +13,7 @@ from src.sports.sport import Sport
 
 class CustomisedSolver:
     def __init__(self, data, forward_check=False) -> None:
-        self.queue = PriorityQueue(data["solver_type"])
+        self.queue = PriorityQueue(data["comparator"])
         self.data = data
         self.constraints = []
         self.forward_check = forward_check
@@ -89,9 +89,9 @@ class CustomisedSolver:
 
     # TODO This is basically the same as constraint_check in constraint_checker.py (except this is multiple constraints). Possibly merge them
     def __test_constraints(self, assignments, constraints: list[Constraint]) -> bool:
-        events: list[Event] = list(assignments.values())
+        # events: list[Event] = list(assignments.values())
 
         conflicts = []
         for constraint in constraints:
-            conflicts += constraint_check(self, constraint.constraint, events, constraint.params)
+            conflicts += constraint_check(self, constraint.constraint, assignments, constraint.params)
         return len(conflicts) == 0

@@ -104,9 +104,6 @@ class CSOPSolver:
             # print(operation)
             if not operation(optional_constraint_heuristic.constraint.function(self, assignments)[0],
                              optional_constraint_heuristic.params["acceptable"]):
-                print("Failed this function innit", optional_constraint_heuristic.constraint.function, operation,
-                      optional_constraint_heuristic.constraint.function(self, assignments)[0],
-                      optional_constraint_heuristic.params["acceptable"])
                 return False
         return True
 

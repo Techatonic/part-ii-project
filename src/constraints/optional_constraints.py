@@ -8,17 +8,17 @@ import pgeocode
 from src.constraints.constraint import ConstraintFunction, ConstraintType
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
-from src.helper.helper import reformat_assignments, flatten_events_by_sport_to_list
+from src.helper.helper import flatten_events_by_sport_to_list, remove_scores_from_dict
 from src.solvers.solver import Solver
 
 
 # Optional Constraint Definitions
-def max_matches_per_day_heuristic(csp_instance: Solver, *assignments: dict[str, tuple[float, dict[str, Event]]]) -> \
+def max_matches_per_day_heuristic(csp_instance: Solver, assignments: dict[str, tuple[float, dict[str, Event]]]) -> \
         tuple[
             float, float]:
-    assignments_heuristic = reformat_assignments(assignments, dict)
+    assignments_heuristic = remove_scores_from_dict(assignments)
     events = flatten_events_by_sport_to_list(assignments_heuristic)
-    # print(events)
+
     num_events_to_add = csp_instance.data["num_total_events"] - len(events)
 
     def get_matches_per_day(temp_assignments: list[Event]):
@@ -47,11 +47,8 @@ def max_matches_per_day_heuristic(csp_instance: Solver, *assignments: dict[str, 
     return score, curr
 
 
-def maximise_sport_specific_constraints(csp_instance: Solver,
-                                        *assignments: dict[str, tuple[float, dict[str, Event]]]) -> tuple[float, float]:
-    assignments_by_sport = reformat_assignments(assignments, dict, True)
-    # print(assignments_by_sport)
-    curr = sum(assignments_by_sport[sport][0] for sport in assignments_by_sport)
+def maximise_sport_specific_constraints(csp_instance: Solver, assignments: dict) -> tuple[float, float]:
+    curr = sum(assignments[sport][0] for sport in assignments)
 
     optimal = 0
     try:
@@ -61,22 +58,22 @@ def maximise_sport_specific_constraints(csp_instance: Solver,
         handle_error("Non-CSOPSolver solver used when CSOPSolver was expected")
 
     score = (curr + sum(max(option[0] for option in sport.domain) for sport in csp_instance.queue.variables if
-                        not (sport.variable in assignments_by_sport))) / optimal
+                        not (sport.variable in assignments))) / optimal
     return score, curr
 
 
-def avg_capacity_heuristic(csp_instance: Solver, *assignments: list[Event]) -> tuple[float, float]:
-    assignments_list = reformat_assignments(assignments)
-    count = sum(event.venue.capacity for event in assignments_list)
-    curr = count / len(assignments_list)
+def avg_capacity_heuristic(csp_instance: Solver, assignments: dict[str, Event]) -> tuple[float, float]:
+    assignments = list(assignments.values())
+    count = sum(event.venue.capacity for event in assignments)
+    curr = count / len(assignments)
     max_venue_capacity = max(venue.capacity for venue in csp_instance.data["venues"])
-    heuristic_count = count + max_venue_capacity * (csp_instance.data["num_total_events"] - len(assignments_list))
+    heuristic_count = count + max_venue_capacity * (csp_instance.data["num_total_events"] - len(assignments))
     optimal = max_venue_capacity * csp_instance.data["num_total_events"]
-    # print("Avg_capacity: ", heuristic_count / optimal)
     return curr, heuristic_count / optimal
 
 
-def avg_distance_to_travel(csp_instance: Solver, *assignments: list[Event]) -> tuple[float, float]:
+def avg_distance_to_travel(csp_instance: Solver, assignments: dict[str, Event]) -> tuple[float, float]:
+    assignments = list(assignments.values())
     if not ("distances_to_travel" in csp_instance.data):
         dist = pgeocode.GeoDistance('GB')
         distances_to_travel = {}
@@ -85,20 +82,12 @@ def avg_distance_to_travel(csp_instance: Solver, *assignments: list[Event]) -> t
             distances_to_travel[venue.name] = dist.query_postal_code(accommodation, venue.postcode)
         csp_instance.data["distances_to_travel"] = distances_to_travel
 
-    assignments = reformat_assignments(assignments)
-
     match_distances = []
 
     for event in assignments:
         match_distances.append(csp_instance.data["distances_to_travel"][event.venue.name])
 
     curr = sum(match_distances) / len(match_distances)
-
-    # if len(assignments) == csp_instance.data["num_total_events"]:
-    #
-    # print(curr)
-    # print(match_distances)
-    # print()
 
     min_distance = min(csp_instance.data["distances_to_travel"].values())
 
@@ -112,8 +101,8 @@ def avg_distance_to_travel(csp_instance: Solver, *assignments: list[Event]) -> t
     return curr, optimal / avg_distance
 
 
-def avg_rest_between_matches(csp_instance: Solver, *assignments: list[Event]) -> tuple[float, float]:
-    assignments = reformat_assignments(assignments)
+def avg_rest_between_matches(csp_instance: Solver, assignments: dict[str, Event]) -> tuple[float, float]:
+    assignments = list(assignments.values())
     rest_between_matches: dict[str, list[int]] = {}
     for event in assignments:
         for team in event.teams_involved:
@@ -194,4 +183,4 @@ def get_inequality_operator_from_input(inequality: str):
     elif inequality == "MINIMISE":
         return operator.lt
     else:
-        handle_error("Inequality operator does not exist")
+        handle_error("Inequality given is: \n" + inequality + "\nInequality operator does not exist")
