@@ -89,9 +89,7 @@ class CustomisedSolver:
 
     # TODO This is basically the same as constraint_check in constraint_checker.py (except this is multiple constraints). Possibly merge them
     def __test_constraints(self, assignments, constraints: list[Constraint]) -> bool:
-        # events: list[Event] = list(assignments.values())
-
         conflicts = []
         for constraint in constraints:
-            conflicts += constraint_check(self, constraint.constraint, assignments, constraint.params)
+            conflicts += constraint_check(constraint.constraint, assignments)
         return len(conflicts) == 0

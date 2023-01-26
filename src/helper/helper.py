@@ -4,20 +4,12 @@ from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 
 
-# def reformat_assignments(input_dict, type_wanted=list, keep_optimality_score=False):
-#     if type(input_dict) == tuple:
-#         if len(input_dict) == 1:
-#             input_dict = input_dict[0]
-#             # TODO Make this into new function. reformat should just be to remove the tuple. Different functions for
-#             #   converting to list and dict
-#             if type_wanted == list:
-#                 return list(input_dict.values())
-#             elif type_wanted == dict:
-#                 if keep_optimality_score:
-#                     return input_dict
-#                 else:
-#                     return {sport: input_dict[sport][1] for sport in input_dict}
-#     handle_error("Unknown Error in constraint. Please try again")
+def remove_tuple_from_events(input_val):
+    if type(input_val) == tuple:
+        if len(input_val) == 1:
+            return input_val[0]
+        return list(input_val)
+    return input_val
 
 
 def remove_scores_from_dict(input_dict: dict):
@@ -42,3 +34,10 @@ def copy_assignments(assignments):
         return new_assignments
     except:
         return copy.deepcopy(assignments)
+
+
+def get_alL_events(events):
+    result = {}
+    for sport in events:
+        result.update(events[sport])
+    return result

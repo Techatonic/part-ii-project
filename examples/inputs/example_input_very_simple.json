@@ -1,6 +1,6 @@
 {
-  "sports": [
-    {
+  "sports": {
+    "football": {
       "name": "football",
       "venues": [
         {
@@ -18,7 +18,10 @@
         },
         {
           "name": "Olympic Stadium",
-          "location_coordinates": [51.4817, -0.1910],
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
           "location_address": "Queen Elizabeth Olympic Park, London E20 2ST",
           "location_postcode": "E20 2ST",
           "min_start_time": 11,
@@ -28,7 +31,10 @@
         },
         {
           "name": "Emirates Stadium",
-          "location_coordinates": [51.4817, -0.1910],
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
           "location_address": "Hornsey Rd, London N7 7AJ",
           "location_postcode": "N7 7AJ",
           "min_start_time": 14,
@@ -38,7 +44,10 @@
         },
         {
           "name": "Tottenham Hotspur Stadium",
-          "location_coordinates": [51.4817, -0.1910],
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
           "location_address": "782 High Rd, London N17 0BX",
           "location_postcode": "N17 0BX",
           "min_start_time": 12,
@@ -48,7 +57,10 @@
         },
         {
           "name": "The Hive",
-          "location_coordinates": [51.4817, -0.1910],
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
           "location_address": "Camrose Ave, London HA8 6AG",
           "location_postcode": "HA8 6AG",
           "min_start_time": 12,
@@ -57,21 +69,36 @@
           "max_matches_per_day": 2
         },
         {
-          "name": "Etihad Stadium",
-          "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Ashton New Rd, Manchester M11 3FF",
-          "location_postcode": "M11 3FF",
+          "name": "Brentford community Stadium",
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
+          "location_address": "Lionel Rd S, Brentford TW8 0RU",
+          "location_postcode": "TW8 0RU",
           "min_start_time": 12,
           "max_finish_time": 22,
-          "capacity": 53400,
+          "capacity": 17250,
           "max_matches_per_day": 2
         }
       ],
       "teams": [
-        "Brazil", "Argentina", "France", "Belgium", "England", "Netherlands", "Croatia",
-        "Italy", "Portugal", "Spain", "Morocco", "Switzerland", "USA", "Germany", "Mexico", "Uruguay",
-        "Colombia", "Denmark", "Senegal", "Japan", "Peru", "Poland", "Sweden",
-        "Iran", "South Korea", "Ukraine", "Australia", "Wales", "Serbia", "Tunisia", "Chile", "Costa Rica"
+        "Brazil",
+        "Argentina",
+        "France",
+        "Belgium",
+        "England",
+        "Netherlands",
+        "Croatia",
+        "Italy",
+        "Portugal",
+        "Spain",
+        "Morocco",
+        "Switzerland",
+        "USA",
+        "Germany",
+        "Mexico",
+        "Uruguay"
       ],
       "num_teams_per_game": 2,
       "is_knockout": true,
@@ -84,11 +111,11 @@
       "constraints": {
         "required": {
           "same_venue_overlapping_time": {},
-          "same_venue_max_matches_per_day":  {},
-          "team_time_between_matches":  {
+          "same_venue_max_matches_per_day": {},
+          "team_time_between_matches": {
             "min_time_between_matches": 2
           },
-          "venue_time_between_matches":  {
+          "venue_time_between_matches": {
             "min_time_between_matches": 2
           },
           "no_later_rounds_before_earlier_rounds": {},
@@ -98,28 +125,29 @@
           "avg_distance_to_travel": {
             "weight": 1,
             "inequality": "MINIMISE",
-            "acceptable": 1
+            "acceptable": 20
           },
           "avg_rest_between_matches": {
             "weight": 1,
             "inequality": "MAXIMISE",
-            "acceptable": 1
+            "acceptable": 2
           },
           "avg_capacity": {
-            "weight": 10,
+            "weight": 1,
             "inequality": "MAXIMISE",
             "acceptable": 20000
           }
         }
       }
     }
-  ],
+  },
   "general_constraints": {
     "required": {},
     "optional": {
       "max_matches_per_day": {
         "weight": 1,
-        "inequality": "MINIMISE"
+        "inequality": "MINIMISE",
+        "acceptable": 3
       }
     }
   },

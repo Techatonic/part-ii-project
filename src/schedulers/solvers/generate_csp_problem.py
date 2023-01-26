@@ -6,7 +6,7 @@ from src.constraints.constraint import ConstraintFunction, get_constraint_from_s
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.rounds.knockout_rounds import Round, generate_round_order
-from src.solvers.solver import Solver
+from src.schedulers.solvers.solver import Solver
 from src.venues.venue import Venue
 
 
@@ -34,7 +34,6 @@ def generate_csp_problem(solver: Type[Solver], data: dict, forward_check: bool) 
         for match in matches:
             options = []
             # Shuffle venues, days and times
-            random.shuffle(venues)
             specific_min_start_day = min_start_day + \
                                      sport.constraints["required"]["team_time_between_matches"][
                                          "min_time_between_matches"] * (
@@ -45,18 +44,18 @@ def generate_csp_problem(solver: Type[Solver], data: dict, forward_check: bool) 
             if specific_min_start_day >= specific_max_finish_day and len(round_order) > 1:
                 handle_error("Insufficient number of days given for sport: ", sport.name)
             day_order = list(range(specific_min_start_day, specific_max_finish_day + 1))
-            random.shuffle(day_order)
 
             for venue in venues:
                 min_start_time = max(sport.min_start_time, venue.min_start_time)
                 max_finish_time = min(sport.max_finish_time, venue.max_finish_time)
                 time_order = list(range(min_start_time, math.ceil(max_finish_time - sport.match_duration)))
-                random.shuffle(time_order)
                 for time in time_order:
                     for day in day_order:
                         options.append(Event(sport, match_num, venue=venue, event_round=event_round,
                                              day=day, start_time=time, duration=sport.match_duration,
                                              teams_involved=match))
+
+            random.shuffle(options)
 
             csp_problem.add_variable(sport_name + "_" + str(match_num), options)
             variable_list.append(sport_name + "_" + str(match_num))

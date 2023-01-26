@@ -46,10 +46,9 @@ class Sport:
     def __eq__(self, other) -> bool:
         return self.name == other.name
 
+# def convert_string_to_sport_instance(sport_string, sports) -> Sport:
+#     for sport in sports:
+#         if sport_string == sport:
+#             return sport
 
-def convert_string_to_sport_instance(sport_string, sports) -> Sport:
-    for sport in sports:
-        if sport_string == sport.name:
-            return sport
-
-    handle_error("Sport '" + sport_string + "' does not exist")
+#     handle_error("Sport '" + sport_string + "' does not exist")

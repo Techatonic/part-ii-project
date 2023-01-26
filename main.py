@@ -9,14 +9,16 @@ from argparse import ArgumentParser
 from src.constraints.constraint_checker import constraint_checker
 from src.error_handling.handle_error import handle_error
 from src.games.complete_games import CompleteGames
+from src.helper import global_variables
 from src.input_handling.input_reader import read_and_validate_input
 from src.input_handling.parse_input import parse_input, parse_input_constraint_checker
-from src.solvers.csop_scheduler import CSOPScheduler
-from src.solvers.csop_solver import CSOPSolver
-from src.solvers.csp_scheduler import CSPScheduler
-from src.solvers.customised_solver import CustomisedSolver
-from src.solvers.module_solver import ModuleSolver
-from src.solvers.solver import SolverType
+from src.schedulers.solvers.csop_scheduler import CSOPScheduler
+from src.schedulers.solvers.csop_solver import CSOPSolver
+from src.schedulers.solvers.csp_scheduler import CSPScheduler
+from src.schedulers.solvers.customised_solver import CustomisedSolver
+from src.schedulers.solvers.module_solver import ModuleSolver
+from src.schedulers.solvers.solver import SolverType
+from src.sports.sport import Sport
 
 
 def main(input_path: str, export_path: str | None = None, constraint_checker_flag: bool = False,
@@ -30,7 +32,12 @@ def main(input_path: str, export_path: str | None = None, constraint_checker_fla
 def run_constraint_checker(input_path: str) -> None:
     input_json = read_and_validate_input(input_path, 'src/input_handling/input_schema_constraint_checker.json')
 
-    [sports, events, general_constraints, _] = parse_input_constraint_checker(input_json)
+    [sports, events, general_constraints, data] = parse_input_constraint_checker(input_json)
+    add_global_variables(sports, data, general_constraints)
+
+    default_constraints = {"valid_match_time": {}}
+    general_constraints['required'].update(default_constraints)
+    print(general_constraints)
 
     conflicts = constraint_checker(sports, events, general_constraints)
 
@@ -43,11 +50,30 @@ def run_constraint_checker(input_path: str) -> None:
     exit()
 
 
+def add_global_variables(sports: dict[str, Sport], data, general_constraints):
+    global_variables.data = data
+    for sport_name in sports:
+        sport = sports[sport_name]
+        global_variables.venues[sport_name] = sports[sport_name].possible_venues
+        global_variables.constraint_params[sport_name]: dict[str, dict] = {
+            "required": {},
+            "optional": {}
+        }
+        for constraint in sport.constraints["required"]:
+            global_variables.constraint_params[sport.name]["required"][constraint] = sport.constraints["required"][
+                constraint]
+        for constraint in sport.constraints["optional"]:
+            global_variables.constraint_params[sport.name]["optional"][constraint] = sport.constraints["optional"][
+                constraint]
+    global_variables.constraint_params["general"] = general_constraints
+
+
 def run_solver(input_path: str, use_python_module: bool, use_csop_solver: bool, forward_check: bool,
                export_path: str | None = None) -> None:
     input_json = read_and_validate_input(input_path, 'src/input_handling/input_schema.json')
 
     [sports, general_constraints, data] = parse_input(input_json)
+    add_global_variables(sports, data, general_constraints)
     data["general_constraints"] = general_constraints
 
     complete_games = CompleteGames(data["tournament_length"], sports)

@@ -2,12 +2,13 @@ from enum import Enum
 
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
-from src.solvers.solver import Solver
+from src.helper import global_variables
+from src.helper.helper import remove_tuple_from_events
 from src.sports.sport import Sport
 
 
 # Constraint Definitions
-def same_venue_overlapping_time_constraint_check(csp_instance: Solver, params, a, b) -> bool:
+def same_venue_overlapping_time_constraint_check(a, b) -> bool:
     if not (a.venue == b.venue and a.day == b.day and (
             (a.start_time <= b.start_time < a.start_time + a.duration) or
             (b.start_time <= a.start_time < b.start_time + b.duration)
@@ -16,9 +17,10 @@ def same_venue_overlapping_time_constraint_check(csp_instance: Solver, params, a
     return False
 
 
-def same_venue_overlapping_time(csp_instance: Solver, params: dict, variables: dict[str, Event]) -> bool:
-    # variables = reformat_assignments(variables)
-    variables = list(variables.values())
+def same_venue_overlapping_time(*variables: dict[str, Event]) -> bool:
+    variables = remove_tuple_from_events(variables)
+
+    variables = list(variables.values()) if type(variables) == dict else variables
     venues = {}
     for event in variables:
         venue_name = event.venue.name
@@ -38,9 +40,9 @@ def same_venue_overlapping_time(csp_instance: Solver, params: dict, variables: d
     return True
 
 
-def team_time_between_matches(csp_instance: Solver, params: dict, variables: dict[str, Event]) -> bool:
-    # variables = reformat_assignments(variables)
-    variables = list(variables.values())
+def team_time_between_matches(*variables: dict[str, Event]) -> bool:
+    variables = remove_tuple_from_events(variables)
+    variables = list(variables.values()) if type(variables) == dict else variables
     if len(variables) == 0:
         return True
     teams = {}
@@ -54,15 +56,17 @@ def team_time_between_matches(csp_instance: Solver, params: dict, variables: dic
                 teams[team] = [event_day]
             else:
                 for other_day in teams[team]:
-                    if abs(event_day - other_day) < params["min_time_between_matches"]:
+                    if abs(event_day - other_day) < \
+                            global_variables.constraint_params[sport]["required"]["team_time_between_matches"][
+                                "min_time_between_matches"]:
                         return False
                 teams[team].append(event_day)
     return True
 
 
-def venue_time_between_matches(csp_instance: Solver, params: dict, variables: dict[str, Event]) -> bool:
-    # variables = reformat_assignments(variables)
-    variables = list(variables.values())
+def venue_time_between_matches(*variables: dict[str, Event]) -> bool:
+    variables = remove_tuple_from_events(variables)
+    variables = list(variables.values()) if type(variables) == dict else variables
     if len(variables) == 0:
         return True
     venues = {}
@@ -77,24 +81,26 @@ def venue_time_between_matches(csp_instance: Solver, params: dict, variables: di
             else:
                 for other_time in venues[venue_name][event.day]:
                     if abs(event.start_time + event.duration - other_time) < \
-                            params["min_time_between_matches"] or \
+                            global_variables.constraint_params[sport]["required"]["venue_time_between_matches"][
+                                "min_time_between_matches"] or \
                             abs(event.start_time - (other_time + event.duration)) < \
-                            params["min_time_between_matches"]:
+                            global_variables.constraint_params[sport]["required"]["venue_time_between_matches"][
+                                "min_time_between_matches"]:
                         return False
                 venues[venue_name][event.day].append(event.start_time)
     return True
 
 
-def no_later_rounds_before_earlier_rounds_constraint_check(csp_instance: Solver, params: dict, a, b) -> bool:
+def no_later_rounds_before_earlier_rounds_constraint_check(a, b) -> bool:
     return a.sport == b.sport and \
         (a.round.round_index == b.round.round_index or
          a.round.round_index > b.round.round_index and a.day <= b.day or
          a.round.round_index < b.round.round_index and b.day <= a.day)
 
 
-def no_later_rounds_before_earlier_rounds(csp_instance: Solver, params: dict, variables: dict[str, Event]) -> bool:
-    # variables = reformat_assignments(variables)
-    variables = list(variables.values())
+def no_later_rounds_before_earlier_rounds(*variables: dict[str, Event]) -> bool:
+    variables = remove_tuple_from_events(variables)
+    variables = list(variables.values()) if type(variables) == dict else variables
     sports = {}
     for variable in variables:
         if not (variable.sport.name in sports):
@@ -119,9 +125,9 @@ def no_later_rounds_before_earlier_rounds(csp_instance: Solver, params: dict, va
     return True
 
 
-def same_venue_max_matches_per_day(csp_instance: Solver, params: dict, variables: dict[str, Event]) -> bool:
-    # variables = reformat_assignments(variables)
-    variables = list(variables.values())
+def same_venue_max_matches_per_day(*variables: dict[str, Event]) -> bool:
+    variables = remove_tuple_from_events(variables)
+    variables = list(variables.values()) if type(variables) == dict else variables
     venues = {}
 
     for event in variables:
@@ -138,10 +144,10 @@ def same_venue_max_matches_per_day(csp_instance: Solver, params: dict, variables
     return True
 
 
-def same_sport_max_matches_per_day(csp_instance: Solver, params: dict, variables: dict[str, Event]) -> bool:
+def same_sport_max_matches_per_day(*variables: dict[str, Event]) -> bool:
     sports = {}
-    # variables = reformat_assignments(variables)
-    variables = list(variables.values())
+    variables = remove_tuple_from_events(variables)
+    variables = list(variables.values()) if type(variables) == dict else variables
     for event in variables:
         sport_name = event.sport.name
         if not (sport_name in sports):
@@ -156,13 +162,20 @@ def same_sport_max_matches_per_day(csp_instance: Solver, params: dict, variables
     return True
 
 
-def max_capacity_at_final(csp_instance: Solver, params: dict, event: Event):
-    return not (event.round.round_index == 0) or event.venue == max(csp_instance.data["venues"],
+def max_capacity_at_final(event: Event):
+    sport = event.sport
+    return not (event.round.round_index == 0) or event.venue == max(global_variables.venues[sport.name],
                                                                     key=lambda venue: venue.capacity)
 
 
-# Constraint class definitions
+def valid_match_time(event: Event):
+    sport = event.sport
+    return sport.min_start_day <= event.day <= sport.max_finish_day and \
+        sport.min_start_time <= event.start_time and \
+        event.start_time + event.duration <= sport.max_finish_time
 
+
+# Constraint class definitions
 class ConstraintType(Enum):
     UNARY = 1,
     BINARY = 2,
@@ -244,5 +257,6 @@ constraints_list = {
                                                      ConstraintType.ALL),
     "max_matches_per_day": ConstraintFunction("max_matches_per_day", same_sport_max_matches_per_day,
                                               ConstraintType.ALL),
-    "max_capacity_at_final": ConstraintFunction("max_capacity_at_final", max_capacity_at_final, ConstraintType.UNARY)
+    "max_capacity_at_final": ConstraintFunction("max_capacity_at_final", max_capacity_at_final, ConstraintType.UNARY),
+    "valid_match_time": ConstraintFunction("valid_match_time", valid_match_time, ConstraintType.UNARY)
 }

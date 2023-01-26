@@ -54,7 +54,6 @@ class CSOPSolver:
         result = self.__solve_variable({}, self.queue, bound_data)
         if result is None:
             return None
-        # print(bound_data)
         return bound_data.best_solutions
 
     def __preprocess(self):
@@ -63,7 +62,7 @@ class CSOPSolver:
         for unary_constraint in unary_constraints:
             for variable in self.queue.variables:
                 for option in variable.domain:
-                    if not unary_constraint.constraint.function(self, unary_constraint.params, option):
+                    if not unary_constraint.constraint.function(option):
                         variable.domain.remove(option)
             self.constraints.remove(unary_constraint)
 
@@ -82,7 +81,7 @@ class CSOPSolver:
                     return bound_data
             else:
                 # print(heuristic_val, bound_data)
-                # print("Solution found - bound not good enough")
+                print("Solution found - bound not good enough")
                 pass
         elif len(assignments) == 0 or self.__heuristic(assignments) > bound_data.get_worst_bound():
             variable = queue.pop()
@@ -101,7 +100,6 @@ class CSOPSolver:
             return False
         for optional_constraint_heuristic in self.optional_constraints:
             operation = optional_constraint_heuristic.params["inequality"]
-            # print(operation)
             if not operation(optional_constraint_heuristic.constraint.function(self, assignments)[0],
                              optional_constraint_heuristic.params["acceptable"]):
                 return False
@@ -118,5 +116,5 @@ class CSOPSolver:
     def __test_constraints(self, assignments, constraints: list[Constraint]) -> bool:
         conflicts = []
         for constraint in constraints:
-            conflicts += constraint_check(self, constraint.constraint, assignments, constraint.params)
+            conflicts += constraint_check(constraint.constraint, assignments)
         return len(conflicts) == 0

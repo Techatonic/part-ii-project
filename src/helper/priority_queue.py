@@ -1,9 +1,5 @@
 import heapq
 
-from src.error_handling.handle_error import handle_error
-from src.events.event import Event
-from src.solvers.solver import SolverType
-
 
 class PriorityQueue:
     def __init__(self, comparator, variables_dict: dict[str, any] | None = None) -> None:

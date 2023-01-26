@@ -1,212 +1,215 @@
 {
-  "$schema": "https://json-schema.org/draft/2019-09/schema",
-  "$id": "http://example.com/example.json",
-  "type": "object",
-  "default": {},
-  "title": "Root Schema",
-  "required": [
-    "sports",
-    "general_constraints",
-    "data"
-  ],
-  "properties": {
-    "sports": {
-      "type": "array",
-      "default": [],
-      "title": "The sports Schema",
-      "items": {
-        "type": "object",
-        "title": "A Schema",
-        "required": [
-          "name",
-          "venues",
-          "teams",
-          "num_teams_per_game",
-          "is_knockout",
-          "group_stage",
-          "min_start_day",
-          "max_finish_day",
-          "min_start_time",
-          "max_finish_time",
-          "duration",
-          "constraints"
-        ],
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "The name Schema",
-            "examples": [
-              "football",
-              "tennis",
-              "boxing_heavyweight"
-            ]
-          },
-          "venues": {
-            "type": "array",
-            "title": "The venues Schema",
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/Welcome1",
+    "definitions": {
+        "Welcome1": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "sports": {
+                    "$ref": "#/definitions/Sports"
+                },
+                "general_constraints": {
+                    "$ref": "#/definitions/GeneralConstraints"
+                },
+                "data": {
+                    "$ref": "#/definitions/Data"
+                }
+            },
+            "required": [
+                "data",
+                "general_constraints",
+                "sports"
+            ],
+            "title": "Welcome1"
+        },
+        "Data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "tournament_length": {
+                    "type": "integer"
+                },
+                "athletes_accommodation_postcode": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "athletes_accommodation_postcode",
+                "tournament_length"
+            ],
+            "title": "Data"
+        },
+        "GeneralConstraints": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "required": {
+                    "$ref": "#/definitions/GeneralConstraintsRequired"
+                },
+                "optional": {
+                    "$ref": "#/definitions/GeneralConstraintsOptional"
+                }
+            },
+            "required": [
+                "optional",
+                "required"
+            ],
+            "title": "GeneralConstraints"
+        },
+        "GeneralConstraintsOptional": {
+            "type": "object",
+            "title": "GeneralConstraintsOptional"
+        },
+        "GeneralConstraintsRequired": {
+            "type": "object",
+            "title": "GeneralConstraintsRequired"
+        },
+        "Sports": {
+            "type": "object",
             "items": {
-              "type": "object",
-              "title": "A Schema",
-              "properties": {
+                "$ref": "#/definitions/Sport"
+            },
+            "title": "Sports"
+        },
+        "Sport": {
+            "type": "object",
+            "properties": {
                 "name": {
-                  "type": "string",
-                  "title": "The name Schema",
-                  "examples": [
-                    "Stamford Bridge",
-                    "Olympic Stadium",
-                    "Emirates Stadium",
-                    "Tottenham Hotspur Stadium",
-                    "Wimbledon_Centre_Court",
-                    "Wimbledon_Court_1",
-                    "Wimbledon_Court_2",
-                    "Wimbledon_Court_3",
-                    "Excel_1",
-                    "Excel_2"
-                  ]
+                    "type": "string"
                 },
-                "location_coordinates": {
-                  "type": "array",
-                  "title": "The location_coordinates Schema",
-                  "items": {
-                    "type": "number",
-                    "title": "A Schema",
-                    "examples": [
-                      51.4817,
-                      -0.1910
-                    ]
-                  }
+                "venues": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Venue"
+                    }
                 },
-                "location_address": {
-                  "type": "string",
-                  "title": "The location_address Schema",
-                  "examples": [
-                    "Fulham Rd., London SW6 1HS"
-                  ]
+                "teams": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
-                "location_postcode": {
-                  "type": "string",
-                  "title": "The location_postcode Schema",
-                  "examples": [
-                    "SW6 1HS"
-                  ]
+                "num_teams_per_game": {
+                    "type": "integer"
+                },
+                "is_knockout": {
+                    "type": "boolean"
+                },
+                "group_stage": {
+                    "type": "null"
+                },
+                "min_start_day": {
+                    "type": "integer"
+                },
+                "max_finish_day": {
+                    "type": "integer"
                 },
                 "min_start_time": {
-                  "type": "integer",
-                  "title": "The min_start_time Schema"
+                    "type": "integer"
                 },
                 "max_finish_time": {
-                  "type": "integer",
-                  "title": "The max_finish_time Schema"
+                    "type": "integer"
+                },
+                "duration": {
+                    "type": "number"
+                },
+                "constraints": {
+                    "$ref": "#/definitions/Constraints"
+                }
+            },
+            "required": [
+                "constraints",
+                "duration",
+                "group_stage",
+                "is_knockout",
+                "max_finish_day",
+                "max_finish_time",
+                "min_start_day",
+                "min_start_time",
+                "name",
+                "num_teams_per_game",
+                "teams",
+                "venues"
+            ],
+            "title": "Sport"
+        },
+        "Constraints": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "required": {
+                    "$ref": "#/definitions/ConstraintsRequired"
+                },
+                "optional": {
+                    "$ref": "#/definitions/ConstraintsOptional"
+                }
+            },
+            "required": [
+                "optional",
+                "required"
+            ],
+            "title": "Constraints"
+        },
+        "ConstraintsOptional": {
+            "type": "object",
+            "title": "ConstraintsOptional"
+        },
+        "ConstraintsRequired": {
+            "type": "object",
+            "title": "ConstraintsRequired"
+        },
+        "Venue": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "location_coordinates": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "location_address": {
+                    "type": "string"
+                },
+                "location_postcode": {
+                    "type": "string"
+                },
+                "min_start_time": {
+                    "type": "integer"
+                },
+                "max_finish_time": {
+                    "type": "integer"
                 },
                 "capacity": {
-                  "type": "integer",
-                  "title": "The capacity Schema"
+                    "type": "integer"
                 },
                 "max_matches_per_day": {
-                  "type": "integer",
-                  "title": "The max_matches_per_day Schema"
+                    "type": "integer"
                 }
-              }
-            }
-          },
-          "teams": {
-            "type": "array",
-            "title": "The teams Schema",
-            "items": {
-              "type": "string",
-              "title": "Team name",
-              "examples": ["Great Britain", "Novak Djokovic"]
-            }
-          },
-          "num_teams_per_game": {
-            "type": "integer",
-            "title": "The num_teams_per_game Schema"
-          },
-          "is_knockout": {
-            "type": "boolean",
-            "title": "The is_knockout Schema"
-          },
-          "group_stage": {
-            "type": "null",
-            "title": "The group_stage Schema"
-          },
-          "min_start_day": {
-            "type": "integer",
-            "title": "The min_start_day Schema"
-          },
-          "max_finish_day": {
-            "type": "integer",
-            "title": "The max_finish_day Schema"
-          },
-          "min_start_time": {
-            "type": "integer",
-            "title": "The min_start_time Schema"
-          },
-          "max_finish_time": {
-            "type": "integer",
-            "title": "The max_finish_time Schema"
-          },
-          "duration": {
-            "type": [
-              "number",
-              "integer"
+            },
+            "required": [
+                "capacity",
+                "location_address",
+                "location_coordinates",
+                "location_postcode",
+                "max_finish_time",
+                "max_matches_per_day",
+                "min_start_time",
+                "name"
             ],
-            "title": "The duration Schema",
-            "examples": [
-              1.5,
-              3,
-              1
-            ]
-          },
-          "constraints": {
-            "type": "object",
-            "title": "The constraints Schema",
-            "properties": {
-              "required": {
-                "type": "object",
-                "default": {},
-                "title": "The required constraints Schema"
-              },
-              "optional": {
-                "type": "object",
-                "default": {},
-                "title": "The optional constraints Schema"
-              }
-            }
-          }
+            "title": "Venue"
+        },
+        "Inequality": {
+            "type": "string",
+            "enum": [
+                "MINIMISE",
+                "MAXIMISE"
+            ],
+            "title": "Inequality"
         }
-      },
-      "general_constraints": {
-        "type": "object",
-        "properties": {
-          "required": {
-            "type": "object",
-            "default": {},
-            "title": "The required constraints Schema"
-          },
-          "optional": {
-            "type": "object",
-            "default": {},
-            "title": "The optional constraints Schema"
-          }
-        }
-      },
-      "data": {
-        "type": "object",
-        "properties": {
-          "tournament_length": {
-            "type": "integer",
-            "default": 0,
-            "title": "The tournament_length Schema",
-            "examples": [
-              14
-            ]
-          },
-          "athletes_accommodation_postcode": {
-            "type": "string"
-          }
-        }
-      }
     }
-  }
 }

@@ -1,6 +1,6 @@
 {
-  "sports": [
-    {
+  "sports": {
+    "football": {
       "name": "football",
       "venues": [
         {
@@ -18,7 +18,10 @@
         },
         {
           "name": "Olympic Stadium",
-          "location_coordinates": [51.4817, -0.1910],
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
           "location_address": "Queen Elizabeth Olympic Park, London E20 2ST",
           "location_postcode": "E20 2ST",
           "min_start_time": 11,
@@ -28,7 +31,10 @@
         },
         {
           "name": "Emirates Stadium",
-          "location_coordinates": [51.4817, -0.1910],
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
           "location_address": "Hornsey Rd, London N7 7AJ",
           "location_postcode": "N7 7AJ",
           "min_start_time": 14,
@@ -38,7 +44,10 @@
         },
         {
           "name": "Tottenham Hotspur Stadium",
-          "location_coordinates": [51.4817, -0.1910],
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
           "location_address": "782 High Rd, London N17 0BX",
           "location_postcode": "N17 0BX",
           "min_start_time": 12,
@@ -48,7 +57,10 @@
         },
         {
           "name": "The Hive",
-          "location_coordinates": [51.4817, -0.1910],
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
           "location_address": "Camrose Ave, London HA8 6AG",
           "location_postcode": "HA8 6AG",
           "min_start_time": 12,
@@ -58,7 +70,10 @@
         },
         {
           "name": "Brentford community Stadium",
-          "location_coordinates": [51.4817, -0.1910],
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
           "location_address": "Lionel Rd S, Brentford TW8 0RU",
           "location_postcode": "TW8 0RU",
           "min_start_time": 12,
@@ -68,10 +83,38 @@
         }
       ],
       "teams": [
-        "Brazil", "Argentina", "France", "Belgium", "England", "Netherlands", "Croatia",
-        "Italy", "Portugal", "Spain", "Morocco", "Switzerland", "USA", "Germany", "Mexico", "Uruguay",
-        "Colombia", "Denmark", "Senegal", "Japan", "Peru", "Poland", "Sweden",
-        "Iran", "South Korea", "Ukraine", "Australia", "Wales", "Serbia", "Tunisia", "Chile", "Costa Rica"
+        "Brazil",
+        "Argentina",
+        "France",
+        "Belgium",
+        "England",
+        "Netherlands",
+        "Croatia",
+        "Italy",
+        "Portugal",
+        "Spain",
+        "Morocco",
+        "Switzerland",
+        "USA",
+        "Germany",
+        "Mexico",
+        "Uruguay",
+        "Colombia",
+        "Denmark",
+        "Senegal",
+        "Japan",
+        "Peru",
+        "Poland",
+        "Sweden",
+        "Iran",
+        "South Korea",
+        "Ukraine",
+        "Australia",
+        "Wales",
+        "Serbia",
+        "Tunisia",
+        "Chile",
+        "Costa Rica"
       ],
       "num_teams_per_game": 2,
       "is_knockout": true,
@@ -84,11 +127,11 @@
       "constraints": {
         "required": {
           "same_venue_overlapping_time": {},
-          "same_venue_max_matches_per_day":  {},
-          "team_time_between_matches":  {
+          "same_venue_max_matches_per_day": {},
+          "team_time_between_matches": {
             "min_time_between_matches": 2
           },
-          "venue_time_between_matches":  {
+          "venue_time_between_matches": {
             "min_time_between_matches": 2
           },
           "no_later_rounds_before_earlier_rounds": {},
@@ -113,12 +156,15 @@
         }
       }
     },
-    {
+    "tennis": {
       "name": "tennis",
       "venues": [
         {
           "name": "Wimbledon_Centre_Court",
-          "location_coordinates": [51.4817, -0.1910],
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
           "min_start_time": 12,
@@ -128,7 +174,10 @@
         },
         {
           "name": "Wimbledon_Court_1",
-          "location_coordinates": [51.4817, -0.1910],
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
           "min_start_time": 12,
@@ -138,7 +187,10 @@
         },
         {
           "name": "Wimbledon_Court_2",
-          "location_coordinates": [51.4817, -0.1910],
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
           "min_start_time": 12,
@@ -148,7 +200,10 @@
         },
         {
           "name": "Wimbledon_Court_3",
-          "location_coordinates": [51.4817, -0.1910],
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
           "min_start_time": 12,
@@ -158,9 +213,22 @@
         }
       ],
       "teams": [
-        "Carlos Alcaraz", "Rafael Nadal", "Casper Ruud", "Stefanos Tsitsipas", "Novak Djokovic",
-        "Felix Auger-Aliassime", "Daniil Medvedev", "Andrey Rublev", "Taylor Fritz", "Hubert Hurkacz", "Holger Rune",
-        "Alexander Zverev", "Pablo Carreno Busta", "Cameron Norrie", "Jannik Sinner", "Matteo Berrettini"
+        "Carlos Alcaraz",
+        "Rafael Nadal",
+        "Casper Ruud",
+        "Stefanos Tsitsipas",
+        "Novak Djokovic",
+        "Felix Auger-Aliassime",
+        "Daniil Medvedev",
+        "Andrey Rublev",
+        "Taylor Fritz",
+        "Hubert Hurkacz",
+        "Holger Rune",
+        "Alexander Zverev",
+        "Pablo Carreno Busta",
+        "Cameron Norrie",
+        "Jannik Sinner",
+        "Matteo Berrettini"
       ],
       "num_teams_per_game": 2,
       "is_knockout": true,
@@ -173,11 +241,11 @@
       "constraints": {
         "required": {
           "same_venue_overlapping_time": {},
-          "same_venue_max_matches_per_day":  {},
-          "team_time_between_matches":  {
+          "same_venue_max_matches_per_day": {},
+          "team_time_between_matches": {
             "min_time_between_matches": 2
           },
-          "venue_time_between_matches":  {
+          "venue_time_between_matches": {
             "min_time_between_matches": 2
           },
           "no_later_rounds_before_earlier_rounds": {},
@@ -202,12 +270,15 @@
         }
       }
     },
-    {
+    "boxing_heavyweight": {
       "name": "boxing_heavyweight",
       "venues": [
         {
           "name": "Excel_1",
-          "location_coordinates": [51.4817, -0.1910],
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
           "location_address": "Royal Victoria Dock, 1 Western Gateway, London E16 1XL",
           "location_postcode": "E16 1XL",
           "min_start_time": 12,
@@ -217,7 +288,10 @@
         },
         {
           "name": "Excel_2",
-          "location_coordinates": [51.4817, -0.1910],
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
           "location_address": "Royal Victoria Dock, 1 Western Gateway, London E16 1XL",
           "location_postcode": "E16 1XL",
           "min_start_time": 12,
@@ -227,7 +301,14 @@
         }
       ],
       "teams": [
-        "Oleksandr Usyk", "Tyson Fury", "Deontay Wilder", "Anthony Joshua", "Joe Joyce", "Andy Ruiz Jr", "Dillian Whyte", "Luis Ortiz"
+        "Oleksandr Usyk",
+        "Tyson Fury",
+        "Deontay Wilder",
+        "Anthony Joshua",
+        "Joe Joyce",
+        "Andy Ruiz Jr",
+        "Dillian Whyte",
+        "Luis Ortiz"
       ],
       "num_teams_per_game": 2,
       "is_knockout": true,
@@ -240,11 +321,11 @@
       "constraints": {
         "required": {
           "same_venue_overlapping_time": {},
-          "same_venue_max_matches_per_day":  {},
-          "team_time_between_matches":  {
+          "same_venue_max_matches_per_day": {},
+          "team_time_between_matches": {
             "min_time_between_matches": 2
           },
-          "venue_time_between_matches":  {
+          "venue_time_between_matches": {
             "min_time_between_matches": 2
           },
           "no_later_rounds_before_earlier_rounds": {},
@@ -269,7 +350,7 @@
         }
       }
     }
-  ],
+  },
   "general_constraints": {
     "required": {},
     "optional": {

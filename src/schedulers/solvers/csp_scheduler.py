@@ -6,15 +6,15 @@ from src.events.event import Event
 from src.games.complete_games import CompleteGames
 from src.rounds.knockout_rounds import generate_round_order, Round
 from src.scheduler import Scheduler
-from src.solvers.generate_csp_problem import generate_csp_problem
-from src.solvers.solver import Solver, SolverType
+from src.schedulers.solvers.generate_csp_problem import generate_csp_problem
+from src.schedulers.solvers.solver import Solver, SolverType
 from src.sports.sport import Sport
 from src.venues.venue import Venue
 
 
 class CSPScheduler(Scheduler, ABC):
 
-    def __init__(self, solver: Type[Solver], solver_type: SolverType, sports: list[Sport], data: dict,
+    def __init__(self, solver: Type[Solver], solver_type: SolverType, sports: dict[str, Sport], data: dict,
                  forward_check: bool):
         """
         Class to solve the CSP scheduling problem
@@ -31,6 +31,7 @@ class CSPScheduler(Scheduler, ABC):
         total_events = {}
 
         for sport in self.sports:
+            sport = self.sports[sport]
             venues: list[Venue] = sport.possible_venues
             min_start_day: int = 0 if sport.min_start_day is None else sport.min_start_day
             max_finish_day: int = self.data[
