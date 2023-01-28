@@ -37,9 +37,10 @@ def run_constraint_checker(input_path: str) -> None:
 
     default_constraints = {"valid_match_time": {}}
     general_constraints['required'].update(default_constraints)
-    print(general_constraints)
+    # print(general_constraints)
 
     conflicts = constraint_checker(sports, events, general_constraints)
+    print(conflicts)
 
     if len(conflicts) == 0:
         print("No conflicts found - all constraints are satisfied")
@@ -76,8 +77,6 @@ def run_solver(input_path: str, use_python_module: bool, use_csop_solver: bool, 
     add_global_variables(sports, data, general_constraints)
     data["general_constraints"] = general_constraints
 
-    complete_games = CompleteGames(data["tournament_length"], sports)
-
     solver = None
     solver_type = None
     scheduler_type = None
@@ -104,6 +103,7 @@ def run_solver(input_path: str, use_python_module: bool, use_csop_solver: bool, 
     if export_path is not None:
         try:
             result.export(export_path)
+
         except Exception as e:
             print(e)
             handle_error("Export failed. Please try again ensuring a valid output path is given")
@@ -114,7 +114,8 @@ if __name__ == "__main__":
     parser = ArgumentParser('Automated Event Scheduler')
     parser.add_argument("--import_path", required=True, type=str, help="read json input from this path")
     parser.add_argument("--export_path", required=False, type=str, help="export json output to this path")
-    parser.add_argument("-c", action='store_true', help="run input_path on constraint checker")
+    parser.add_argument("-c", required=False, type=int,
+                        help="run input_path on constraint checker and allow up to c changed events")
     parser.add_argument("-m", action='store_true', help="run on python-constraint CSP solver")
     parser.add_argument("-o", action='store_true',
                         help="run on CSOP solver, will take longer to run but produce more optimal results")
@@ -127,7 +128,7 @@ if __name__ == "__main__":
 
     if not os.path.exists(args.import_path):
         handle_error("Path does not exist")
-    if args.c + args.m + args.o > 1:
+    if (args.c is not None) + args.m + args.o > 1:
         handle_error("Can select only one of constraint checker, python-constraint CSP solver and CSOP solver")
 
     start_time = time.time()

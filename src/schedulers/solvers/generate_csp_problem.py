@@ -44,14 +44,15 @@ def generate_csp_problem(solver: Type[Solver], data: dict, forward_check: bool) 
             if specific_min_start_day >= specific_max_finish_day and len(round_order) > 1:
                 handle_error("Insufficient number of days given for sport: ", sport.name)
             day_order = list(range(specific_min_start_day, specific_max_finish_day + 1))
-
+            event_id = sport.name + "_" + str(match_num)
+            print(event_id)
             for venue in venues:
                 min_start_time = max(sport.min_start_time, venue.min_start_time)
                 max_finish_time = min(sport.max_finish_time, venue.max_finish_time)
                 time_order = list(range(min_start_time, math.ceil(max_finish_time - sport.match_duration)))
                 for time in time_order:
                     for day in day_order:
-                        options.append(Event(sport, match_num, venue=venue, event_round=event_round,
+                        options.append(Event(sport, event_id, venue=venue, event_round=event_round,
                                              day=day, start_time=time, duration=sport.match_duration,
                                              teams_involved=match))
 

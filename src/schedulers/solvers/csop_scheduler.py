@@ -117,11 +117,13 @@ class CSOPScheduler(Scheduler, ABC):
                                                params={"inequality": "MAXIMISE", "acceptable": 0})
 
         try:
-            result = multisport_csp.solve()[0][1]
+            result = multisport_csp.solve()
+            eval_score = result[0][0]
+            result = result[0][1]
             if result is None:
                 print("No results")
                 return None
-            complete_games = CompleteGames(self.data["tournament_length"], self.sports)
+            complete_games = CompleteGames(self.data["tournament_length"], self.sports, eval_score)
             for sport in result:
                 for event in result[sport][1]:
                     complete_games.add_event(result[sport][1][event])

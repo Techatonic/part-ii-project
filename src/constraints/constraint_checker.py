@@ -14,15 +14,12 @@ def constraint_checker(sports: dict[str, Sport], events: dict[str, list[Event]],
         for constraint_string in sports[sport_name].constraints['required']:
             constraint = get_constraint_from_string(constraint_string)
             conflicts += constraint_check(constraint, events[sport_name])
-            if sport_name == "boxing_heavyweight":
-                print(sport_name, constraint_string, constraint_check(constraint, events[sport_name]))
 
     for constraint_string in general_constraints['required']:
         if not (constraint_string in constraints_list):
             handle_error("Constraint not valid: " + constraint_string)
 
         constraint = get_constraint_from_string(constraint_string)
-
         all_events = get_alL_events(events)
         conflicts += constraint_check(constraint, all_events)
 

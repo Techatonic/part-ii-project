@@ -81,7 +81,7 @@ class CSOPSolver:
                     return bound_data
             else:
                 # print(heuristic_val, bound_data)
-                print("Solution found - bound not good enough")
+                # print("Solution found - bound not good enough")
                 pass
         elif len(assignments) == 0 or self.__heuristic(assignments) > bound_data.get_worst_bound():
             variable = queue.pop()
