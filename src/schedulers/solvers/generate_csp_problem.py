@@ -45,7 +45,6 @@ def generate_csp_problem(solver: Type[Solver], data: dict, forward_check: bool) 
                 handle_error("Insufficient number of days given for sport: ", sport.name)
             day_order = list(range(specific_min_start_day, specific_max_finish_day + 1))
             event_id = sport.name + "_" + str(match_num)
-            print(event_id)
             for venue in venues:
                 min_start_time = max(sport.min_start_time, venue.min_start_time)
                 max_finish_time = min(sport.max_finish_time, venue.max_finish_time)
