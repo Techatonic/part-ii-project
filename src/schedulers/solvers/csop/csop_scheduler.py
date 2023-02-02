@@ -7,25 +7,23 @@ from src.games.complete_games import CompleteGames
 from src.rounds.knockout_rounds import generate_round_order, Round
 from src.scheduler import Scheduler
 from src.schedulers.solvers.generate_csp_problem import generate_csp_problem
-from src.schedulers.solvers.solver import Solver, SolverType
+from src.schedulers.solvers.solver import Solver
 from src.sports.sport import Sport
 from src.venues.venue import Venue
 
 
 class CSOPScheduler(Scheduler, ABC):
 
-    def __init__(self, solver: Type[Solver], solver_type: SolverType, sports: dict[str, Sport], data: dict,
-                 forward_check: bool):
+    def __init__(self, solver: Type[Solver], sports: dict[str, Sport], data: dict, forward_check: bool):
         """
         Class to solve the CSP scheduling problem
         :param solver: Type[Solver]
-        :param solver_type: SolverType
         :param sports: List[Sport]
         :param data: dict
         :param forward_check: bool
         :return result: dict[str, Event] | None
         """
-        super().__init__(solver, solver_type, sports, data, forward_check)
+        super().__init__(solver, sports, data, forward_check)
 
     def schedule_events(self) -> CompleteGames | None:
 
@@ -50,7 +48,6 @@ class CSOPScheduler(Scheduler, ABC):
                 "venues": venues,
                 "min_start_day": min_start_day,
                 "max_finish_day": max_finish_day,
-                "solver_type": self.solver_type,
                 "num_results_to_collect": 1,
                 "comparator": lambda curr, other: curr.domain[0].round.round_index > other.domain[
                     0].round.round_index or

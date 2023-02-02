@@ -1,14 +1,6 @@
 from abc import ABC, abstractmethod
-from enum import Enum
 
-from src.events.event import Event
 from src.sports.sport import Sport
-
-
-class SolverType(Enum):
-    PYTHON_CONSTRAINT_SOLVER = 1,
-    CUSTOMISED_SOLVER = 2,
-    CSOP_SOLVER = 3
 
 
 class Solver(ABC):

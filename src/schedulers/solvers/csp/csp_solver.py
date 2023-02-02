@@ -11,7 +11,7 @@ from src.helper.priority_queue import PriorityQueue
 from src.sports.sport import Sport
 
 
-class CustomisedSolver:
+class CSPSolver:
     def __init__(self, data, forward_check=False) -> None:
         self.queue = PriorityQueue(data["comparator"])
         self.data = data
@@ -34,15 +34,10 @@ class CustomisedSolver:
         pass
 
     def solve(self) -> dict[str, Event] | None:
-        # print(set(option.venue.name for option in self.queue.variables[0].domain))
-        # print(set(option.day for option in self.queue.variables[0].domain))
-        # print(set(option.start_time for option in self.queue.variables[0].domain))
-
         # Add all events to constraints for all events
         self.constraints = self.__add_all_events_to_constraints()
 
         result = self.__solve_variable({}, self.queue)
-        # print(result)
         return result
 
     def __add_all_events_to_constraints(self) -> list[Constraint]:

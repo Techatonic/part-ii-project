@@ -8,28 +8,27 @@ from argparse import ArgumentParser
 
 from src.constraints.constraint_checker import constraint_checker
 from src.error_handling.handle_error import handle_error
-from src.games.complete_games import CompleteGames
 from src.helper import global_variables
 from src.input_handling.input_reader import read_and_validate_input
 from src.input_handling.parse_input import parse_input, parse_input_constraint_checker
-from src.schedulers.solvers.csop_scheduler import CSOPScheduler
-from src.schedulers.solvers.csop_solver import CSOPSolver
-from src.schedulers.solvers.csp_scheduler import CSPScheduler
-from src.schedulers.solvers.customised_solver import CustomisedSolver
-from src.schedulers.solvers.module_solver import ModuleSolver
-from src.schedulers.solvers.solver import SolverType
+from src.schedulers.solvers.constraint_fixing.constraint_fixing_scheduler import ConstraintFixingScheduler
+from src.schedulers.solvers.csop.csop_scheduler import CSOPScheduler
+from src.schedulers.solvers.csop.csop_solver import CSOPSolver
+from src.schedulers.solvers.csp.csp_scheduler import CSPScheduler
+from src.schedulers.solvers.csp.csp_solver import CSPSolver
+from src.schedulers.solvers.csp_module.module_solver import ModuleSolver
 from src.sports.sport import Sport
 
 
 def main(input_path: str, export_path: str | None = None, constraint_checker_flag: bool = False,
          use_python_module: bool = False, use_csop_solver: bool = False, forward_check=False) -> None:
     if constraint_checker_flag:
-        run_constraint_checker(input_path)
+        run_constraint_checker(input_path, export_path)
     else:
         run_solver(input_path, use_python_module, use_csop_solver, forward_check, export_path)
 
 
-def run_constraint_checker(input_path: str) -> None:
+def run_constraint_checker(input_path: str, export_path: str | None = None) -> None:
     input_json = read_and_validate_input(input_path, 'src/input_handling/input_schema_constraint_checker.json')
 
     [sports, events, general_constraints, data] = parse_input_constraint_checker(input_json)
@@ -37,17 +36,36 @@ def run_constraint_checker(input_path: str) -> None:
 
     default_constraints = {"valid_match_time": {}}
     general_constraints['required'].update(default_constraints)
-    # print(general_constraints)
 
     conflicts = constraint_checker(sports, events, general_constraints)
-    print(conflicts)
+    # print(conflicts)
 
     if len(conflicts) == 0:
         print("No conflicts found - all constraints are satisfied")
     else:
         handle_error("Errors found - See below:", exit_program=False)
         for conflict in conflicts:
-            handle_error(str(conflict), exit_program=False)
+            conflict_str = conflict[0].ljust(35) + str(conflict[1])
+            handle_error(conflict_str, exit_program=False)
+        data['conflicts'] = conflicts
+        scheduler = ConstraintFixingScheduler(CSPSolver, sports, data, False, events)
+        print("Done schedule")
+        # TODO Start here
+        result = scheduler.schedule_events()
+
+        if result is None:
+            handle_error("No results found")
+
+        if export_path is not None:
+            try:
+                result.export(export_path)
+
+            except Exception as e:
+                print(e)
+                handle_error("Export failed. Please try again ensuring a valid output path is given")
+        else:
+            print("No export path given")
+
     exit()
 
 
@@ -78,23 +96,19 @@ def run_solver(input_path: str, use_python_module: bool, use_csop_solver: bool, 
     data["general_constraints"] = general_constraints
 
     solver = None
-    solver_type = None
-    scheduler_type = None
+    scheduler = None
     if use_python_module:
         solver = ModuleSolver
-        solver_type = SolverType.PYTHON_CONSTRAINT_SOLVER
-        scheduler_type = CSPScheduler
+        scheduler = CSPScheduler
     else:
         if not use_csop_solver:
-            solver = CustomisedSolver
-            solver_type = SolverType.CUSTOMISED_SOLVER
-            scheduler_type = CSPScheduler
+            solver = CSPSolver
+            scheduler = CSPScheduler
         else:
             solver = CSOPSolver
-            solver_type = SolverType.CSOP_SOLVER
-            scheduler_type = CSOPScheduler
+            scheduler = CSOPScheduler
 
-    scheduler = scheduler_type(solver, solver_type, sports, data, forward_check)
+    scheduler = scheduler(solver, sports, data, forward_check)
     result = scheduler.schedule_events()
 
     if result is None:

@@ -41,3 +41,11 @@ def get_alL_events(events):
     for sport in events:
         result.update(events[sport])
     return result
+
+
+def remove_duplicates_from_list(lst: list) -> list:
+    new_list = []
+    for item in lst:
+        if not (item in new_list):
+            new_list.append(item)
+    return new_list

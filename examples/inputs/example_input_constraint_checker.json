@@ -462,9 +462,9 @@
                 "round": "Round of 16",
                 "sport": "football",
                 "event_id": "football_22",
-                "venue": "Brentford community Stadium",
-                "day": 7,
-                "start_time": 20,
+                "venue": "Olympic Stadium",
+                "day": 8,
+                "start_time": 15,
                 "duration": 1.5,
                 "teams_involved": [
                     "Peru",
