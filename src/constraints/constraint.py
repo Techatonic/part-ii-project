@@ -21,7 +21,6 @@ def same_venue_overlapping_time_constraint_check(a, b, constraint_check=False) -
 
 def same_venue_overlapping_time(*variables: dict[str, Event], constraint_check=False) -> list[str]:
     variables = remove_tuple_from_events(variables)
-
     variables = list(variables.values()) if type(variables) == dict else variables
     venues = {}
     conflicts = []
@@ -66,7 +65,7 @@ def team_time_between_matches(*variables: dict[str, Event], constraint_check=Fal
                             global_variables.constraint_params[sport]["required"]["team_time_between_matches"][
                                 "min_time_between_matches"]:
                         if not constraint_check:
-                            return [event.event_id, other_event.event_id]
+                            return [event.event_id, other_event]
                         conflicts += [event.event_id, other_event.event_id]
                 teams[team][event.event_id] = event_day
     return remove_duplicates_from_list(conflicts)

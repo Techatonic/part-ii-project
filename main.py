@@ -12,6 +12,7 @@ from src.helper import global_variables
 from src.input_handling.input_reader import read_and_validate_input
 from src.input_handling.parse_input import parse_input, parse_input_constraint_checker
 from src.schedulers.solvers.constraint_fixing.constraint_fixing_scheduler import ConstraintFixingScheduler
+from src.schedulers.solvers.constraint_fixing.constraint_fixing_solver import ConstraintFixingSolver
 from src.schedulers.solvers.csop.csop_scheduler import CSOPScheduler
 from src.schedulers.solvers.csop.csop_solver import CSOPSolver
 from src.schedulers.solvers.csp.csp_scheduler import CSPScheduler
@@ -20,15 +21,15 @@ from src.schedulers.solvers.csp_module.module_solver import ModuleSolver
 from src.sports.sport import Sport
 
 
-def main(input_path: str, export_path: str | None = None, constraint_checker_flag: bool = False,
+def main(input_path: str, export_path: str | None = None, constraint_checker_flag: int = 1,
          use_python_module: bool = False, use_csop_solver: bool = False, forward_check=False) -> None:
     if constraint_checker_flag:
-        run_constraint_checker(input_path, export_path)
+        run_constraint_checker(input_path, export_path, constraint_checker_flag)
     else:
         run_solver(input_path, use_python_module, use_csop_solver, forward_check, export_path)
 
 
-def run_constraint_checker(input_path: str, export_path: str | None = None) -> None:
+def run_constraint_checker(input_path: str, export_path: str | None = None, num_changes=1) -> None:
     input_json = read_and_validate_input(input_path, 'src/input_handling/input_schema_constraint_checker.json')
 
     [sports, events, general_constraints, data] = parse_input_constraint_checker(input_json)
@@ -48,9 +49,8 @@ def run_constraint_checker(input_path: str, export_path: str | None = None) -> N
             conflict_str = conflict[0].ljust(35) + str(conflict[1])
             handle_error(conflict_str, exit_program=False)
         data['conflicts'] = conflicts
-        scheduler = ConstraintFixingScheduler(CSPSolver, sports, data, False, events)
+        scheduler = ConstraintFixingScheduler(ConstraintFixingSolver, sports, data, False, events, num_changes)
         print("Done schedule")
-        # TODO Start here
         result = scheduler.schedule_events()
 
         if result is None:

@@ -16,7 +16,8 @@ from src.venues.venue import Venue
 
 
 class ConstraintFixingScheduler(Scheduler, ABC):
-    def __init__(self, solver: type[Solver], sports: dict[str, Sport], data: dict, forward_check: bool, events):
+    def __init__(self, solver: type[Solver], sports: dict[str, Sport], data: dict, forward_check: bool, events,
+                 num_changes: int):
         """
         Class to solve the CSP scheduling problem
         :param solver: Type[Solver]
@@ -28,12 +29,14 @@ class ConstraintFixingScheduler(Scheduler, ABC):
         super().__init__(solver, sports, data, forward_check)
         self.events = events
         self.sports_data = {}
+        self.num_changes_allowed = num_changes
 
     def schedule_events(self) -> CompleteGames | None:
         total_events = {}
 
         for sport in self.sports:
             sport = self.sports[sport]
+            sport.constraints['required']["valid_match_time"] = {}
             venues: list[Venue] = sport.possible_venues
             min_start_day: int = 0 if sport.min_start_day is None else sport.min_start_day
             max_finish_day: int = self.data[
@@ -50,15 +53,13 @@ class ConstraintFixingScheduler(Scheduler, ABC):
                 "min_start_day": min_start_day,
                 "max_finish_day": max_finish_day,
                 "num_results_to_collect": 1,
-                "comparator": lambda curr, other: curr.domain[0].round.round_index > other.domain[
-                    0].round.round_index or
-                                                  curr.domain[0].round.round_index == other.domain[
-                                                      0].round.round_index and
-                                                  len(curr.domain) < len(other.domain),
+                "comparator": None,
                 "sport_specific": True,
                 "sports": [sport],
                 "wait_time": 5,
-                "num_total_events": len(self.events)
+                "num_total_events": len(self.events),
+                "assignments": self.events,
+                "num_changes_allowed": self.num_changes_allowed
             })
             self.sports_data[sport.name] = csp_data
 
@@ -82,7 +83,6 @@ class ConstraintFixingScheduler(Scheduler, ABC):
         sport = self.sports[sport_name]
         csp_problem.data["num_total_events"] = self.sports_data[sport_name]["num_total_events"]
 
-        # TODO GENERATE THEM HERE
         conflicts = self.data['conflicts']
         events_to_change = []
         for conflict in conflicts:
