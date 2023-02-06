@@ -202,6 +202,8 @@ def valid_match_time(event: Event, constraint_check=False) -> list[str]:
     bool_val = sport.min_start_day <= event.day <= sport.max_finish_day and \
                sport.min_start_time <= event.start_time and \
                event.start_time + event.duration <= sport.max_finish_time
+    # if event.event_id == "football_31":
+    #    print("football_31: ", bool_val)
     return [] if bool_val else [event.event_id]
 
 

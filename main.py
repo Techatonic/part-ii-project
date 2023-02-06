@@ -49,10 +49,10 @@ def run_constraint_checker(input_path: str, export_path: str | None = None, num_
             conflict_str = conflict[0].ljust(35) + str(conflict[1])
             handle_error(conflict_str, exit_program=False)
         data['conflicts'] = conflicts
-        scheduler = ConstraintFixingScheduler(ConstraintFixingSolver, sports, data, False, events, num_changes)
-        print("Done schedule")
-        result = scheduler.schedule_events()
 
+        scheduler = ConstraintFixingScheduler(ConstraintFixingSolver, sports, data, False, events, num_changes)
+
+        result = scheduler.schedule_events()
         if result is None:
             handle_error("No results found")
 

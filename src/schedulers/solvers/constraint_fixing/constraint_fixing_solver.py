@@ -1,6 +1,6 @@
 import copy
 
-from src.constraints.constraint import Constraint, get_constraint_from_string
+from src.constraints.constraint import Constraint, get_constraint_from_string, constraints_list
 from src.constraints.constraint_checker import constraint_check
 from src.error_handling.handle_error import handle_error
 
@@ -49,21 +49,23 @@ class ConstraintFixingSolver:
         self.constraints = self.__add_all_events_to_constraints()
 
         all_events = [value for variable in self.variables for value in self.variables[variable]]
-        queue = [(0, value, self.assignments) for value in all_events]
+        queue = [(0, value, self.assignments, []) for value in all_events]
 
         if self.__test_constraints(self.assignments, self.constraints):
             return self.assignments
 
         while len(queue) > 0:
-            depth, changed_event, assignments = queue.pop(0)
+            depth, changed_event, assignments, path = queue.pop(0)
             assignments = copy_assignments(assignments)
-            if depth > self.num_changes_allowed:
+            if depth >= self.num_changes_allowed:
                 return None
             assignments[changed_event.event_id] = changed_event
             if self.__test_constraints(assignments, self.constraints):
+                print("Success by changing ", path + [changed_event.event_id], " at depth: ", depth + 1)
                 return assignments
             for next_event in all_events:
-                queue.append((depth + 1, next_event, assignments))
+                if next_event.event_id != changed_event.event_id:
+                    queue.append((depth + 1, next_event, assignments, path + [changed_event.event_id]))
 
         return None
 
