@@ -7,34 +7,27 @@
             "additionalProperties": false,
             "properties": {
                 "sports": {
-                    "type": "array",
+                    "type": "object",
                     "items": {
-                        "$ref": "#/definitions/SportElement"
-                    }
-                },
-                "events": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Event"
+                        "$ref": "#/definitions/SportsElement"
                     }
                 },
                 "general_constraints": {
-                    "type": "array",
+                    "type": "object",
                     "items": {
-                        "$ref": "#/definitions/ConstraintEnum"
+                        "$ref": "#/definitions/Constraint"
                     }
                 },
-                "tournament_length": {
-                    "type": "integer"
+                "data": {
+                    "type": "object"
                 }
             },
             "required": [
-                "events",
                 "general_constraints",
                 "sports",
-                "tournament_length"
+                "data"
             ],
-            "title": "Welcome2"
+            "title": "Constraint_Checker_Input"
         },
         "Event": {
             "type": "object",
@@ -79,6 +72,14 @@
                 "venue"
             ],
             "title": "Event"
+        },
+        "SportsElement": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "$ref": "#/definitions/SportElement"
+                }
+            }
         },
         "SportElement": {
             "type": "object",
@@ -129,7 +130,13 @@
                 "constraints": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/ConstraintEnum"
+                        "$ref": "#/definitions/Constraint"
+                    }
+                },
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Event"
                     }
                 }
             },
@@ -145,7 +152,8 @@
                 "name",
                 "teams",
                 "num_teams_per_game",
-                "venues"
+                "venues",
+                "events"
             ],
             "title": "SportElement"
         },
@@ -229,8 +237,13 @@
             ],
             "title": "LocationPostcode"
         },
-        "ConstraintEnum": {
-            "type": "string",
+        "Constraint": {
+            "type": "object",
+            "properties": {
+                "weight": {"type": "integer"},
+                "inequality": {"type": "string", "enum": ["MINIMISE, MAXIMISE"]},
+                "acceptable": {"type": "integer"}
+            },
             "enum": [
                 "same_venue_overlapping_time_constraint_check",
                 "no_later_rounds_before_earlier_rounds_constraint_check",

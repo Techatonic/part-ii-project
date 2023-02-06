@@ -1,705 +1,1227 @@
 {
-  "sports": [
-    {
-      "name": "football",
-      "venues": [
-        {
-          "name": "Stamford Bridge",
-          "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
-          "min_start_time": 12,
-          "max_finish_time": 22,
-          "capacity": 40000,
-          "max_matches_per_day": 2
+   "sports":{
+      "football": {
+        "name": "football",
+        "venues": [
+          {
+            "name": "Stamford Bridge",
+            "location_coordinates": [
+              51.4817,
+              -0.1910
+            ],
+            "location_address": "Fulham Rd., London SW6 1HS",
+            "location_postcode": "SW6 1HS",
+            "min_start_time": 12,
+            "max_finish_time": 22,
+            "capacity": 40000,
+            "max_matches_per_day": 2
+          },
+          {
+            "name": "Olympic Stadium",
+            "location_coordinates": [
+              51.4817,
+              -0.1910
+            ],
+            "location_address": "Queen Elizabeth Olympic Park, London E20 2ST",
+            "location_postcode": "E20 2ST",
+            "min_start_time": 11,
+            "max_finish_time": 22,
+            "capacity": 66000,
+            "max_matches_per_day": 2
+          },
+          {
+            "name": "Emirates Stadium",
+            "location_coordinates": [
+              51.4817,
+              -0.1910
+            ],
+            "location_address": "Hornsey Rd, London N7 7AJ",
+            "location_postcode": "N7 7AJ",
+            "min_start_time": 14,
+            "max_finish_time": 22,
+            "capacity": 60260,
+            "max_matches_per_day": 2
+          },
+          {
+            "name": "Tottenham Hotspur Stadium",
+            "location_coordinates": [
+              51.4817,
+              -0.1910
+            ],
+            "location_address": "782 High Rd, London N17 0BX",
+            "location_postcode": "N17 0BX",
+            "min_start_time": 12,
+            "max_finish_time": 22,
+            "capacity": 62850,
+            "max_matches_per_day": 2
+          },
+          {
+            "name": "The Hive",
+            "location_coordinates": [
+              51.4817,
+              -0.1910
+            ],
+            "location_address": "Camrose Ave, London HA8 6AG",
+            "location_postcode": "HA8 6AG",
+            "min_start_time": 12,
+            "max_finish_time": 22,
+            "capacity": 6500,
+            "max_matches_per_day": 2
+          },
+          {
+            "name": "Brentford community Stadium",
+            "location_coordinates": [
+              51.4817,
+              -0.1910
+            ],
+            "location_address": "Lionel Rd S, Brentford TW8 0RU",
+            "location_postcode": "TW8 0RU",
+            "min_start_time": 12,
+            "max_finish_time": 22,
+            "capacity": 17250,
+            "max_matches_per_day": 2
+          }
+        ],
+        "teams": [
+          "Brazil",
+          "Argentina",
+          "France",
+          "Belgium",
+          "England",
+          "Netherlands",
+          "Croatia",
+          "Italy",
+          "Portugal",
+          "Spain",
+          "Morocco",
+          "Switzerland",
+          "USA",
+          "Germany",
+          "Mexico",
+          "Uruguay",
+          "Colombia",
+          "Denmark",
+          "Senegal",
+          "Japan",
+          "Peru",
+          "Poland",
+          "Sweden",
+          "Iran",
+          "South Korea",
+          "Ukraine",
+          "Australia",
+          "Wales",
+          "Serbia",
+          "Tunisia",
+          "Chile",
+          "Costa Rica"
+        ],
+        "num_teams_per_game": 2,
+        "is_knockout": true,
+        "group_stage": null,
+        "min_start_day": 1,
+        "max_finish_day": 14,
+        "min_start_time": 12,
+        "max_finish_time": 22,
+        "duration": 1.5,
+        "constraints": {
+          "required": {
+            "same_venue_overlapping_time": {
+            },
+            "same_venue_max_matches_per_day": {
+            },
+            "team_time_between_matches": {
+              "min_time_between_matches": 2
+            },
+            "venue_time_between_matches": {
+              "min_time_between_matches": 2
+            },
+            "no_later_rounds_before_earlier_rounds": {
+            },
+            "max_capacity_at_final": {
+            }
+          },
+          "optional": {
+            "avg_distance_to_travel": {
+              "weight": 1,
+              "inequality": "MINIMISE",
+              "acceptable": 20
+            },
+            "avg_rest_between_matches": {
+              "weight": 1,
+              "inequality": "MAXIMISE",
+              "acceptable": 1
+            },
+            "avg_capacity": {
+              "weight": 1,
+              "inequality": "MAXIMISE",
+              "acceptable": 20000
+            }
+          }
         },
-        {
-          "name": "Olympic Stadium",
-          "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
-          "min_start_time": 11,
-          "max_finish_time": 22,
-          "capacity": 40000,
-          "max_matches_per_day": 2
+        "events": [
+            {
+                "round": "Round of 32",
+                "sport": "football",
+                "event_id": "football_14",
+                "venue": "Olympic Stadium",
+                "day": 5,
+                "start_time": 14,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Australia",
+                    "Wales"
+                ]
+            },
+            {
+                "round": "Round of 32",
+                "sport": "football",
+                "event_id": "football_7",
+                "venue": "Stamford Bridge",
+                "day": 4,
+                "start_time": 20,
+                "duration": 1.5,
+                "teams_involved": [
+                    "USA",
+                    "Germany"
+                ]
+            },
+            {
+                "round": "Round of 32",
+                "sport": "football",
+                "event_id": "football_6",
+                "venue": "Emirates Stadium",
+                "day": 6,
+                "start_time": 14,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Morocco",
+                    "Switzerland"
+                ]
+            },
+            {
+                "round": "Round of 32",
+                "sport": "football",
+                "event_id": "football_13",
+                "venue": "The Hive",
+                "day": 2,
+                "start_time": 15,
+                "duration": 1.5,
+                "teams_involved": [
+                    "South Korea",
+                    "Ukraine"
+                ]
+            },
+            {
+                "round": "Round of 32",
+                "sport": "football",
+                "event_id": "football_3",
+                "venue": "Tottenham Hotspur Stadium",
+                "day": 4,
+                "start_time": 15,
+                "duration": 1.5,
+                "teams_involved": [
+                    "England",
+                    "Netherlands"
+                ]
+            },
+            {
+                "round": "Round of 32",
+                "sport": "football",
+                "event_id": "football_12",
+                "venue": "Stamford Bridge",
+                "day": 4,
+                "start_time": 15,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Sweden",
+                    "Iran"
+                ]
+            },
+            {
+                "round": "Round of 32",
+                "sport": "football",
+                "event_id": "football_2",
+                "venue": "Olympic Stadium",
+                "day": 2,
+                "start_time": 15,
+                "duration": 1.5,
+                "teams_involved": [
+                    "France",
+                    "Belgium"
+                ]
+            },
+            {
+                "round": "Round of 32",
+                "sport": "football",
+                "event_id": "football_11",
+                "venue": "Emirates Stadium",
+                "day": 4,
+                "start_time": 16,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Peru",
+                    "Poland"
+                ]
+            },
+            {
+                "round": "Round of 32",
+                "sport": "football",
+                "event_id": "football_5",
+                "venue": "Olympic Stadium",
+                "day": 1,
+                "start_time": 18,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Portugal",
+                    "Spain"
+                ]
+            },
+            {
+                "round": "Round of 32",
+                "sport": "football",
+                "event_id": "football_4",
+                "venue": "Tottenham Hotspur Stadium",
+                "day": 2,
+                "start_time": 13,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Croatia",
+                    "Italy"
+                ]
+            },
+            {
+                "round": "Round of 32",
+                "sport": "football",
+                "event_id": "football_8",
+                "venue": "Brentford community Stadium",
+                "day": 1,
+                "start_time": 14,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Mexico",
+                    "Uruguay"
+                ]
+            },
+            {
+                "round": "Round of 32",
+                "sport": "football",
+                "event_id": "football_1",
+                "venue": "Olympic Stadium",
+                "day": 3,
+                "start_time": 17,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Brazil",
+                    "Argentina"
+                ]
+            },
+            {
+                "round": "Round of 32",
+                "sport": "football",
+                "event_id": "football_9",
+                "venue": "Emirates Stadium",
+                "day": 5,
+                "start_time": 15,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Colombia",
+                    "Denmark"
+                ]
+            },
+            {
+                "round": "Round of 32",
+                "sport": "football",
+                "event_id": "football_16",
+                "venue": "Tottenham Hotspur Stadium",
+                "day": 6,
+                "start_time": 13,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Chile",
+                    "Costa Rica"
+                ]
+            },
+            {
+                "round": "Round of 32",
+                "sport": "football",
+                "event_id": "football_15",
+                "venue": "Olympic Stadium",
+                "day": 6,
+                "start_time": 19,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Serbia",
+                    "Tunisia"
+                ]
+            },
+            {
+                "round": "Round of 32",
+                "sport": "football",
+                "event_id": "football_10",
+                "venue": "Olympic Stadium",
+                "day": 4,
+                "start_time": 18,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Senegal",
+                    "Japan"
+                ]
+            },
+            {
+                "round": "Round of 16",
+                "sport": "football",
+                "event_id": "football_17",
+                "venue": "Stamford Bridge",
+                "day": 7,
+                "start_time": 18,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Brazil",
+                    "Argentina",
+                    "France",
+                    "Belgium"
+                ]
+            },
+            {
+                "round": "Round of 16",
+                "sport": "football",
+                "event_id": "football_20",
+                "venue": "Olympic Stadium",
+                "day": 7,
+                "start_time": 12,
+                "duration": 1.5,
+                "teams_involved": [
+                    "USA",
+                    "Germany",
+                    "Mexico",
+                    "Uruguay"
+                ]
+            },
+            {
+                "round": "Round of 16",
+                "sport": "football",
+                "event_id": "football_24",
+                "venue": "Tottenham Hotspur Stadium",
+                "day": 8,
+                "start_time": 18,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Serbia",
+                    "Tunisia",
+                    "Chile",
+                    "Costa Rica"
+                ]
+            },
+            {
+                "round": "Round of 16",
+                "sport": "football",
+                "event_id": "football_18",
+                "venue": "Tottenham Hotspur Stadium",
+                "day": 7,
+                "start_time": 12,
+                "duration": 1.5,
+                "teams_involved": [
+                    "England",
+                    "Netherlands",
+                    "Croatia",
+                    "Italy"
+                ]
+            },
+            {
+                "round": "Round of 16",
+                "sport": "football",
+                "event_id": "football_21",
+                "venue": "Emirates Stadium",
+                "day": 8,
+                "start_time": 14,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Colombia",
+                    "Denmark",
+                    "Senegal",
+                    "Japan"
+                ]
+            },
+            {
+                "round": "Round of 16",
+                "sport": "football",
+                "event_id": "football_19",
+                "venue": "Olympic Stadium",
+                "day": 8,
+                "start_time": 14,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Portugal",
+                    "Spain",
+                    "Morocco",
+                    "Switzerland"
+                ]
+            },
+            {
+                "round": "Round of 16",
+                "sport": "football",
+                "event_id": "football_22",
+                "venue": "Olympic Stadium",
+                "day": 8,
+                "start_time": 15,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Peru",
+                    "Poland",
+                    "Sweden",
+                    "Iran"
+                ]
+            },
+            {
+                "round": "Round of 16",
+                "sport": "football",
+                "event_id": "football_23",
+                "venue": "Emirates Stadium",
+                "day": 7,
+                "start_time": 16,
+                "duration": 1.5,
+                "teams_involved": [
+                    "South Korea",
+                    "Ukraine",
+                    "Australia",
+                    "Wales"
+                ]
+            },
+            {
+                "round": "Quarter Final",
+                "sport": "football",
+                "event_id": "football_27",
+                "venue": "The Hive",
+                "day": 10,
+                "start_time": 15,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Colombia",
+                    "Denmark",
+                    "Senegal",
+                    "Japan",
+                    "Peru",
+                    "Poland",
+                    "Sweden",
+                    "Iran"
+                ]
+            },
+            {
+                "round": "Quarter Final",
+                "sport": "football",
+                "event_id": "football_28",
+                "venue": "Emirates Stadium",
+                "day": 10,
+                "start_time": 19,
+                "duration": 1.5,
+                "teams_involved": [
+                    "South Korea",
+                    "Ukraine",
+                    "Australia",
+                    "Wales",
+                    "Serbia",
+                    "Tunisia",
+                    "Chile",
+                    "Costa Rica"
+                ]
+            },
+            {
+                "round": "Quarter Final",
+                "sport": "football",
+                "event_id": "football_26",
+                "venue": "Brentford community Stadium",
+                "day": 10,
+                "start_time": 12,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Portugal",
+                    "Spain",
+                    "Morocco",
+                    "Switzerland",
+                    "USA",
+                    "Germany",
+                    "Mexico",
+                    "Uruguay"
+                ]
+            },
+            {
+                "round": "Quarter Final",
+                "sport": "football",
+                "event_id": "football_25",
+                "venue": "Olympic Stadium",
+                "day": 10,
+                "start_time": 18,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Brazil",
+                    "Argentina",
+                    "France",
+                    "Belgium",
+                    "England",
+                    "Netherlands",
+                    "Croatia",
+                    "Italy"
+                ]
+            },
+            {
+                "round": "Semi Final",
+                "sport": "football",
+                "event_id": "football_29",
+                "venue": "Stamford Bridge",
+                "day": 12,
+                "start_time": 18,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Brazil",
+                    "Argentina",
+                    "France",
+                    "Belgium",
+                    "England",
+                    "Netherlands",
+                    "Croatia",
+                    "Italy",
+                    "Portugal",
+                    "Spain",
+                    "Morocco",
+                    "Switzerland",
+                    "USA",
+                    "Germany",
+                    "Mexico",
+                    "Uruguay"
+                ]
+            },
+            {
+                "round": "Semi Final",
+                "sport": "football",
+                "event_id": "football_30",
+                "venue": "Emirates Stadium",
+                "day": 12,
+                "start_time": 17,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Colombia",
+                    "Denmark",
+                    "Senegal",
+                    "Japan",
+                    "Peru",
+                    "Poland",
+                    "Sweden",
+                    "Iran",
+                    "South Korea",
+                    "Ukraine",
+                    "Australia",
+                    "Wales",
+                    "Serbia",
+                    "Tunisia",
+                    "Chile",
+                    "Costa Rica"
+                ]
+            },
+            {
+                "round": "Final",
+                "sport": "football",
+                "event_id": "football_31",
+                "venue": "Olympic Stadium",
+                "day": 14,
+                "start_time": 2,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Brazil",
+                    "Argentina",
+                    "France",
+                    "Belgium",
+                    "England",
+                    "Netherlands",
+                    "Croatia",
+                    "Italy",
+                    "Portugal",
+                    "Spain",
+                    "Morocco",
+                    "Switzerland",
+                    "USA",
+                    "Germany",
+                    "Mexico",
+                    "Uruguay",
+                    "Colombia",
+                    "Denmark",
+                    "Senegal",
+                    "Japan",
+                    "Peru",
+                    "Poland",
+                    "Sweden",
+                    "Iran",
+                    "South Korea",
+                    "Ukraine",
+                    "Australia",
+                    "Wales",
+                    "Serbia",
+                    "Tunisia",
+                    "Chile",
+                    "Costa Rica"
+                ]
+            }
+        ]
+      },
+      "tennis":{
+        "name":"tennis",
+        "venues":[
+           {
+              "name":"Wimbledon_Centre_Court",
+              "location_coordinates":[
+                 51.4817,
+                 -0.1910
+              ],
+              "location_address":"Fulham Rd., London SW6 1HS",
+              "location_postcode":"SW6 1HS",
+              "min_start_time":12,
+              "max_finish_time":22,
+              "capacity":20000,
+              "max_matches_per_day":1
+           },
+           {
+              "name":"Wimbledon_Court_1",
+              "location_coordinates":[
+                 51.4817,
+                 -0.1910
+              ],
+              "location_address":"Fulham Rd., London SW6 1HS",
+              "location_postcode":"SW6 1HS",
+              "min_start_time":12,
+              "max_finish_time":22,
+              "capacity":20000,
+              "max_matches_per_day":1
+           },
+           {
+              "name":"Wimbledon_Court_2",
+              "location_coordinates":[
+                 51.4817,
+                 -0.1910
+              ],
+              "location_address":"Fulham Rd., London SW6 1HS",
+              "location_postcode":"SW6 1HS",
+              "min_start_time":12,
+              "max_finish_time":22,
+              "capacity":10000,
+              "max_matches_per_day":1
+           },
+           {
+              "name":"Wimbledon_Court_3",
+              "location_coordinates":[
+                 51.4817,
+                 -0.1910
+              ],
+              "location_address":"Fulham Rd., London SW6 1HS",
+              "location_postcode":"SW6 1HS",
+              "min_start_time":12,
+              "max_finish_time":22,
+              "capacity":5000,
+              "max_matches_per_day":1
+           }
+        ],
+        "teams":[
+           "Carlos Alcaraz",
+           "Rafael Nadal",
+           "Casper Ruud",
+           "Stefanos Tsitsipas",
+           "Novak Djokovic",
+           "Felix Auger-Aliassime",
+           "Daniil Medvedev",
+           "Andrey Rublev",
+           "Taylor Fritz",
+           "Hubert Hurkacz",
+           "Holger Rune",
+           "Alexander Zverev",
+           "Pablo Carreno Busta",
+           "Cameron Norrie",
+           "Jannik Sinner",
+           "Matteo Berrettini"
+        ],
+        "num_teams_per_game":2,
+        "is_knockout":true,
+        "group_stage":null,
+        "min_start_day":1,
+        "max_finish_day":14,
+        "min_start_time":12,
+        "max_finish_time":23,
+        "duration":3,
+        "constraints":{
+           "required":{
+              "same_venue_overlapping_time":{
+
+              },
+              "same_venue_max_matches_per_day":{
+
+              },
+              "team_time_between_matches":{
+                 "min_time_between_matches":2
+              },
+              "venue_time_between_matches":{
+                 "min_time_between_matches":2
+              },
+              "no_later_rounds_before_earlier_rounds":{
+
+              },
+              "max_capacity_at_final":{
+
+              }
+           },
+           "optional":{
+              "avg_distance_to_travel":{
+                 "weight":1,
+                 "inequality":"MINIMISE",
+                 "acceptable":20
+              },
+              "avg_rest_between_matches":{
+                 "weight":1,
+                 "inequality":"MAXIMISE",
+                 "acceptable":1
+              },
+              "avg_capacity":{
+                 "weight":1,
+                 "inequality":"MAXIMISE",
+                 "acceptable":10000
+              }
+           }
         },
-        {
-          "name": "Emirates Stadium",
-          "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
-          "min_start_time": 14,
-          "max_finish_time": 21,
-          "capacity": 40000,
-          "max_matches_per_day": 2
+        "events": [
+            {
+                "round": "Round of 16",
+                "sport": "tennis",
+                "event_id": "tennis_6",
+                "venue": "Wimbledon_Centre_Court",
+                "day": 3,
+                "start_time": 15,
+                "duration": 3,
+                "teams_involved": [
+                    "Holger Rune",
+                    "Alexander Zverev"
+                ]
+            },
+            {
+                "round": "Round of 16",
+                "sport": "tennis",
+                "event_id": "tennis_3",
+                "venue": "Wimbledon_Court_3",
+                "day": 7,
+                "start_time": 12,
+                "duration": 3,
+                "teams_involved": [
+                    "Novak Djokovic",
+                    "Felix Auger-Aliassime"
+                ]
+            },
+            {
+                "round": "Round of 16",
+                "sport": "tennis",
+                "event_id": "tennis_2",
+                "venue": "Wimbledon_Court_3",
+                "day": 2,
+                "start_time": 12,
+                "duration": 3,
+                "teams_involved": [
+                    "Casper Ruud",
+                    "Stefanos Tsitsipas"
+                ]
+            },
+            {
+                "round": "Round of 16",
+                "sport": "tennis",
+                "event_id": "tennis_5",
+                "venue": "Wimbledon_Centre_Court",
+                "day": 5,
+                "start_time": 16,
+                "duration": 3,
+                "teams_involved": [
+                    "Taylor Fritz",
+                    "Hubert Hurkacz"
+                ]
+            },
+            {
+                "round": "Round of 16",
+                "sport": "tennis",
+                "event_id": "tennis_8",
+                "venue": "Wimbledon_Court_1",
+                "day": 1,
+                "start_time": 17,
+                "duration": 3,
+                "teams_involved": [
+                    "Jannik Sinner",
+                    "Matteo Berrettini"
+                ]
+            },
+            {
+                "round": "Round of 16",
+                "sport": "tennis",
+                "event_id": "tennis_4",
+                "venue": "Wimbledon_Court_1",
+                "day": 3,
+                "start_time": 17,
+                "duration": 3,
+                "teams_involved": [
+                    "Daniil Medvedev",
+                    "Andrey Rublev"
+                ]
+            },
+            {
+                "round": "Round of 16",
+                "sport": "tennis",
+                "event_id": "tennis_1",
+                "venue": "Wimbledon_Court_2",
+                "day": 6,
+                "start_time": 16,
+                "duration": 3,
+                "teams_involved": [
+                    "Carlos Alcaraz",
+                    "Rafael Nadal"
+                ]
+            },
+            {
+                "round": "Round of 16",
+                "sport": "tennis",
+                "event_id": "tennis_7",
+                "venue": "Wimbledon_Centre_Court",
+                "day": 6,
+                "start_time": 18,
+                "duration": 3,
+                "teams_involved": [
+                    "Pablo Carreno Busta",
+                    "Cameron Norrie"
+                ]
+            },
+            {
+                "round": "Quarter Final",
+                "sport": "tennis",
+                "event_id": "tennis_11",
+                "venue": "Wimbledon_Centre_Court",
+                "day": 8,
+                "start_time": 15,
+                "duration": 3,
+                "teams_involved": [
+                    "Taylor Fritz",
+                    "Hubert Hurkacz",
+                    "Holger Rune",
+                    "Alexander Zverev"
+                ]
+            },
+            {
+                "round": "Quarter Final",
+                "sport": "tennis",
+                "event_id": "tennis_10",
+                "venue": "Wimbledon_Court_1",
+                "day": 9,
+                "start_time": 18,
+                "duration": 3,
+                "teams_involved": [
+                    "Novak Djokovic",
+                    "Felix Auger-Aliassime",
+                    "Daniil Medvedev",
+                    "Andrey Rublev"
+                ]
+            },
+            {
+                "round": "Quarter Final",
+                "sport": "tennis",
+                "event_id": "tennis_9",
+                "venue": "Wimbledon_Court_2",
+                "day": 10,
+                "start_time": 18,
+                "duration": 3,
+                "teams_involved": [
+                    "Carlos Alcaraz",
+                    "Rafael Nadal",
+                    "Casper Ruud",
+                    "Stefanos Tsitsipas"
+                ]
+            },
+            {
+                "round": "Quarter Final",
+                "sport": "tennis",
+                "event_id": "tennis_12",
+                "venue": "Wimbledon_Centre_Court",
+                "day": 9,
+                "start_time": 18,
+                "duration": 3,
+                "teams_involved": [
+                    "Pablo Carreno Busta",
+                    "Cameron Norrie",
+                    "Jannik Sinner",
+                    "Matteo Berrettini"
+                ]
+            },
+            {
+                "round": "Semi Final",
+                "sport": "tennis",
+                "event_id": "tennis_13",
+                "venue": "Wimbledon_Court_1",
+                "day": 12,
+                "start_time": 14,
+                "duration": 3,
+                "teams_involved": [
+                    "Carlos Alcaraz",
+                    "Rafael Nadal",
+                    "Casper Ruud",
+                    "Stefanos Tsitsipas",
+                    "Novak Djokovic",
+                    "Felix Auger-Aliassime",
+                    "Daniil Medvedev",
+                    "Andrey Rublev"
+                ]
+            },
+            {
+                "round": "Semi Final",
+                "sport": "tennis",
+                "event_id": "tennis_14",
+                "venue": "Wimbledon_Court_2",
+                "day": 12,
+                "start_time": 13,
+                "duration": 3,
+                "teams_involved": [
+                    "Taylor Fritz",
+                    "Hubert Hurkacz",
+                    "Holger Rune",
+                    "Alexander Zverev",
+                    "Pablo Carreno Busta",
+                    "Cameron Norrie",
+                    "Jannik Sinner",
+                    "Matteo Berrettini"
+                ]
+            },
+            {
+                "round": "Final",
+                "sport": "tennis",
+                "event_id": "tennis_15",
+                "venue": "Wimbledon_Centre_Court",
+                "day": 14,
+                "start_time": 16,
+                "duration": 3,
+                "teams_involved": [
+                    "Carlos Alcaraz",
+                    "Rafael Nadal",
+                    "Casper Ruud",
+                    "Stefanos Tsitsipas",
+                    "Novak Djokovic",
+                    "Felix Auger-Aliassime",
+                    "Daniil Medvedev",
+                    "Andrey Rublev",
+                    "Taylor Fritz",
+                    "Hubert Hurkacz",
+                    "Holger Rune",
+                    "Alexander Zverev",
+                    "Pablo Carreno Busta",
+                    "Cameron Norrie",
+                    "Jannik Sinner",
+                    "Matteo Berrettini"
+                ]
+            }
+        ]
+      },
+     "boxing_heavyweight":{
+        "name":"boxing_heavyweight",
+        "venues":[
+           {
+              "name":"Excel_1",
+              "location_coordinates":[
+                 51.4817,
+                 -0.1910
+              ],
+              "location_address":"Fulham Rd., London SW6 1HS",
+              "location_postcode":"SW6 1HS",
+              "min_start_time":12,
+              "max_finish_time":20,
+              "capacity":20000,
+              "max_matches_per_day":5
+           },
+           {
+              "name":"Excel_2",
+              "location_coordinates":[
+                 51.4817,
+                 -0.1910
+              ],
+              "location_address":"Fulham Rd., London SW6 1HS",
+              "location_postcode":"SW6 1HS",
+              "min_start_time":12,
+              "max_finish_time":20,
+              "capacity":20000,
+              "max_matches_per_day":5
+           }
+        ],
+        "teams":[
+           "Oleksandr Usyk",
+           "Tyson Fury",
+           "Deontay Wilder",
+           "Anthony Joshua",
+           "Joe Joyce",
+           "Andy Ruiz Jr",
+           "Dillian Whyte",
+           "Luis Ortiz"
+        ],
+        "num_teams_per_game":2,
+        "is_knockout":true,
+        "group_stage":null,
+        "min_start_day":1,
+        "max_finish_day":14,
+        "min_start_time":10,
+        "max_finish_time":20,
+        "duration":1,
+        "constraints":{
+           "required":{
+              "same_venue_overlapping_time":{
+
+              },
+              "same_venue_max_matches_per_day":{
+
+              },
+              "team_time_between_matches":{
+                 "min_time_between_matches":2
+              },
+              "venue_time_between_matches":{
+                 "min_time_between_matches":2
+              },
+              "no_later_rounds_before_earlier_rounds":{
+
+              },
+              "max_capacity_at_final":{
+
+              }
+           },
+           "optional":{
+              "avg_distance_to_travel":{
+                 "weight":1,
+                 "inequality":"MINIMISE",
+                 "acceptable":10
+              },
+              "avg_rest_between_matches":{
+                 "weight":1,
+                 "inequality":"MAXIMISE",
+                 "acceptable":1
+              },
+              "avg_capacity":{
+                 "weight":1,
+                 "inequality":"MAXIMISE",
+                 "acceptable":15000
+              }
+           }
         },
-        {
-          "name": "Tottenham Hotspur Stadium",
-          "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
-          "min_start_time": 12,
-          "max_finish_time": 22,
-          "capacity": 40000,
-          "max_matches_per_day": 2
-        },
-        {
-          "name": "The Hive",
-          "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
-          "min_start_time": 12,
-          "max_finish_time": 22,
-          "capacity": 40000,
-          "max_matches_per_day": 2
-        },
-        {
-          "name": "Etihad Stadium",
-          "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
-          "min_start_time": 12,
-          "max_finish_time": 22,
-          "capacity": 40000,
-          "max_matches_per_day": 2
-        }
-      ],
-      "teams": [
-        "Brazil", "Argentina", "France", "Belgium", "England", "Netherlands", "Croatia",
-        "Italy", "Portugal", "Spain", "Morocco", "Switzerland", "USA", "Germany", "Mexico", "Uruguay",
-        "Colombia", "Denmark", "Senegal", "Japan", "Peru", "Poland", "Sweden",
-        "Iran", "South Korea", "Ukraine", "Australia", "Wales", "Serbia", "Tunisia", "Chile", "Costa Rica"
-      ],
-      "num_teams_per_game": 2,
-      "is_knockout": true,
-      "group_stage": null,
-      "min_start_day": 1,
-      "max_finish_day": 10,
-      "min_start_time": 12,
-      "max_finish_time": 22,
-      "duration": 1.5,
-      "constraints": [
-        "same_venue_overlapping_time_constraint_check",
-        "no_later_rounds_before_earlier_rounds_constraint_check",
-        "same_venue_max_matches_per_day",
-        "team_time_between_matches",
-        "venue_time_between_matches"
-      ]
-    },
-    {
-      "name": "tennis",
-      "venues": [
-        {
-          "name": "Wimbledon_Centre_Court",
-          "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
-          "min_start_time": 12,
-          "max_finish_time": 22,
-          "capacity": 20000,
-          "max_matches_per_day": 1
-        },
-        {
-          "name": "Wimbledon_Court_1",
-          "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
-          "min_start_time": 12,
-          "max_finish_time": 22,
-          "capacity": 20000,
-          "max_matches_per_day": 1
-        },
-        {
-          "name": "Wimbledon_Court_2",
-          "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
-          "min_start_time": 12,
-          "max_finish_time": 22,
-          "capacity": 10000,
-          "max_matches_per_day": 1
-        },
-        {
-          "name": "Wimbledon_Court_3",
-          "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
-          "min_start_time": 12,
-          "max_finish_time": 22,
-          "capacity": 5000,
-          "max_matches_per_day": 1
-        }
-      ],
-      "teams": [
-        "Carlos Alcaraz", "Rafael Nadal", "Casper Ruud", "Stefanos Tsitsipas",
-        "Novak Djokovic", "Felix Auger-Aliassime", "Daniil Medvedev", "Andrey Rublev"
-      ],
-      "num_teams_per_game": 2,
-      "is_knockout": true,
-      "group_stage": null,
-      "min_start_day": 1,
-      "max_finish_day": 14,
-      "min_start_time": 12,
-      "max_finish_time": 23,
-      "duration": 3,
-      "constraints": [
-        "same_venue_overlapping_time_constraint_check",
-        "no_later_rounds_before_earlier_rounds_constraint_check",
-        "same_venue_max_matches_per_day",
-        "team_time_between_matches",
-        "venue_time_between_matches"
-      ]
-    },
-    {
-      "name": "boxing_heavyweight",
-      "venues": [
-        {
-          "name": "Excel_1",
-          "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
-          "min_start_time": 12,
-          "max_finish_time": 20,
-          "capacity": 20000,
-          "max_matches_per_day": 5
-        },
-        {
-          "name": "Excel_2",
-          "location_coordinates": [51.4817, -0.1910],
-          "location_address": "Fulham Rd., London SW6 1HS",
-          "location_postcode": "SW6 1HS",
-          "min_start_time": 12,
-          "max_finish_time": 20,
-          "capacity": 20000,
-          "max_matches_per_day": 5
-        }
-      ],
-      "teams": [
-        "Oleksandr Usyk", "Tyson Fury", "Deontay Wilder", "Anthony Joshua", "Joe Joyce", "Andy Ruiz Jr", "Dillian Whyte", "Luis Ortiz"
-      ],
-      "num_teams_per_game": 2,
-      "is_knockout": true,
-      "group_stage": null,
-      "min_start_day": 1,
-      "max_finish_day": 14,
-      "min_start_time": 14,
-      "max_finish_time": 18,
-      "duration": 1,
-      "constraints": [
-        "same_venue_overlapping_time_constraint_check",
-        "no_later_rounds_before_earlier_rounds_constraint_check",
-        "same_venue_max_matches_per_day",
-        "team_time_between_matches",
-        "venue_time_between_matches"
-      ]
-    }
-  ],
-  "events": [
-        {
-            "round": "Round of 32",
-            "sport": "football",
-            "event_id": 14,
-            "venue": "Emirates Stadium",
-            "day": 1,
-            "start_time": 16,
-            "duration": 1.5,
-            "teams_involved": [
-                "Australia",
-                "Wales"
-            ]
-        },
-        {
-            "round": "Round of 32",
-            "sport": "football",
-            "event_id": 7,
-            "venue": "Tottenham Hotspur Stadium",
-            "day": 1,
-            "start_time": 19,
-            "duration": 1.5,
-            "teams_involved": [
-                "USA",
-                "Germany"
-            ]
-        },
-        {
-            "round": "Round of 32",
-            "sport": "football",
-            "event_id": 6,
-            "venue": "Etihad Stadium",
-            "day": 2,
-            "start_time": 19,
-            "duration": 1.5,
-            "teams_involved": [
-                "Morocco",
-                "Switzerland"
-            ]
-        },
-        {
-            "round": "Round of 32",
-            "sport": "football",
-            "event_id": 13,
-            "venue": "Stamford Bridge",
-            "day": 1,
-            "start_time": 16,
-            "duration": 1.5,
-            "teams_involved": [
-                "South Korea",
-                "Ukraine"
-            ]
-        },
-        {
-            "round": "Round of 32",
-            "sport": "football",
-            "event_id": 3,
-            "venue": "Emirates Stadium",
-            "day": 2,
-            "start_time": 17,
-            "duration": 1.5,
-            "teams_involved": [
-                "England",
-                "Netherlands"
-            ]
-        },
-        {
-            "round": "Round of 32",
-            "sport": "football",
-            "event_id": 12,
-            "venue": "Stamford Bridge",
-            "day": 2,
-            "start_time": 18,
-            "duration": 1.5,
-            "teams_involved": [
-                "Sweden",
-                "Iran"
-            ]
-        },
-        {
-            "round": "Round of 32",
-            "sport": "football",
-            "event_id": 2,
-            "venue": "Stamford Bridge",
-            "day": 2,
-            "start_time": 14,
-            "duration": 1.5,
-            "teams_involved": [
-                "France",
-                "Belgium"
-            ]
-        },
-        {
-            "round": "Round of 32",
-            "sport": "football",
-            "event_id": 11,
-            "venue": "The Hive",
-            "day": 2,
-            "start_time": 15,
-            "duration": 1.5,
-            "teams_involved": [
-                "Peru",
-                "Poland"
-            ]
-        },
-        {
-            "round": "Round of 32",
-            "sport": "football",
-            "event_id": 5,
-            "venue": "Etihad Stadium",
-            "day": 1,
-            "start_time": 15,
-            "duration": 1.5,
-            "teams_involved": [
-                "Portugal",
-                "Spain"
-            ]
-        },
-        {
-            "round": "Round of 32",
-            "sport": "football",
-            "event_id": 4,
-            "venue": "Olympic Stadium",
-            "day": 2,
-            "start_time": 19,
-            "duration": 1.5,
-            "teams_involved": [
-                "Croatia",
-                "Italy"
-            ]
-        },
-        {
-            "round": "Round of 32",
-            "sport": "football",
-            "event_id": 8,
-            "venue": "Etihad Stadium",
-            "day": 2,
-            "start_time": 12,
-            "duration": 1.5,
-            "teams_involved": [
-                "Mexico",
-                "Uruguay"
-            ]
-        },
-        {
-            "round": "Round of 32",
-            "sport": "football",
-            "event_id": 1,
-            "venue": "Stamford Bridge",
-            "day": 1,
-            "start_time": 12,
-            "duration": 1.5,
-            "teams_involved": [
-                "Brazil",
-                "Argentina"
-            ]
-        },
-        {
-            "round": "Round of 32",
-            "sport": "football",
-            "event_id": 9,
-            "venue": "The Hive",
-            "day": 1,
-            "start_time": 19,
-            "duration": 1.5,
-            "teams_involved": [
-                "Colombia",
-                "Denmark"
-            ]
-        },
-        {
-            "round": "Round of 32",
-            "sport": "football",
-            "event_id": 16,
-            "venue": "Olympic Stadium",
-            "day": 2,
-            "start_time": 14,
-            "duration": 1.5,
-            "teams_involved": [
-                "Chile",
-                "Costa Rica"
-            ]
-        },
-        {
-            "round": "Round of 32",
-            "sport": "football",
-            "event_id": 15,
-            "venue": "Olympic Stadium",
-            "day": 1,
-            "start_time": 18,
-            "duration": 1.5,
-            "teams_involved": [
-                "Serbia",
-                "Tunisia"
-            ]
-        },
-        {
-            "round": "Round of 32",
-            "sport": "football",
-            "event_id": 10,
-            "venue": "The Hive",
-            "day": 1,
-            "start_time": 12,
-            "duration": 1.5,
-            "teams_involved": [
-                "Senegal",
-                "Japan"
-            ]
-        },
-        {
-            "round": "Round of 16",
-            "sport": "football",
-            "event_id": 17,
-            "venue": "Emirates Stadium",
-            "day": 4,
-            "start_time": 15,
-            "duration": 1.5,
-            "teams_involved": [
-                "Brazil",
-                "Argentina",
-                "France",
-                "Belgium"
-            ]
-        },
-        {
-            "round": "Round of 16",
-            "sport": "football",
-            "event_id": 20,
-            "venue": "Etihad Stadium",
-            "day": 4,
-            "start_time": 18,
-            "duration": 1.5,
-            "teams_involved": [
-                "USA",
-                "Germany",
-                "Mexico",
-                "Uruguay"
-            ]
-        },
-        {
-            "round": "Round of 16",
-            "sport": "football",
-            "event_id": 24,
-            "venue": "Tottenham Hotspur Stadium",
-            "day": 4,
-            "start_time": 19,
-            "duration": 1.5,
-            "teams_involved": [
-                "Serbia",
-                "Tunisia",
-                "Chile",
-                "Costa Rica"
-            ]
-        },
-        {
-            "round": "Round of 16",
-            "sport": "football",
-            "event_id": 18,
-            "venue": "Olympic Stadium",
-            "day": 4,
-            "start_time": 19,
-            "duration": 1.5,
-            "teams_involved": [
-                "England",
-                "Netherlands",
-                "Croatia",
-                "Italy"
-            ]
-        },
-        {
-            "round": "Round of 16",
-            "sport": "football",
-            "event_id": 21,
-            "venue": "Tottenham Hotspur Stadium",
-            "day": 3,
-            "start_time": 19,
-            "duration": 1.5,
-            "teams_involved": [
-                "Colombia",
-                "Denmark",
-                "Senegal",
-                "Japan"
-            ]
-        },
-        {
-            "round": "Round of 16",
-            "sport": "football",
-            "event_id": 19,
-            "venue": "Olympic Stadium",
-            "day": 4,
-            "start_time": 13,
-            "duration": 1.5,
-            "teams_involved": [
-                "Portugal",
-                "Spain",
-                "Morocco",
-                "Switzerland"
-            ]
-        },
-        {
-            "round": "Round of 16",
-            "sport": "football",
-            "event_id": 22,
-            "venue": "Stamford Bridge",
-            "day": 4,
-            "start_time": 20,
-            "duration": 1.5,
-            "teams_involved": [
-                "Peru",
-                "Poland",
-                "Sweden",
-                "Iran"
-            ]
-        },
-        {
-            "round": "Round of 16",
-            "sport": "football",
-            "event_id": 23,
-            "venue": "Etihad Stadium",
-            "day": 3,
-            "start_time": 14,
-            "duration": 1.5,
-            "teams_involved": [
-                "South Korea",
-                "Ukraine",
-                "Australia",
-                "Wales"
-            ]
-        },
-        {
-            "round": "Quarter Final",
-            "sport": "football",
-            "event_id": 27,
-            "venue": "Emirates Stadium",
-            "day": 6,
-            "start_time": 18,
-            "duration": 1.5,
-            "teams_involved": [
-                "Colombia",
-                "Denmark",
-                "Senegal",
-                "Japan",
-                "Peru",
-                "Poland",
-                "Sweden",
-                "Iran"
-            ]
-        },
-        {
-            "round": "Quarter Final",
-            "sport": "football",
-            "event_id": 28,
-            "venue": "Tottenham Hotspur Stadium",
-            "day": 6,
-            "start_time": 12,
-            "duration": 1.5,
-            "teams_involved": [
-                "South Korea",
-                "Ukraine",
-                "Australia",
-                "Wales",
-                "Serbia",
-                "Tunisia",
-                "Chile",
-                "Costa Rica"
-            ]
-        },
-        {
-            "round": "Quarter Final",
-            "sport": "football",
-            "event_id": 26,
-            "venue": "Olympic Stadium",
-            "day": 6,
-            "start_time": 13,
-            "duration": 1.5,
-            "teams_involved": [
-                "Portugal",
-                "Spain",
-                "Morocco",
-                "Switzerland",
-                "USA",
-                "Germany",
-                "Mexico",
-                "Uruguay"
-            ]
-        },
-        {
-            "round": "Quarter Final",
-            "sport": "football",
-            "event_id": 25,
-            "venue": "The Hive",
-            "day": 6,
-            "start_time": 13,
-            "duration": 1.5,
-            "teams_involved": [
-                "Brazil",
-                "Argentina",
-                "France",
-                "Belgium",
-                "England",
-                "Netherlands",
-                "Croatia",
-                "Italy"
-            ]
-        },
-        {
-            "round": "Semi Final",
-            "sport": "football",
-            "event_id": 29,
-            "venue": "Etihad Stadium",
-            "day": 8,
-            "start_time": 20,
-            "duration": 1.5,
-            "teams_involved": [
-                "Brazil",
-                "Argentina",
-                "France",
-                "Belgium",
-                "England",
-                "Netherlands",
-                "Croatia",
-                "Italy",
-                "Portugal",
-                "Spain",
-                "Morocco",
-                "Switzerland",
-                "USA",
-                "Germany",
-                "Mexico",
-                "Uruguay"
-            ]
-        },
-        {
-            "round": "Semi Final",
-            "sport": "football",
-            "event_id": 30,
-            "venue": "Tottenham Hotspur Stadium",
-            "day": 8,
-            "start_time": 15,
-            "duration": 1.5,
-            "teams_involved": [
-                "Colombia",
-                "Denmark",
-                "Senegal",
-                "Japan",
-                "Peru",
-                "Poland",
-                "Sweden",
-                "Iran",
-                "South Korea",
-                "Ukraine",
-                "Australia",
-                "Wales",
-                "Serbia",
-                "Tunisia",
-                "Chile",
-                "Costa Rica"
-            ]
-        },
-        {
-            "round": "Final",
-            "sport": "football",
-            "event_id": 31,
-            "venue": "Etihad Stadium",
-            "day": 10,
-            "start_time": 14,
-            "duration": 1.5,
-            "teams_involved": [
-                "Brazil",
-                "Argentina",
-                "France",
-                "Belgium",
-                "England",
-                "Netherlands",
-                "Croatia",
-                "Italy",
-                "Portugal",
-                "Spain",
-                "Morocco",
-                "Switzerland",
-                "USA",
-                "Germany",
-                "Mexico",
-                "Uruguay",
-                "Colombia",
-                "Denmark",
-                "Senegal",
-                "Japan",
-                "Peru",
-                "Poland",
-                "Sweden",
-                "Iran",
-                "South Korea",
-                "Ukraine",
-                "Australia",
-                "Wales",
-                "Serbia",
-                "Tunisia",
-                "Chile",
-                "Costa Rica"
-            ]
-        }
-    ],
-  "general_constraints": [
-    "same_venue_overlapping_time_constraint_check",
-    "same_venue_max_matches_per_day"
-  ],
-  "tournament_length": 14
+        "events": [
+            {
+                "round": "Quarter Final",
+                "sport": "boxing_heavyweight",
+                "event_id": "boxing_heavyweight_2",
+                "venue": "Excel_1",
+                "day": 2,
+                "start_time": 13,
+                "duration": 1,
+                "teams_involved": [
+                    "Deontay Wilder",
+                    "Anthony Joshua"
+                ]
+            },
+            {
+                "round": "Quarter Final",
+                "sport": "boxing_heavyweight",
+                "event_id": "boxing_heavyweight_1",
+                "venue": "Excel_1",
+                "day": 1,
+                "start_time": 17,
+                "duration": 1,
+                "teams_involved": [
+                    "Oleksandr Usyk",
+                    "Tyson Fury"
+                ]
+            },
+            {
+                "round": "Quarter Final",
+                "sport": "boxing_heavyweight",
+                "event_id": "boxing_heavyweight_3",
+                "venue": "Excel_2",
+                "day": 3,
+                "start_time": 12,
+                "duration": 1,
+                "teams_involved": [
+                    "Joe Joyce",
+                    "Andy Ruiz Jr"
+                ]
+            },
+            {
+                "round": "Quarter Final",
+                "sport": "boxing_heavyweight",
+                "event_id": "boxing_heavyweight_4",
+                "venue": "Excel_1",
+                "day": 6,
+                "start_time": 17,
+                "duration": 1,
+                "teams_involved": [
+                    "Dillian Whyte",
+                    "Luis Ortiz"
+                ]
+            },
+            {
+                "round": "Semi Final",
+                "sport": "boxing_heavyweight",
+                "event_id": "boxing_heavyweight_5",
+                "venue": "Excel_2",
+                "day": 7,
+                "start_time": 16,
+                "duration": 1,
+                "teams_involved": [
+                    "Oleksandr Usyk",
+                    "Tyson Fury",
+                    "Deontay Wilder",
+                    "Anthony Joshua"
+                ]
+            },
+            {
+                "round": "Semi Final",
+                "sport": "boxing_heavyweight",
+                "event_id": "boxing_heavyweight_6",
+                "venue": "Excel_1",
+                "day": 12,
+                "start_time": 16,
+                "duration": 1,
+                "teams_involved": [
+                    "Joe Joyce",
+                    "Andy Ruiz Jr",
+                    "Dillian Whyte",
+                    "Luis Ortiz"
+                ]
+            },
+            {
+                "round": "Final",
+                "sport": "boxing_heavyweight",
+                "event_id": "boxing_heavyweight_7",
+                "venue": "Excel_1",
+                "day": 14,
+                "start_time": 15,
+                "duration": 1,
+                "teams_involved": [
+                    "Oleksandr Usyk",
+                    "Tyson Fury",
+                    "Deontay Wilder",
+                    "Anthony Joshua",
+                    "Joe Joyce",
+                    "Andy Ruiz Jr",
+                    "Dillian Whyte",
+                    "Luis Ortiz"
+                ]
+            }
+        ]
+     }
+   },
+   "general_constraints":{
+      "required":{
+
+      },
+      "optional":{
+         "max_matches_per_day":{
+            "weight":1,
+            "acceptable":10,
+            "inequality":"MINIMISE"
+         }
+      }
+   },
+   "data":{
+      "tournament_length":14,
+      "athletes_accommodation_postcode":"E15 2ER"
+   }
 }

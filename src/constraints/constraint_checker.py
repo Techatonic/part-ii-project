@@ -2,67 +2,70 @@ from src.constraints.constraint import ConstraintType, constraints_list, get_con
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.sports.sport import Sport
+from src.helper.helper import get_alL_events
 
 
-def constraint_checker(sports: list[Sport], events: list[Event], general_constraints: list[str]) -> list:
+def constraint_checker(sports: dict[str, Sport], events: dict[str, list[Event]],
+                       general_constraints: dict) -> list:
     conflicts = []
 
-    for sport in sports:
-        for constraint_string in sport.constraints:
-            sport_specific_events = [event for event in events if event.sport.name == sport.name]
-
+    for sport_name in sports:
+        # TODO: Only handles required constraints at the moment
+        for constraint_string in sports[sport_name].constraints['required']:
             constraint = get_constraint_from_string(constraint_string)
-            conflicts += constraint_check(constraint, sport_specific_events)
+            curr_conflicts = constraint_check(constraint, events[sport_name], constraint_checker_flag=True)
+            if len(curr_conflicts) > 0:
+                conflicts.append(curr_conflicts)
 
-    for constraint_string in general_constraints:
+    for constraint_string in general_constraints['required']:
         if not (constraint_string in constraints_list):
             handle_error("Constraint not valid: " + constraint_string)
 
         constraint = get_constraint_from_string(constraint_string)
-        conflicts += constraint_check(constraint, events)
+        all_events = get_alL_events(events)
+        curr_conflicts = constraint_check(constraint, all_events, constraint_checker_flag=True)
+        if len(curr_conflicts) > 0:
+            conflicts.append(curr_conflicts)
 
     return conflicts
 
 
-def constraint_check(constraint: ConstraintFunction, events: list[Event]) -> list:
+def constraint_check(constraint: ConstraintFunction, events, constraint_checker_flag=False) -> list:
     if constraint.constraint_type == ConstraintType.UNARY:
-        result = unary_constraint_check(constraint, events)
+        result = unary_constraint_check(constraint, events, constraint_checker_flag)
     elif constraint.constraint_type == ConstraintType.BINARY:
-        result = binary_constraint_check(constraint, events)
+        result = binary_constraint_check(constraint, events, constraint_checker_flag)
     else:
-        result = all_event_constraint_check(constraint, events)
+        result = all_event_constraint_check(constraint, events, constraint_checker_flag)
     return result
 
 
-def valid_constraint_check(constraint: ConstraintFunction, events: list[Event]) -> bool:
+def valid_constraint_check(constraint: ConstraintFunction, events) -> bool:
     return len(constraint_check(constraint, events)) == 0
 
 
-def unary_constraint_check(constraint: ConstraintFunction, events) -> list:
+def unary_constraint_check(constraint: ConstraintFunction, events, constraint_checker_flag) -> list:
     conflicts = []
     for event in events:
-        if not constraint.function(event):
-            conflicts.append([constraint.string_name, [event.event_id]])
+        result = constraint.function(events[event], constraint_check=constraint_checker_flag)
+        if len(result) > 0:
+            conflicts += result
 
-    return conflicts
+    return [constraint.string_name, conflicts] if len(conflicts) > 0 else []
 
 
-def binary_constraint_check(constraint: ConstraintFunction, events) -> list:
+def binary_constraint_check(constraint: ConstraintFunction, events, constraint_checker_flag) -> list:
     conflicts = []
 
     for event_1 in range(len(events)):
         for event_2 in range(event_1 + 1, len(events)):
-            if not constraint.function(events[event_1], events[event_2]):
-                conflicts.append([constraint.string_name,
-                                  [events[event_1].sport.name, str(events[event_1].event_id),
-                                   str(events[event_2].event_id)]])
+            result = constraint.function(events[event_1], events[event_2], constraint_check=constraint_checker_flag)
+            if len(result) > 0:
+                conflicts += result
 
-    return conflicts
+    return [constraint.string_name, conflicts] if len(conflicts) > 0 else []
 
 
-def all_event_constraint_check(constraint: ConstraintFunction, events):
-    conflicts = []
-    if not constraint.function(events):
-        conflicts.append([constraint.string_name, events])
-
-    return conflicts
+def all_event_constraint_check(constraint: ConstraintFunction, events, constraint_checker_flag):
+    conflicts = constraint.function(events, constraint_check=constraint_checker_flag)
+    return [constraint.string_name, conflicts] if len(conflicts) > 0 else []

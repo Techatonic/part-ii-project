@@ -4,10 +4,11 @@ import json
 class CompleteGames:
     complete_games = {}
 
-    def __init__(self, days_of_tournament, sports):
+    def __init__(self, days_of_tournament, sports, eval_score=None):
         self.complete_games["days_of_tournament"] = days_of_tournament
         self.complete_games["sports"] = sports
         self.complete_games["events"] = {}
+        self.complete_games["eval_score"] = eval_score
 
     def add_event(self, event):
         if event.sport.name in self.complete_games["events"]:
@@ -34,10 +35,9 @@ class CompleteGames:
                 event.venue = event.venue.name
 
         dict_to_export = {
+            "eval_score": self.complete_games["eval_score"],
             "events": self.complete_games["events"]
         }
 
         with open(path, "w") as file:
             json.dump(dict_to_export, file, indent=4, default=lambda o: o.__dict__, skipkeys=True)
-        # print(json.dumps(dict_to_export, indent=4, default=lambda o: o.__dict__, skipkeys=True))
-        # print("Export successful to: " + path)

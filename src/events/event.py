@@ -12,7 +12,6 @@ class Event:
         self.day = day
         self.start_time = start_time
         self.duration = duration
-        # TODO Add teams involved to schema, example inputs and scheduler
         self.teams_involved = teams_involved
 
     def __str__(self) -> str:
