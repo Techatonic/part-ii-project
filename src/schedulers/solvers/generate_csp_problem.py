@@ -67,7 +67,13 @@ def generate_csp_problem(solver: Type[Solver], data: dict, forward_check: bool) 
         constraint: ConstraintFunction = get_constraint_from_string(sport_specific_constraint)
         # TODO This has been changed to make it so you just add the constraint, not the specific events involved.
         # TODO Fix the effects of this in other places, particularly with the constraint checker functionality
+
+        # TODO Why am I getting the constraint then going back to string name. Just use string name directly as sport_specific_constraint?
         csp_problem.add_constraint(constraint.string_name, sport=sport,
                                    params=sport.constraints["required"][sport_specific_constraint])
+    for optional_constraint in sport.constraints["optional"]:
+        csp_problem.add_optional_constraint(optional_constraint,
+                                            params=sport.constraints["optional"][
+                                                optional_constraint])
 
     return csp_problem

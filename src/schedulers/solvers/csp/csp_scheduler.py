@@ -66,6 +66,7 @@ class CSPScheduler(Scheduler, ABC):
             total_events[sport.name] = result
 
         complete_games = CompleteGames(self.data["tournament_length"], self.sports)
+
         for sport in total_events:
             for event in total_events[sport]:
                 # print(event)

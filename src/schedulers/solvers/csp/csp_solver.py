@@ -52,16 +52,11 @@ class CSPSolver:
         return self.constraints
 
     def __solve_variable(self, assignments, queue: PriorityQueue) -> dict[str, Event] | None:
-        # print([[i.variable, len(i.domain)] for i in self.queue.variables])
-
         assignments: dict[str, Event] = copy_assignments(assignments)
-
         queue = queue.__copy__()
-        # print(len(queue.variables))
+
         while len(queue.variables) > 0:
             variable = queue.pop()
-            # print(sum(len(x.domain) for x in queue.variables) + len(variable.domain),
-            # variable.domain[0].round.round_name)
             for option in variable.domain:
                 assignments[variable.variable] = option
 
@@ -75,11 +70,8 @@ class CSPSolver:
                         result = self.__solve_variable(assignments, queue)
                         if result is not None:
                             return result
+            return None  # There is no valid assignment for this variable
 
-                # TODO Check if it's ok to remove the below line
-                # del assignments[variable.variable]
-
-            return None
         return assignments  # We have a valid assignment, return it
 
     # TODO This is basically the same as constraint_check in constraint_checker.py (except this is multiple constraints). Possibly merge them

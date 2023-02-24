@@ -1,6 +1,7 @@
 import copy
 import time
 from typing import Type
+import random
 
 from src.constraints.constraint import Constraint, get_constraint_from_string, ConstraintType
 from src.constraints.constraint_checker import constraint_check
@@ -13,21 +14,21 @@ from src.helper.priority_queue import PriorityQueue
 from src.sports.sport import Sport
 
 
-class CSOPSolver:
+class GeneticAlgorithmSolver:
     def __init__(self, data=None, forward_check=False) -> None:
         self.data = data if data is not None else {}
 
-        self.queue = PriorityQueue(self.data["comparator"])
         self.constraints: list[Constraint] = []
         self.optional_constraints: list[Constraint] = []
         self.forward_check: bool = forward_check
+        self.variables = {}
 
     def add_variable(self, new_var: str, domain) -> None:
-        if new_var in [variable.variable for variable in self.queue.variables]:
+        if new_var in self.variables:
             handle_error("Variable already exists")
         if type(domain) != list:
             handle_error("Domain is not a list")
-        self.queue.add(new_var, domain)
+        self.variables[new_var] = domain
 
     def add_constraint(self, function_name: str, variables: list[str] | None = None,
                        sport: Sport | None = None, params: dict = None) -> None:
@@ -50,7 +51,9 @@ class CSOPSolver:
         self.data["start_time"] = time.time()
         self.__preprocess()
 
-        bound_data = BranchAndBound(num_results=self.data["num_results_to_collect"])
+        population = [random.sample(self.variables[variable], 1) for variable in self.variables]
+        print(population)
+
         result = self.__solve_variable({}, self.queue, bound_data)
         if result is None:
             return None

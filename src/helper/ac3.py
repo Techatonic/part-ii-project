@@ -4,7 +4,7 @@ from src.helper.priority_queue import PriorityQueue
 from src.schedulers.solvers.solver import Solver
 
 
-def ac3(csp_instance: Solver, queue: PriorityQueue, constraints: list[Constraint]):
+def ac3(csp_instance: Solver, queue: PriorityQueue, constraints: list[Constraint]) -> object:
     temp_queue = queue.__copy__()
     unary_constraints = list(
         filter(lambda constraint: constraint.constraint_type == ConstraintType.UNARY, constraints))
@@ -55,6 +55,7 @@ def arc_reduce(x, y, binary_constraints):
     for x_option in x.domain:
         found_valid_pair = False
         for y_option in y.domain:
+            # TODO Because the binary constraints are now all constraints, do this for 'ALL' constraints too (but can just pass in the two events)
             if all(valid_constraint_check(binary_constraint.constraint, [x_option, y_option], binary_constraint.params)
                    for binary_constraint in binary_constraints):
                 found_valid_pair = True

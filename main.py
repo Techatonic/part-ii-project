@@ -13,8 +13,10 @@ from src.input_handling.input_reader import read_and_validate_input
 from src.input_handling.parse_input import parse_input, parse_input_constraint_checker
 from src.schedulers.solvers.constraint_fixing.constraint_fixing_scheduler import ConstraintFixingScheduler
 from src.schedulers.solvers.constraint_fixing.constraint_fixing_solver import ConstraintFixingSolver
-from src.schedulers.solvers.csop.csop_scheduler import CSOPScheduler
-from src.schedulers.solvers.csop.csop_solver import CSOPSolver
+from src.schedulers.solvers.csop.branch_and_bound.branch_and_bound_scheduler import CSOPScheduler
+from src.schedulers.solvers.csop.branch_and_bound.branch_and_bound_solver import BranchAndBoundSolver
+from src.schedulers.solvers.csop.genetic_algorithm.genetic_algorithm_scheduler import GeneticAlgorithmScheduler
+from src.schedulers.solvers.csop.genetic_algorithm.genetic_algorithm_solver import GeneticAlgorithmSolver
 from src.schedulers.solvers.csp.csp_scheduler import CSPScheduler
 from src.schedulers.solvers.csp.csp_solver import CSPSolver
 from src.schedulers.solvers.csp_module.module_solver import ModuleSolver
@@ -22,11 +24,13 @@ from src.sports.sport import Sport
 
 
 def main(input_path: str, export_path: str | None = None, constraint_checker_flag: int = 1,
-         use_python_module: bool = False, use_csop_solver: bool = False, forward_check=False) -> None:
+         use_python_module: bool = False, use_branch_and_bound_solver: bool = False,
+         use_genetic_algorithm: bool = False, forward_check=False) -> None:
     if constraint_checker_flag:
         run_constraint_checker(input_path, export_path, constraint_checker_flag)
     else:
-        run_solver(input_path, use_python_module, use_csop_solver, forward_check, export_path)
+        run_solver(input_path, use_python_module, use_branch_and_bound_solver, use_genetic_algorithm, forward_check,
+                   export_path)
 
 
 def run_constraint_checker(input_path: str, export_path: str | None = None, num_changes=1) -> None:
@@ -87,8 +91,8 @@ def add_global_variables(sports: dict[str, Sport], data, general_constraints):
     global_variables.constraint_params["general"] = general_constraints
 
 
-def run_solver(input_path: str, use_python_module: bool, use_csop_solver: bool, forward_check: bool,
-               export_path: str | None = None) -> None:
+def run_solver(input_path: str, use_python_module: bool, use_branch_and_bound_solver: bool, use_genetic_algorithm: bool,
+               forward_check: bool, export_path: str | None = None) -> None:
     input_json = read_and_validate_input(input_path, 'src/input_handling/input_schema.json')
 
     [sports, general_constraints, data] = parse_input(input_json)
@@ -101,12 +105,15 @@ def run_solver(input_path: str, use_python_module: bool, use_csop_solver: bool, 
         solver = ModuleSolver
         scheduler = CSPScheduler
     else:
-        if not use_csop_solver:
+        if use_branch_and_bound_solver:  # branch_and_bound CSOP solver
+            solver = BranchAndBoundSolver
+            scheduler = CSOPScheduler
+        elif use_genetic_algorithm:  # genetic_algorithm CSOP solver
+            solver = GeneticAlgorithmSolver
+            scheduler = GeneticAlgorithmScheduler
+        else:  # CSP solver
             solver = CSPSolver
             scheduler = CSPScheduler
-        else:
-            solver = CSOPSolver
-            scheduler = CSOPScheduler
 
     scheduler = scheduler(solver, sports, data, forward_check)
     result = scheduler.schedule_events()
@@ -131,8 +138,10 @@ if __name__ == "__main__":
     parser.add_argument("-c", required=False, type=int,
                         help="run input_path on constraint checker and allow up to c changed events")
     parser.add_argument("-m", action='store_true', help="run on python-constraint CSP solver")
-    parser.add_argument("-o", action='store_true',
-                        help="run on CSOP solver, will take longer to run but produce more optimal results")
+    parser.add_argument("-b", action='store_true',
+                        help="run on CSOP branch and bound solver, will take longer to run but produce more optimal results")
+    parser.add_argument("-g", action='store_true',
+                        help="run on CSOP genetic algorithm solver, may not produce completely valid results")
     parser.add_argument("-forward_check", action='store_true', help="run forward checking algorithm on solver")
     args = None
     try:
@@ -142,14 +151,14 @@ if __name__ == "__main__":
 
     if not os.path.exists(args.import_path):
         handle_error("Path does not exist")
-    if (args.c is not None) + args.m + args.o > 1:
+    if (args.c is not None) + args.m + args.b + args.g > 1:
         handle_error("Can select only one of constraint checker, python-constraint CSP solver and CSOP solver")
 
     start_time = time.time()
 
     if args.export_path:
         main(args.import_path, args.export_path, constraint_checker_flag=args.c, use_python_module=args.m,
-             use_csop_solver=args.o, forward_check=args.forward_check)
+             use_branch_and_bound_solver=args.b, use_genetic_algorithm=args.g, forward_check=args.forward_check)
     else:
         main(args.import_path, constraint_checker_flag=args.c)
 
