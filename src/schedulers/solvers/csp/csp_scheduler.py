@@ -13,7 +13,8 @@ from src.venues.venue import Venue
 
 
 class CSPScheduler(Scheduler, ABC):
-    def __init__(self, solver: Type[Solver], sports: dict[str, Sport], data: dict, forward_check: bool):
+    def __init__(self, solver: Type[Solver], sports: dict[str, Sport], data: dict, forward_check: bool,
+                 just_return_events=False):
         """
         Class to solve the CSP scheduling problem
         :param solver: Type[Solver]
@@ -23,6 +24,7 @@ class CSPScheduler(Scheduler, ABC):
         :return result: dict[str, Event] | None
         """
         super().__init__(solver, sports, data, forward_check)
+        self.just_return_events = just_return_events
 
     def schedule_events(self) -> CompleteGames | None:
         total_events = {}
@@ -62,6 +64,9 @@ class CSPScheduler(Scheduler, ABC):
 
             # Add all sport-specific events to list of all events
             total_events[sport.name] = result
+
+        if self.just_return_events:
+            return total_events
 
         complete_games = CompleteGames(self.data["tournament_length"], self.sports)
 

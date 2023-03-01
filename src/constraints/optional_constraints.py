@@ -94,8 +94,7 @@ def avg_distance_to_travel(csp_instance: Solver, assignments: dict[str, Event]) 
         dist = pgeocode.GeoDistance('GB')
         distances_to_travel = {}
         accommodation = csp_instance.data["athletes_accommodation_postcode"]
-        # print('\n\n\n\n\n\n\n')
-        # print(assignments)
+
         sports = [assignment.sport for assignment in assignments]
         sports_seen = []
         for sport in sports:

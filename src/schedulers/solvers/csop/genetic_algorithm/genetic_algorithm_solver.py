@@ -10,6 +10,8 @@ from src.constraints.optional_constraints import get_optional_constraint_from_st
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.helper.helper import widen_events_to_events_by_sport, flatten_events_by_sport_to_dict
+from src.schedulers.solvers.csp.csp_scheduler import CSPScheduler
+from src.schedulers.solvers.csp.csp_solver import CSPSolver
 
 from src.sports.sport import Sport
 
@@ -63,12 +65,12 @@ class GeneticAlgorithmSolver:
     def __initialise_population(self):
         initial_population_size = 100
         population = []
+
         for i in range(initial_population_size):
-            events = {}
-            for variable in self.variables:
-                events[variable] = random.choice(self.variables[variable])
-            events = widen_events_to_events_by_sport(events)
-            population.append(events)
+            csp_scheduler = CSPScheduler(CSPSolver, self.data['sports'], self.data, False, just_return_events=True)
+            result = csp_scheduler.schedule_events()
+            population.append(result)
+
         return population
 
     def solve(self):
@@ -90,7 +92,6 @@ class GeneticAlgorithmSolver:
 
             print("Eval Score: ",
                   sum(self.__calculate_fitness(fittest_assignments[i]) for i in range(len(fittest_assignments))), "\n")
-            print(len(population), len(fittest_assignments))
             new_options = []
             while len(new_options) < len(population) - len(fittest_assignments):
                 if len(fittest_assignments) < 2:
