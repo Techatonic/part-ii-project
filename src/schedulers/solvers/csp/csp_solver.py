@@ -25,6 +25,12 @@ class CSPSolver:
             handle_error("Domain is not a list")
         self.queue.add(new_var, domain)
 
+    def get_variables(self) -> dict:
+        variables = {}
+        for variable in self.queue.variables:
+            variables[variable.variable] = variable.domain
+        return variables
+
     def add_constraint(self, function_name: str, variables: list[str] | None = None,
                        sport: Sport | None = None, params: dict = None) -> None:
         function = get_constraint_from_string(function_name)

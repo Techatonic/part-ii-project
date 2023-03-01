@@ -16,6 +16,9 @@ class ModuleSolver(Solver):
         self.csp.addVariable(new_var, domain)
         self.variables[new_var] = domain
 
+    def get_variables(self) -> dict:
+        return self.variables
+
     def add_constraint(self, function_name: str, variables: list[str] | None = None,
                        sport: Sport | None = None, params: dict = None) -> None:
         constraint_function = get_constraint_from_string(function_name)

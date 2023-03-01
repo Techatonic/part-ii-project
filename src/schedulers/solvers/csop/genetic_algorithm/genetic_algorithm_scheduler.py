@@ -3,6 +3,7 @@ import math
 from abc import ABC
 from typing import Type
 
+from src.constraints.constraint import ConstraintFunction
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.games.complete_games import CompleteGames
@@ -28,9 +29,8 @@ class GeneticAlgorithmScheduler(Scheduler, ABC):
         super().__init__(solver, sports, data, forward_check)
 
     def schedule_events(self) -> CompleteGames | None:
-
-        total_events = {}
         csp_data = copy.deepcopy(self.data)
+        csp_data['sports'] = self.sports
 
         for sport in self.sports:
             sport = self.sports[sport]
@@ -54,9 +54,9 @@ class GeneticAlgorithmScheduler(Scheduler, ABC):
                                                   curr.domain[0].round.round_index == other.domain[
                                                       0].round.round_index and
                                                   len(curr.domain) < len(other.domain),
-                "sport_specific": True,
+                "sport_specific": False,
                 "sports": [sport],
-                "wait_time": 5
+                "wait_time": 5,
             }
 
         multisport_csp = self.solver(csp_data, self.forward_check)
@@ -99,18 +99,44 @@ class GeneticAlgorithmScheduler(Scheduler, ABC):
                     multisport_csp.add_variable(event_id, options)
                     match_num += 1
 
+            csp_data[sport.name][
+                "num_total_events"] = match_num  # match_num at end of iteration = total number of matches
+
+            for sport_specific_constraint in sport.constraints["required"]:
+                # TODO This has been changed to make it so you just add the constraint, not the specific events involved.
+                # TODO Fix the effects of this in other places, particularly with the constraint checker functionality
+                multisport_csp.add_constraint(sport_specific_constraint, sport=sport,
+                                              params=sport.constraints["required"][sport_specific_constraint])
+            for optional_constraint in sport.constraints["optional"]:
+                multisport_csp.add_optional_constraint(optional_constraint,
+                                                       params=sport.constraints["optional"][
+                                                           optional_constraint], sport=sport)
+
+        # Finished with sport-specific setup
+
+        csp_data["num_total_events"] = sum(
+            csp_data[sport_name]["num_total_events"] for sport_name in csp_data["sports"])
+
+        for required_constraint in self.data["general_constraints"]["required"]:
+            multisport_csp.add_constraint(required_constraint,
+                                          params=self.data["general_constraints"]["required"][required_constraint])
+        for optional_constraint in self.data["general_constraints"]["optional"]:
+            multisport_csp.add_optional_constraint(optional_constraint,
+                                                   params=self.data["general_constraints"]["optional"][
+                                                       optional_constraint])
+
         try:
             result = multisport_csp.solve()
-            eval_score = result[0][0]
-            result = result[0][1]
             if result is None:
                 print("No results")
                 return None
             print(result)
+            eval_score = result[0][0]
+            result = result[0][1]
             complete_games = CompleteGames(self.data["tournament_length"], self.sports, eval_score)
             for sport in result:
                 for event in result[sport][1]:
                     complete_games.add_event(result[sport][1][event])
             return complete_games
         except TimeoutError:
-            return None
+            handle_error("TimeoutError", exit_program=True)

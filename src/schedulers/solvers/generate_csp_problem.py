@@ -7,13 +7,13 @@ from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.rounds.knockout_rounds import Round, generate_round_order
 from src.schedulers.solvers.solver import Solver
+from src.sports.sport import Sport
 from src.venues.venue import Venue
 
 
-def generate_csp_problem(solver: Type[Solver], data: dict, forward_check: bool) -> Solver:
+def generate_csp_problem(solver: Type[Solver], data: dict, forward_check: bool, sport: Sport) -> Solver:
     csp_problem = solver(data, forward_check=forward_check)
 
-    sport = data["sport"]
     sport_name: str = sport.name
     venues: list[Venue] = sport.possible_venues
     min_start_day: int = 0 if sport.min_start_day is None else sport.min_start_day
@@ -21,7 +21,7 @@ def generate_csp_problem(solver: Type[Solver], data: dict, forward_check: bool) 
         "tournament_length"] if sport.max_finish_day is None else sport.max_finish_day
     round_order: list[Round] = list(reversed(generate_round_order(sport.num_teams, sport.num_teams_per_game)))
 
-    for optional_constraint in data["sport"].constraints["optional"]:
+    for optional_constraint in sport.constraints["optional"]:
         csp_problem.add_optional_constraint(optional_constraint, sport,
                                             params=sport.constraints["optional"][optional_constraint])
 

@@ -5,12 +5,17 @@ from src.sports.sport import Sport
 
 class Solver(ABC):
     @abstractmethod
-    def __init__(self, data, forward_check) -> None:
+    def __init__(self, data, forward_check, sport=None) -> None:
         self.data = data
         self.forward_check = forward_check
+        self.sport = sport
 
     @abstractmethod
     def add_variable(self, new_var: str, domain) -> None:
+        pass
+
+    @abstractmethod
+    def get_variables(self) -> dict:
         pass
 
     @abstractmethod

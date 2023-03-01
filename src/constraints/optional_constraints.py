@@ -4,11 +4,23 @@ import operator
 
 import pgeocode
 
-from src.constraints.constraint import ConstraintFunction, ConstraintType
+from src.constraints.constraint import ConstraintFunction, ConstraintType, Constraint
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.helper.helper import flatten_events_by_sport_to_list, remove_scores_from_dict
 from src.schedulers.solvers.solver import Solver
+
+
+def take_average_of_heuristics_across_all_sports(csp_instance: Solver,
+                                                 assignments_by_sport: dict[str, dict[str, Event]],
+                                                 heuristic: Constraint) -> float:
+    heuristic_count = 0
+    sport_count = 0
+    for sport in assignments_by_sport:
+        score, _ = heuristic.constraint.function(csp_instance, assignments_by_sport[sport])
+        heuristic_count += score
+        sport_count += 1
+    return heuristic_count / sport_count
 
 
 # Optional Constraint Definitions
@@ -21,6 +33,7 @@ def max_matches_per_day_heuristic(csp_instance: Solver, assignments: dict[str, t
     num_events_to_add = csp_instance.data["num_total_events"] - len(events)
 
     def get_matches_per_day(temp_assignments: list[Event]):
+        # print(temp_assignments)
         temp_assignments_by_day = {}
         for event in temp_assignments:
             if not (event.day in temp_assignments_by_day):
@@ -65,32 +78,46 @@ def avg_capacity_heuristic(csp_instance: Solver, assignments: dict[str, Event]) 
     assignments = list(assignments.values())
     count = sum(event.venue.capacity for event in assignments)
     curr = count / len(assignments)
-    max_venue_capacity = max(venue.capacity for venue in csp_instance.data["venues"])
-    heuristic_count = count + max_venue_capacity * (csp_instance.data["num_total_events"] - len(assignments))
-    optimal = max_venue_capacity * csp_instance.data["num_total_events"]
+    sport = assignments[0].sport
+    max_venue_capacity = max(venue.capacity for venue in sport.possible_venues)
+    heuristic_count = count + max_venue_capacity * (
+            csp_instance.data[sport.name]["num_total_events"] - len(assignments))
+    optimal = max_venue_capacity * csp_instance.data[sport.name]["num_total_events"]
     return curr, heuristic_count / optimal
 
 
 def avg_distance_to_travel(csp_instance: Solver, assignments: dict[str, Event]) -> tuple[float, float]:
     assignments = list(assignments.values())
+    sport_name = assignments[0].sport.name
     if not ("distances_to_travel" in csp_instance.data):
+        csp_instance.data["distances_to_travel"] = {}
+    if not (sport_name in csp_instance.data["distances_to_travel"]):
+        print(1)
         dist = pgeocode.GeoDistance('GB')
         distances_to_travel = {}
         accommodation = csp_instance.data["athletes_accommodation_postcode"]
-        for venue in csp_instance.data["venues"]:
-            distances_to_travel[venue.name] = dist.query_postal_code(accommodation, venue.postcode)
-        csp_instance.data["distances_to_travel"] = distances_to_travel
+        # print('\n\n\n\n\n\n\n')
+        # print(assignments)
+        sports = [assignment.sport for assignment in assignments]
+        sports_seen = []
+        for sport in sports:
+            if sport in sports_seen:
+                continue
+            sports_seen.append(sport)
+            for venue in sport.possible_venues:
+                distances_to_travel[venue.name] = dist.query_postal_code(accommodation, venue.postcode)
+        csp_instance.data["distances_to_travel"][sport_name] = distances_to_travel
 
     match_distances = []
 
     for event in assignments:
-        match_distances.append(csp_instance.data["distances_to_travel"][event.venue.name])
+        match_distances.append(csp_instance.data["distances_to_travel"][sport_name][event.venue.name])
 
     curr = sum(match_distances) / len(match_distances)
 
-    min_distance = min(csp_instance.data["distances_to_travel"].values())
+    min_distance = min(csp_instance.data["distances_to_travel"][sport_name].values())
 
-    for new_event in range(csp_instance.data["num_total_events"] - len(match_distances)):
+    for new_event in range(csp_instance.data[sport_name]["num_total_events"] - len(match_distances)):
         match_distances.append(min_distance)
 
     avg_distance = sum(match_distances) / len(match_distances)
@@ -103,6 +130,7 @@ def avg_distance_to_travel(csp_instance: Solver, assignments: dict[str, Event]) 
 def avg_rest_between_matches(csp_instance: Solver, assignments: dict[str, Event]) -> tuple[float, float]:
     assignments = list(assignments.values())
     rest_between_matches: dict[str, list[int]] = {}
+    sport_name = assignments[0].sport.name
     for event in assignments:
         for team in event.teams_involved:
             if not (team in rest_between_matches):
@@ -127,18 +155,17 @@ def avg_rest_between_matches(csp_instance: Solver, assignments: dict[str, Event]
 
     teams = assignments[0].sport.teams
     matches_to_win = math.ceil(math.log2(assignments[0].sport.num_teams))
-    days_available = csp_instance.data["max_finish_day"] - csp_instance.data["min_start_day"] + 1
+    days_available = csp_instance.data[sport_name]["max_finish_day"] - csp_instance.data[sport_name][
+        "min_start_day"] + 1
     for team in teams:
         if not (team in rest_between_matches):
             rest_days = days_available / (matches_to_win - 1) if matches_to_win > 1 else days_available
             rest_between_matches[team] = [math.ceil(i * rest_days) for i in range(matches_to_win)]
         else:
             games_played = len(rest_between_matches[team])
-            rest_days = (csp_instance.data["max_finish_day"] - rest_between_matches[team][-1] + 1) / (
-                    matches_to_win - games_played - 1) if matches_to_win - games_played > 1 else csp_instance.data[
-                                                                                                     "max_finish_day"] - \
-                                                                                                 rest_between_matches[
-                                                                                                     team][-1] + 1
+            rest_days = (csp_instance.data[sport_name]["max_finish_day"] - rest_between_matches[team][-1] + 1) / (
+                    matches_to_win - games_played - 1) if matches_to_win - games_played > 1 else \
+                csp_instance.data[sport_name]["max_finish_day"] - rest_between_matches[team][-1] + 1
             for match in range(matches_to_win - len(rest_between_matches[team])):
                 rest_between_matches[team].append(rest_between_matches[team][-1] + match * rest_days)
 

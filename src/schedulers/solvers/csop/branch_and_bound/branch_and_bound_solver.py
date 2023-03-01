@@ -1,5 +1,6 @@
 import copy
 import time
+from abc import ABC
 from typing import Type
 
 from src.constraints.constraint import Constraint, get_constraint_from_string, ConstraintType
@@ -10,13 +11,15 @@ from src.error_handling.handle_error import handle_error
 from src.helper.branch_and_bound import BranchAndBound
 from src.helper.helper import copy_assignments
 from src.helper.priority_queue import PriorityQueue
+from src.schedulers.solvers.solver import Solver
 from src.sports.sport import Sport
 
 
-class BranchAndBoundSolver:
-    def __init__(self, data=None, forward_check=False) -> None:
+class BranchAndBoundSolver(Solver, ABC):
+    def __init__(self, data=None, forward_check=False, sport=None) -> None:
         self.data = data if data is not None else {}
 
+        self.sport = sport
         self.queue = PriorityQueue(self.data["comparator"])
         self.constraints: list[Constraint] = []
         self.optional_constraints: list[Constraint] = []
@@ -28,6 +31,12 @@ class BranchAndBoundSolver:
         if type(domain) != list:
             handle_error("Domain is not a list")
         self.queue.add(new_var, domain)
+
+    def get_variables(self) -> dict:
+        variables = {}
+        for variable in self.queue.variables:
+            variables[variable.variable] = variable.domain
+        return variables
 
     def add_constraint(self, function_name: str, variables: list[str] | None = None,
                        sport: Sport | None = None, params: dict = None) -> None:
@@ -108,6 +117,9 @@ class BranchAndBoundSolver:
     def __heuristic(self, assignments):
         normalising_factor = sum(optional_constraint_heuristic.params["weight"] for optional_constraint_heuristic in
                                  self.optional_constraints)
+        if normalising_factor == 0:
+            return 1
+        print([x.constraint.string_name for x in self.optional_constraints])
         return sum(
             optional_constraint_heuristic.constraint.function(self, assignments)[1] *
             optional_constraint_heuristic.params["weight"] for optional_constraint_heuristic in

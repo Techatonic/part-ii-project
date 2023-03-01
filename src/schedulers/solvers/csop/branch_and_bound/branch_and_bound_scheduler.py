@@ -40,23 +40,24 @@ class CSOPScheduler(Scheduler, ABC):
             round_order: list[Round] = list(reversed(generate_round_order(sport.num_teams, sport.num_teams_per_game)))
 
             csp_data = copy.deepcopy(self.data)
-            csp_data.update({
-                "domain_type": list[Event],
-                "variable_type": Event,
+            csp_data[sport.name] = {
                 "sport": sport,
                 "round_order": round_order,
                 "venues": venues,
                 "min_start_day": min_start_day,
                 "max_finish_day": max_finish_day,
-                "num_results_to_collect": 1,
-                "comparator": lambda curr, other: curr.domain[0].round.round_index > other.domain[
-                    0].round.round_index or
-                                                  curr.domain[0].round.round_index == other.domain[
-                                                      0].round.round_index and
-                                                  len(curr.domain) < len(other.domain),
                 "sport_specific": True,
                 "sports": [sport],
-                "wait_time": 5
+            }
+            csp_data.update({
+                "comparator": lambda curr, other: curr.domain[0].round.round_index > other.domain[
+                    0].round.round_index or curr.domain[0].round.round_index == other.domain[
+                                                      0].round.round_index and len(
+                    curr.domain) < len(other.domain),
+                "num_results_to_collect": 1,
+                "wait_time": 5,
+                "domain_type": list[Event],
+                "variable_type": Event,
             })
 
             sport_results = []
@@ -65,8 +66,8 @@ class CSOPScheduler(Scheduler, ABC):
             for _ in range(num_results_to_collect):
                 attempts = 5
                 while True:
-                    csp_problem = generate_csp_problem(self.solver, csp_data, self.forward_check)
-
+                    csp_problem = generate_csp_problem(self.solver, csp_data, self.forward_check, sport)
+                    csp_data[sport.name]["num_total_events"] = len(csp_problem.get_variables())
                     try:
                         result = csp_problem.solve()
                         if result is None:
@@ -108,7 +109,7 @@ class CSOPScheduler(Scheduler, ABC):
         for optional_constraint in self.data["general_constraints"]["optional"]:
             multisport_csp.add_optional_constraint(optional_constraint,
                                                    params=self.data["general_constraints"]["optional"][
-                                                       optional_constraint])
+                                                       optional_constraint], sport=None)
 
         multisport_csp.add_optional_constraint("maximise_sport_specific_constraints",
                                                params={"inequality": "MAXIMISE", "acceptable": 0})

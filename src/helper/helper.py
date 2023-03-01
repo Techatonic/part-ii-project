@@ -1,6 +1,5 @@
 import copy
 
-from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 
 
@@ -20,6 +19,8 @@ def remove_scores_from_dict(input_dict: dict):
 
 
 def flatten_events_by_sport_to_list(input_dict: dict[str, dict[str, Event]]) -> list[Event]:
+    # print("\n\n\n\n\n\n\n")
+    # print(input_dict)
     events = []
     for sport in input_dict:
         events += list(input_dict[sport].values())

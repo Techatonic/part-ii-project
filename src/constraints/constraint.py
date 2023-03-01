@@ -191,8 +191,7 @@ def same_sport_max_matches_per_day(*variables: dict[str, Event], constraint_chec
 
 
 def max_capacity_at_final(event: Event, constraint_check=False) -> list[str]:
-    sport = event.sport
-    bool_val = not (event.round.round_index == 0) or event.venue == max(global_variables.venues[sport.name],
+    bool_val = not (event.round.round_index == 0) or event.venue == max(global_variables.venues[event.sport.name],
                                                                         key=lambda venue: venue.capacity)
     return [] if bool_val else [event.event_id]
 
