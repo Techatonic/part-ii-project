@@ -7,6 +7,7 @@ from src.constraints.constraint import ConstraintFunction
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.games.complete_games import CompleteGames
+from src.helper.helper import widen_events_to_events_by_sport
 from src.rounds.knockout_rounds import generate_round_order, Round
 from src.scheduler import Scheduler
 from src.schedulers.solvers.generate_csp_problem import generate_csp_problem
@@ -126,17 +127,14 @@ class GeneticAlgorithmScheduler(Scheduler, ABC):
                                                        optional_constraint])
 
         try:
-            result = multisport_csp.solve()
+            result, eval_score = multisport_csp.solve()
             if result is None:
                 print("No results")
                 return None
-            print(result)
-            eval_score = result[0][0]
-            result = result[0][1]
-            complete_games = CompleteGames(self.data["tournament_length"], self.sports, eval_score)
+            complete_games = CompleteGames(self.data["tournament_length"], self.sports, eval_score=eval_score)
             for sport in result:
-                for event in result[sport][1]:
-                    complete_games.add_event(result[sport][1][event])
+                for event in result[sport]:
+                    complete_games.add_event(result[sport][event])
             return complete_games
         except TimeoutError:
             handle_error("TimeoutError", exit_program=True)

@@ -17,7 +17,7 @@ def take_average_of_heuristics_across_all_sports(csp_instance: Solver,
     heuristic_count = 0
     sport_count = 0
     for sport in assignments_by_sport:
-        score, _ = heuristic.constraint.function(csp_instance, assignments_by_sport[sport])
+        _, score = heuristic.constraint.function(csp_instance, assignments_by_sport[sport])
         heuristic_count += score
         sport_count += 1
     return heuristic_count / sport_count
@@ -53,10 +53,9 @@ def max_matches_per_day_heuristic(csp_instance: Solver, assignments: dict[str, t
 
     optimal = math.ceil(
         csp_instance.data["num_total_events"] / csp_instance.data["tournament_length"])
-
     score = optimal / max(assignments_by_day.values())
 
-    return score, curr
+    return curr, score
 
 
 def maximise_sport_specific_constraints(csp_instance: Solver, assignments: dict) -> tuple[float, float]:
@@ -71,7 +70,7 @@ def maximise_sport_specific_constraints(csp_instance: Solver, assignments: dict)
 
     score = (curr + sum(max(option[0] for option in sport.domain) for sport in csp_instance.queue.variables if
                         not (sport.variable in assignments))) / optimal
-    return score, curr
+    return curr, score
 
 
 def avg_capacity_heuristic(csp_instance: Solver, assignments: dict[str, Event]) -> tuple[float, float]:
@@ -92,7 +91,6 @@ def avg_distance_to_travel(csp_instance: Solver, assignments: dict[str, Event]) 
     if not ("distances_to_travel" in csp_instance.data):
         csp_instance.data["distances_to_travel"] = {}
     if not (sport_name in csp_instance.data["distances_to_travel"]):
-        print(1)
         dist = pgeocode.GeoDistance('GB')
         distances_to_travel = {}
         accommodation = csp_instance.data["athletes_accommodation_postcode"]

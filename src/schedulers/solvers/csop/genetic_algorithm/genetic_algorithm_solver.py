@@ -1,4 +1,5 @@
 import copy
+import math
 import time
 import random
 
@@ -8,6 +9,7 @@ from src.constraints.optional_constraints import get_optional_constraint_from_st
     get_inequality_operator_from_input, take_average_of_heuristics_across_all_sports
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
+from src.helper.helper import widen_events_to_events_by_sport, flatten_events_by_sport_to_dict
 
 from src.sports.sport import Sport
 
@@ -58,25 +60,37 @@ class GeneticAlgorithmSolver:
                         self.variables[variable].remove(option)
             self.constraints.remove(unary_constraint)
 
+    def __initialise_population(self):
+        initial_population_size = 100
+        population = []
+        for i in range(initial_population_size):
+            events = {}
+            for variable in self.variables:
+                events[variable] = random.choice(self.variables[variable])
+            events = widen_events_to_events_by_sport(events)
+            population.append(events)
+        return population
+
     def solve(self):
         # JUST LOOK AT REWRITING THIS - ONE VARIABLE OR MANY?
         self.data["start_time"] = time.time()
         self.__preprocess()
 
-        initial_population_size = 100
+        population = self.__initialise_population()
 
-        population = [{variable: random.choice(self.variables[variable]) for variable in self.variables} for _ in
-                      range(initial_population_size)]
-
-        max_iterations = 5
+        max_iterations = 1000
         epsilon = 0.01  # fitness_threshold
         delta = 0.1  # mutation percentage
 
         for iteration in range(max_iterations):
             fitness_of_population = [self.__calculate_fitness(assignments) for assignments in population]
             fittest_assignments = [assignments for (assignments, fitness_value) in
-                                   zip(population, fitness_of_population) if fitness_value > epsilon]
-            print(fitness_of_population)
+                                   sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True)][
+                                  :math.ceil(len(population) / 10)]
+
+            print("Eval Score: ",
+                  sum(self.__calculate_fitness(fittest_assignments[i]) for i in range(len(fittest_assignments))), "\n")
+            print(len(population), len(fittest_assignments))
             new_options = []
             while len(new_options) < len(population) - len(fittest_assignments):
                 if len(fittest_assignments) < 2:
@@ -88,45 +102,31 @@ class GeneticAlgorithmSolver:
 
             population = fittest_assignments + new_options
 
-        return population
+        fitness_of_population = [self.__calculate_fitness(assignments) for assignments in population]
+        fittest_assignments = [assignments for (assignments, fitness_value) in
+                               sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True)][
+                              :math.ceil(len(population) / 10)]
+        print("Eval Score: ", self.__calculate_fitness(fittest_assignments[0]))
+        return fittest_assignments[0], self.__calculate_fitness(fittest_assignments[0], print_broken=True)
 
-    def __heuristic(self, assignments):
-
+    def __heuristic(self, assignments: dict[str, dict[str, Event]]) -> float:
         normalising_factor = sum(optional_constraint_heuristic.params["weight"] for optional_constraint_heuristic in
                                  self.optional_constraints)
         if normalising_factor == 0:
             return 1
         assignments_by_sport_with_tuple = {}
-        for assignment in assignments:
-            if not (assignments[assignment].sport.name in assignments_by_sport_with_tuple):
-                assignments_by_sport_with_tuple[assignments[assignment].sport.name] = (
-                    0.0, {assignment: assignments[assignment]})
-            else:
-                assignments_by_sport_with_tuple[assignments[assignment].sport.name][1][assignment] = assignments[
-                    assignment]
-
-        assignments_by_sport_without_tuple = {}
-        for assignment in assignments:
-            if not (assignments[assignment].sport.name in assignments_by_sport_without_tuple):
-                assignments_by_sport_without_tuple[assignments[assignment].sport.name] = {
-                    assignment: assignments[assignment]}
-            else:
-                assignments_by_sport_without_tuple[assignments[assignment].sport.name][assignment] = assignments[
-                    assignment]
+        for sport in assignments:
+            assignments_by_sport_with_tuple[sport] = (0, assignments[sport])
 
         score = 0
         for heuristic in self.optional_constraints:
             if heuristic.sport is not None:
-                score += take_average_of_heuristics_across_all_sports(self, assignments_by_sport_without_tuple,
-                                                                      heuristic)
+                score += take_average_of_heuristics_across_all_sports(self, assignments,
+                                                                      heuristic) * heuristic.params["weight"]
             else:
-                score += heuristic.constraint.function(self, assignments_by_sport_with_tuple)[0]
+                score += heuristic.constraint.function(self, assignments_by_sport_with_tuple)[1] * heuristic.params[
+                    "weight"]
         return score / normalising_factor
-
-        # return sum(
-        #     optional_constraint_heuristic.constraint.function(self, assignments_by_sport)[1] *
-        #     optional_constraint_heuristic.params["weight"] for optional_constraint_heuristic in
-        #     self.optional_constraints) / normalising_factor
 
     def __test_constraints(self, assignments, constraints: list[Constraint]) -> bool:
         conflicts = []
@@ -134,28 +134,41 @@ class GeneticAlgorithmSolver:
             conflicts += constraint_check(constraint.constraint, assignments)
         return len(conflicts) == 0
 
-    def __calculate_fitness(self, assignments: dict[str, Event]) -> float:
+    def __calculate_fitness(self, assignments: dict[str, dict[str, Event]], print_broken=False) -> float:
         constraints_broken = 0
+        assignments_flatten = flatten_events_by_sport_to_dict(assignments)
         for constraint in self.constraints:
-            constraints_broken += len(constraint_check(constraint.constraint, assignments)) > 0
+            if constraint.sport is None:
+                constraints_broken += len(constraint_check(constraint.constraint, assignments_flatten)) > 0
+            else:
+                sport_name = constraint.sport.name
+                constraints_broken += len(constraint_check(constraint.constraint, assignments[sport_name])) > 0
 
         optional_constraints_score = self.__heuristic(assignments)
+        if constraints_broken > 0:
+            return 0
+        if print_broken:
+            print(constraints_broken)
+        return optional_constraints_score / (2 ** constraints_broken)
 
-        return optional_constraints_score  # / (20 ** constraints_broken)
-
-    def __crossover(self, x: dict[str, Event], y: dict[str, Event]) -> dict[str, Event]:
+    def __crossover(self, x: dict[str, dict[str, Event]], y: dict[str, dict[str, Event]]) -> dict[
+        str, dict[str, Event]]:
         # Only differences are venue, date and time
         child = {}
-        for variable in x:
-            if random.random() < 0.5:
-                child[variable] = x[variable]
-            else:
-                child[variable] = y[variable]
+        for sport in x:
+            child[sport] = {}
+            for variable in x[sport]:
+                if random.random() < 0.5:
+                    child[sport][variable] = x[sport][variable]
+                else:
+                    child[sport][variable] = y[sport][variable]
         return child
 
-    def __mutate(self, delta: float, child: dict[str, Event]) -> dict[str, Event]:
+    def __mutate(self, delta: float, child: dict[str, dict[str, Event]]) -> dict[str, dict[str, Event]]:
         if random.random() > delta:
             return child
-        variable_to_mutate = random.choice(list(child.keys()))
-        child[variable_to_mutate] = random.choice(self.variables[variable_to_mutate])
+        # Mutate one variable from each sport
+        for sport in child:
+            variable_to_mutate = random.choice(list(child[sport].keys()))
+            child[sport][variable_to_mutate] = random.choice(self.variables[variable_to_mutate])
         return child

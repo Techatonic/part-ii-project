@@ -12,9 +12,9 @@ class CompleteGames:
 
     def add_event(self, event):
         if event.sport.name in self.complete_games["events"]:
-            self.complete_games["events"][event.sport.name].append(event)
+            self.complete_games["events"][event.sport.name][event.event_id] = event
         else:
-            self.complete_games["events"][event.sport.name] = [event]
+            self.complete_games["events"][event.sport.name] = {event.event_id: event}
 
     def __str__(self) -> str:
         return self.__repr__()
@@ -29,7 +29,8 @@ class CompleteGames:
 
     def export(self, path) -> None:
         for sport in self.complete_games["events"]:
-            for event in self.complete_games["events"][sport]:
+            for event_id in self.complete_games["events"][sport]:
+                event = self.complete_games["events"][sport][event_id]
                 event.round = event.round.round_name
                 event.sport = event.sport.name
                 event.venue = event.venue.name
@@ -38,6 +39,5 @@ class CompleteGames:
             "eval_score": self.complete_games["eval_score"],
             "events": self.complete_games["events"]
         }
-
         with open(path, "w") as file:
             json.dump(dict_to_export, file, indent=4, default=lambda o: o.__dict__, skipkeys=True)

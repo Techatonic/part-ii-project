@@ -163,4 +163,4 @@ if __name__ == "__main__":
         main(args.import_path, constraint_checker_flag=args.c)
 
     end_time = time.time()
-    print("Time Taken: " + str(end_time - start_time))
+    print("\nTime Taken: " + str(end_time - start_time))
