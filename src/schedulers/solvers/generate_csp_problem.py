@@ -11,6 +11,9 @@ from src.sports.sport import Sport
 from src.venues.venue import Venue
 
 
+# random.seed(1)
+
+
 def generate_csp_problem(solver: Type[Solver], data: dict, forward_check: bool, sport: Sport) -> Solver:
     csp_problem = solver(data, forward_check=forward_check)
 

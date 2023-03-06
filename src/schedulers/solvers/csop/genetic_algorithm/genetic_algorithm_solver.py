@@ -16,6 +16,9 @@ from src.schedulers.solvers.csp.csp_solver import CSPSolver
 from src.sports.sport import Sport
 
 
+# random.seed(1)
+
+
 class GeneticAlgorithmSolver:
     def __init__(self, data=None, forward_check=False) -> None:
         self.data = data if data is not None else {}
@@ -67,8 +70,8 @@ class GeneticAlgorithmSolver:
         population = []
 
         for i in range(initial_population_size):
-            csp_scheduler = CSPScheduler(CSPSolver, self.data['sports'], self.data, False, just_return_events=True)
-            result = csp_scheduler.schedule_events()
+            csp_scheduler = CSPScheduler(CSPSolver, self.data['sports'], self.data, False)
+            result = csp_scheduler.schedule_events().complete_games["events"]
             population.append(result)
 
         return population
@@ -80,18 +83,26 @@ class GeneticAlgorithmSolver:
 
         population = self.__initialise_population()
 
-        max_iterations = 1000
-        epsilon = 0.01  # fitness_threshold
+        max_iterations = self.data["genetic_algorithm_iterations"]
+        epsilon = 0.7  # fitness_threshold
         delta = 0.1  # mutation percentage
+
+        evaluation_by_iteration = []
 
         for iteration in range(max_iterations):
             fitness_of_population = [self.__calculate_fitness(assignments) for assignments in population]
+            # fittest_assignments = [assignments for (assignments, fitness_value) in
+            #                        sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True) if
+            #                        fitness_value > epsilon]
             fittest_assignments = [assignments for (assignments, fitness_value) in
                                    sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True)][
                                   :math.ceil(len(population) / 10)]
 
-            print("Eval Score: ",
-                  sum(self.__calculate_fitness(fittest_assignments[i]) for i in range(len(fittest_assignments))), "\n")
+            evaluation_by_iteration.append([iteration, self.__calculate_fitness(fittest_assignments[0])])
+            # print("Best Score: ", self.__calculate_fitness(fittest_assignments[0]), end=" " * 10)
+            # print("Avg  Score: ",
+            #      sum(self.__calculate_fitness(fittest_assignments[i]) for i in range(len(fittest_assignments))) / len(
+            #          fittest_assignments), "\n")
             new_options = []
             while len(new_options) < len(population) - len(fittest_assignments):
                 if len(fittest_assignments) < 2:
@@ -107,8 +118,8 @@ class GeneticAlgorithmSolver:
         fittest_assignments = [assignments for (assignments, fitness_value) in
                                sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True)][
                               :math.ceil(len(population) / 10)]
-        print("Eval Score: ", self.__calculate_fitness(fittest_assignments[0]))
-        return fittest_assignments[0], self.__calculate_fitness(fittest_assignments[0], print_broken=True)
+        # print("Eval Score: ", self.__calculate_fitness(fittest_assignments[0]))
+        return fittest_assignments[0], self.__calculate_fitness(fittest_assignments[0]), evaluation_by_iteration
 
     def __heuristic(self, assignments: dict[str, dict[str, Event]]) -> float:
         normalising_factor = sum(optional_constraint_heuristic.params["weight"] for optional_constraint_heuristic in
@@ -135,7 +146,7 @@ class GeneticAlgorithmSolver:
             conflicts += constraint_check(constraint.constraint, assignments)
         return len(conflicts) == 0
 
-    def __calculate_fitness(self, assignments: dict[str, dict[str, Event]], print_broken=False) -> float:
+    def __calculate_fitness(self, assignments: dict[str, dict[str, Event]]) -> float:
         constraints_broken = 0
         assignments_flatten = flatten_events_by_sport_to_dict(assignments)
         for constraint in self.constraints:
@@ -148,8 +159,6 @@ class GeneticAlgorithmSolver:
         optional_constraints_score = self.__heuristic(assignments)
         if constraints_broken > 0:
             return 0
-        if print_broken:
-            print(constraints_broken)
         return optional_constraints_score / (2 ** constraints_broken)
 
     def __crossover(self, x: dict[str, dict[str, Event]], y: dict[str, dict[str, Event]]) -> dict[

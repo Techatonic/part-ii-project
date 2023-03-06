@@ -1,6 +1,7 @@
 """
     A script for generating a solution to a CST scheduling problem
 """
+import random
 # TODO Make all copies use custom deepcopy
 import time
 import os
@@ -8,6 +9,7 @@ from argparse import ArgumentParser
 
 from src.constraints.constraint_checker import constraint_checker
 from src.error_handling.handle_error import handle_error
+from src.games.complete_games import CompleteGames
 from src.helper import global_variables
 from src.input_handling.input_reader import read_and_validate_input
 from src.input_handling.parse_input import parse_input, parse_input_constraint_checker
@@ -25,12 +27,12 @@ from src.sports.sport import Sport
 
 def main(input_path: str, export_path: str | None = None, constraint_checker_flag: int = 1,
          use_python_module: bool = False, use_branch_and_bound_solver: bool = False,
-         use_genetic_algorithm: bool = False, forward_check=False) -> None:
+         use_genetic_algorithm: int = 0, forward_check=False) -> CompleteGames | None:
     if constraint_checker_flag:
         run_constraint_checker(input_path, export_path, constraint_checker_flag)
     else:
-        run_solver(input_path, use_python_module, use_branch_and_bound_solver, use_genetic_algorithm, forward_check,
-                   export_path)
+        return run_solver(input_path, use_python_module, use_branch_and_bound_solver, use_genetic_algorithm,
+                          forward_check, export_path)
 
 
 def run_constraint_checker(input_path: str, export_path: str | None = None, num_changes=1) -> None:
@@ -91,7 +93,7 @@ def add_global_variables(sports: dict[str, Sport], data, general_constraints):
     global_variables.constraint_params["general"] = general_constraints
 
 
-def run_solver(input_path: str, use_python_module: bool, use_branch_and_bound_solver: bool, use_genetic_algorithm: bool,
+def run_solver(input_path: str, use_python_module: bool, use_branch_and_bound_solver: bool, use_genetic_algorithm: int,
                forward_check: bool, export_path: str | None = None) -> None:
     input_json = read_and_validate_input(input_path, 'src/input_handling/input_schema.json')
 
@@ -111,6 +113,7 @@ def run_solver(input_path: str, use_python_module: bool, use_branch_and_bound_so
         elif use_genetic_algorithm:  # genetic_algorithm CSOP solver
             solver = GeneticAlgorithmSolver
             scheduler = GeneticAlgorithmScheduler
+            data["genetic_algorithm_iterations"] = use_genetic_algorithm
         else:  # CSP solver
             solver = CSPSolver
             scheduler = CSPScheduler
@@ -129,8 +132,12 @@ def run_solver(input_path: str, use_python_module: bool, use_branch_and_bound_so
             print(e)
             handle_error("Export failed. Please try again ensuring a valid output path is given")
 
+    return result
+
 
 if __name__ == "__main__":
+    # random.seed(a=1)
+
     # Setup command line arguments
     parser = ArgumentParser('Automated Event Scheduler')
     parser.add_argument("--import_path", required=True, type=str, help="read json input from this path")
@@ -140,7 +147,7 @@ if __name__ == "__main__":
     parser.add_argument("-m", action='store_true', help="run on python-constraint CSP solver")
     parser.add_argument("-b", action='store_true',
                         help="run on CSOP branch and bound solver, will take longer to run but produce more optimal results")
-    parser.add_argument("-g", action='store_true',
+    parser.add_argument("-g", required=False, type=int,
                         help="run on CSOP genetic algorithm solver, may not produce completely valid results")
     parser.add_argument("-forward_check", action='store_true', help="run forward checking algorithm on solver")
     args = None
@@ -151,14 +158,15 @@ if __name__ == "__main__":
 
     if not os.path.exists(args.import_path):
         handle_error("Path does not exist")
-    if (args.c is not None) + args.m + args.b + args.g > 1:
+    if (args.c is not None) + args.m + args.b + (args.g is not None) > 1:
         handle_error("Can select only one of constraint checker, python-constraint CSP solver and CSOP solver")
 
     start_time = time.time()
-
+    result = None
     if args.export_path:
         main(args.import_path, args.export_path, constraint_checker_flag=args.c, use_python_module=args.m,
-             use_branch_and_bound_solver=args.b, use_genetic_algorithm=args.g, forward_check=args.forward_check)
+             use_branch_and_bound_solver=args.b, use_genetic_algorithm=args.g,
+             forward_check=args.forward_check)
     else:
         main(args.import_path, constraint_checker_flag=args.c)
 

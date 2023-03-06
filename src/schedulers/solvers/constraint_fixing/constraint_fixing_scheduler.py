@@ -15,6 +15,9 @@ from src.sports.sport import Sport, convert_string_to_sport_instance
 from src.venues.venue import Venue
 
 
+# random.seed(1)
+
+
 class ConstraintFixingScheduler(Scheduler, ABC):
     def __init__(self, solver: type[Solver], sports: dict[str, Sport], data: dict, forward_check: bool, events,
                  num_changes: int):

@@ -127,7 +127,7 @@ class GeneticAlgorithmScheduler(Scheduler, ABC):
                                                        optional_constraint])
 
         try:
-            result, eval_score = multisport_csp.solve()
+            result, eval_score, eval_by_iteration = multisport_csp.solve()
             if result is None:
                 print("No results")
                 return None
@@ -135,6 +135,7 @@ class GeneticAlgorithmScheduler(Scheduler, ABC):
             for sport in result:
                 for event in result[sport]:
                     complete_games.add_event(result[sport][event])
+            complete_games.complete_games["eval_by_iteration"] = eval_by_iteration
             return complete_games
         except TimeoutError:
             handle_error("TimeoutError", exit_program=True)
