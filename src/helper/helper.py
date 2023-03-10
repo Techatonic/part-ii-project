@@ -1,6 +1,8 @@
 import copy
 
 from src.events.event import Event
+from src.helper import global_variables
+from src.sports.sport import Sport
 
 
 def remove_tuple_from_events(input_val):
@@ -70,3 +72,21 @@ def remove_duplicates_from_list(lst: list) -> list:
         if not (item in new_list):
             new_list.append(item)
     return new_list
+
+
+def add_global_variables(sports: dict[str, Sport], data, general_constraints):
+    global_variables.data = data
+    for sport_name in sports:
+        sport = sports[sport_name]
+        global_variables.venues[sport_name] = sports[sport_name].possible_venues
+        global_variables.constraint_params[sport_name]: dict[str, dict] = {
+            "required": {},
+            "optional": {}
+        }
+        for constraint in sport.constraints["required"]:
+            global_variables.constraint_params[sport.name]["required"][constraint] = sport.constraints["required"][
+                constraint]
+        for constraint in sport.constraints["optional"]:
+            global_variables.constraint_params[sport.name]["optional"][constraint] = sport.constraints["optional"][
+                constraint]
+    global_variables.constraint_params["general"] = general_constraints

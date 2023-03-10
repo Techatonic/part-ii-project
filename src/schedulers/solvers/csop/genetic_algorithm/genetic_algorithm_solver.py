@@ -9,24 +9,25 @@ from src.constraints.optional_constraints import get_optional_constraint_from_st
     get_inequality_operator_from_input, take_average_of_heuristics_across_all_sports
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
-from src.helper.helper import widen_events_to_events_by_sport, flatten_events_by_sport_to_dict
+from src.helper.helper import flatten_events_by_sport_to_dict
 from src.schedulers.solvers.csp.csp_scheduler import CSPScheduler
 from src.schedulers.solvers.csp.csp_solver import CSPSolver
+from src.schedulers.solvers.solver import Solver
 
 from src.sports.sport import Sport
 
 
 # random.seed(1)
 
-
-class GeneticAlgorithmSolver:
-    def __init__(self, data=None, forward_check=False) -> None:
+class GeneticAlgorithmSolver(Solver):
+    def __init__(self, data=None, forward_check=False, initial_population=None) -> None:
         self.data = data if data is not None else {}
 
         self.constraints: list[Constraint] = []
         self.optional_constraints: list[Constraint] = []
         self.forward_check: bool = forward_check
         self.variables = {}
+        self.initial_population = None if initial_population is None else initial_population
 
     def add_variable(self, new_var: str, domain) -> None:
         if new_var in self.variables:
@@ -65,48 +66,54 @@ class GeneticAlgorithmSolver:
                         self.variables[variable].remove(option)
             self.constraints.remove(unary_constraint)
 
-    def __initialise_population(self):
-        initial_population_size = 100
+    def __initialise_population(self, initial_population_size):
+        if self.initial_population is not None:
+            return self.initial_population
+
         population = []
 
         for i in range(initial_population_size):
             csp_scheduler = CSPScheduler(CSPSolver, self.data['sports'], self.data, False)
-            result = csp_scheduler.schedule_events().complete_games["events"]
-            population.append(result)
+            population.append(csp_scheduler.schedule_events().complete_games["events"])
 
         return population
 
-    def solve(self):
-        # JUST LOOK AT REWRITING THIS - ONE VARIABLE OR MANY?
+    def solve(self, attempt=0):
+        if attempt == 5:
+            return None
         self.data["start_time"] = time.time()
         self.__preprocess()
 
-        population = self.__initialise_population()
+        max_iterations = self.data["genetic_algorithm_iterations"] or 1000
+        initial_population_size = self.data["initial_population_size"] or 100
 
-        max_iterations = self.data["genetic_algorithm_iterations"]
-        epsilon = 0.7  # fitness_threshold
+        epsilon = 0.75  # fitness_threshold
         delta = 0.1  # mutation percentage
+
+        population = self.__initialise_population(initial_population_size)
 
         evaluation_by_iteration = []
 
         for iteration in range(max_iterations):
+            if iteration % 50 == 0:
+                print("Iteration #", iteration, "population size: ", len(self.initial_population))
             fitness_of_population = [self.__calculate_fitness(assignments) for assignments in population]
-            # fittest_assignments = [assignments for (assignments, fitness_value) in
-            #                        sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True) if
-            #                        fitness_value > epsilon]
             fittest_assignments = [assignments for (assignments, fitness_value) in
                                    sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True)][
                                   :math.ceil(len(population) / 10)]
+            # fittest_assignments = [assignments for (assignments, fitness_value) in
+            #                        sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True) if
+            #                        fitness_value > epsilon]
+            # print(sorted(fitness_of_population, reverse=True))
+
+            if len(fittest_assignments) < 2:
+                handle_error("Less than 2 fit assignments", exit_program=False)
+                self.initial_population = None
+                return self.solve(attempt + 1)
 
             evaluation_by_iteration.append([iteration, self.__calculate_fitness(fittest_assignments[0])])
-            # print("Best Score: ", self.__calculate_fitness(fittest_assignments[0]), end=" " * 10)
-            # print("Avg  Score: ",
-            #      sum(self.__calculate_fitness(fittest_assignments[i]) for i in range(len(fittest_assignments))) / len(
-            #          fittest_assignments), "\n")
             new_options = []
             while len(new_options) < len(population) - len(fittest_assignments):
-                if len(fittest_assignments) < 2:
-                    return None
                 parent_1, parent_2 = random.sample(fittest_assignments, 2)
                 child = self.__crossover(parent_1, parent_2)
                 child = self.__mutate(delta, child)
@@ -118,7 +125,7 @@ class GeneticAlgorithmSolver:
         fittest_assignments = [assignments for (assignments, fitness_value) in
                                sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True)][
                               :math.ceil(len(population) / 10)]
-        # print("Eval Score: ", self.__calculate_fitness(fittest_assignments[0]))
+        self.data["time_taken"] = time.time() - self.data["start_time"]
         return fittest_assignments[0], self.__calculate_fitness(fittest_assignments[0]), evaluation_by_iteration
 
     def __heuristic(self, assignments: dict[str, dict[str, Event]]) -> float:

@@ -154,6 +154,12 @@ def avg_rest_between_matches(csp_instance: Solver, assignments: dict[str, Event]
     matches_to_win = math.ceil(math.log2(assignments[0].sport.num_teams))
     days_available = csp_instance.data[sport_name]["max_finish_day"] - csp_instance.data[sport_name][
         "min_start_day"] + 1
+
+    optimal = days_available / (matches_to_win - 1)
+
+    if "solver" in csp_instance.data and csp_instance.data["solver"] == "GeneticAlgorithmSolver":
+        return curr, curr / optimal
+
     for team in teams:
         if not (team in rest_between_matches):
             rest_days = days_available / (matches_to_win - 1) if matches_to_win > 1 else days_available
@@ -167,8 +173,6 @@ def avg_rest_between_matches(csp_instance: Solver, assignments: dict[str, Event]
                 rest_between_matches[team].append(rest_between_matches[team][-1] + match * rest_days)
 
     avg_rest = get_avg_rest(rest_between_matches)
-
-    optimal = days_available / (matches_to_win - 1)
 
     return curr, avg_rest / optimal
 

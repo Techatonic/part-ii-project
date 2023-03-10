@@ -1,16 +1,15 @@
 import copy
 import math
+import time
 from abc import ABC
 from typing import Type
 
-from src.constraints.constraint import ConstraintFunction
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.games.complete_games import CompleteGames
-from src.helper.helper import widen_events_to_events_by_sport
 from src.rounds.knockout_rounds import generate_round_order, Round
 from src.scheduler import Scheduler
-from src.schedulers.solvers.generate_csp_problem import generate_csp_problem
+from src.schedulers.solvers.csop.genetic_algorithm.genetic_algorithm_solver import GeneticAlgorithmSolver
 from src.schedulers.solvers.solver import Solver
 from src.sports.sport import Sport
 from src.venues.venue import Venue
@@ -18,7 +17,8 @@ from src.venues.venue import Venue
 
 class GeneticAlgorithmScheduler(Scheduler, ABC):
 
-    def __init__(self, solver: Type[Solver], sports: dict[str, Sport], data: dict, forward_check: bool):
+    def __init__(self, solver: GeneticAlgorithmSolver, sports: dict[str, Sport], data: dict, forward_check: bool,
+                 initial_population=None):
         """
         Class to solve the CSP scheduling problem
         :param solver: Type[Solver]
@@ -28,9 +28,11 @@ class GeneticAlgorithmScheduler(Scheduler, ABC):
         :return result: dict[str, Event] | None
         """
         super().__init__(solver, sports, data, forward_check)
+        self.initial_population = None if initial_population is None else initial_population
 
     def schedule_events(self) -> CompleteGames | None:
         csp_data = copy.deepcopy(self.data)
+        csp_data['solver'] = 'GeneticAlgorithmSolver'
         csp_data['sports'] = self.sports
 
         for sport in self.sports:
@@ -60,7 +62,7 @@ class GeneticAlgorithmScheduler(Scheduler, ABC):
                 "wait_time": 5,
             }
 
-        multisport_csp = self.solver(csp_data, self.forward_check)
+        multisport_csp = self.solver(csp_data, self.forward_check, initial_population=self.initial_population)
 
         for sport_name in self.sports:
             sport = self.sports[sport_name]
@@ -91,10 +93,10 @@ class GeneticAlgorithmScheduler(Scheduler, ABC):
                         min_start_time = max(sport.min_start_time, venue.min_start_time)
                         max_finish_time = min(sport.max_finish_time, venue.max_finish_time)
                         time_order = list(range(min_start_time, math.ceil(max_finish_time - sport.match_duration)))
-                        for time in time_order:
+                        for start_time in time_order:
                             for day in day_order:
                                 options.append(Event(sport, event_id, venue=venue, event_round=event_round,
-                                                     day=day, start_time=time, duration=sport.match_duration,
+                                                     day=day, start_time=start_time, duration=sport.match_duration,
                                                      teams_involved=match))
 
                     multisport_csp.add_variable(event_id, options)
@@ -127,7 +129,9 @@ class GeneticAlgorithmScheduler(Scheduler, ABC):
                                                        optional_constraint])
 
         try:
+            start_time = time.time()
             result, eval_score, eval_by_iteration = multisport_csp.solve()
+            end_time = time.time()
             if result is None:
                 print("No results")
                 return None
@@ -136,6 +140,7 @@ class GeneticAlgorithmScheduler(Scheduler, ABC):
                 for event in result[sport]:
                     complete_games.add_event(result[sport][event])
             complete_games.complete_games["eval_by_iteration"] = eval_by_iteration
+            complete_games.complete_games["time_taken"] = end_time - start_time
             return complete_games
         except TimeoutError:
             handle_error("TimeoutError", exit_program=True)

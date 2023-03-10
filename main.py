@@ -11,6 +11,7 @@ from src.constraints.constraint_checker import constraint_checker
 from src.error_handling.handle_error import handle_error
 from src.games.complete_games import CompleteGames
 from src.helper import global_variables
+from src.helper.helper import add_global_variables
 from src.input_handling.input_reader import read_and_validate_input
 from src.input_handling.parse_input import parse_input, parse_input_constraint_checker
 from src.schedulers.solvers.constraint_fixing.constraint_fixing_scheduler import ConstraintFixingScheduler
@@ -73,24 +74,6 @@ def run_constraint_checker(input_path: str, export_path: str | None = None, num_
             print("No export path given")
 
     exit()
-
-
-def add_global_variables(sports: dict[str, Sport], data, general_constraints):
-    global_variables.data = data
-    for sport_name in sports:
-        sport = sports[sport_name]
-        global_variables.venues[sport_name] = sports[sport_name].possible_venues
-        global_variables.constraint_params[sport_name]: dict[str, dict] = {
-            "required": {},
-            "optional": {}
-        }
-        for constraint in sport.constraints["required"]:
-            global_variables.constraint_params[sport.name]["required"][constraint] = sport.constraints["required"][
-                constraint]
-        for constraint in sport.constraints["optional"]:
-            global_variables.constraint_params[sport.name]["optional"][constraint] = sport.constraints["optional"][
-                constraint]
-    global_variables.constraint_params["general"] = general_constraints
 
 
 def run_solver(input_path: str, use_python_module: bool, use_branch_and_bound_solver: bool, use_genetic_algorithm: int,
