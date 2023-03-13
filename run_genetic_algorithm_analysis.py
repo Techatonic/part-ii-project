@@ -1,4 +1,3 @@
-import math
 import multiprocessing
 import pprint
 import time
@@ -8,7 +7,11 @@ from itertools import repeat
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib
+import seaborn
 from matplotlib.colors import LinearSegmentedColormap
+from textwrap import wrap
+from matplotlib import interactive
 
 from src.helper.helper import add_global_variables
 from src.input_handling.input_reader import read_and_validate_input
@@ -137,7 +140,10 @@ def initialise_population(run):
 
 
 def compare_iterations_and_population_size_run(run, populations, ga_iterations):
+    initialise_population_start_time = time.time()
     initial_population = [initialise_population(run) for _ in range(max(populations))]
+    initialise_population_end_time = time.time()
+    initialise_time = (initialise_population_end_time - initialise_population_start_time) / max(populations)
 
     run_start_time = time.time()
     scores = []
@@ -155,21 +161,51 @@ def compare_iterations_and_population_size_run(run, populations, ga_iterations):
 
             print("Run # ", run + 1, " " * 4, "Initial Population: ", size, " " * 4, "ga_iterations: ", iterations,
                   " " * 4, "eval_score: ", result_eval, " " * 4, "Time Taken: ", time_taken)
-            scores.append([size, iterations, result_eval, time_taken])
+            scores.append([size, iterations, result_eval, time_taken + initialise_time * size])
 
     run_end_time = time.time()
     print("Runtime for run #", run + 1, ": ", run_end_time - run_start_time)
     return scores
 
 
+def draw_heatmap(data_to_show, cmap, x_labels, y_labels, title, x_title, y_title):
+    fig = plt.figure(figsize=(300, 300))
+    ax = plt.gca()
+    colormesh = ax.pcolormesh(x_labels, y_labels, data_to_show, cmap=cmap, linewidths=0.1)
+    # ax.tick_params(axis='x', which='major', rotation=50)
+    ax.set_xticks(x_labels)
+    ax.set_yticks(y_labels)
+    fig.colorbar(colormesh, ax=ax)
+    ax.set_xlabel(x_title)
+    ax.set_ylabel(y_title)
+    ax.set_title("\n".join(wrap(title, 40)))
+    plt.show()
+
+    # seaborn.heatmap(data_to_show, cmap=cmap, annot=True, square=True, fmt='.3f')
+    #
+    # ax = plt.gca()
+    # ax.set_xticks(np.arange(len(x_labels)) + 0.5, labels=x_labels)
+    # ax.set_yticks(np.arange(len(y_labels)) + 0.5, labels=y_labels)
+    # ax.set_xlabel(x_title)
+    # ax.set_ylabel(y_title)
+    # ax.invert_yaxis()
+    # ax.set_title("\n".join(wrap(title, 40)))
+
+
 def compare_iterations_and_population_size():
     total_start_time = time.time()
-    iterations = 16
+    iterations = 4
     ga_iterations = [25, 50, 100, 250, 500, 750, 1000]
     populations = [25, 50, 100, 250, 500, 750, 1000]
     # iterations = 2
-    # ga_iterations = [50, 500, 1000]
-    # populations = [50, 500, 1000]
+    # ga_iterations = [i for i in range(1, 4)]
+    # populations = [i for i in range(10, 13)]
+    # iterations = 32
+    # ga_iterations = [i for i in range(100, 1001, 100)]
+    # populations = [i for i in range(100, 1001, 100)]
+    # iterations = 2
+    # ga_iterations = [i for i in range(1, 4)]
+    # populations = [25, 50, 75, 100, 200, 300]
 
     results = {}
     for size in populations:
@@ -212,67 +248,43 @@ def compare_iterations_and_population_size():
     pprint.pprint(avg_eval_scores)
 
     df = pd.DataFrame(avg_eval_scores, columns=ga_iterations, index=populations)
-    df.to_csv("./avg_eval_score.csv")
+    df.to_csv("./avg_eval_score.csv", index_label="Population Size")
 
     print(df)
 
     df = pd.DataFrame(avg_runtimes, columns=ga_iterations, index=populations)
-    df.to_csv("./avg_runtimes.csv")
+    df.to_csv("./avg_runtimes.csv", index_label="Population Size")
 
     print(df)
 
-    fig, (ax1, ax2) = plt.subplots(2, figsize=(25, 25))
-    c = ["darkred", "red", "lightcoral", "palegreen", "green", "darkgreen"]
-    v = [0, .675, .72, 0.75, .8, 1]
-    l = list(zip(v, c))
-    cmap = LinearSegmentedColormap.from_list('rg', l, N=256)
+    avg_performance_per_second = np.divide(avg_eval_scores, avg_runtimes)
+    df = pd.DataFrame(avg_performance_per_second, columns=ga_iterations, index=populations)
+    df.to_csv("./avg_performance_per_second.csv", index_label="Population Size")
 
-    # runtime_v = [0, 5, 10, 20, 50, 1000]
-    # inverse_l = list(zip(runtime_v, c[::-1]))
-    # inverse_cmap = LinearSegmentedColormap.from_list('rg', inverse_l, N=256)
-    inverse_cmap = LinearSegmentedColormap.from_list('gr', ["darkgreen", "g", "r", "darkred"], N=256)
+    # c = ["darkred", "red", "lightcoral", "palegreen", "green", "darkgreen"]
+    # v = [0, .675, .72, 0.75, .8, 1]
+    # l = list(zip(v, c))
+    # cmap = LinearSegmentedColormap.from_list('rg', l, N=256)
 
-    im = ax1.imshow(avg_eval_scores, cmap=cmap)
+    cmap = LinearSegmentedColormap.from_list('rg', ["darkred", "red", "lightcoral", "palegreen", "green", "darkgreen"],
+                                             N=256)
 
-    # Show all ticks and label them with the respective list entries
-    ax1.set_yticks(np.arange(len(populations)), labels=populations)
-    ax1.set_xticks(np.arange(len(ga_iterations)), labels=ga_iterations)
-
-    ax1.set_ylabel("Population Size")
-    ax1.set_xlabel("GA Iterations")
-
-    # Loop over data dimensions and create text annotations.
-    for i in range(len(populations)):
-        for j in range(len(ga_iterations)):
-            text = ax1.text(j, i, avg_eval_scores[i][j],
-                            ha="center", va="center", color="w")
-
-    # Runtime graph
-    ax1.set_title("Heatmap of Population size and GA Iterations vs Performance")
-
-    im = ax2.imshow(avg_runtimes, cmap=inverse_cmap)
-
-    # Show all ticks and label them with the respective list entries
-    ax2.set_xticks(np.arange(len(ga_iterations)), labels=ga_iterations)
-    ax2.set_yticks(np.arange(len(populations)), labels=populations)
-
-    # Loop over data dimensions and create text annotations.
-    for i in range(len(populations)):
-        for j in range(len(ga_iterations)):
-            text = ax2.text(j, i, avg_runtimes[i][j],
-                            ha="center", va="center", color="w")
-
-    ax2.set_title("Heatmap of Population size and GA Iterations vs Runtime")
-    ax2.set_ylabel("Population Size")
-    ax2.set_xlabel("GA Iterations")
-
-    fig.subplots_adjust(hspace=1)
-    # fig.tight_layout()
+    inverse_cmap = LinearSegmentedColormap.from_list('gr', ["darkgreen", "green", "palegreen", "lightcoral", "red",
+                                                            "darkred"],
+                                                     N=256)
 
     total_end_time = time.time()
     print("\nTotal Runtime: ", total_end_time - total_start_time)
 
-    plt.show()
+    draw_heatmap(avg_eval_scores, cmap, ga_iterations, populations,
+                 "Heatmap of Population size and GA Iterations vs Performance", "Genetic Algorithm Iterations",
+                 "Population Size")
+    draw_heatmap(avg_runtimes, inverse_cmap, ga_iterations, populations,
+                 "Heatmap of Population size and GA Iterations vs Runtime", "Genetic Algorithm Iterations",
+                 "Population Size")
+    draw_heatmap(avg_performance_per_second, cmap, ga_iterations, populations,
+                 "Heatmap of Population and GA Iterations vs Performance per Second", "Genetic Algorithm Iterations",
+                 "Population Size")
 
 
 parser = ArgumentParser('Analysis of Genetic Algorithms')

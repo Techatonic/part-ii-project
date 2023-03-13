@@ -94,13 +94,15 @@ class GeneticAlgorithmSolver(Solver):
 
         evaluation_by_iteration = []
 
+        num_fittest_assignments = max(math.ceil(len(population) / 10), 5)
+
         for iteration in range(max_iterations):
             if iteration % 50 == 0:
                 print("Iteration #", iteration, "population size: ", len(self.initial_population))
             fitness_of_population = [self.__calculate_fitness(assignments) for assignments in population]
             fittest_assignments = [assignments for (assignments, fitness_value) in
                                    sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True)][
-                                  :math.ceil(len(population) / 10)]
+                                  :num_fittest_assignments]
             # fittest_assignments = [assignments for (assignments, fitness_value) in
             #                        sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True) if
             #                        fitness_value > epsilon]
