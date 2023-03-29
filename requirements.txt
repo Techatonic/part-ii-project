@@ -1,0 +1,7 @@
+colorama==0.4.4
+jsonschema==4.17.3
+matplotlib==3.7.0
+multiprocess==0.70.14
+numpy==1.23.4
+pandas==1.5.1
+pgeocode==0.4.0
