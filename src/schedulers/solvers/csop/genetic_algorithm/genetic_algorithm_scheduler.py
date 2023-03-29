@@ -17,7 +17,7 @@ from src.venues.venue import Venue
 
 class GeneticAlgorithmScheduler(Scheduler, ABC):
 
-    def __init__(self, solver: GeneticAlgorithmSolver, sports: dict[str, Sport], data: dict, forward_check: bool,
+    def __init__(self, solver: Type[GeneticAlgorithmSolver], sports: dict[str, Sport], data: dict, forward_check: bool,
                  initial_population=None):
         """
         Class to solve the CSP scheduling problem

@@ -7,11 +7,8 @@ from itertools import repeat
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-import matplotlib
-import seaborn
 from matplotlib.colors import LinearSegmentedColormap
 from textwrap import wrap
-from matplotlib import interactive
 
 from src.helper.helper import add_global_variables
 from src.input_handling.input_reader import read_and_validate_input
@@ -181,6 +178,7 @@ def draw_heatmap(data_to_show, cmap, x_labels, y_labels, title, x_title, y_title
     ax.set_title("\n".join(wrap(title, 40)))
     plt.show()
 
+    # fig = plt.figure(figsize=(300, 300))
     # seaborn.heatmap(data_to_show, cmap=cmap, annot=True, square=True, fmt='.3f')
     #
     # ax = plt.gca()
@@ -190,11 +188,13 @@ def draw_heatmap(data_to_show, cmap, x_labels, y_labels, title, x_title, y_title
     # ax.set_ylabel(y_title)
     # ax.invert_yaxis()
     # ax.set_title("\n".join(wrap(title, 40)))
+    #
+    # plt.show()
 
 
 def compare_iterations_and_population_size():
     total_start_time = time.time()
-    iterations = 4
+    iterations = 32
     ga_iterations = [25, 50, 100, 250, 500, 750, 1000]
     populations = [25, 50, 100, 250, 500, 750, 1000]
     # iterations = 2
@@ -217,7 +217,7 @@ def compare_iterations_and_population_size():
     for iteration in range(iterations):
         inputs.append([iteration, populations, ga_iterations])
 
-    pool = multiprocessing.Pool(4)
+    pool = multiprocessing.Pool(8)
     outputs = list(zip(*pool.starmap(compare_iterations_and_population_size_run, inputs)))
     # outputs = list(compare_iterations_and_population_size_run(*input_fields) for input_fields in inputs)
 
@@ -248,18 +248,18 @@ def compare_iterations_and_population_size():
     pprint.pprint(avg_eval_scores)
 
     df = pd.DataFrame(avg_eval_scores, columns=ga_iterations, index=populations)
-    df.to_csv("./avg_eval_score.csv", index_label="Population Size")
+    df.to_csv("./avg_eval_score2.csv", index_label="Population Size")
 
     print(df)
 
     df = pd.DataFrame(avg_runtimes, columns=ga_iterations, index=populations)
-    df.to_csv("./avg_runtimes.csv", index_label="Population Size")
+    df.to_csv("./avg_runtimes2.csv", index_label="Population Size")
 
     print(df)
 
     avg_performance_per_second = np.divide(avg_eval_scores, avg_runtimes)
     df = pd.DataFrame(avg_performance_per_second, columns=ga_iterations, index=populations)
-    df.to_csv("./avg_performance_per_second.csv", index_label="Population Size")
+    df.to_csv("./avg_performance_per_second2.csv", index_label="Population Size")
 
     # c = ["darkred", "red", "lightcoral", "palegreen", "green", "darkgreen"]
     # v = [0, .675, .72, 0.75, .8, 1]
@@ -287,6 +287,43 @@ def compare_iterations_and_population_size():
                  "Population Size")
 
 
+def combine_heatmaps():
+    heatmaps = {
+        "avg_eval_score": ['./avg_eval_score1.csv', './avg_eval_score2.csv'],
+        "avg_runtimes": ['./avg_runtimes1.csv', './avg_runtimes2.csv']
+    }
+
+    metadata = {
+        "avg_eval_score": {
+            "title": "Heatmap of Population size and GA Iterations vs Performance",
+            "cmap": LinearSegmentedColormap.from_list('rg', ["darkred", "red", "lightcoral", "palegreen", "green",
+                                                             "darkgreen"], N=256)
+        },
+        "avg_runtimes": {
+            "title": "Heatmap of Population size and GA Iterations vs Runtime",
+            "cmap": LinearSegmentedColormap.from_list('gr', ["darkgreen", "green", "palegreen", "lightcoral", "red",
+                                                             "darkred"], N=256)
+        }
+    }
+    iterations = [20, 32]
+    for heatmap_type in heatmaps:
+        dataframes = [pd.read_csv(x) for x in heatmaps[heatmap_type]]
+        dataframes = [dataframes[i] * iterations[i] for i in range(len(dataframes))]
+        sum_df = dataframes[0]
+        for dataframe in range(1, len(dataframes)):
+            sum_df = sum_df.add(dataframes[dataframe], fill_value=0)
+        avg_df = sum_df / sum(iterations)
+        print(avg_df)
+        avg_df.drop("Population Size", axis=1, inplace=True)
+        avg_df.reset_index(drop=True, inplace=True)
+        avg_vals = avg_df.to_numpy()
+
+        draw_heatmap(avg_vals, metadata[heatmap_type]["cmap"], [25, 50, 100, 250, 500, 750, 1000],
+                     [25, 50, 100, 250, 500, 750, 1000],
+                     metadata[heatmap_type]["title"] + " - " + str(sum(iterations)) + " iterations",
+                     "Genetic Algorithm Iterations", "Initial Population Size")
+
+
 parser = ArgumentParser('Analysis of Genetic Algorithms')
 parser.add_argument("-i", action='store_true', help="iterations vs performance")
 parser.add_argument("-ip", action='store_true', help="initial population size vs performance")
@@ -298,12 +335,14 @@ try:
 except:
     print("Invalid input")
     exit()
-if args.i + args.ip + args.iip != 1:
-    raise Exception
-if args.i:
-    compare_iterations()
-if args.ip:
-    compare_population_size()
 
-if args.iip:
-    compare_iterations_and_population_size()
+combine_heatmaps()
+# if args.i + args.ip + args.iip != 1:
+#     raise Exception
+# if args.i:
+#     compare_iterations()
+# if args.ip:
+#     compare_population_size()
+#
+# if args.iip:
+#     compare_iterations_and_population_size()

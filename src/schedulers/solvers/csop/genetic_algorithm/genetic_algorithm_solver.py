@@ -1,5 +1,6 @@
 import copy
 import math
+from multiprocess.pool import Pool
 import time
 import random
 
@@ -18,6 +19,11 @@ from src.sports.sport import Sport
 
 
 # random.seed(1)
+
+def generate_single_population(sports, data):
+    csp_scheduler = CSPScheduler(CSPSolver, sports, data, False)
+    return csp_scheduler.schedule_events().complete_games["events"]
+
 
 class GeneticAlgorithmSolver(Solver):
     def __init__(self, data=None, forward_check=False, initial_population=None) -> None:
@@ -70,12 +76,10 @@ class GeneticAlgorithmSolver(Solver):
         if self.initial_population is not None:
             return self.initial_population
 
-        population = []
+        inputs = [(self.data['sports'], self.data)] * initial_population_size
 
-        for i in range(initial_population_size):
-            csp_scheduler = CSPScheduler(CSPSolver, self.data['sports'], self.data, False)
-            population.append(csp_scheduler.schedule_events().complete_games["events"])
-
+        pool = Pool()
+        population = pool.starmap(generate_single_population, inputs)
         return population
 
     def solve(self, attempt=0):
@@ -84,8 +88,10 @@ class GeneticAlgorithmSolver(Solver):
         self.data["start_time"] = time.time()
         self.__preprocess()
 
-        max_iterations = self.data["genetic_algorithm_iterations"] or 1000
-        initial_population_size = self.data["initial_population_size"] or 100
+        max_iterations = ("genetic_algorithm_iterations" in self.data and self.data[
+            "genetic_algorithm_iterations"]) or 500
+        initial_population_size = ("initial_population_size" in self.data and self.data[
+            "initial_population_size"]) or 250
 
         epsilon = 0.75  # fitness_threshold
         delta = 0.1  # mutation percentage
@@ -98,7 +104,7 @@ class GeneticAlgorithmSolver(Solver):
 
         for iteration in range(max_iterations):
             if iteration % 50 == 0:
-                print("Iteration #", iteration, "population size: ", len(self.initial_population))
+                print(f'Iteration # {iteration}')
             fitness_of_population = [self.__calculate_fitness(assignments) for assignments in population]
             fittest_assignments = [assignments for (assignments, fitness_value) in
                                    sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True)][
@@ -106,7 +112,6 @@ class GeneticAlgorithmSolver(Solver):
             # fittest_assignments = [assignments for (assignments, fitness_value) in
             #                        sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True) if
             #                        fitness_value > epsilon]
-            # print(sorted(fitness_of_population, reverse=True))
 
             if len(fittest_assignments) < 2:
                 handle_error("Less than 2 fit assignments", exit_program=False)

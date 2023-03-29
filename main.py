@@ -23,7 +23,6 @@ from src.schedulers.solvers.csop.genetic_algorithm.genetic_algorithm_solver impo
 from src.schedulers.solvers.csp.csp_scheduler import CSPScheduler
 from src.schedulers.solvers.csp.csp_solver import CSPSolver
 from src.schedulers.solvers.csp_module.module_solver import ModuleSolver
-from src.sports.sport import Sport
 
 
 def main(input_path: str, export_path: str | None = None, constraint_checker_flag: int = 1,
@@ -141,6 +140,7 @@ if __name__ == "__main__":
 
     if not os.path.exists(args.import_path):
         handle_error("Path does not exist")
+
     if (args.c is not None) + args.m + args.b + (args.g is not None) > 1:
         handle_error("Can select only one of constraint checker, python-constraint CSP solver and CSOP solver")
 
