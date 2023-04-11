@@ -1,7 +1,6 @@
 """
     A script for generating a solution to a CST scheduling problem
 """
-import random
 # TODO Make all copies use custom deepcopy
 import time
 import os
@@ -10,19 +9,18 @@ from argparse import ArgumentParser
 from src.constraints.constraint_checker import constraint_checker
 from src.error_handling.handle_error import handle_error
 from src.games.complete_games import CompleteGames
-from src.helper import global_variables
 from src.helper.helper import add_global_variables
 from src.input_handling.input_reader import read_and_validate_input
 from src.input_handling.parse_input import parse_input, parse_input_constraint_checker
-from src.schedulers.solvers.constraint_fixing.constraint_fixing_scheduler import ConstraintFixingScheduler
-from src.schedulers.solvers.constraint_fixing.constraint_fixing_solver import ConstraintFixingSolver
-from src.schedulers.solvers.csop.branch_and_bound.branch_and_bound_scheduler import CSOPScheduler
-from src.schedulers.solvers.csop.branch_and_bound.branch_and_bound_solver import BranchAndBoundSolver
-from src.schedulers.solvers.csop.genetic_algorithm.genetic_algorithm_scheduler import GeneticAlgorithmScheduler
-from src.schedulers.solvers.csop.genetic_algorithm.genetic_algorithm_solver import GeneticAlgorithmSolver
-from src.schedulers.solvers.csp.csp_scheduler import CSPScheduler
-from src.schedulers.solvers.csp.csp_solver import CSPSolver
-from src.schedulers.solvers.csp_module.module_solver import ModuleSolver
+from src.schedulers.constraint_fixing.constraint_fixing_scheduler import ConstraintFixingScheduler
+from src.schedulers.constraint_fixing.constraint_fixing_solver import ConstraintFixingSolver
+from src.schedulers.csop.branch_and_bound.branch_and_bound_scheduler import CSOPScheduler
+from src.schedulers.csop.branch_and_bound.branch_and_bound_solver import BranchAndBoundSolver
+from src.schedulers.csop.genetic_algorithm.genetic_algorithm_scheduler import GeneticAlgorithmScheduler
+from src.schedulers.csop.genetic_algorithm.genetic_algorithm_solver import GeneticAlgorithmSolver
+from src.schedulers.csp.csp_scheduler import CSPScheduler
+from src.schedulers.csp.csp_solver import CSPSolver
+from src.schedulers.csp_module.module_solver import ModuleSolver
 
 
 def main(input_path: str, export_path: str | None = None, constraint_checker_flag: int = 1,

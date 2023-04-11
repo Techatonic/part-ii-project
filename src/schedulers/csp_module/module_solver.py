@@ -1,6 +1,9 @@
+from functools import partial
+
 from src.constraints.constraint import get_constraint_from_string, ConstraintType
+from src.constraints.constraint_checker import valid_constraint_check, single_constraint_check
 from src.events.event import Event
-from src.schedulers.solvers.solver import Solver
+from src.schedulers.solver import Solver
 from constraint import Problem, BacktrackingSolver
 
 from src.sports.sport import Sport
@@ -25,13 +28,17 @@ class ModuleSolver(Solver):
 
         if constraint_function.constraint_type == ConstraintType.UNARY:
             for event_id in self.variables:
-                self.csp.addConstraint(constraint_function.function, [event_id])
+                # self.csp.addConstraint(constraint_function.function, [event_id])
+                self.csp.addConstraint(partial(single_constraint_check, constraint_function.function), [event_id])
         elif constraint_function.constraint_type == ConstraintType.BINARY:
             for event_id_1 in range(len(self.variables.keys())):
                 for event_id_2 in range(event_id_1 + 1, len(self.variables.keys())):
-                    self.csp.addConstraint(constraint_function.function, [event_id_1, event_id_2])
+                    # self.csp.addConstraint(constraint_function.function, [event_id_1, event_id_2])
+                    self.csp.addConstraint(partial(single_constraint_check, constraint_function.function),
+                                           [event_id_1, event_id_2])
         else:
-            self.csp.addConstraint(constraint_function.function)
+            # self.csp.addConstraint(constraint_function.function)
+            self.csp.addConstraint(partial(single_constraint_check, constraint_function.function))
 
     def solve(self) -> dict[str, Event] | None:
         return self.csp.getSolution()

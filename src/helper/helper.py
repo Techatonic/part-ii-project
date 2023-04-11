@@ -49,6 +49,13 @@ def widen_events_to_events_by_sport(events: dict[str, Event]) -> dict[str, dict[
     return events_by_sport
 
 
+def convert_events_list_to_dict(events: list[Event]) -> dict[str, Event]:
+    events_dict = {}
+    for event in events:
+        events_dict[event.event_id] = event
+    return events_dict
+
+
 def copy_assignments(assignments):
     try:
         new_assignments = {}

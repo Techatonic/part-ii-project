@@ -13,10 +13,10 @@ from textwrap import wrap
 from src.helper.helper import add_global_variables
 from src.input_handling.input_reader import read_and_validate_input
 from src.input_handling.parse_input import parse_input
-from src.schedulers.solvers.csop.genetic_algorithm.genetic_algorithm_scheduler import GeneticAlgorithmScheduler
-from src.schedulers.solvers.csop.genetic_algorithm.genetic_algorithm_solver import GeneticAlgorithmSolver
-from src.schedulers.solvers.csp.csp_scheduler import CSPScheduler
-from src.schedulers.solvers.csp.csp_solver import CSPSolver
+from src.schedulers.csop.genetic_algorithm.genetic_algorithm_scheduler import GeneticAlgorithmScheduler
+from src.schedulers.csop.genetic_algorithm.genetic_algorithm_solver import GeneticAlgorithmSolver
+from src.schedulers.csp.csp_scheduler import CSPScheduler
+from src.schedulers.csp.csp_solver import CSPSolver
 
 import_path = "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/inputs/example_input.json"
 export_path = "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/outputs/test_output.json"

@@ -11,7 +11,7 @@ from src.error_handling.handle_error import handle_error
 from src.helper.branch_and_bound import BranchAndBound
 from src.helper.helper import copy_assignments
 from src.helper.priority_queue import PriorityQueue
-from src.schedulers.solvers.solver import Solver
+from src.schedulers.solver import Solver
 from src.sports.sport import Sport
 
 
@@ -71,7 +71,7 @@ class BranchAndBoundSolver(Solver, ABC):
         for unary_constraint in unary_constraints:
             for variable in self.queue.variables:
                 for option in variable.domain:
-                    if not unary_constraint.constraint.function(option):
+                    if not unary_constraint.constraint.function({option.event_id: option}):
                         variable.domain.remove(option)
             self.constraints.remove(unary_constraint)
 

@@ -1,7 +1,7 @@
 from src.constraints.constraint import Constraint, ConstraintType
 from src.constraints.constraint_checker import constraint_check, valid_constraint_check
 from src.helper.priority_queue import PriorityQueue
-from src.schedulers.solvers.solver import Solver
+from src.schedulers.solver import Solver
 
 
 def ac3(csp_instance: Solver, queue: PriorityQueue, constraints: list[Constraint]) -> object:

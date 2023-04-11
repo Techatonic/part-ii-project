@@ -1,5 +1,7 @@
 import copy
 import math
+import os
+
 from multiprocess.pool import Pool
 import time
 import random
@@ -11,18 +13,21 @@ from src.constraints.optional_constraints import get_optional_constraint_from_st
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.helper.helper import flatten_events_by_sport_to_dict
-from src.schedulers.solvers.csp.csp_scheduler import CSPScheduler
-from src.schedulers.solvers.csp.csp_solver import CSPSolver
-from src.schedulers.solvers.solver import Solver
+from src.schedulers.csp.csp_scheduler import CSPScheduler
+from src.schedulers.csp.csp_solver import CSPSolver
+from src.schedulers.solver import Solver
 
 from src.sports.sport import Sport
 
 
 # random.seed(1)
 
-def generate_single_population(sports, data):
-    csp_scheduler = CSPScheduler(CSPSolver, sports, data, False)
-    return csp_scheduler.schedule_events().complete_games["events"]
+def generate_single_population(sports, data, num_iterations):
+    populations = []
+    for i in range(num_iterations):
+        csp_scheduler = CSPScheduler(CSPSolver, sports, data, False)
+        populations.append(csp_scheduler.schedule_events().complete_games["events"])
+    return populations
 
 
 class GeneticAlgorithmSolver(Solver):
@@ -68,7 +73,7 @@ class GeneticAlgorithmSolver(Solver):
         for unary_constraint in unary_constraints:
             for variable in self.variables:
                 for option in self.variables[variable]:
-                    if not unary_constraint.constraint.function(option):
+                    if not unary_constraint.constraint.function({option.event_id: option}):
                         self.variables[variable].remove(option)
             self.constraints.remove(unary_constraint)
 
@@ -76,10 +81,15 @@ class GeneticAlgorithmSolver(Solver):
         if self.initial_population is not None:
             return self.initial_population
 
-        inputs = [(self.data['sports'], self.data)] * initial_population_size
+        pool_size = os.cpu_count()
+        num_iterations = math.ceil(initial_population_size / pool_size)
+
+        inputs = [(self.data['sports'], self.data, num_iterations)] * pool_size
 
         pool = Pool()
         population = pool.starmap(generate_single_population, inputs)
+        population = [item for sublist in population for item in sublist]
+        population = population[:initial_population_size]
         return population
 
     def solve(self, attempt=0):
@@ -96,7 +106,9 @@ class GeneticAlgorithmSolver(Solver):
         epsilon = 0.75  # fitness_threshold
         delta = 0.1  # mutation percentage
 
+        a = time.time()
         population = self.__initialise_population(initial_population_size)
+        print("Time taken: ", time.time() - a)
 
         evaluation_by_iteration = []
 

@@ -6,7 +6,7 @@ from src.constraints.constraint import ConstraintFunction, get_constraint_from_s
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.rounds.knockout_rounds import Round, generate_round_order
-from src.schedulers.solvers.solver import Solver
+from src.schedulers.solver import Solver
 from src.sports.sport import Sport
 from src.venues.venue import Venue
 

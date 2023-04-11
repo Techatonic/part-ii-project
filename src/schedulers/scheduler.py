@@ -2,13 +2,8 @@ from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Type
 
-from src.schedulers.solvers.solver import Solver
+from src.schedulers.solver import Solver
 from src.sports.sport import Sport
-
-
-class SchedulerType(Enum):
-    CSP_SCHEDULER = 1,
-    CSOP_SCHEDULER = 2,
 
 
 class Scheduler(ABC):

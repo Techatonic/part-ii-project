@@ -8,9 +8,8 @@ from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.games.complete_games import CompleteGames
 from src.rounds.knockout_rounds import generate_round_order, Round
-from src.scheduler import Scheduler
-from src.schedulers.solvers.csop.genetic_algorithm.genetic_algorithm_solver import GeneticAlgorithmSolver
-from src.schedulers.solvers.solver import Solver
+from src.schedulers.scheduler import Scheduler
+from src.schedulers.csop.genetic_algorithm.genetic_algorithm_solver import GeneticAlgorithmSolver
 from src.sports.sport import Sport
 from src.venues.venue import Venue
 

@@ -2,7 +2,7 @@ from src.constraints.constraint import ConstraintType, constraints_list, get_con
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.sports.sport import Sport
-from src.helper.helper import get_alL_events
+from src.helper.helper import get_alL_events, convert_events_list_to_dict
 
 
 def constraint_checker(sports: dict[str, Sport], events: dict[str, list[Event]],
@@ -44,10 +44,15 @@ def valid_constraint_check(constraint: ConstraintFunction, events) -> bool:
     return len(constraint_check(constraint, events)) == 0
 
 
+def single_constraint_check(constraint_function, *events) -> bool:
+    events = convert_events_list_to_dict(list(events))
+    return len(constraint_function(events)) == 0
+
+
 def unary_constraint_check(constraint: ConstraintFunction, events, constraint_checker_flag) -> list:
     conflicts = []
     for event in events:
-        result = constraint.function(events[event], constraint_check=constraint_checker_flag)
+        result = constraint.function({event: events[event]}, constraint_check=constraint_checker_flag)
         if len(result) > 0:
             conflicts += result
 
@@ -59,7 +64,8 @@ def binary_constraint_check(constraint: ConstraintFunction, events, constraint_c
 
     for event_1 in range(len(events)):
         for event_2 in range(event_1 + 1, len(events)):
-            result = constraint.function(events[event_1], events[event_2], constraint_check=constraint_checker_flag)
+            result = constraint.function({event_1: events[event_1], event_2: events[event_2]},
+                                         constraint_check=constraint_checker_flag)
             if len(result) > 0:
                 conflicts += result
 

@@ -5,9 +5,9 @@ from typing import Type
 from src.events.event import Event
 from src.games.complete_games import CompleteGames
 from src.rounds.knockout_rounds import generate_round_order, Round
-from src.scheduler import Scheduler
-from src.schedulers.solvers.generate_csp_problem import generate_csp_problem
-from src.schedulers.solvers.solver import Solver
+from src.schedulers.scheduler import Scheduler
+from src.schedulers.generate_csp_problem import generate_csp_problem
+from src.schedulers.solver import Solver
 from src.sports.sport import Sport
 from src.venues.venue import Venue
 

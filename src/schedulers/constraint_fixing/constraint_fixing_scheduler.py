@@ -9,9 +9,9 @@ from src.events.event import Event
 from src.games.complete_games import CompleteGames
 from src.helper.helper import remove_duplicates_from_list
 from src.rounds.knockout_rounds import generate_round_order, Round
-from src.scheduler import Scheduler
-from src.schedulers.solvers.solver import Solver
-from src.sports.sport import Sport, convert_string_to_sport_instance
+from src.schedulers.scheduler import Scheduler
+from src.schedulers.solver import Solver
+from src.sports.sport import Sport
 from src.venues.venue import Venue
 
 
