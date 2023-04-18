@@ -1,8 +1,0 @@
-1. Should I have pre-written objects for specific sports (e.g. Football) as opposed to making it fully customisable?
-   Making it fully customisable is actually slightly easier I think (even though I've already laid the groundwork for
-   pre-written objects. But full customisability would mean the user would have to enter obvious things like the
-   duration of a football match which I could just preset to 1.5 hours since that never changes. But having it as
-   customisable means if something like that does change (e.g. the commonwealth games decides to do 2 hour football
-   matches) then we support that with this program.
-
-Use pre-written objects but use defaults so they don't need to enter obvious details
