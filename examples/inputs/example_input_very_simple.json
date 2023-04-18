@@ -86,19 +86,7 @@
         "Brazil",
         "Argentina",
         "France",
-        "Belgium",
-        "England",
-        "Netherlands",
-        "Croatia",
-        "Italy",
-        "Portugal",
-        "Spain",
-        "Morocco",
-        "Switzerland",
-        "USA",
-        "Germany",
-        "Mexico",
-        "Uruguay"
+        "Belgium"
       ],
       "num_teams_per_game": 2,
       "is_knockout": true,
@@ -125,17 +113,17 @@
           "avg_distance_to_travel": {
             "weight": 1,
             "inequality": "MINIMISE",
-            "acceptable": 20
+            "acceptable": 1000
           },
           "avg_rest_between_matches": {
             "weight": 1,
             "inequality": "MAXIMISE",
-            "acceptable": 2
+            "acceptable": 0
           },
           "avg_capacity": {
             "weight": 1,
             "inequality": "MAXIMISE",
-            "acceptable": 20000
+            "acceptable": 0
           }
         }
       }

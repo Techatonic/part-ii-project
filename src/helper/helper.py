@@ -97,3 +97,42 @@ def add_global_variables(sports: dict[str, Sport], data, general_constraints):
             global_variables.constraint_params[sport.name]["optional"][constraint] = sport.constraints["optional"][
                 constraint]
     global_variables.constraint_params["general"] = general_constraints
+
+
+def heuristic(assignments: dict[str, dict[str, Event]], optional_constraints, csp_instance) -> float:
+    normalising_factor = sum(optional_constraint_heuristic.params["weight"] for optional_constraint_heuristic in
+                             optional_constraints)
+    if normalising_factor == 0:
+        return 1
+    assignments_by_sport_with_tuple = {}
+    for sport in assignments:
+        assignments_by_sport_with_tuple[sport] = (0, assignments[sport])
+
+    score = 0
+    for heuristic in optional_constraints:
+        if heuristic.sport is not None:
+            from src.constraints.optional_constraints import take_average_of_heuristics_across_all_sports
+            score += take_average_of_heuristics_across_all_sports(csp_instance, assignments,
+                                                                  heuristic) * heuristic.params["weight"]
+        else:
+            score += heuristic.constraint.function(csp_instance, assignments_by_sport_with_tuple)[1] * heuristic.params[
+                "weight"]
+    return score / normalising_factor
+
+
+def calculate_fitness(assignments: dict[str, dict[str, Event]], constraints,
+                      optional_constraints, csp_instance, accept_invalid_solutions=False) -> float:
+    from src.constraints.constraint_checker import constraint_check
+    constraints_broken = 0
+    assignments_flatten = flatten_events_by_sport_to_dict(assignments)
+    for constraint in constraints:
+        if constraint.sport is None:
+            constraints_broken += len(constraint_check(constraint.constraint, assignments_flatten)) > 0
+        else:
+            sport_name = constraint.sport.name
+            constraints_broken += len(constraint_check(constraint.constraint, assignments[sport_name])) > 0
+
+    optional_constraints_score = heuristic(assignments, optional_constraints, csp_instance)
+    if constraints_broken > 0 and not accept_invalid_solutions:
+        return 0
+    return optional_constraints_score / (2 ** constraints_broken)

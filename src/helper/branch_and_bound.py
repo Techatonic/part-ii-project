@@ -39,7 +39,7 @@ class BranchAndBound:
         self.__best_solution = (heuristic_val, assignments)
 
     def get_best_solution(self):
-        return None if self.__best_solution is None else self.__best_solution
+        return None if self.__best_solution is None else [self.__best_solution]
 
     def get_best_solution_score(self):
         return 0 if self.__best_solution is None else self.__best_solution[0]

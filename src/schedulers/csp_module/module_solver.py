@@ -1,6 +1,7 @@
+import copy
 from functools import partial
 
-from src.constraints.constraint import get_constraint_from_string, ConstraintType
+from src.constraints.constraint import get_constraint_from_string, ConstraintType, Constraint
 from src.constraints.constraint_checker import valid_constraint_check, single_constraint_check
 from src.events.event import Event
 from src.schedulers.solver import Solver
@@ -14,6 +15,7 @@ class ModuleSolver(Solver):
         self.csp: Problem = Problem(BacktrackingSolver(forward_check))
         self.data = data
         self.variables = {}
+        self.constraints = []
 
     def add_variable(self, new_var: str, domain: list[Event]) -> None:
         self.csp.addVariable(new_var, domain)
@@ -39,6 +41,9 @@ class ModuleSolver(Solver):
         else:
             # self.csp.addConstraint(constraint_function.function)
             self.csp.addConstraint(partial(single_constraint_check, constraint_function.function))
+
+        self.constraints.append(
+            Constraint(get_constraint_from_string(function_name), variables, sport, copy.deepcopy(params)))
 
     def solve(self) -> dict[str, Event] | None:
         return self.csp.getSolution()

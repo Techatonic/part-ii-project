@@ -4,7 +4,9 @@ from typing import Type
 
 from src.events.event import Event
 from src.games.complete_games import CompleteGames
+from src.helper.helper import calculate_fitness, widen_events_to_events_by_sport
 from src.rounds.knockout_rounds import generate_round_order, Round
+from src.schedulers.csp.csp_solver import CSPSolver
 from src.schedulers.scheduler import Scheduler
 from src.schedulers.generate_csp_problem import generate_csp_problem
 from src.schedulers.solver import Solver
@@ -28,8 +30,9 @@ class CSOPScheduler(Scheduler, ABC):
     def schedule_events(self) -> CompleteGames | None:
 
         total_events = {}
+        num_total_events = {}
 
-        num_results_to_collect = 10
+        num_results_to_collect = 1
 
         for sport in self.sports:
             sport = self.sports[sport]
@@ -54,7 +57,7 @@ class CSOPScheduler(Scheduler, ABC):
                     0].round.round_index or curr.domain[0].round.round_index == other.domain[
                                                       0].round.round_index and len(
                     curr.domain) < len(other.domain),
-                "num_results_to_collect": 1,
+                "num_results_to_collect": 3,
                 "wait_time": 5,
                 "domain_type": list[Event],
                 "variable_type": Event,
@@ -67,13 +70,17 @@ class CSOPScheduler(Scheduler, ABC):
             for _ in range(num_results_to_collect):
                 attempts = 5
                 while True:
-                    csp_problem = generate_csp_problem(self.solver, csp_data, self.forward_check, sport)
+                    csp_problem = generate_csp_problem(CSPSolver, csp_data, self.forward_check, sport)
                     csp_data[sport.name]["num_total_events"] = len(csp_problem.get_variables())
+                    num_total_events[sport.name] = len(csp_problem.get_variables())
                     try:
                         result = csp_problem.solve()
+                        print(result)
+                        fitness = calculate_fitness(widen_events_to_events_by_sport(result), csp_problem.constraints,
+                                                    [], csp_problem)
                         if result is None:
                             return None
-                        sport_results += result
+                        sport_results.append((fitness, result))
                         break
                     except TimeoutError:
                         attempts -= 1
@@ -86,10 +93,13 @@ class CSOPScheduler(Scheduler, ABC):
 
         csp_data = copy.deepcopy(self.data)
         # print(total_events)
+
+        num_total_events = sum(num_total_events.values())
+
         csp_data.update({
             "domain_type": list[tuple[float, dict[str, Event]]],
             "variable_type": tuple[float, dict[str, Event]],
-            "num_total_events": sum(len(total_events[sport][0][1]) for sport in total_events),
+            "num_total_events": num_total_events,
             "num_results_to_collect": 1,
             "comparator": lambda curr, other: len(curr.domain) < len(other.domain),
             "sport_specific": False,

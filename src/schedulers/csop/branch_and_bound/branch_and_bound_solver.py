@@ -60,9 +60,7 @@ class BranchAndBoundSolver(Solver, ABC):
         self.__preprocess()
 
         bound_data = BranchAndBound()
-        result = self.__solve_variable({}, self.queue, bound_data)
-        if result is None:
-            return None
+        self.__solve_variable({}, self.queue, bound_data)
         return bound_data.get_best_solution()
 
     def __preprocess(self):
@@ -93,7 +91,7 @@ class BranchAndBoundSolver(Solver, ABC):
                 # print(heuristic_val, bound_data)
                 # print("Solution found - bound not good enough")
                 pass
-        elif len(assignments) == 0 or self.__heuristic(assignments) > self.data['min_heuristic_score_allowed']:
+        else:
             # print(len(assignments))
             variable = queue.pop()
 
@@ -103,7 +101,8 @@ class BranchAndBoundSolver(Solver, ABC):
                 assignments[variable.variable] = option
                 domain_evals.append((option, self.__heuristic(assignments)))
                 del assignments[variable.variable]
-            variable.domain = sorted(domain_evals, key=lambda x: x[1], reverse=True)
+            variable.domain = filter(lambda x: x[1] > bound_data.get_best_solution_score(),
+                                     sorted(domain_evals, key=lambda x: x[1], reverse=True))
             variable.domain = [x[0] for x in variable.domain]
 
             for option in variable.domain:
@@ -113,7 +112,6 @@ class BranchAndBoundSolver(Solver, ABC):
                     result = self.__solve_variable(assignments, queue, bound_data)
                     if result is not None:
                         return result
-            return None
         # print("Returning none at end of function")
 
     def __is_acceptable_solution(self, assignments):

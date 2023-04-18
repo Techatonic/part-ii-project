@@ -183,8 +183,7 @@ class GeneticAlgorithmSolver(Solver):
                 constraints_broken += len(constraint_check(constraint.constraint, assignments[sport_name])) > 0
 
         optional_constraints_score = self.__heuristic(assignments)
-        if constraints_broken > 0:
-            return 0
+
         return optional_constraints_score / (2 ** constraints_broken)
 
     def __crossover(self, x: dict[str, dict[str, Event]], y: dict[str, dict[str, Event]]) -> dict[

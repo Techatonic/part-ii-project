@@ -9,6 +9,7 @@ class Solver(ABC):
         self.data = data
         self.forward_check = forward_check
         self.sport = sport
+        self.constraints = []
 
     @abstractmethod
     def add_variable(self, new_var: str, domain) -> None:
