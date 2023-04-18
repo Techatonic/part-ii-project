@@ -44,9 +44,13 @@ def max_matches_per_day_heuristic(csp_instance: Solver, assignments: dict[str, t
 
     curr = max(get_matches_per_day(events).values())
 
+    def get_new_assignment_day(events):
+        days = [event.day for event in events]
+        return min(days, key=lambda x: days.count(x))
+
     for index in range(num_events_to_add):
         new_assignment = events[0].__copy__()
-        new_assignment.day = 1
+        new_assignment.day = get_new_assignment_day(events)
         events.append(new_assignment)
 
     assignments_by_day = get_matches_per_day(events)
@@ -79,10 +83,8 @@ def avg_capacity_heuristic(csp_instance: Solver, assignments: dict[str, Event]) 
     curr = count / len(assignments)
     sport = assignments[0].sport
     max_venue_capacity = max(venue.capacity for venue in sport.possible_venues)
-    heuristic_count = count + max_venue_capacity * (
-            csp_instance.data[sport.name]["num_total_events"] - len(assignments))
-    optimal = max_venue_capacity * csp_instance.data[sport.name]["num_total_events"]
-    return curr, heuristic_count / optimal
+
+    return curr, curr / max_venue_capacity
 
 
 def avg_distance_to_travel(csp_instance: Solver, assignments: dict[str, Event]) -> tuple[float, float]:
@@ -114,14 +116,7 @@ def avg_distance_to_travel(csp_instance: Solver, assignments: dict[str, Event]) 
 
     min_distance = min(csp_instance.data["distances_to_travel"][sport_name].values())
 
-    for new_event in range(csp_instance.data[sport_name]["num_total_events"] - len(match_distances)):
-        match_distances.append(min_distance)
-
-    avg_distance = sum(match_distances) / len(match_distances)
-
-    optimal = min_distance  # best average is just the minimum distance for every event
-
-    return curr, optimal / avg_distance
+    return curr, min_distance / curr
 
 
 def avg_rest_between_matches(csp_instance: Solver, assignments: dict[str, Event]) -> tuple[float, float]:
@@ -174,7 +169,7 @@ def avg_rest_between_matches(csp_instance: Solver, assignments: dict[str, Event]
 
     avg_rest = get_avg_rest(rest_between_matches)
 
-    return curr, avg_rest / optimal
+    return curr, curr / optimal
 
 
 # Helper functions

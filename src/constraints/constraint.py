@@ -15,9 +15,9 @@ def same_venue_overlapping_time_constraint_check(a, b, constraint_check=False) -
             (a.start_time <= b.start_time < a.start_time + a.duration) or
             (b.start_time <= a.start_time < b.start_time + b.duration)
     )):
-        print(2, [])
+        # print(2, [])
         return []
-    print(2, [a, b])
+    # print(2, [a, b])
     return [a, b]
 
 
@@ -40,11 +40,11 @@ def same_venue_overlapping_time(*variables: dict[str, Event], constraint_check=F
                     if (event.start_time <= time_check[0] < event.start_time + event.duration) or \
                             (time_check[0] <= event.start_time < time_check[0] + time_check[1]):
                         if not constraint_check:
-                            print(3, [event.event_id, other_event])
+                            # print(3, [event.event_id, other_event])
                             return [event.event_id, other_event]
                         conflicts += [event.event_id, other_event]
                 venues[venue_name][event.day][event.event_id] = [event.start_time, event.start_time + event.duration]
-    print(3, remove_duplicates_from_list(conflicts))
+    # print(3, remove_duplicates_from_list(conflicts))
     return remove_duplicates_from_list(conflicts)
 
 
@@ -69,11 +69,11 @@ def team_time_between_matches(*variables: dict[str, Event], constraint_check=Fal
                             global_variables.constraint_params[sport]["required"]["team_time_between_matches"][
                                 "min_time_between_matches"]:
                         if not constraint_check:
-                            print(4, [event.event_id, other_event])
+                            # print(4, [event.event_id, other_event])
                             return [event.event_id, other_event]
                         conflicts += [event.event_id, other_event.event_id]
                 teams[team][event.event_id] = event_day
-    print(4, remove_duplicates_from_list(conflicts))
+    # print(4, remove_duplicates_from_list(conflicts))
     return remove_duplicates_from_list(conflicts)
 
 
@@ -101,11 +101,11 @@ def venue_time_between_matches(*variables: dict[str, Event], constraint_check=Fa
                             global_variables.constraint_params[sport]["required"]["venue_time_between_matches"][
                                 "min_time_between_matches"]:
                         if not constraint_check:
-                            print("err", [event.event_id, other_event])
+                            # print("err", [event.event_id, other_event])
                             return [event.event_id, other_event]
                         conflicts += [event.event_id, other_event]
                 venues[venue_name][event.day][event.event_id] = event.start_time
-    print(5, remove_duplicates_from_list(conflicts))
+    # print(5, remove_duplicates_from_list(conflicts))
     return remove_duplicates_from_list(conflicts)
 
 
@@ -115,7 +115,7 @@ def no_later_rounds_before_earlier_rounds_constraint_check(a: Event, b: Event, c
                (a.round.round_index == b.round.round_index or
                 a.round.round_index > b.round.round_index and a.day <= b.day or
                 a.round.round_index < b.round.round_index and b.day <= a.day)
-    print(6, [] if bool_val else [a.event_id, b.event_id])
+    # print(6, [] if bool_val else [a.event_id, b.event_id])
     return [] if bool_val else [a.event_id, b.event_id]
 
 
@@ -149,11 +149,11 @@ def no_later_rounds_before_earlier_rounds(*variables: dict[str, Event], constrai
                     for event_2 in sport_variables[sorted_rounds[index + 1]]:
                         if event_1.day >= event_2.day:
                             if not constraint_check:  # If we're not getting all conflicting events, we just return one
-                                print("err", [event_1.event_id, event_2.event_id])
+                                # print("err", [event_1.event_id, event_2.event_id])
                                 return [event_1.event_id]
                             conflicts += [event_1.event_id, event_2.event_id]
 
-    print(7, remove_duplicates_from_list(conflicts))
+    # print(7, remove_duplicates_from_list(conflicts))
     return remove_duplicates_from_list(conflicts)
 
 
@@ -174,10 +174,10 @@ def same_venue_max_matches_per_day(*variables: dict[str, Event], constraint_chec
                 venues[venue_name][event.day].append(event.event_id)
             if len(venues[venue_name][event.day]) > event.venue.max_matches_per_day:
                 if not constraint_check:
-                    print(8, venues[venue_name][event.day])
+                    # print(8, venues[venue_name][event.day])
                     return venues[venue_name][event.day]
                 conflicts += venues[venue_name][event.day]
-    print(8, remove_duplicates_from_list(conflicts))
+    # print(8, remove_duplicates_from_list(conflicts))
     return remove_duplicates_from_list(conflicts)
 
 
@@ -197,19 +197,18 @@ def same_sport_max_matches_per_day(*variables: dict[str, Event], constraint_chec
                 sports[sport_name][event.day].append(event.event_id)
             if len(sports[sport_name][event.day]) > event.sport.max_matches_per_day:
                 if not constraint_check:
-                    print(9, sports[sport_name][event.day])
+                    # print(9, sports[sport_name][event.day])
                     return sports[sport_name][event.day]
                 conflicts += sports[sport_name][event.day]
-    print(9, remove_duplicates_from_list(conflicts))
+    # print(9, remove_duplicates_from_list(conflicts))
     return remove_duplicates_from_list(conflicts)
 
 
 def max_capacity_at_final(event: dict[str, Event], constraint_check=False) -> list[str]:
     event = list(event.values())[0]
-    # print(event)
     bool_val = not (event.round.round_index == 0) or event.venue == max(global_variables.venues[event.sport.name],
                                                                         key=lambda venue: venue.capacity)
-    print(10, [] if bool_val else [event.event_id])
+    # print(10, [] if bool_val else [event.event_id])
     return [] if bool_val else [event.event_id]
 
 
@@ -219,7 +218,7 @@ def valid_match_time(event: dict[str, Event], constraint_check=False) -> list[st
     bool_val = sport.min_start_day <= event.day <= sport.max_finish_day and \
                sport.min_start_time <= event.start_time and \
                event.start_time + event.duration <= sport.max_finish_time
-    print(11, [] if bool_val else [event.event_id])
+    # print(11, [] if bool_val else [event.event_id])
     return [] if bool_val else [event.event_id]
 
 

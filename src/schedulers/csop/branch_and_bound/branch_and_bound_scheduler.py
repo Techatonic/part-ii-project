@@ -58,6 +58,7 @@ class CSOPScheduler(Scheduler, ABC):
                 "wait_time": 5,
                 "domain_type": list[Event],
                 "variable_type": Event,
+                "min_heuristic_score_allowed": 0.55
             })
 
             sport_results = []
@@ -93,7 +94,8 @@ class CSOPScheduler(Scheduler, ABC):
             "comparator": lambda curr, other: len(curr.domain) < len(other.domain),
             "sport_specific": False,
             "sports": self.sports,
-            "wait_time": 25
+            "wait_time": 25,
+            "min_heuristic_score_allowed": 0.55
         })
 
         multisport_csp = self.solver(csp_data, self.forward_check)

@@ -59,11 +59,11 @@ class BranchAndBoundSolver(Solver, ABC):
         self.data["start_time"] = time.time()
         self.__preprocess()
 
-        bound_data = BranchAndBound(num_results=self.data["num_results_to_collect"])
+        bound_data = BranchAndBound()
         result = self.__solve_variable({}, self.queue, bound_data)
         if result is None:
             return None
-        return bound_data.best_solutions
+        return bound_data.get_best_solution()
 
     def __preprocess(self):
         unary_constraints = list(filter(lambda constraint: constraint.constraint_type == ConstraintType.UNARY,
@@ -75,25 +75,37 @@ class BranchAndBoundSolver(Solver, ABC):
                         variable.domain.remove(option)
             self.constraints.remove(unary_constraint)
 
-    def __solve_variable(self, assignments, queue: PriorityQueue, bound_data) -> Type[BranchAndBound] | None | str:
-        if time.time() - self.data["start_time"] > self.data["wait_time"]:
-            raise TimeoutError
+    def __solve_variable(self, assignments, queue: PriorityQueue, bound_data: BranchAndBound) -> Type[
+                                                                                                     BranchAndBound] | None | str:
+        # TODO Maybe add this back depending on if we want pure Branch and Bound or not
+        # if time.time() - self.data["start_time"] > self.data["wait_time"]:
+        #    raise TimeoutError
         variable_type = self.data["variable_type"]
         assignments: dict[str, variable_type] = copy_assignments(assignments)
         queue = queue.__copy__()
-        # print(sum(len(variable.domain) for variable in queue.variables))
+        # print(self.__heuristic(assignments) if len(assignments) > 0 else None)
         if len(queue.variables) == 0:
             heuristic_val = self.__heuristic(assignments)
-            if heuristic_val > bound_data.get_worst_bound():
+            if heuristic_val > bound_data.get_best_solution_score():
                 bound_data.update_bounds(heuristic_val, assignments)
-                if bound_data.is_full() and self.__is_acceptable_solution(bound_data.get_worst_bound_solution()):
-                    return bound_data
+                print("Improved solution found: ", bound_data)
             else:
                 # print(heuristic_val, bound_data)
                 # print("Solution found - bound not good enough")
                 pass
-        elif len(assignments) == 0 or self.__heuristic(assignments) > bound_data.get_worst_bound():
+        elif len(assignments) == 0 or self.__heuristic(assignments) > self.data['min_heuristic_score_allowed']:
+            # print(len(assignments))
             variable = queue.pop()
+
+            # Sort options by eval score
+            domain_evals = []
+            for option in variable.domain:
+                assignments[variable.variable] = option
+                domain_evals.append((option, self.__heuristic(assignments)))
+                del assignments[variable.variable]
+            variable.domain = sorted(domain_evals, key=lambda x: x[1], reverse=True)
+            variable.domain = [x[0] for x in variable.domain]
+
             for option in variable.domain:
                 assignments[variable.variable] = option
 
@@ -119,7 +131,9 @@ class BranchAndBoundSolver(Solver, ABC):
                                  self.optional_constraints)
         if normalising_factor == 0:
             return 1
-        print([x.constraint.string_name for x in self.optional_constraints])
+        if not self.__test_constraints(assignments, self.constraints):
+            return 0
+        # print([x.constraint.string_name for x in self.optional_constraints])
         return sum(
             optional_constraint_heuristic.constraint.function(self, assignments)[1] *
             optional_constraint_heuristic.params["weight"] for optional_constraint_heuristic in
