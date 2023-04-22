@@ -21,7 +21,7 @@ from src.schedulers.csp.csp_solver import CSPSolver
 import_path = "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/inputs/example_input.json"
 export_path = "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/outputs/test_output.json"
 
-input_json = read_and_validate_input(import_path, 'src/input_handling/input_schema.json')
+input_json = read_and_validate_input(import_path, 'schemata/input_schema.json')
 [sports, general_constraints, data] = parse_input(input_json)
 add_global_variables(sports, data, general_constraints)
 data["general_constraints"] = general_constraints

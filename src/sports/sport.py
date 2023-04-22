@@ -8,7 +8,7 @@ class Sport:
     """
 
     def __init__(self, name, possible_venues: list[Venue], teams: list[str], num_teams_per_game: int,
-                 match_duration: float, is_knockout=True, group_stage=None, min_start_day=1, max_finish_day=None,
+                 match_duration: float, is_knockout=True, min_start_day=1, max_finish_day=None,
                  min_start_time=10, max_finish_time=22, constraints=None) -> None:
         self.name = name
         self.possible_venues = possible_venues
@@ -21,7 +21,6 @@ class Sport:
         self.max_finish_day = max_finish_day
         self.min_start_time = min_start_time
         self.max_finish_time = max_finish_time
-        self.group_stage = group_stage
         self.constraints = constraints
         self.max_matches_per_day = 1 if "max_matches_per_day" in self.constraints else None
         self.time_between_matches = 2 if "time_between_matches" in self.constraints else None

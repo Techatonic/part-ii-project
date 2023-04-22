@@ -34,7 +34,7 @@ def main(input_path: str, export_path: str | None = None, constraint_checker_fla
 
 
 def run_constraint_checker(input_path: str, export_path: str | None = None, num_changes=1) -> None:
-    input_json = read_and_validate_input(input_path, 'src/input_handling/input_schema_constraint_checker.json')
+    input_json = read_and_validate_input(input_path, 'schemata/input_schema_constraint_checker.json')
 
     [sports, events, general_constraints, data] = parse_input_constraint_checker(input_json)
     add_global_variables(sports, data, general_constraints)
@@ -75,7 +75,7 @@ def run_constraint_checker(input_path: str, export_path: str | None = None, num_
 
 def run_solver(input_path: str, use_python_module: bool, use_branch_and_bound_solver: bool, use_genetic_algorithm: int,
                forward_check: bool, export_path: str | None = None) -> None:
-    input_json = read_and_validate_input(input_path, 'src/input_handling/input_schema.json')
+    input_json = read_and_validate_input(input_path, 'schemata/input_schema.json')
 
     [sports, general_constraints, data] = parse_input(input_json)
     add_global_variables(sports, data, general_constraints)
@@ -126,9 +126,9 @@ if __name__ == "__main__":
                         help="run input_path on constraint checker and allow up to c changed events")
     parser.add_argument("-m", action='store_true', help="run on python-constraint CSP solver")
     parser.add_argument("-b", action='store_true',
-                        help="run on CSOP branch and bound solver, will take longer to run but produce more optimal results")
+                        help="run on CSOP heuristic_backtracking solver, will take longer to run but produce more optimal results")
     parser.add_argument("-g", required=False, type=int,
-                        help="run on CSOP genetic algorithm solver, may not produce completely valid results")
+                        help="run on CSOP genetic algorithm solver, will take longer to run but produce more optimal results")
     parser.add_argument("-forward_check", action='store_true', help="run forward checking algorithm on solver")
     args = None
     try:

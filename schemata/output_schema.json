@@ -1,0 +1,90 @@
+{
+    "definitions": {
+        "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "eval_score": {
+                    "type": "number"
+                },
+                "events": {
+                    "$ref": "#/definitions/Events"
+                }
+            },
+            "required": [
+                "events"
+            ],
+            "title": "Output Schema"
+        },
+        "Events": {
+          "type": "object",
+          "items": {
+            "$ref": "#/definitions/SportEvents"
+          }
+        },
+        "SportEvents": {
+          "type": "object",
+          "items": {
+            "$ref": "#/definitions/SportEvent"
+          }
+        },
+        "SportEvent": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "round": {
+                    "$ref": "#/definitions/Round"
+                },
+                "sport": {
+                    "$ref": "#/definitions/Sport"
+                },
+                "event_id": {
+                    "type": "string"
+                },
+                "venue": {
+                    "type": "string"
+                },
+                "day": {
+                    "type": "integer"
+                },
+                "start_time": {
+                    "type": "integer"
+                },
+                "duration": {
+                    "type": "number"
+                },
+                "teams_involved": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "day",
+                "duration",
+                "event_id",
+                "round",
+                "sport",
+                "start_time",
+                "teams_involved",
+                "venue"
+            ]
+        },
+        "Round": {
+            "type": "string",
+            "enum": [
+                "Quarter Final",
+                "Semi Final",
+                "Final",
+                "Round of 32",
+                "Round of 16"
+            ],
+            "title": "Round"
+        },
+        "Sport": {
+            "type": "string",
+            "title": "Sport"
+        }
+    }
+}

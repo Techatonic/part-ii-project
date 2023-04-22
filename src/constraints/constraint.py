@@ -234,7 +234,6 @@ class ConstraintFunction:
         self.string_name = string_name
         self.function = function
         self.constraint_type = constraint_type
-        self.relevant_features = []
 
     def __eq__(self, other) -> bool:
         # TODO Fix this

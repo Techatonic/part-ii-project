@@ -15,9 +15,6 @@ def parse_input(json_input):
             for venue in sport['venues']:
                 venues.append(parse_venue(venue))
 
-            group_stage = None
-            if group_stage is not None:
-                group_stage = parse_group_stage(sport['group_stage'])
             sports[sport['name']] = Sport(
                 sport['name'],
                 venues,
@@ -25,7 +22,6 @@ def parse_input(json_input):
                 sport['num_teams_per_game'],
                 sport['duration'],
                 sport['is_knockout'],
-                group_stage,
                 sport['min_start_day'],
                 sport['max_finish_day'],
                 sport['min_start_time'],
