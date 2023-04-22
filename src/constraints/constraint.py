@@ -17,29 +17,54 @@ class ConstraintType(Enum):
 
 
 class Constraint(ABC):
-    constraint_string = NotImplementedError()
-    variables = NotImplementedError()
-    sport = NotImplementedError()
-    constraint_type = NotImplementedError()
-    params = NotImplementedError()
+    __constraint_string = NotImplementedError
+    __variables = NotImplementedError
+    __sport = NotImplementedError
+    __constraint_type = NotImplementedError
+    __params = NotImplementedError
+
+    def get_constraint_string(self):
+        if self.__constraint_string == NotImplementedError:
+            handle_error("Constraint has not been constructed")
+        return self.__constraint_string
+
+    def get_variables(self):
+        if self.__variables == NotImplementedError:
+            handle_error("Constraint has not been constructed")
+        return self.__variables
+
+    def get_sport(self):
+        if self.__sport == NotImplementedError:
+            handle_error("Constraint has not been constructed")
+        return self.__sport
+
+    def get_constraint_type(self):
+        if self.__constraint_type == NotImplementedError:
+            handle_error("Constraint has not been constructed")
+        return self.__constraint_type
+
+    def get_params(self):
+        if self.__params == NotImplementedError:
+            handle_error("Constraint has not been constructed")
+        return self.__params
 
     @abstractmethod
-    def solve(self, variables, constraint_check=False):
+    def eval_constraint(self, variables, constraint_check=False):
         pass
 
     def __str__(self) -> str:
         return f"""{{
-            constraint: {self.constraint_string},
-            variables: {self.variables},
-            sport: {self.sport},
-            constraint_type: {self.constraint_type}
+            constraint: {self.__constraint_string},
+            variables: {self.__variables},
+            sport: {self.__sport},
+            constraint_type: {self.__constraint_type}
         \n}}"""
 
     def __eq__(self, other):
-        return self.constraint_string == other.constraint_string and self.variables == other.variables
+        return self.__constraint_string == other.constraint_string and self.__variables == other.get_variables()
 
     def __hash__(self):
-        hash((self.constraint_string, self.sport, self.constraint_type, self.params, self.variables))
+        hash((self.__constraint_string, self.__sport, self.__constraint_type, self.__params, self.__variables))
 
 
 class SameVenueOverlappingTime(Constraint):
@@ -51,7 +76,7 @@ class SameVenueOverlappingTime(Constraint):
         self.sport = sport
         self.params = params
 
-    def solve(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
+    def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
         if isinstance(variables[0], type(self)):
             variables = variables[1:]
         variables = remove_tuple_from_events(variables)
@@ -91,7 +116,7 @@ class TeamTimeBetweenMatches(Constraint):
         self.sport = sport
         self.params = params
 
-    def solve(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
+    def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
         if isinstance(variables[0], type(self)):
             variables = variables[1:]
         variables = remove_tuple_from_events(variables)
@@ -131,7 +156,7 @@ class VenueTimeBetweenMatches(Constraint):
         self.sport = sport
         self.params = params
 
-    def solve(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
+    def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
         if isinstance(variables[0], type(self)):
             variables = variables[1:]
         variables = remove_tuple_from_events(variables)
@@ -174,7 +199,7 @@ class NoLaterRoundsBeforeEarlierRounds(Constraint):
         self.sport = sport
         self.params = params
 
-    def solve(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
+    def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
         if isinstance(variables[0], type(self)):
             variables = variables[1:]
         variables = remove_tuple_from_events(variables)
@@ -223,7 +248,7 @@ class SameVenueMaxMatchesPerDay(Constraint):
         self.sport = sport
         self.params = params
 
-    def solve(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
+    def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
         if isinstance(variables[0], type(self)):
             variables = variables[1:]
         variables = remove_tuple_from_events(variables)
@@ -258,7 +283,7 @@ class SameSportMaxMatchesPerDay(Constraint):
         self.sport = sport
         self.params = params
 
-    def solve(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
+    def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
         if isinstance(variables[0], type(self)):
             variables = variables[1:]
         sports = {}
@@ -292,7 +317,7 @@ class MaxCapacityAtFinal(Constraint):
         self.sport = sport
         self.params = params
 
-    def solve(self, event: dict[str, Event], constraint_check=False) -> list[str]:
+    def eval_constraint(self, event: dict[str, Event], constraint_check=False) -> list[str]:
         event = list(event.values())[0]
         bool_val = not (event.round.round_index == 0) or event.venue == max(global_variables.venues[event.sport.name],
                                                                             key=lambda venue: venue.capacity)
@@ -309,7 +334,7 @@ class ValidMatchTime(Constraint):
         self.sport = sport
         self.params = params
 
-    def solve(self, event: dict[str, Event], constraint_check=False) -> list[str]:
+    def eval_constraint(self, event: dict[str, Event], constraint_check=False) -> list[str]:
         event = list(event.values())[0]
         sport = event.sport
         bool_val = sport.min_start_day <= event.day <= sport.max_finish_day and \

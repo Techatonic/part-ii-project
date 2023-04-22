@@ -73,7 +73,7 @@ class GeneticAlgorithmSolver(Solver):
         for unary_constraint in unary_constraints:
             for variable in self.variables:
                 for option in self.variables[variable]:
-                    if not unary_constraint.solve({option.event_id: option}):
+                    if not unary_constraint.eval_constraint({option.event_id: option}):
                         self.variables[variable].remove(option)
             self.constraints.remove(unary_constraint)
 
@@ -162,7 +162,7 @@ class GeneticAlgorithmSolver(Solver):
                 score += take_average_of_heuristics_across_all_sports(self, assignments,
                                                                       heuristic) * heuristic.params["weight"]
             else:
-                score += heuristic.solve(self, assignments_by_sport_with_tuple)[1] * heuristic.params[
+                score += heuristic.eval_constraint(self, assignments_by_sport_with_tuple)[1] * heuristic.params[
                     "weight"]
         return score / normalising_factor
 

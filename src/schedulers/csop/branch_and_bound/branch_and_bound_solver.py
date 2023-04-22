@@ -119,7 +119,7 @@ class BranchAndBoundSolver(Solver, ABC):
             return False
         for optional_constraint_heuristic in self.optional_constraints:
             operation = optional_constraint_heuristic.params["inequality"]
-            if not operation(optional_constraint_heuristic.solve(self, assignments)[0],
+            if not operation(optional_constraint_heuristic.eval_constraint(self, assignments)[0],
                              optional_constraint_heuristic.params["acceptable"]):
                 return False
         return True
@@ -133,7 +133,7 @@ class BranchAndBoundSolver(Solver, ABC):
             return 0
         # print([x.constraint.string_name for x in self.optional_constraints])
         return sum(
-            optional_constraint_heuristic.solve(self, assignments)[1] *
+            optional_constraint_heuristic.eval_constraint(self, assignments)[1] *
             optional_constraint_heuristic.params["weight"] for optional_constraint_heuristic in
             self.optional_constraints) / normalising_factor
 

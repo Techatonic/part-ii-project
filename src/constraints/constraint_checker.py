@@ -33,9 +33,9 @@ def constraint_checker(sports: dict[str, Sport], events: dict[str, list[Event]],
 
 
 def constraint_check(constraint: Type[Constraint], events, constraint_checker_flag=False) -> list:
-    if constraint.constraint_type == ConstraintType.UNARY:
+    if constraint.get_constraint_type(constraint) == ConstraintType.UNARY:
         result = unary_constraint_check(constraint, events, constraint_checker_flag)
-    elif constraint.constraint_type == ConstraintType.BINARY:
+    elif constraint.get_constraint_type(constraint) == ConstraintType.BINARY:
         result = binary_constraint_check(constraint, events, constraint_checker_flag)
     else:
         result = all_event_constraint_check(constraint, events, constraint_checker_flag)
@@ -49,16 +49,16 @@ def valid_constraint_check(constraint: Type[Constraint], events) -> bool:
 # TODO: If I keep changes to constraint class, fix this
 def single_constraint_check(constraint: Type[Constraint], *events) -> bool:
     events = convert_events_list_to_dict(list(events))
-    return len(constraint.solve(constraint, events)) == 0
+    return len(constraint.eval_constraint(constraint, events)) == 0
 
 
 def unary_constraint_check(constraint: Type[Constraint], events, constraint_checker_flag) -> list:
     conflicts = []
     for event in events:
-        result = constraint.solve({event: events[event]}, constraint_check=constraint_checker_flag)
+        result = constraint.eval_constraint({event: events[event]}, constraint_check=constraint_checker_flag)
         if len(result) > 0:
             conflicts += result
-    return [constraint.constraint_string, conflicts] if len(conflicts) > 0 else []
+    return [constraint.get_constraint_string(constraint), conflicts] if len(conflicts) > 0 else []
 
 
 def binary_constraint_check(constraint: Type[Constraint], events, constraint_checker_flag) -> list:
@@ -66,14 +66,14 @@ def binary_constraint_check(constraint: Type[Constraint], events, constraint_che
 
     for event_1 in range(len(events)):
         for event_2 in range(event_1 + 1, len(events)):
-            result = constraint.solve({event_1: events[event_1], event_2: events[event_2]},
-                                      constraint_check=constraint_checker_flag)
+            result = constraint.eval_constraint({event_1: events[event_1], event_2: events[event_2]},
+                                                constraint_check=constraint_checker_flag)
             if len(result) > 0:
                 conflicts += result
 
-    return [constraint.constraint_string, conflicts] if len(conflicts) > 0 else []
+    return [constraint.get_constraint_string(), conflicts] if len(conflicts) > 0 else []
 
 
 def all_event_constraint_check(constraint: Type[Constraint], events, constraint_checker_flag):
-    conflicts = constraint.solve(constraint, events, constraint_check=constraint_checker_flag)
-    return [constraint.constraint_string, conflicts] if len(conflicts) > 0 else []
+    conflicts = constraint.eval_constraint(constraint, events, constraint_check=constraint_checker_flag)
+    return [constraint.get_constraint_string(constraint), conflicts] if len(conflicts) > 0 else []
