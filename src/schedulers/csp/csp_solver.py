@@ -1,4 +1,5 @@
 import copy
+from typing import Type
 
 from src.constraints.constraint import Constraint, get_constraint_from_string
 from src.constraints.constraint_checker import constraint_check
@@ -31,10 +32,10 @@ class CSPSolver:
             variables[variable.variable] = variable.domain
         return variables
 
-    def add_constraint(self, function_name: str, variables: list[str] | None = None,
+    def add_constraint(self, class_name: str, variables: list[str] | None = None,
                        sport: Sport | None = None, params: dict = None) -> None:
-        function = get_constraint_from_string(function_name)
-        self.constraints.append(Constraint(function, variables, sport, copy.deepcopy(params)))
+        class_ref = get_constraint_from_string(class_name)
+        self.constraints.append(class_ref(variables, sport, copy.deepcopy(params)))
 
     def add_optional_constraint(self, function_name: str, sport: Sport | None = None, params: object = None):
         pass
@@ -81,8 +82,8 @@ class CSPSolver:
         return assignments  # We have a valid assignment, return it
 
     # TODO This is basically the same as constraint_check in constraint_checker.py (except this is multiple constraints). Possibly merge them
-    def __test_constraints(self, assignments, constraints: list[Constraint]) -> bool:
+    def __test_constraints(self, assignments, constraints: list[Type[Constraint]]) -> bool:
         conflicts = []
         for constraint in constraints:
-            conflicts += constraint_check(constraint.constraint, assignments)
+            conflicts += constraint_check(constraint, assignments)
         return len(conflicts) == 0

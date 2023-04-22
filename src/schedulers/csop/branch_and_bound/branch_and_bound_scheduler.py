@@ -75,7 +75,7 @@ class CSOPScheduler(Scheduler, ABC):
                     num_total_events[sport.name] = len(csp_problem.get_variables())
                     try:
                         result = csp_problem.solve()
-                        print(result)
+                        # print(result)
                         fitness = calculate_fitness(widen_events_to_events_by_sport(result), csp_problem.constraints,
                                                     [], csp_problem)
                         if result is None:

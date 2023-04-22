@@ -44,6 +44,7 @@ def run_constraint_checker(input_path: str, export_path: str | None = None, num_
 
     conflicts = constraint_checker(sports, events, general_constraints)
     # print(conflicts)
+    print(conflicts)
 
     if len(conflicts) == 0:
         print("No conflicts found - all constraints are satisfied")

@@ -127,10 +127,10 @@ def calculate_fitness(assignments: dict[str, dict[str, Event]], constraints,
     assignments_flatten = flatten_events_by_sport_to_dict(assignments)
     for constraint in constraints:
         if constraint.sport is None:
-            constraints_broken += len(constraint_check(constraint.constraint, assignments_flatten)) > 0
+            constraints_broken += len(constraint_check(constraint, assignments_flatten)) > 0
         else:
             sport_name = constraint.sport.name
-            constraints_broken += len(constraint_check(constraint.constraint, assignments[sport_name])) > 0
+            constraints_broken += len(constraint_check(constraint, assignments[sport_name])) > 0
 
     optional_constraints_score = heuristic(assignments, optional_constraints, csp_instance)
     if constraints_broken > 0 and not accept_invalid_solutions:

@@ -33,8 +33,8 @@ class ConstraintFixingSolver:
 
     def add_constraint(self, function_name: str, variables: list[str] | None = None,
                        sport: Sport | None = None, params: dict = None) -> None:
-        function = get_constraint_from_string(function_name)
-        self.constraints.append(Constraint(function, variables, sport, copy.deepcopy(params)))
+        constraint = get_constraint_from_string(function_name)
+        self.constraints.append(constraint(variables, sport, copy.deepcopy(params)))
 
     def add_optional_constraint(self, function_name: str, sport: Sport | None = None, params: object = None):
         pass
@@ -76,5 +76,5 @@ class ConstraintFixingSolver:
     def __test_constraints(self, assignments, constraints: list[Constraint]) -> bool:
         conflicts = []
         for constraint in constraints:
-            conflicts += constraint_check(constraint.constraint, assignments)
+            conflicts += constraint_check(constraint, assignments)
         return len(conflicts) == 0

@@ -2,8 +2,9 @@ import copy
 import math
 from abc import ABC
 import random
+from typing import Type
 
-from src.constraints.constraint import ConstraintFunction, get_constraint_from_string
+from src.constraints.constraint import get_constraint_from_string, Constraint
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.games.complete_games import CompleteGames
@@ -100,13 +101,20 @@ class ConstraintFixingScheduler(Scheduler, ABC):
 
             options = []
             # Shuffle venues, days and times
-            specific_min_start_day = self.sports_data[sport_name]["min_start_day"] + \
-                                     sport.constraints["required"]["team_time_between_matches"][
-                                         "min_time_between_matches"] * (self.sports_data[sport_name]["round_order"][
-                                                                            0].round_index - event_to_change.round.round_index)
-            specific_max_finish_day = self.sports_data[sport_name]["max_finish_day"] - \
-                                      sport.constraints["required"]["team_time_between_matches"][
-                                          "min_time_between_matches"] * event_to_change.round.round_index
+            if "team_time_between_matches" in sport.constraints["required"]:
+                specific_min_start_day = self.sports_data[sport_name]["min_start_day"] + \
+                                         sport.constraints["required"]["team_time_between_matches"][
+                                             "min_time_between_matches"] * (self.sports_data[sport_name]["round_order"][
+                                                                                0].round_index - event_to_change.round.round_index)
+                specific_max_finish_day = self.sports_data[sport_name]["max_finish_day"] - \
+                                          sport.constraints["required"]["team_time_between_matches"][
+                                              "min_time_between_matches"] * event_to_change.round.round_index
+            else:
+                specific_min_start_day = self.sports_data[sport_name]["min_start_day"] + \
+                                         self.sports_data[sport_name]["round_order"][
+                                             0].round_index - event_to_change.round.round_index
+                specific_max_finish_day = self.sports_data[sport_name][
+                                              "max_finish_day"] - event_to_change.round.round_index
             if specific_min_start_day >= specific_max_finish_day and len(
                     self.sports_data[sport_name]["round_order"]) > 1:
                 handle_error("Insufficient number of days given for sport: ", sport.name)
@@ -127,10 +135,10 @@ class ConstraintFixingScheduler(Scheduler, ABC):
             csp_problem.add_variable(event_to_change.event_id, options)
 
         for sport_specific_constraint in sport.constraints["required"]:
-            constraint: ConstraintFunction = get_constraint_from_string(sport_specific_constraint)
+            constraint: Type[Constraint] = get_constraint_from_string(sport_specific_constraint)
             # TODO This has been changed to make it so you just add the constraint, not the specific events involved.
             # TODO Fix the effects of this in other places, particularly with the constraint checker functionality
-            csp_problem.add_constraint(constraint.string_name, sport=sport,
+            csp_problem.add_constraint(constraint.constraint_string, sport=sport,
                                        params=sport.constraints["required"][sport_specific_constraint])
 
         return csp_problem

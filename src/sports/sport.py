@@ -36,7 +36,6 @@ class Sport:
             teams per game: {self.num_teams_per_game},
             match duration: {self.match_duration},
             is knockout?: {self.is_knockout},
-            group stage?: {self.group_stage},
             days of play: [{self.min_start_day}...{self.max_finish_day}],
             times of play: [{self.min_start_time}...{self.max_finish_time}],
             constraints: {self.constraints}

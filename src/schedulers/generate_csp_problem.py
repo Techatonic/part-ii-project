@@ -2,7 +2,7 @@ import math
 import random
 from typing import Type
 
-from src.constraints.constraint import ConstraintFunction, get_constraint_from_string
+from src.constraints.constraint import get_constraint_from_string, Constraint
 from src.error_handling.handle_error import handle_error
 from src.events.event import Event
 from src.rounds.knockout_rounds import Round, generate_round_order
@@ -37,13 +37,17 @@ def generate_csp_problem(solver: Type[Solver], data: dict, forward_check: bool, 
         for match in matches:
             options = []
             # Shuffle venues, days and times
-            specific_min_start_day = min_start_day + \
-                                     sport.constraints["required"]["team_time_between_matches"][
-                                         "min_time_between_matches"] * (
-                                             round_order[0].round_index - event_round.round_index)
-            specific_max_finish_day = max_finish_day - \
-                                      sport.constraints["required"]["team_time_between_matches"][
-                                          "min_time_between_matches"] * event_round.round_index
+            if "team_time_between_matches" in sport.constraints["required"]:
+                specific_min_start_day = min_start_day + \
+                                         sport.constraints["required"]["team_time_between_matches"][
+                                             "min_time_between_matches"] * (
+                                                 round_order[0].round_index - event_round.round_index)
+                specific_max_finish_day = max_finish_day - \
+                                          sport.constraints["required"]["team_time_between_matches"][
+                                              "min_time_between_matches"] * event_round.round_index
+            else:
+                specific_min_start_day = min_start_day + (round_order[0].round_index - event_round.round_index)
+                specific_max_finish_day = max_finish_day - event_round.round_index
             if specific_min_start_day >= specific_max_finish_day and len(round_order) > 1:
                 handle_error("Insufficient number of days given for sport: ", sport.name)
             day_order = list(range(specific_min_start_day, specific_max_finish_day + 1))
@@ -67,12 +71,10 @@ def generate_csp_problem(solver: Type[Solver], data: dict, forward_check: bool, 
     csp_problem.data["num_total_events"] = len(variable_list)
 
     for sport_specific_constraint in sport.constraints["required"]:
-        constraint: ConstraintFunction = get_constraint_from_string(sport_specific_constraint)
         # TODO This has been changed to make it so you just add the constraint, not the specific events involved.
         # TODO Fix the effects of this in other places, particularly with the constraint checker functionality
 
-        # TODO Why am I getting the constraint then going back to string name. Just use string name directly as sport_specific_constraint?
-        csp_problem.add_constraint(constraint.string_name, sport=sport,
+        csp_problem.add_constraint(sport_specific_constraint, sport=sport,
                                    params=sport.constraints["required"][sport_specific_constraint])
     for optional_constraint in sport.constraints["optional"]:
         csp_problem.add_optional_constraint(optional_constraint,
