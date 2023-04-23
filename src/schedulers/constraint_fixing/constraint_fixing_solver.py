@@ -42,9 +42,9 @@ class ConstraintFixingSolver:
     def __add_all_events_to_constraints(self) -> list[Constraint]:
         events = [self.variables[variable] for variable in self.variables]
         for constraint in range(len(self.constraints)):
-            if self.constraints[constraint].variables is not None:
+            if self.constraints[constraint].get_variables() is not None:
                 continue
-            self.constraints[constraint].variables = events
+            self.constraints[constraint].set_variables(events)
         return self.constraints
 
     def solve(self) -> dict[str, Event] | None:

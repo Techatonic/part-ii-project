@@ -135,10 +135,9 @@ class ConstraintFixingScheduler(Scheduler, ABC):
             csp_problem.add_variable(event_to_change.id, options)
 
         for sport_specific_constraint in sport.constraints["required"]:
-            constraint: Type[Constraint] = get_constraint_from_string(sport_specific_constraint)
             # TODO This has been changed to make it so you just add the constraint, not the specific events involved.
             # TODO Fix the effects of this in other places, particularly with the constraint checker functionality
-            csp_problem.add_constraint(constraint.constraint_string, sport=sport,
+            csp_problem.add_constraint(sport_specific_constraint, sport=sport,
                                        params=sport.constraints["required"][sport_specific_constraint])
 
         return csp_problem
