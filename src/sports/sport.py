@@ -42,7 +42,7 @@ class Sport:
             \n}}"""
 
     def __eq__(self, other) -> bool:
-        return self.name == other.name
+        return type(self) == type(other) and self.name == other.name
 
 
 def convert_string_to_sport_instance(sport_string, sports) -> Sport:

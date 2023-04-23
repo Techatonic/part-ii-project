@@ -52,7 +52,7 @@ def widen_events_to_events_by_sport(events: dict[str, Event]) -> dict[str, dict[
 def convert_events_list_to_dict(events: list[Event]) -> dict[str, Event]:
     events_dict = {}
     for event in events:
-        events_dict[event.event_id] = event
+        events_dict[event.id] = event
     return events_dict
 
 
@@ -126,10 +126,10 @@ def calculate_fitness(assignments: dict[str, dict[str, Event]], constraints,
     constraints_broken = 0
     assignments_flatten = flatten_events_by_sport_to_dict(assignments)
     for constraint in constraints:
-        if constraint.sport is None:
+        if constraint.get_sport() is None:
             constraints_broken += len(constraint_check(constraint, assignments_flatten)) > 0
         else:
-            sport_name = constraint.sport.name
+            sport_name = constraint.get_sport().name
             constraints_broken += len(constraint_check(constraint, assignments[sport_name])) > 0
 
     optional_constraints_score = heuristic(assignments, optional_constraints, csp_instance)

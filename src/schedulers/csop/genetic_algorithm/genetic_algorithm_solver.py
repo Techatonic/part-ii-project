@@ -68,12 +68,12 @@ class GeneticAlgorithmSolver(Solver):
         self.optional_constraints.append(constraint(None, sport, params_copy))
 
     def __preprocess(self):
-        unary_constraints = list(filter(lambda constraint: constraint.constraint_type == ConstraintType.UNARY,
+        unary_constraints = list(filter(lambda constraint: constraint.get_constraint_type() == ConstraintType.UNARY,
                                         self.constraints))
         for unary_constraint in unary_constraints:
             for variable in self.variables:
                 for option in self.variables[variable]:
-                    if not unary_constraint.eval_constraint({option.event_id: option}):
+                    if not unary_constraint.eval_constraint({option.id: option}):
                         self.variables[variable].remove(option)
             self.constraints.remove(unary_constraint)
 
@@ -148,8 +148,9 @@ class GeneticAlgorithmSolver(Solver):
         return fittest_assignments[0], self.__calculate_fitness(fittest_assignments[0]), evaluation_by_iteration
 
     def __heuristic(self, assignments: dict[str, dict[str, Event]]) -> float:
-        normalising_factor = sum(optional_constraint_heuristic.params["weight"] for optional_constraint_heuristic in
-                                 self.optional_constraints)
+        normalising_factor = sum(
+            optional_constraint_heuristic.get_params()["weight"] for optional_constraint_heuristic in
+            self.optional_constraints)
         if normalising_factor == 0:
             return 1
         assignments_by_sport_with_tuple = {}
@@ -158,11 +159,11 @@ class GeneticAlgorithmSolver(Solver):
 
         score = 0
         for heuristic in self.optional_constraints:
-            if heuristic.sport is not None:
+            if heuristic.get_sport() is not None:
                 score += take_average_of_heuristics_across_all_sports(self, assignments,
-                                                                      heuristic) * heuristic.params["weight"]
+                                                                      heuristic) * heuristic.get_params()["weight"]
             else:
-                score += heuristic.eval_constraint(self, assignments_by_sport_with_tuple)[1] * heuristic.params[
+                score += heuristic.eval_constraint(self, assignments_by_sport_with_tuple)[1] * heuristic.get_params()[
                     "weight"]
         return score / normalising_factor
 
@@ -176,10 +177,10 @@ class GeneticAlgorithmSolver(Solver):
         constraints_broken = 0
         assignments_flatten = flatten_events_by_sport_to_dict(assignments)
         for constraint in self.constraints:
-            if constraint.sport is None:
+            if constraint.get_sport() is None:
                 constraints_broken += len(constraint_check(constraint, assignments_flatten)) > 0
             else:
-                sport_name = constraint.sport.name
+                sport_name = constraint.get_sport().name
                 constraints_broken += len(constraint_check(constraint, assignments[sport_name])) > 0
 
         optional_constraints_score = self.__heuristic(assignments)

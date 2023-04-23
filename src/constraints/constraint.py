@@ -17,36 +17,36 @@ class ConstraintType(Enum):
 
 
 class Constraint(ABC):
-    __constraint_string = NotImplementedError
-    __variables = NotImplementedError
-    __sport = NotImplementedError
-    __constraint_type = NotImplementedError
-    __params = NotImplementedError
+    _constraint_string = "NotImplementedError"
+    _variables = "NotImplementedError"
+    _sport = "NotImplementedError"
+    _constraint_type = "NotImplementedError"
+    _params = "NotImplementedError"
 
     def get_constraint_string(self):
-        if self.__constraint_string == NotImplementedError:
+        if self._constraint_string == "NotImplementedError":
             handle_error("Constraint has not been constructed")
-        return self.__constraint_string
+        return self._constraint_string
 
     def get_variables(self):
-        if self.__variables == NotImplementedError:
+        if self._variables == "NotImplementedError":
             handle_error("Constraint has not been constructed")
-        return self.__variables
+        return self._variables
 
     def get_sport(self):
-        if self.__sport == NotImplementedError:
+        if self._sport == "NotImplementedError":
             handle_error("Constraint has not been constructed")
-        return self.__sport
+        return self._sport
 
     def get_constraint_type(self):
-        if self.__constraint_type == NotImplementedError:
+        if self._constraint_type == "NotImplementedError":
             handle_error("Constraint has not been constructed")
-        return self.__constraint_type
+        return self._constraint_type
 
     def get_params(self):
-        if self.__params == NotImplementedError:
+        if self._params == "NotImplementedError":
             handle_error("Constraint has not been constructed")
-        return self.__params
+        return self._params
 
     @abstractmethod
     def eval_constraint(self, variables, constraint_check=False):
@@ -54,27 +54,29 @@ class Constraint(ABC):
 
     def __str__(self) -> str:
         return f"""{{
-            constraint: {self.__constraint_string},
-            variables: {self.__variables},
-            sport: {self.__sport},
-            constraint_type: {self.__constraint_type}
+            constraint: {self._constraint_string},
+            variables: {self._variables},
+            sport: {self._sport},
+            constraint_type: {self._constraint_type}
         \n}}"""
 
     def __eq__(self, other):
-        return self.__constraint_string == other.constraint_string and self.__variables == other.get_variables()
+        return self._constraint_string == other.get_constraint_string() and self._variables == other.get_variables()
 
     def __hash__(self):
-        hash((self.__constraint_string, self.__sport, self.__constraint_type, self.__params, self.__variables))
+        hash((self._constraint_string, self._sport, self._constraint_type, self._params, self._variables))
 
 
-class SameVenueOverlappingTime(Constraint):
-    constraint_type = ConstraintType.ALL
-    constraint_string = "same_venue_overlapping_time"
+class SameVenueOverlappingTime(Constraint, ABC):
+    def set_variables(self, val):
+        self._variables = val
 
     def __init__(self, variables=None, sport: Sport = None, params: dict = None):
-        self.variables = variables
-        self.sport = sport
-        self.params = params
+        self._constraint_string = "same_venue_overlapping_time"
+        self._constraint_type = ConstraintType.ALL
+        self._variables = variables
+        self._sport = sport
+        self._params = params
 
     def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
         if isinstance(variables[0], type(self)):
@@ -87,34 +89,36 @@ class SameVenueOverlappingTime(Constraint):
             venue_name = event.venue.name
             if not venue_name in venues:
                 venues[venue_name] = {
-                    event.day: {event.event_id: [event.start_time, event.start_time + event.duration]}
+                    event.day: {event.id: [event.start_time, event.start_time + event.duration]}
                 }
             else:
                 if not event.day in venues[venue_name]:
                     venues[venue_name][event.day] = {
-                        event.event_id: [event.start_time, event.start_time + event.duration]}
+                        event.id: [event.start_time, event.start_time + event.duration]}
                 else:
                     for other_event, time_check in venues[venue_name][event.day].items():
                         if (event.start_time <= time_check[0] < event.start_time + event.duration) or \
                                 (time_check[0] <= event.start_time < time_check[0] + time_check[1]):
                             if not constraint_check:
                                 # print(3, [event.event_id, other_event])
-                                return [event.event_id, other_event]
-                            conflicts += [event.event_id, other_event]
-                    venues[venue_name][event.day][event.event_id] = [event.start_time,
-                                                                     event.start_time + event.duration]
+                                return [event.id, other_event]
+                            conflicts += [event.id, other_event]
+                    venues[venue_name][event.day][event.id] = [event.start_time,
+                                                               event.start_time + event.duration]
         # print(3, remove_duplicates_from_list(conflicts))
         return remove_duplicates_from_list(conflicts)
 
 
-class TeamTimeBetweenMatches(Constraint):
-    constraint_type = ConstraintType.ALL
-    constraint_string = "team_time_between_matches"
+class TeamTimeBetweenMatches(Constraint, ABC):
+    def set_variables(self, val):
+        self._variables = val
 
     def __init__(self, variables=None, sport: Sport = None, params: dict = None):
-        self.variables = variables
-        self.sport = sport
-        self.params = params
+        self._constraint_string = "team_time_between_matches"
+        self._constraint_type = ConstraintType.ALL
+        self._variables = variables
+        self._sport = sport
+        self._params = params
 
     def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
         if isinstance(variables[0], type(self)):
@@ -132,7 +136,7 @@ class TeamTimeBetweenMatches(Constraint):
                 continue
             for team in event.teams_involved:
                 if not (team in teams):
-                    teams[team] = {event.event_id: event_day}
+                    teams[team] = {event.id: event_day}
                 else:
                     for other_event, other_day in teams[team].items():
                         if abs(event_day - other_day) < \
@@ -140,21 +144,23 @@ class TeamTimeBetweenMatches(Constraint):
                                     "min_time_between_matches"]:
                             if not constraint_check:
                                 # print(4, [event.event_id, other_event])
-                                return [event.event_id, other_event]
-                            conflicts += [event.event_id, other_event.event_id]
-                    teams[team][event.event_id] = event_day
+                                return [event.id, other_event]
+                            conflicts += [event.id, other_event.id]
+                    teams[team][event.id] = event_day
         # print(4, remove_duplicates_from_list(conflicts))
         return remove_duplicates_from_list(conflicts)
 
 
-class VenueTimeBetweenMatches(Constraint):
-    constraint_type = ConstraintType.ALL
-    constraint_string = "venue_time_between_matches"
+class VenueTimeBetweenMatches(Constraint, ABC):
+    def set_variables(self, val):
+        self._variables = val
 
     def __init__(self, variables=None, sport: Sport = None, params: dict = None):
-        self.variables = variables
-        self.sport = sport
-        self.params = params
+        self._constraint_string = "venue_time_between_matches"
+        self._constraint_type = ConstraintType.ALL
+        self._variables = variables
+        self._sport = sport
+        self._params = params
 
     def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
         if isinstance(variables[0], type(self)):
@@ -169,10 +175,10 @@ class VenueTimeBetweenMatches(Constraint):
         for event in variables:
             venue_name = event.venue.name
             if not (venue_name in venues):
-                venues[venue_name] = {event.day: {event.event_id: event.start_time}}
+                venues[venue_name] = {event.day: {event.id: event.start_time}}
             else:
                 if not (event.day in venues[venue_name]):
-                    venues[venue_name][event.day] = {event.event_id: event.start_time}
+                    venues[venue_name][event.day] = {event.id: event.start_time}
                 else:
                     for other_event, other_time in venues[venue_name][event.day].items():
                         if abs(event.start_time + event.duration - other_time) < \
@@ -183,21 +189,23 @@ class VenueTimeBetweenMatches(Constraint):
                                     "min_time_between_matches"]:
                             if not constraint_check:
                                 # print("err", [event.event_id, other_event])
-                                return [event.event_id, other_event]
-                            conflicts += [event.event_id, other_event]
-                    venues[venue_name][event.day][event.event_id] = event.start_time
+                                return [event.id, other_event]
+                            conflicts += [event.id, other_event]
+                    venues[venue_name][event.day][event.id] = event.start_time
         # print(5, remove_duplicates_from_list(conflicts))
         return remove_duplicates_from_list(conflicts)
 
 
-class NoLaterRoundsBeforeEarlierRounds(Constraint):
-    constraint_type = ConstraintType.ALL
-    constraint_string = "no_later_rounds_before_earlier_rounds"
+class NoLaterRoundsBeforeEarlierRounds(Constraint, ABC):
+    def set_variables(self, val):
+        self._variables = val
 
     def __init__(self, variables=None, sport: Sport = None, params: dict = None):
-        self.variables = variables
-        self.sport = sport
-        self.params = params
+        self._constraint_string = "no_later_rounds_before_earlier_rounds"
+        self._constraint_type = ConstraintType.ALL
+        self._variables = variables
+        self._sport = sport
+        self._params = params
 
     def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
         if isinstance(variables[0], type(self)):
@@ -232,21 +240,23 @@ class NoLaterRoundsBeforeEarlierRounds(Constraint):
                             if event_1.day >= event_2.day:
                                 if not constraint_check:  # If we're not getting all conflicting events, we just return one
                                     # print("err", [event_1.event_id, event_2.event_id])
-                                    return [event_1.event_id]
-                                conflicts += [event_1.event_id, event_2.event_id]
+                                    return [event_1.id]
+                                conflicts += [event_1.id, event_2.id]
 
         # print(7, remove_duplicates_from_list(conflicts))
         return remove_duplicates_from_list(conflicts)
 
 
-class SameVenueMaxMatchesPerDay(Constraint):
-    constraint_type = ConstraintType.ALL
-    constraint_string = "same_venue_max_matches_per_day"
+class SameVenueMaxMatchesPerDay(Constraint, ABC):
+    def set_variables(self, val):
+        self._variables = val
 
     def __init__(self, variables=None, sport: Sport = None, params: dict = None):
-        self.variables = variables
-        self.sport = sport
-        self.params = params
+        self._constraint_string = "same_venue_max_matches_per_day"
+        self._constraint_type = ConstraintType.ALL
+        self._variables = variables
+        self._sport = sport
+        self._params = params
 
     def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
         if isinstance(variables[0], type(self)):
@@ -259,12 +269,12 @@ class SameVenueMaxMatchesPerDay(Constraint):
         for event in variables:
             venue_name = event.venue.name
             if not (venue_name in venues):
-                venues[venue_name] = {event.day: [event.event_id]}
+                venues[venue_name] = {event.day: [event.id]}
             else:
                 if not (event.day in venues[venue_name]):
-                    venues[venue_name][event.day] = [event.event_id]
+                    venues[venue_name][event.day] = [event.id]
                 else:
-                    venues[venue_name][event.day].append(event.event_id)
+                    venues[venue_name][event.day].append(event.id)
                 if len(venues[venue_name][event.day]) > event.venue.max_matches_per_day:
                     if not constraint_check:
                         # print(8, venues[venue_name][event.day])
@@ -274,14 +284,16 @@ class SameVenueMaxMatchesPerDay(Constraint):
         return remove_duplicates_from_list(conflicts)
 
 
-class SameSportMaxMatchesPerDay(Constraint):
-    constraint_type = ConstraintType.ALL
-    constraint_string = "same_sport_max_matches_per_day"
+class SameSportMaxMatchesPerDay(Constraint, ABC):
+    def set_variables(self, val):
+        self._variables = val
 
     def __init__(self, variables=None, sport: Sport = None, params: dict = None):
-        self.variables = variables
-        self.sport = sport
-        self.params = params
+        self._constraint_string = "same_sport_max_matches_per_day"
+        self._constraint_type = ConstraintType.ALL
+        self._variables = variables
+        self._sport = sport
+        self._params = params
 
     def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
         if isinstance(variables[0], type(self)):
@@ -293,12 +305,12 @@ class SameSportMaxMatchesPerDay(Constraint):
         for event in variables:
             sport_name = event.sport.name
             if not (sport_name in sports):
-                sports[sport_name] = {event.day: [event.event_id]}
+                sports[sport_name] = {event.day: [event.id]}
             else:
                 if not (event.day in sports[sport_name]):
-                    sports[sport_name][event.day] = [event.event_id]
+                    sports[sport_name][event.day] = [event.id]
                 else:
-                    sports[sport_name][event.day].append(event.event_id)
+                    sports[sport_name][event.day].append(event.id)
                 if len(sports[sport_name][event.day]) > event.sport.max_matches_per_day:
                     if not constraint_check:
                         # print(9, sports[sport_name][event.day])
@@ -308,31 +320,35 @@ class SameSportMaxMatchesPerDay(Constraint):
         return remove_duplicates_from_list(conflicts)
 
 
-class MaxCapacityAtFinal(Constraint):
-    constraint_type = ConstraintType.UNARY
-    constraint_string = "max_capacity_at_final"
+class MaxCapacityAtFinal(Constraint, ABC):
+    def set_variables(self, val):
+        self._variables = val
 
     def __init__(self, variables=None, sport: Sport = None, params: dict = None):
-        self.variables = variables
-        self.sport = sport
-        self.params = params
+        self._constraint_string = "max_capacity_at_final"
+        self._constraint_type = ConstraintType.UNARY
+        self._variables = variables
+        self._sport = sport
+        self._params = params
 
     def eval_constraint(self, event: dict[str, Event], constraint_check=False) -> list[str]:
         event = list(event.values())[0]
         bool_val = not (event.round.round_index == 0) or event.venue == max(global_variables.venues[event.sport.name],
                                                                             key=lambda venue: venue.capacity)
         # print(10, [] if bool_val else [event.event_id])
-        return [] if bool_val else [event.event_id]
+        return [] if bool_val else [event.id]
 
 
-class ValidMatchTime(Constraint):
-    constraint_type = ConstraintType.UNARY
-    constraint_string = "valid_match_time"
+class ValidMatchTime(Constraint, ABC):
+    def set_variables(self, val):
+        self._variables = val
 
     def __init__(self, variables=None, sport: Sport = None, params: dict = None):
-        self.variables = variables
-        self.sport = sport
-        self.params = params
+        self._constraint_string = "valid_match_time"
+        self._constraint_type = ConstraintType.UNARY
+        self._variables = variables
+        self._sport = sport
+        self._params = params
 
     def eval_constraint(self, event: dict[str, Event], constraint_check=False) -> list[str]:
         event = list(event.values())[0]
@@ -341,7 +357,7 @@ class ValidMatchTime(Constraint):
                    sport.min_start_time <= event.start_time and \
                    event.start_time + event.duration <= sport.max_finish_time
         # print(11, [] if bool_val else [event.event_id])
-        return [] if bool_val else [event.event_id]
+        return [] if bool_val else [event.id]
 
 
 # Helper Functions

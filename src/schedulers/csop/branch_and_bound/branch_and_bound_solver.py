@@ -5,7 +5,8 @@ from typing import Type
 
 from src.constraints.constraint import Constraint, get_constraint_from_string, ConstraintType
 from src.constraints.constraint_checker import constraint_check
-from src.constraints.optional_constraints import get_optional_constraint_from_string, get_inequality_operator_from_input
+from src.constraints.optional_constraints import get_optional_constraint_from_string, \
+    get_inequality_operator_from_input, OptionalConstraint
 from src.error_handling.handle_error import handle_error
 
 from src.helper.branch_and_bound import BranchAndBound
@@ -22,7 +23,7 @@ class BranchAndBoundSolver(Solver, ABC):
         self.sport = sport
         self.queue = PriorityQueue(self.data["comparator"])
         self.constraints: list[Constraint] = []
-        self.optional_constraints: list[Constraint] = []
+        self.optional_constraints: list[OptionalConstraint] = []
         self.forward_check: bool = forward_check
 
     def add_variable(self, new_var: str, domain) -> None:
@@ -54,6 +55,7 @@ class BranchAndBoundSolver(Solver, ABC):
 
         constraint = get_optional_constraint_from_string(function_name)
         self.optional_constraints.append(constraint(None, sport, params_copy))
+        print(self.optional_constraints[0])
 
     def solve(self):
         self.data["start_time"] = time.time()
@@ -69,7 +71,7 @@ class BranchAndBoundSolver(Solver, ABC):
         for unary_constraint in unary_constraints:
             for variable in self.queue.variables:
                 for option in variable.domain:
-                    if not unary_constraint.constraint.function({option.event_id: option}):
+                    if not unary_constraint.eval_constraint({option.id: option}):
                         variable.domain.remove(option)
             self.constraints.remove(unary_constraint)
 
@@ -118,15 +120,17 @@ class BranchAndBoundSolver(Solver, ABC):
         if assignments is None:
             return False
         for optional_constraint_heuristic in self.optional_constraints:
-            operation = optional_constraint_heuristic.params["inequality"]
+            operation = optional_constraint_heuristic.get_params()["inequality"]
             if not operation(optional_constraint_heuristic.eval_constraint(self, assignments)[0],
-                             optional_constraint_heuristic.params["acceptable"]):
+                             optional_constraint_heuristic.get_params()["acceptable"]):
                 return False
         return True
 
     def __heuristic(self, assignments):
-        normalising_factor = sum(optional_constraint_heuristic.params["weight"] for optional_constraint_heuristic in
-                                 self.optional_constraints)
+        print(self.optional_constraints[0])
+        normalising_factor = sum(
+            optional_constraint_heuristic.get_params()["weight"] for optional_constraint_heuristic in
+            self.optional_constraints)
         if normalising_factor == 0:
             return 1
         if not self.__test_constraints(assignments, self.constraints):
@@ -134,11 +138,12 @@ class BranchAndBoundSolver(Solver, ABC):
         # print([x.constraint.string_name for x in self.optional_constraints])
         return sum(
             optional_constraint_heuristic.eval_constraint(self, assignments)[1] *
-            optional_constraint_heuristic.params["weight"] for optional_constraint_heuristic in
+            optional_constraint_heuristic.get_params()["weight"] for optional_constraint_heuristic in
             self.optional_constraints) / normalising_factor
 
     def __test_constraints(self, assignments, constraints: list[Constraint]) -> bool:
         conflicts = []
         for constraint in constraints:
+            print(constraint)
             conflicts += constraint_check(constraint, assignments)
         return len(conflicts) == 0

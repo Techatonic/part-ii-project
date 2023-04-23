@@ -18,7 +18,7 @@ class Round:
         return self.round_name
 
     def __eq__(self, other):
-        return self.round_name == other.round_name
+        return type(self) == type(other) and self.round_name == other.round_name
 
 
 knockout_rounds = [

@@ -51,9 +51,9 @@ class CSPSolver:
         events = [variable.variable for variable in self.queue.variables]
         for constraint in range(len(self.constraints)):
             # print(self.constraints[constraint].variables)
-            if self.constraints[constraint].variables is not None:
+            if self.constraints[constraint].get_variables() is not None:
                 continue
-            self.constraints[constraint].variables = events
+            self.constraints[constraint].set_variables(events)
             # print()
             # print(self.constraints[constraint].variables)
         return self.constraints
@@ -69,7 +69,7 @@ class CSPSolver:
 
                 # Only need to test constraints involving the variable
                 constraints_to_check = [constraint for constraint in self.constraints if
-                                        variable.variable in constraint.variables]
+                                        variable.variable in constraint.get_variables()]
                 satisfies_all_constraints = self.__test_constraints(assignments, constraints_to_check)
                 if satisfies_all_constraints:
                     # Remove from all other domains affected

@@ -33,9 +33,9 @@ def constraint_checker(sports: dict[str, Sport], events: dict[str, list[Event]],
 
 
 def constraint_check(constraint: Type[Constraint], events, constraint_checker_flag=False) -> list:
-    if constraint.get_constraint_type(constraint) == ConstraintType.UNARY:
+    if constraint.get_constraint_type() == ConstraintType.UNARY:
         result = unary_constraint_check(constraint, events, constraint_checker_flag)
-    elif constraint.get_constraint_type(constraint) == ConstraintType.BINARY:
+    elif constraint.get_constraint_type() == ConstraintType.BINARY:
         result = binary_constraint_check(constraint, events, constraint_checker_flag)
     else:
         result = all_event_constraint_check(constraint, events, constraint_checker_flag)
@@ -49,7 +49,7 @@ def valid_constraint_check(constraint: Type[Constraint], events) -> bool:
 # TODO: If I keep changes to constraint class, fix this
 def single_constraint_check(constraint: Type[Constraint], *events) -> bool:
     events = convert_events_list_to_dict(list(events))
-    return len(constraint.eval_constraint(constraint, events)) == 0
+    return len(constraint.eval_constraint(events)) == 0
 
 
 def unary_constraint_check(constraint: Type[Constraint], events, constraint_checker_flag) -> list:
@@ -58,7 +58,7 @@ def unary_constraint_check(constraint: Type[Constraint], events, constraint_chec
         result = constraint.eval_constraint({event: events[event]}, constraint_check=constraint_checker_flag)
         if len(result) > 0:
             conflicts += result
-    return [constraint.get_constraint_string(constraint), conflicts] if len(conflicts) > 0 else []
+    return [constraint.get_constraint_string(), conflicts] if len(conflicts) > 0 else []
 
 
 def binary_constraint_check(constraint: Type[Constraint], events, constraint_checker_flag) -> list:
@@ -76,4 +76,4 @@ def binary_constraint_check(constraint: Type[Constraint], events, constraint_che
 
 def all_event_constraint_check(constraint: Type[Constraint], events, constraint_checker_flag):
     conflicts = constraint.eval_constraint(constraint, events, constraint_check=constraint_checker_flag)
-    return [constraint.get_constraint_string(constraint), conflicts] if len(conflicts) > 0 else []
+    return [constraint.get_constraint_string(), conflicts] if len(conflicts) > 0 else []

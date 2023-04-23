@@ -62,13 +62,13 @@ class ConstraintFixingSolver:
             assignments = copy_assignments(assignments)
             if depth >= self.num_changes_allowed:
                 return None
-            assignments[changed_event.event_id] = changed_event
+            assignments[changed_event.id] = changed_event
             if self.__test_constraints(assignments, self.constraints):
-                print("Success by changing ", path + [changed_event.event_id], " at depth: ", depth + 1)
+                print("Success by changing ", path + [changed_event.id], " at depth: ", depth + 1)
                 return assignments
             for next_event in all_events:
-                if next_event.event_id != changed_event.event_id:
-                    queue.append((depth + 1, next_event, assignments, path + [changed_event.event_id]))
+                if next_event.id != changed_event.id:
+                    queue.append((depth + 1, next_event, assignments, path + [changed_event.id]))
 
         return None
 

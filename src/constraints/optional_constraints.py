@@ -15,42 +15,58 @@ from src.sports.sport import Sport
 
 
 class OptionalConstraint(ABC):
-    def variables(self):
-        raise NotImplementedError()
+    _constraint_string = "NotImplementedError"
+    _variables = "NotImplementedError"
+    _sport = "NotImplementedError"
+    _constraint_type = "NotImplementedError"
+    _params = "NotImplementedError"
 
-    def sport(self):
-        raise NotImplementedError()
+    def get_constraint_string(self):
+        if self._constraint_string == "NotImplementedError":
+            handle_error("Constraint has not been constructed")
+        return self._constraint_string
 
-    def params(self):
-        raise NotImplementedError()
+    def get_variables(self):
+        if self._variables == "NotImplementedError":
+            handle_error("Constraint has not been constructed")
+        return self._variables
 
-    def constraint_string(self):
-        raise NotImplementedError()
+    def get_sport(self):
+        if self._sport == "NotImplementedError":
+            handle_error("Constraint has not been constructed")
+        return self._sport
 
-    def constraint_type(self):
-        raise NotImplementedError()
+    def get_constraint_type(self):
+        if self._constraint_type == "NotImplementedError":
+            handle_error("Constraint has not been constructed")
+        return self._constraint_type
+
+    def get_params(self):
+        if self._params == "NotImplementedError":
+            handle_error("Constraint has not been constructed")
+        return self._params
 
     @abstractmethod
     def __init__(self, variables=None, sport: Sport = None, params: dict = None):
         pass
 
     @abstractmethod
-    def solve(self, csp_instance, variables):
+    def eval_constraint(self, csp_instance, variables):
         pass
 
     def __str__(self) -> str:
         return f"""{{
-            constraint: {self.constraint_string},
-            variables: {self.variables},
-            sport: {self.sport},
-            constraint_type: {self.constraint_type}
+            constraint: {self._constraint_string},
+            variables: {self._variables},
+            sport: {self._sport},
+            constraint_type: {self._constraint_type}
         \n}}"""
 
     def __eq__(self, other):
-        return self.constraint_string == other.constraint.string_name and self.variables == other.variables
+        return self._constraint_string == other.constraint.get_constraint_string() and self._variables == other.get_variables()
 
     def __hash__(self):
-        hash((self.constraint_string, self.sport, self.constraint_type, self.params, self.variables))
+        hash((self._constraint_string, self._sport, self._constraint_type, self._params, self._variables))
 
 
 def take_average_of_heuristics_across_all_sports(csp_instance: Solver,
@@ -59,7 +75,7 @@ def take_average_of_heuristics_across_all_sports(csp_instance: Solver,
     heuristic_count = 0
     sport_count = 0
     for sport in assignments_by_sport:
-        _, score = heuristic.solve(csp_instance, assignments_by_sport[sport])
+        _, score = heuristic.eval_constraint(csp_instance, assignments_by_sport[sport])
         heuristic_count += score
         sport_count += 1
     return heuristic_count / sport_count
@@ -67,14 +83,17 @@ def take_average_of_heuristics_across_all_sports(csp_instance: Solver,
 
 # Optional Constraint Definitions
 class MaxMatchesPerDayHeuristic(OptionalConstraint):
-    def __init__(self, variables=None, sport: Sport = None, params: dict = None):
-        self.constraint_string = "max_matches_per_day_heuristic"
-        self.constraint_type = ConstraintType.ALL
-        self.variables = variables
-        self.sport = sport
-        self.params = params
+    def set_variables(self, val):
+        self._variables = val
 
-    def solve(self, csp_instance: Solver, assignments: dict[str, tuple[float, dict[str, Event]]]) -> \
+    def __init__(self, variables=None, sport: Sport = None, params: dict = None):
+        self._constraint_string = "max_matches_per_day_heuristic"
+        self._constraint_type = ConstraintType.ALL
+        self._variables = variables
+        self._sport = sport
+        self._params = params
+
+    def eval_constraint(self, csp_instance: Solver, assignments: dict[str, tuple[float, dict[str, Event]]]) -> \
             tuple[
                 float, float]:
         assignments_heuristic = remove_scores_from_dict(assignments)
@@ -113,14 +132,17 @@ class MaxMatchesPerDayHeuristic(OptionalConstraint):
 
 
 class MaximiseSportSpecificConstraints(OptionalConstraint):
-    def __init__(self, variables=None, sport: Sport = None, params: dict = None):
-        self.constraint_string = "maximise_sport_specific_constraints"
-        self.constraint_type = ConstraintType.ALL
-        self.variables = variables
-        self.sport = sport
-        self.params = params
+    def set_variables(self, val):
+        self._variables = val
 
-    def solve(self, csp_instance: Type[Solver], assignments: dict[str, Event]) -> tuple[float, float]:
+    def __init__(self, variables=None, sport: Sport = None, params: dict = None):
+        self._constraint_string = "maximise_sport_specific_constraints"
+        self._constraint_type = ConstraintType.ALL
+        self._variables = variables
+        self._sport = sport
+        self._params = params
+
+    def eval_constraint(self, csp_instance: Type[Solver], assignments: dict[str, Event]) -> tuple[float, float]:
         curr = sum(assignments[sport][0] for sport in assignments)
 
         optimal = 0
@@ -136,14 +158,17 @@ class MaximiseSportSpecificConstraints(OptionalConstraint):
 
 
 class AvgCapacityHeuristic(OptionalConstraint):
-    def __init__(self, variables=None, sport: Sport = None, params: dict = None):
-        self.constraint_string = "avg_capacity_heuristic"
-        self.constraint_type = ConstraintType.ALL
-        self.variables = variables
-        self.sport = sport
-        self.params = params
+    def set_variables(self, val):
+        self._variables = val
 
-    def solve(self, csp_instance: Type[Solver], assignments: dict[str, Event]) -> tuple[float, float]:
+    def __init__(self, variables=None, sport: Sport = None, params: dict = None):
+        self._constraint_string = "avg_capacity_heuristic"
+        self._constraint_type = ConstraintType.ALL
+        self._variables = variables
+        self._sport = sport
+        self._params = params
+
+    def eval_constraint(self, csp_instance: Type[Solver], assignments: dict[str, Event]) -> tuple[float, float]:
         assignments = list(assignments.values())
         count = sum(event.venue.capacity for event in assignments)
         curr = count / len(assignments)
@@ -154,14 +179,17 @@ class AvgCapacityHeuristic(OptionalConstraint):
 
 
 class AvgDistanceToTravel(OptionalConstraint):
-    def __init__(self, variables=None, sport: Sport = None, params: dict = None):
-        self.constraint_string = "avg_distance_to_travel"
-        self.constraint_type = ConstraintType.ALL
-        self.variables = variables
-        self.sport = sport
-        self.params = params
+    def set_variables(self, val):
+        self._variables = val
 
-    def solve(self, csp_instance: Type[Solver], assignments: dict[str, Event]) -> tuple[float, float]:
+    def __init__(self, variables=None, sport: Sport = None, params: dict = None):
+        self._constraint_string = "avg_distance_to_travel"
+        self._constraint_type = ConstraintType.ALL
+        self._variables = variables
+        self._sport = sport
+        self._params = params
+
+    def eval_constraint(self, csp_instance: Type[Solver], assignments: dict[str, Event]) -> tuple[float, float]:
         assignments = list(assignments.values())
         sport_name = assignments[0].sport.name
         if not ("distances_to_travel" in csp_instance.data):
@@ -194,14 +222,17 @@ class AvgDistanceToTravel(OptionalConstraint):
 
 
 class AvgRestBetweenMatches(OptionalConstraint):
-    def __init__(self, variables=None, sport: Sport = None, params: dict = None):
-        self.constraint_string = "avg_rest_between_matches"
-        self.constraint_type = ConstraintType.ALL
-        self.variables = variables
-        self.sport = sport
-        self.params = params
+    def set_variables(self, val):
+        self._variables = val
 
-    def solve(self, csp_instance: Solver, assignments: dict[str, Event]) -> tuple[float, float]:
+    def __init__(self, variables=None, sport: Sport = None, params: dict = None):
+        self._constraint_string = "avg_rest_between_matches"
+        self._constraint_type = ConstraintType.ALL
+        self._variables = variables
+        self._sport = sport
+        self._params = params
+
+    def eval_constraint(self, csp_instance: Solver, assignments: dict[str, Event]) -> tuple[float, float]:
         assignments = list(assignments.values())
         rest_between_matches: dict[str, list[int]] = {}
         sport_name = assignments[0].sport.name

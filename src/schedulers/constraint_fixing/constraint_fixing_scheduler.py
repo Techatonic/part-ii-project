@@ -97,7 +97,7 @@ class ConstraintFixingScheduler(Scheduler, ABC):
                             event_name in self.events[sport_name]]
 
         for event_to_change in events_to_change:
-            event_name = event_to_change.event_id
+            event_name = event_to_change.id
 
             options = []
             # Shuffle venues, days and times
@@ -126,13 +126,13 @@ class ConstraintFixingScheduler(Scheduler, ABC):
                 for time in time_order:
                     for day in day_order:
                         options.append(
-                            Event(sport, event_to_change.event_id, venue=venue, event_round=event_to_change.round,
+                            Event(sport, event_to_change.id, venue=venue, event_round=event_to_change.round,
                                   day=day, start_time=time, duration=sport.match_duration,
                                   teams_involved=event_to_change.teams_involved))
 
             random.shuffle(options)
 
-            csp_problem.add_variable(event_to_change.event_id, options)
+            csp_problem.add_variable(event_to_change.id, options)
 
         for sport_specific_constraint in sport.constraints["required"]:
             constraint: Type[Constraint] = get_constraint_from_string(sport_specific_constraint)

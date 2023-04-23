@@ -26,20 +26,19 @@ class ModuleSolver(Solver):
 
     def add_constraint(self, function_name: str, variables: list[str] | None = None,
                        sport: Sport | None = None, params: dict = None) -> None:
-        constraint = get_constraint_from_string(function_name)
+        constraint = get_constraint_from_string(function_name)(variables, sport, params)
 
-        if constraint.constraint_type == ConstraintType.UNARY:
+        if constraint.get_constraint_type() == ConstraintType.UNARY:
             for event_id in self.variables:
                 self.csp.addConstraint(partial(single_constraint_check, constraint), [event_id])
-        elif constraint.constraint_type == ConstraintType.BINARY:
+        elif constraint.get_constraint_type() == ConstraintType.BINARY:
             for event_id_1 in range(len(self.variables.keys())):
                 for event_id_2 in range(event_id_1 + 1, len(self.variables.keys())):
                     self.csp.addConstraint(partial(single_constraint_check, constraint), [event_id_1, event_id_2])
         else:
             self.csp.addConstraint(partial(single_constraint_check, constraint))
 
-        self.constraints.append(
-            constraint(variables, sport, copy.deepcopy(params)))
+        self.constraints.append(constraint)
 
     def solve(self) -> dict[str, Event] | None:
         return self.csp.getSolution()
