@@ -24,7 +24,7 @@ from src.schedulers.csp_module.module_solver import ModuleSolver
 
 
 def main(input_path: str, export_path: str | None = None, constraint_checker_flag: int = 1,
-         use_python_module: bool = False, use_branch_and_bound_solver: bool = False,
+         use_python_module: bool = False, use_branch_and_bound_solver: int = 0,
          use_genetic_algorithm: int = 0, forward_check=False) -> CompleteGames | None:
     if constraint_checker_flag:
         run_constraint_checker(input_path, export_path, constraint_checker_flag)
@@ -74,7 +74,7 @@ def run_constraint_checker(input_path: str, export_path: str | None = None, num_
     exit()
 
 
-def run_solver(input_path: str, use_python_module: bool, use_branch_and_bound_solver: bool, use_genetic_algorithm: int,
+def run_solver(input_path: str, use_python_module: bool, use_branch_and_bound_solver: int, use_genetic_algorithm: int,
                forward_check: bool, export_path: str | None = None) -> None:
     input_json = read_and_validate_input(input_path, 'schemata/input_schema.json')
 
@@ -91,6 +91,7 @@ def run_solver(input_path: str, use_python_module: bool, use_branch_and_bound_so
         if use_branch_and_bound_solver:  # branch_and_bound CSOP solver
             solver = BranchAndBoundSolver
             scheduler = CSOPScheduler
+            data['num_results_to_collect'] = use_branch_and_bound_solver
         elif use_genetic_algorithm:  # genetic_algorithm CSOP solver
             solver = GeneticAlgorithmSolver
             scheduler = GeneticAlgorithmScheduler
@@ -126,22 +127,20 @@ if __name__ == "__main__":
     parser.add_argument("-c", required=False, type=int,
                         help="run input_path on constraint checker and allow up to c changed events")
     parser.add_argument("-m", action='store_true', help="run on python-constraint CSP solver")
-    parser.add_argument("-b", action='store_true',
+    parser.add_argument("-b", required=False, type=int,
                         help="run on CSOP heuristic_backtracking solver, will take longer to run but produce more optimal results")
     parser.add_argument("-g", required=False, type=int,
                         help="run on CSOP genetic algorithm solver, will take longer to run but produce more optimal results")
     parser.add_argument("-forward_check", action='store_true', help="run forward checking algorithm on solver")
-    args = None
-    try:
-        args = parser.parse_args()
-    except:
-        handle_error("Invalid input. Please ensure you provide all required arguments")
+
+    args = parser.parse_args()
 
     if not os.path.exists(args.import_path):
         handle_error("Path does not exist")
 
-    if (args.c is not None) + args.m + args.b + (args.g is not None) > 1:
-        handle_error("Can select only one of constraint checker, python-constraint CSP solver and CSOP solver")
+    if (args.c is not None) + args.m + (args.b is not None) + (args.g is not None) > 1:
+        handle_error(
+            "Can select only one of constraint checker, module solver, backtracking solver, heuristic backtracking solver and genetic algorithm solver")
 
     start_time = time.time()
     result = None

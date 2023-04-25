@@ -7,8 +7,6 @@ from src.helper import global_variables
 from src.helper.helper import remove_tuple_from_events, remove_duplicates_from_list
 from src.sports.sport import Sport
 
-from typing import Type
-
 
 class ConstraintType(Enum):
     UNARY = 1,

@@ -32,8 +32,6 @@ class CSOPScheduler(Scheduler, ABC):
         total_events = {}
         num_total_events = {}
 
-        num_results_to_collect = 1
-
         for sport in self.sports:
             sport = self.sports[sport]
             venues: list[Venue] = sport.possible_venues
@@ -57,17 +55,15 @@ class CSOPScheduler(Scheduler, ABC):
                     0].round.round_index or curr.domain[0].round.round_index == other.domain[
                                                       0].round.round_index and len(
                     curr.domain) < len(other.domain),
-                "num_results_to_collect": 3,
                 "wait_time": 5,
                 "domain_type": list[Event],
                 "variable_type": Event,
-                "min_heuristic_score_allowed": 0.55
             })
 
             sport_results = []
 
             # Run num_results_to_collect CSPs
-            for _ in range(num_results_to_collect):
+            for _ in range(self.data['num_results_to_collect']):
                 attempts = 5
                 while True:
                     csp_problem = generate_csp_problem(CSPSolver, csp_data, self.forward_check, sport)
@@ -100,19 +96,16 @@ class CSOPScheduler(Scheduler, ABC):
             "domain_type": list[tuple[float, dict[str, Event]]],
             "variable_type": tuple[float, dict[str, Event]],
             "num_total_events": num_total_events,
-            "num_results_to_collect": 1,
             "comparator": lambda curr, other: len(curr.domain) < len(other.domain),
             "sport_specific": False,
             "sports": self.sports,
             "wait_time": 25,
-            "min_heuristic_score_allowed": 0.55
         })
 
         multisport_csp = self.solver(csp_data, self.forward_check)
 
         for sport_key in total_events:
             sorted_options_by_optimality = sorted(total_events[sport_key], key=lambda option: -option[0])
-            # print(sorted_options_by_optimality)
             multisport_csp.add_variable(sport_key, sorted_options_by_optimality)
 
         for required_constraint in self.data["general_constraints"]["required"]:

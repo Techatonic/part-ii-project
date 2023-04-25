@@ -22,7 +22,6 @@ class CSPSolver:
         self.counter = [0, 0]
 
     def add_variable(self, new_var: str, domain: list[Event]) -> None:
-        print(new_var, domain)
         if new_var in [variable.variable for variable in self.queue.variables]:
             handle_error("Variable already exists")
         if type(domain) != list:
@@ -89,7 +88,7 @@ class CSPSolver:
                         queue.set(new_queue.variables)
                     result = self.__solve_variable(assignments, queue)
                     if result is not None:
-                        print(self.counter)
+                        # print(self.counter)
                         return result
             return None  # There is no valid assignment for this variable
 

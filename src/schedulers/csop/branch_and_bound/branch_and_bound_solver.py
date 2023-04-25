@@ -55,7 +55,7 @@ class BranchAndBoundSolver(Solver, ABC):
 
         constraint = get_optional_constraint_from_string(function_name)
         self.optional_constraints.append(constraint(None, sport, params_copy))
-        print(self.optional_constraints[0])
+        # print(self.optional_constraints[0])
 
     def solve(self):
         self.data["start_time"] = time.time()
@@ -77,7 +77,7 @@ class BranchAndBoundSolver(Solver, ABC):
 
     def __solve_variable(self, assignments, queue: PriorityQueue, bound_data: BranchAndBound) -> Type[
                                                                                                      BranchAndBound] | None | str:
-        # TODO Maybe add this back depending on if we want pure Branch and Bound or not
+        # TODO Maybe add this back - I'd say probably not
         # if time.time() - self.data["start_time"] > self.data["wait_time"]:
         #    raise TimeoutError
         variable_type = self.data["variable_type"]
@@ -97,15 +97,17 @@ class BranchAndBoundSolver(Solver, ABC):
             # print(len(assignments))
             variable = queue.pop()
 
-            # Sort options by eval score
+            ###### Sort options by eval score #########
             domain_evals = []
             for option in variable.domain:
                 assignments[variable.variable] = option
                 domain_evals.append((option, self.__heuristic(assignments)))
                 del assignments[variable.variable]
+
             variable.domain = filter(lambda x: x[1] > bound_data.get_best_solution_score(),
                                      sorted(domain_evals, key=lambda x: x[1], reverse=True))
             variable.domain = [x[0] for x in variable.domain]
+            ###########################################
 
             for option in variable.domain:
                 assignments[variable.variable] = option
@@ -127,7 +129,7 @@ class BranchAndBoundSolver(Solver, ABC):
         return True
 
     def __heuristic(self, assignments):
-        print(self.optional_constraints[0])
+        # print(self.optional_constraints[0])
         normalising_factor = sum(
             optional_constraint_heuristic.get_params()["weight"] for optional_constraint_heuristic in
             self.optional_constraints)
@@ -144,6 +146,6 @@ class BranchAndBoundSolver(Solver, ABC):
     def __test_constraints(self, assignments, constraints: list[Constraint]) -> bool:
         conflicts = []
         for constraint in constraints:
-            print(constraint)
+            # print(constraint)
             conflicts += constraint_check(constraint, assignments)
         return len(conflicts) == 0
