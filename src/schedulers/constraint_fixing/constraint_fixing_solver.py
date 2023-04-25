@@ -1,13 +1,12 @@
 import copy
+import time
 
 from src.constraints.constraint import Constraint, get_constraint_from_string, constraints_list
 from src.constraints.constraint_checker import constraint_check
 from src.error_handling.handle_error import handle_error
 
 from src.events.event import Event
-from src.helper.ac3 import ac3
 from src.helper.helper import copy_assignments
-from src.helper.priority_queue import PriorityQueue
 from src.sports.sport import Sport
 
 
@@ -52,29 +51,41 @@ class ConstraintFixingSolver:
         self.constraints = self.__add_all_events_to_constraints()
 
         all_events = [value for variable in self.variables for value in self.variables[variable]]
-        queue = [(0, value, self.assignments, []) for value in all_events]
 
-        if self.__test_constraints(self.assignments, self.constraints):
+        constraints_failed = self.__test_constraints(self.assignments, self.constraints)
+        if constraints_failed == 0:
             return self.assignments
 
-        while len(queue) > 0:
-            depth, changed_event, assignments, path = queue.pop(0)
-            assignments = copy_assignments(assignments)
-            if depth >= self.num_changes_allowed:
-                return None
-            assignments[changed_event.id] = changed_event
-            if self.__test_constraints(assignments, self.constraints):
-                print("Success by changing ", path + [changed_event.id], " at depth: ", depth + 1)
-                return assignments
-            for next_event in all_events:
-                if next_event.id != changed_event.id:
-                    queue.append((depth + 1, next_event, assignments, path + [changed_event.id]))
+        queue = [(0, value, self.assignments, [], constraints_failed) for value in all_events]
 
+        start = time.time()
+        count = 0
+        curr_depth = 0
+
+        while len(queue) > 0:
+            count += 1
+            if queue[0][0] > curr_depth:
+                queue = sorted(queue, key=lambda x: x[4])
+                curr_depth += 1
+            new_depth, changed_event, assignments, path, constraints_failed = queue.pop(0)
+            assignments = copy_assignments(assignments)
+            assignments[changed_event.id] = changed_event
+            new_constraints_failed = self.__test_constraints(assignments, self.constraints)
+            if new_constraints_failed == 0:
+                print("Success by changing ", path + [changed_event.id], " at depth: ", new_depth + 1)
+                print(f'{count} nodes checked in {time.time() - start} seconds')
+                return assignments
+            if new_constraints_failed > constraints_failed or new_depth == self.num_changes_allowed:
+                continue
+            for next_event in all_events:
+                if not (next_event.id in (path + [changed_event.id])):
+                    queue.append(
+                        (new_depth + 1, next_event, assignments, path + [changed_event.id], new_constraints_failed))
         return None
 
     # TODO This is basically the same as constraint_check in constraint_checker.py (except this is multiple constraints). Possibly merge them
-    def __test_constraints(self, assignments, constraints: list[Constraint]) -> bool:
+    def __test_constraints(self, assignments, constraints: list[Constraint]) -> int:
         conflicts = []
         for constraint in constraints:
             conflicts += constraint_check(constraint, assignments)
-        return len(conflicts) == 0
+        return len(conflicts)

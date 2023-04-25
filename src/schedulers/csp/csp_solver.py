@@ -18,8 +18,11 @@ class CSPSolver:
         self.data = data
         self.constraints = []
         self.forward_check = forward_check
+        # Todo remove this
+        self.counter = [0, 0]
 
     def add_variable(self, new_var: str, domain: list[Event]) -> None:
+        print(new_var, domain)
         if new_var in [variable.variable for variable in self.queue.variables]:
             handle_error("Variable already exists")
         if type(domain) != list:
@@ -43,6 +46,12 @@ class CSPSolver:
     def solve(self) -> dict[str, Event] | None:
         # Add all events to constraints for all events
         self.constraints = self.__add_all_events_to_constraints()
+
+        if self.forward_check:
+            valid, new_queue = ac3(self.queue, self.constraints, self)
+            if not valid:
+                return None
+            self.queue.set(new_queue.variables)
 
         result = self.__solve_variable({}, self.queue)
         return result
@@ -73,10 +82,15 @@ class CSPSolver:
                 satisfies_all_constraints = self.__test_constraints(assignments, constraints_to_check)
                 if satisfies_all_constraints:
                     # Remove from all other domains affected
-                    if (not self.forward_check) or ac3(self, queue, self.constraints):
-                        result = self.__solve_variable(assignments, queue)
-                        if result is not None:
-                            return result
+                    if self.forward_check:
+                        valid, new_queue = ac3(queue, self.constraints, self)
+                        if not valid:
+                            continue
+                        queue.set(new_queue.variables)
+                    result = self.__solve_variable(assignments, queue)
+                    if result is not None:
+                        print(self.counter)
+                        return result
             return None  # There is no valid assignment for this variable
 
         return assignments  # We have a valid assignment, return it

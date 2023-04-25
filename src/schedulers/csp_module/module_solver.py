@@ -1,7 +1,6 @@
-import copy
 from functools import partial
 
-from src.constraints.constraint import get_constraint_from_string, ConstraintType, Constraint
+from src.constraints.constraint import get_constraint_from_string, ConstraintType
 from src.constraints.constraint_checker import single_constraint_check
 from src.events.event import Event
 from src.schedulers.solver import Solver

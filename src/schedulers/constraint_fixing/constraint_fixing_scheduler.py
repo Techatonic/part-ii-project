@@ -97,8 +97,6 @@ class ConstraintFixingScheduler(Scheduler, ABC):
                             event_name in self.events[sport_name]]
 
         for event_to_change in events_to_change:
-            event_name = event_to_change.id
-
             options = []
             # Shuffle venues, days and times
             if "team_time_between_matches" in sport.constraints["required"]:

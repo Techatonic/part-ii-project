@@ -1,65 +1,58 @@
+from typing import Type
+
 from src.constraints.constraint import Constraint, ConstraintType
 from src.constraints.constraint_checker import constraint_check, valid_constraint_check
 from src.helper.priority_queue import PriorityQueue
 from src.schedulers.solver import Solver
 
 
-def ac3(csp_instance: Solver, queue: PriorityQueue, constraints: list[Constraint]) -> object:
+def ac3(queue: PriorityQueue, constraints: list[Constraint], csp_instance: Type[Solver]) -> object:
+    csp_instance.counter[0] += 1
+    done = False
+
     temp_queue = queue.__copy__()
     unary_constraints = list(
-        filter(lambda constraint: constraint.constraint_type == ConstraintType.UNARY, constraints))
+        filter(lambda constraint: constraint.get_constraint_type() == ConstraintType.UNARY, constraints))
     binary_constraints = list(
-        filter(lambda constraint: constraint.constraint_type == ConstraintType.BINARY, constraints))
+        filter(lambda constraint: constraint.get_constraint_type() == ConstraintType.BINARY, constraints))
+    all_constraints = list(
+        filter(lambda constraint: constraint.get_constraint_type() == ConstraintType.ALL, constraints))
+
     for unary_constraint in unary_constraints:
         for variable in temp_queue.variables:
             variable.domain = [option for option in variable.domain if
-                               constraint_check(csp_instance, unary_constraint.constraint, [option],
-                                                unary_constraint.params)]
+                               valid_constraint_check(unary_constraint, {option.id: option})]
 
     worklist = [(x, y) for x in temp_queue.variables for y in temp_queue.variables if x != y]
-    # Use for options 2+3
-    # made_change = False
-    # PERCENT_THRESHOLD = 0.1
 
     while len(worklist) > 0:
         (x, y) = worklist.pop(0)
-        changes_made = arc_reduce(x, y, binary_constraints)
+        changes_made = arc_reduce(x, y, binary_constraints, all_constraints)
         if changes_made > 0:
+            if not done:
+                csp_instance.counter[1] += 1
+                done = True
             if len(x.domain) == 0:
                 print("AC-3 return false - ", x.variable)
-                queue.set(temp_queue.variables)
-                return False
-            # Option 1: Add to worklist
+                return False, None
+
             worklist += [(x, z) for z in temp_queue.variables if z != y and z != x]
 
-            # Option 3: Rerun AC algorithm once finished if change has been made
-            # made_change = True
-
-            # Option 2: Rerun aC algorithm once finished if not many changes. If many changes, add to worklist
-            # if changes_made < PERCENT_THRESHOLD * len(x.domain):
-            #    made_change = True
-            # else:
-            #    worklist += [(x, z) for z in queue.variables if z != y and z != x]
-
-    queue.set(temp_queue.variables)
-
-    # Use this if statement for options 2+3
-    # if made_change:
-    #    return ac3(queue, constraints)
-
-    return True
+    return True, temp_queue
 
 
-def arc_reduce(x, y, binary_constraints):
+def arc_reduce(x, y, binary_constraints, all_constraints):
     changes_made = 0
     for x_option in x.domain:
         found_valid_pair = False
         for y_option in y.domain:
-            # TODO Because the binary constraints are now all constraints, do this for 'ALL' constraints too (but can just pass in the two events)
-            if all(valid_constraint_check(binary_constraint.constraint, [x_option, y_option], binary_constraint.params)
-                   for binary_constraint in binary_constraints):
-                found_valid_pair = True
-                break
+            if all(valid_constraint_check(binary_constraint, {x_option.id: x_option, y_option.id: y_option}) for
+                   binary_constraint in binary_constraints):
+                # Treat all_constraints as binary constraints for AC-3
+                if all(valid_constraint_check(all_constraint, {x_option.id: x_option, y_option.id: y_option}) for
+                       all_constraint in all_constraints):
+                    found_valid_pair = True
+                    break
         if not found_valid_pair:
             x.domain.remove(x_option)
             changes_made += 1

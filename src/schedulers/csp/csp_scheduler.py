@@ -28,6 +28,7 @@ class CSPScheduler(Scheduler, ABC):
         total_events = {}
 
         for sport in self.sports:
+            print(f'Sport: {sport}')
             sport = self.sports[sport]
             venues: list[Venue] = sport.possible_venues
             min_start_day: int = 0 if sport.min_start_day is None else sport.min_start_day
@@ -51,9 +52,10 @@ class CSPScheduler(Scheduler, ABC):
             }
             csp_data["comparator"] = lambda curr, other: curr.domain[0].round.round_index > other.domain[
                 0].round.round_index or curr.domain[0].round.round_index == other.domain[0].round.round_index and len(
-                curr.domain) < len(other.domain)
+                curr.domain) < len(other.domain) or curr.domain[0].round.round_index == other.domain[
+                                                             0].round.round_index and len(curr.domain) == len(
+                other.domain) and curr.variable < other.variable
 
-            # Run num_results_to_collect CSPs
             csp_problem = generate_csp_problem(self.solver, csp_data, self.forward_check, sport)
 
             result = csp_problem.solve()
@@ -67,7 +69,5 @@ class CSPScheduler(Scheduler, ABC):
 
         for sport in total_events:
             for event in total_events[sport]:
-                # print(event)
-                # print(total_events[sport])
                 complete_games.add_event(total_events[sport][event])
         return complete_games

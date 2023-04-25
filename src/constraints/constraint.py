@@ -67,7 +67,7 @@ class Constraint(ABC):
         hash((self._constraint_string, self._sport, self._constraint_type, self._params, self._variables))
 
 
-class SameVenueOverlappingTime(Constraint, ABC):
+class SameVenueOverlappingTime(Constraint):
     def set_variables(self, val):
         self._variables = val
 
@@ -109,7 +109,7 @@ class SameVenueOverlappingTime(Constraint, ABC):
         return remove_duplicates_from_list(conflicts)
 
 
-class TeamTimeBetweenMatches(Constraint, ABC):
+class TeamTimeBetweenMatches(Constraint):
     def set_variables(self, val):
         self._variables = val
 
@@ -151,7 +151,7 @@ class TeamTimeBetweenMatches(Constraint, ABC):
         return remove_duplicates_from_list(conflicts)
 
 
-class VenueTimeBetweenMatches(Constraint, ABC):
+class VenueTimeBetweenMatches(Constraint):
     def set_variables(self, val):
         self._variables = val
 
@@ -196,7 +196,7 @@ class VenueTimeBetweenMatches(Constraint, ABC):
         return remove_duplicates_from_list(conflicts)
 
 
-class NoLaterRoundsBeforeEarlierRounds(Constraint, ABC):
+class NoLaterRoundsBeforeEarlierRounds(Constraint):
     def set_variables(self, val):
         self._variables = val
 
@@ -247,7 +247,7 @@ class NoLaterRoundsBeforeEarlierRounds(Constraint, ABC):
         return remove_duplicates_from_list(conflicts)
 
 
-class SameVenueMaxMatchesPerDay(Constraint, ABC):
+class SameVenueMaxMatchesPerDay(Constraint):
     def set_variables(self, val):
         self._variables = val
 
@@ -284,7 +284,7 @@ class SameVenueMaxMatchesPerDay(Constraint, ABC):
         return remove_duplicates_from_list(conflicts)
 
 
-class SameSportMaxMatchesPerDay(Constraint, ABC):
+class SameSportMaxMatchesPerDay(Constraint):
     def set_variables(self, val):
         self._variables = val
 
@@ -320,7 +320,7 @@ class SameSportMaxMatchesPerDay(Constraint, ABC):
         return remove_duplicates_from_list(conflicts)
 
 
-class MaxCapacityAtFinal(Constraint, ABC):
+class MaxCapacityAtFinal(Constraint):
     def set_variables(self, val):
         self._variables = val
 
@@ -339,7 +339,7 @@ class MaxCapacityAtFinal(Constraint, ABC):
         return [] if bool_val else [event.id]
 
 
-class ValidMatchTime(Constraint, ABC):
+class ValidMatchTime(Constraint):
     def set_variables(self, val):
         self._variables = val
 
