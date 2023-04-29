@@ -894,7 +894,7 @@
       "min_start_day":1,
       "max_finish_day":14,
       "min_start_time":12,
-      "max_finish_time":18,
+      "max_finish_time":22,
       "duration":2,
       "constraints":{
         "required":{
@@ -908,7 +908,7 @@
           },
           "no_later_rounds_before_earlier_rounds":{},
           "max_capacity_at_final":{},
-          "max_matches_per_day": {"max_matches_per_day":  10}
+          "max_matches_per_day": {"max_matches_per_day":  12}
         },
         "optional":{
           "avg_distance_to_travel":{

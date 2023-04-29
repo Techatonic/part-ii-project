@@ -37,6 +37,17 @@ def flatten_events_by_sport_to_dict(input_dict: dict[str, dict[str, Event]]) -> 
     return events
 
 
+def flatten_events_by_sport_to_dict_with_scores(input_dict: tuple[float, dict[str, dict[str, Event]]]) -> dict[
+    str, Event]:
+    events = {}
+    for sport in input_dict[1]:
+        for event in input_dict[1][sport][1]:
+            # print(input_dict[1][sport])
+            # print(event)
+            events[event] = input_dict[1][sport][1][event]
+    return events
+
+
 def widen_events_to_events_by_sport(events: dict[str, Event]) -> dict[str, dict[str, Event]]:
     events_by_sport = {}
     for event in events:

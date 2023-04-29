@@ -51,13 +51,12 @@ class CSPScheduler(Scheduler, ABC):
                 "sports": [sport],
                 "wait_time": 5
             }
-            # csp_data["comparator"] = lambda curr, other: curr.domain[0].round.round_index > other.domain[
-            #     0].round.round_index or curr.domain[0].round.round_index == other.domain[0].round.round_index and len(
-            #     curr.domain) < len(other.domain) or curr.domain[0].round.round_index == other.domain[
-            #                                                  0].round.round_index and len(curr.domain) == len(
-            #     other.domain) and curr.variable < other.variable
-            csp_data["comparator"] = lambda curr, other: curr.domain[0].round.round_index / len(curr.domain) > \
-                                                         other.domain[0].round.round_index / len(other.domain)
+            csp_data["comparator"] = lambda curr, other: curr.domain[0].round.round_index > other.domain[
+                0].round.round_index or curr.domain[0].round.round_index == other.domain[0].round.round_index and len(
+                curr.domain) < len(other.domain) or curr.domain[0].round.round_index == other.domain[
+                                                             0].round.round_index and len(curr.domain) == len(
+                other.domain) and curr.variable < other.variable
+            # csp_data["comparator"] = lambda curr, other: len(curr.domain) < len(other.domain)
 
             csp_problem = generate_csp_problem(self.solver, csp_data, self.forward_check, sport)
 

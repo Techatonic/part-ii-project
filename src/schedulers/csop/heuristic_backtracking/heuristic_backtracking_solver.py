@@ -8,7 +8,7 @@ from src.constraints.constraint_checker import constraint_check
 from src.constraints.optional_constraints import get_optional_constraint_from_string, \
     get_inequality_operator_from_input, OptionalConstraint
 from src.helper.handle_error import handle_error
-from src.helper.best_solution import BestSolution
+from src.helper.best_solution import BestSolutions
 
 from src.helper.helper import copy_assignments
 from src.helper.priority_queue import PriorityQueue
@@ -61,9 +61,9 @@ class HeuristicBacktrackingSolver(Solver, ABC):
         self.data["start_time"] = time.time()
         self.__preprocess()
 
-        best_solution = BestSolution()
+        best_solution = BestSolutions(self.data['num_results_to_collect'])
         self.__solve_variable({}, self.queue, best_solution)
-        return best_solution.get_best_solution()
+        return best_solution.get_best_solutions()
 
     def __preprocess(self):
         unary_constraints = list(filter(lambda constraint: constraint.constraint_type == ConstraintType.UNARY,
@@ -75,8 +75,8 @@ class HeuristicBacktrackingSolver(Solver, ABC):
                         variable.domain.remove(option)
             self.constraints.remove(unary_constraint)
 
-    def __solve_variable(self, assignments, queue: PriorityQueue, best_solution: BestSolution) -> Type[
-                                                                                                      BestSolution] | None | str:
+    def __solve_variable(self, assignments, queue: PriorityQueue, best_solution: BestSolutions) -> Type[
+                                                                                                       BestSolutions] | None | str:
         # TODO Maybe add this back - I'd say probably not
         # if time.time() - self.data["start_time"] > self.data["wait_time"]:
         #    raise TimeoutError
@@ -86,9 +86,9 @@ class HeuristicBacktrackingSolver(Solver, ABC):
         # print(self.__heuristic(assignments) if len(assignments) > 0 else None)
         if len(queue.variables) == 0:
             heuristic_val = self.__heuristic(assignments)
-            if heuristic_val > best_solution.get_best_solution_score():
-                best_solution.update_best_solution(heuristic_val, assignments)
-                print("Improved solution found: ", best_solution)
+            if heuristic_val > best_solution.get_worst_bound():
+                best_solution.update_bounds(heuristic_val, assignments)
+                # print("Improved solution found: ", best_solution)
             else:
                 # print(heuristic_val, bound_data)
                 # print("Solution found - bound not good enough")
@@ -104,7 +104,7 @@ class HeuristicBacktrackingSolver(Solver, ABC):
                 domain_evals.append((option, self.__heuristic(assignments)))
                 del assignments[variable.variable]
 
-            variable.domain = filter(lambda x: x[1] > best_solution.get_best_solution_score(),
+            variable.domain = filter(lambda x: x[1] > best_solution.get_worst_bound(),
                                      sorted(domain_evals, key=lambda x: x[1], reverse=True))
             variable.domain = [x[0] for x in variable.domain]
             ###########################################
@@ -119,7 +119,6 @@ class HeuristicBacktrackingSolver(Solver, ABC):
         # print("Returning none at end of function")
 
     def __heuristic(self, assignments):
-        # print(self.optional_constraints[0])
         normalising_factor = sum(
             optional_constraint_heuristic.get_params()["weight"] for optional_constraint_heuristic in
             self.optional_constraints)
@@ -127,7 +126,6 @@ class HeuristicBacktrackingSolver(Solver, ABC):
             return 1
         if not self.__test_constraints(assignments, self.constraints):
             return 0
-        # print([x.constraint.string_name for x in self.optional_constraints])
         return sum(
             optional_constraint_heuristic.eval_constraint(self, assignments)[1] *
             optional_constraint_heuristic.get_params()["weight"] for optional_constraint_heuristic in

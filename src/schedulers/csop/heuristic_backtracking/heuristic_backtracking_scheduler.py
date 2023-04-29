@@ -4,7 +4,8 @@ from typing import Type
 
 from src.events.event import Event
 from src.games.complete_games import CompleteGames
-from src.helper.helper import calculate_fitness, widen_events_to_events_by_sport
+from src.helper.helper import calculate_fitness, widen_events_to_events_by_sport, flatten_events_by_sport_to_dict, \
+    flatten_events_by_sport_to_dict_with_scores, remove_scores_from_dict
 from src.rounds.knockout_rounds import generate_round_order, Round
 from src.schedulers.csp.csp_solver import CSPSolver
 from src.schedulers.scheduler import Scheduler
@@ -103,34 +104,72 @@ class CSOPScheduler(Scheduler, ABC):
             "wait_time": 25,
         })
 
-        multisport_csp = self.solver(csp_data, self.forward_check)
-        print("Multisport CSP")
-        for sport_key in total_events:
-            sorted_options_by_optimality = sorted(total_events[sport_key], key=lambda option: -option[0])
-            multisport_csp.add_variable(sport_key, sorted_options_by_optimality)
+        # multisport_csp = self.solver(csp_data, self.forward_check)
+        # print("Multisport CSP")
+        # for sport_key in total_events:
+        #     sorted_options_by_optimality = sorted(total_events[sport_key], key=lambda option: -option[0])
+        #     multisport_csp.add_variable(sport_key, sorted_options_by_optimality)
+        #
+        # for required_constraint in self.data["general_constraints"]["required"]:
+        #     multisport_csp.add_constraint(required_constraint,
+        #                                   params=self.data["general_constraints"]["required"][required_constraint])
+        # for optional_constraint in self.data["general_constraints"]["optional"]:
+        #     multisport_csp.add_optional_constraint(optional_constraint,
+        #                                            params=self.data["general_constraints"]["optional"][
+        #                                                optional_constraint], sport=None)
+        #
+        # multisport_csp.add_optional_constraint("maximise_sport_specific_constraints",
+        #                                        params={"inequality": "MAXIMISE", "acceptable": 0})
 
-        for required_constraint in self.data["general_constraints"]["required"]:
-            multisport_csp.add_constraint(required_constraint,
-                                          params=self.data["general_constraints"]["required"][required_constraint])
-        for optional_constraint in self.data["general_constraints"]["optional"]:
-            multisport_csp.add_optional_constraint(optional_constraint,
-                                                   params=self.data["general_constraints"]["optional"][
-                                                       optional_constraint], sport=None)
+        while len(total_events) > 1:
+            results = []
+            multisport_csp = self.solver(csp_data, self.forward_check)
+            print("Multisport CSP")
+            sport_1 = list(total_events.keys())[0]
+            sport_2 = list(total_events.keys())[1]
 
-        multisport_csp.add_optional_constraint("maximise_sport_specific_constraints",
-                                               params={"inequality": "MAXIMISE", "acceptable": 0})
+            for sport_key in [sport_1, sport_2]:
+                sorted_options_by_optimality = sorted(total_events[sport_key], key=lambda option: -option[0])
+                # print(sorted_options_by_optimality)
+                multisport_csp.add_variable(sport_key, sorted_options_by_optimality)
 
-        try:
+            for required_constraint in self.data["general_constraints"]["required"]:
+                multisport_csp.add_constraint(required_constraint,
+                                              params=self.data["general_constraints"]["required"][required_constraint])
+            for optional_constraint in self.data["general_constraints"]["optional"]:
+                multisport_csp.add_optional_constraint(optional_constraint,
+                                                       params=self.data["general_constraints"]["optional"][
+                                                           optional_constraint], sport=None)
+
+            multisport_csp.add_optional_constraint("maximise_sport_specific_constraints",
+                                                   params={"inequality": "MAXIMISE", "acceptable": 0})
+
             result = multisport_csp.solve()
+            # print(result)
             if result is None:
                 print("No results")
                 return None
-            eval_score = result[0][0]
-            result = result[0][1]
-            complete_games = CompleteGames(self.data["tournament_length"], self.sports, eval_score)
-            for sport in result:
-                for event in result[sport][1]:
-                    complete_games.add_event(result[sport][1][event])
-            return complete_games
-        except TimeoutError:
-            return None
+            del total_events[sport_1]
+            del total_events[sport_2]
+
+            for individual_result in range(len(result)):
+                events = result[individual_result][1]
+                events = remove_scores_from_dict(events)
+                events = flatten_events_by_sport_to_dict(events)
+                result[individual_result] = (result[individual_result][0], events)
+            total_events[sport_1 + sport_2] = result
+            # total_events[sport_1 + sport_2] = (result[0], flatten_events_by_sport_to_dict_with_scores(result[1]))
+            # print(total_events[sport_1 + sport_2])
+
+        print("Finished?")
+        result = list(total_events.values())[0]
+        result = sorted(result, key=lambda option: -option[0])[0]
+
+        eval_score = result[0]
+        result = result[1]
+        result = widen_events_to_events_by_sport(result)
+        complete_games = CompleteGames(self.data["tournament_length"], self.sports, eval_score)
+        for sport in result:
+            for event in result[sport]:
+                complete_games.add_event(result[sport][event])
+        return complete_games
