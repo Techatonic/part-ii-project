@@ -33,6 +33,7 @@ class CSOPScheduler(Scheduler, ABC):
         num_total_events = {}
 
         for sport in self.sports:
+            print(f'Sport: {self.sports[sport].name}')
             sport = self.sports[sport]
             venues: list[Venue] = sport.possible_venues
             min_start_day: int = 0 if sport.min_start_day is None else sport.min_start_day
@@ -103,7 +104,7 @@ class CSOPScheduler(Scheduler, ABC):
         })
 
         multisport_csp = self.solver(csp_data, self.forward_check)
-
+        print("Multisport CSP")
         for sport_key in total_events:
             sorted_options_by_optimality = sorted(total_events[sport_key], key=lambda option: -option[0])
             multisport_csp.add_variable(sport_key, sorted_options_by_optimality)
@@ -121,11 +122,11 @@ class CSOPScheduler(Scheduler, ABC):
 
         try:
             result = multisport_csp.solve()
-            eval_score = result[0][0]
-            result = result[0][1]
             if result is None:
                 print("No results")
                 return None
+            eval_score = result[0][0]
+            result = result[0][1]
             complete_games = CompleteGames(self.data["tournament_length"], self.sports, eval_score)
             for sport in result:
                 for event in result[sport][1]:

@@ -7,16 +7,16 @@ from src.constraints.constraint import Constraint, get_constraint_from_string, C
 from src.constraints.constraint_checker import constraint_check
 from src.constraints.optional_constraints import get_optional_constraint_from_string, \
     get_inequality_operator_from_input, OptionalConstraint
-from src.error_handling.handle_error import handle_error
+from src.helper.handle_error import handle_error
+from src.helper.best_solution import BestSolution
 
-from src.helper.branch_and_bound import BranchAndBound
 from src.helper.helper import copy_assignments
 from src.helper.priority_queue import PriorityQueue
 from src.schedulers.solver import Solver
 from src.sports.sport import Sport
 
 
-class BranchAndBoundSolver(Solver, ABC):
+class HeuristicBacktrackingSolver(Solver, ABC):
     def __init__(self, data=None, forward_check=False, sport=None) -> None:
         self.data = data if data is not None else {}
 
@@ -61,9 +61,9 @@ class BranchAndBoundSolver(Solver, ABC):
         self.data["start_time"] = time.time()
         self.__preprocess()
 
-        bound_data = BranchAndBound()
-        self.__solve_variable({}, self.queue, bound_data)
-        return bound_data.get_best_solution()
+        best_solution = BestSolution()
+        self.__solve_variable({}, self.queue, best_solution)
+        return best_solution.get_best_solution()
 
     def __preprocess(self):
         unary_constraints = list(filter(lambda constraint: constraint.constraint_type == ConstraintType.UNARY,
@@ -75,8 +75,8 @@ class BranchAndBoundSolver(Solver, ABC):
                         variable.domain.remove(option)
             self.constraints.remove(unary_constraint)
 
-    def __solve_variable(self, assignments, queue: PriorityQueue, bound_data: BranchAndBound) -> Type[
-                                                                                                     BranchAndBound] | None | str:
+    def __solve_variable(self, assignments, queue: PriorityQueue, best_solution: BestSolution) -> Type[
+                                                                                                      BestSolution] | None | str:
         # TODO Maybe add this back - I'd say probably not
         # if time.time() - self.data["start_time"] > self.data["wait_time"]:
         #    raise TimeoutError
@@ -86,9 +86,9 @@ class BranchAndBoundSolver(Solver, ABC):
         # print(self.__heuristic(assignments) if len(assignments) > 0 else None)
         if len(queue.variables) == 0:
             heuristic_val = self.__heuristic(assignments)
-            if heuristic_val > bound_data.get_best_solution_score():
-                bound_data.update_bounds(heuristic_val, assignments)
-                print("Improved solution found: ", bound_data)
+            if heuristic_val > best_solution.get_best_solution_score():
+                best_solution.update_best_solution(heuristic_val, assignments)
+                print("Improved solution found: ", best_solution)
             else:
                 # print(heuristic_val, bound_data)
                 # print("Solution found - bound not good enough")
@@ -104,7 +104,7 @@ class BranchAndBoundSolver(Solver, ABC):
                 domain_evals.append((option, self.__heuristic(assignments)))
                 del assignments[variable.variable]
 
-            variable.domain = filter(lambda x: x[1] > bound_data.get_best_solution_score(),
+            variable.domain = filter(lambda x: x[1] > best_solution.get_best_solution_score(),
                                      sorted(domain_evals, key=lambda x: x[1], reverse=True))
             variable.domain = [x[0] for x in variable.domain]
             ###########################################
@@ -113,20 +113,10 @@ class BranchAndBoundSolver(Solver, ABC):
                 assignments[variable.variable] = option
 
                 if self.__test_constraints(assignments, self.constraints):
-                    result = self.__solve_variable(assignments, queue, bound_data)
+                    result = self.__solve_variable(assignments, queue, best_solution)
                     if result is not None:
                         return result
         # print("Returning none at end of function")
-
-    def __is_acceptable_solution(self, assignments):
-        if assignments is None:
-            return False
-        for optional_constraint_heuristic in self.optional_constraints:
-            operation = optional_constraint_heuristic.get_params()["inequality"]
-            if not operation(optional_constraint_heuristic.eval_constraint(self, assignments)[0],
-                             optional_constraint_heuristic.get_params()["acceptable"]):
-                return False
-        return True
 
     def __heuristic(self, assignments):
         # print(self.optional_constraints[0])

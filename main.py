@@ -7,15 +7,15 @@ import os
 from argparse import ArgumentParser
 
 from src.constraints.constraint_checker import constraint_checker
-from src.error_handling.handle_error import handle_error
+from src.helper.handle_error import handle_error
 from src.games.complete_games import CompleteGames
 from src.helper.helper import add_global_variables
 from src.input_handling.input_reader import read_and_validate_input
 from src.input_handling.parse_input import parse_input, parse_input_constraint_checker
 from src.schedulers.constraint_fixing.constraint_fixing_scheduler import ConstraintFixingScheduler
 from src.schedulers.constraint_fixing.constraint_fixing_solver import ConstraintFixingSolver
-from src.schedulers.csop.branch_and_bound.branch_and_bound_scheduler import CSOPScheduler
-from src.schedulers.csop.branch_and_bound.branch_and_bound_solver import BranchAndBoundSolver
+from src.schedulers.csop.heuristic_backtracking.heuristic_backtracking_scheduler import CSOPScheduler
+from src.schedulers.csop.heuristic_backtracking.heuristic_backtracking_solver import HeuristicBacktrackingSolver
 from src.schedulers.csop.genetic_algorithm.genetic_algorithm_scheduler import GeneticAlgorithmScheduler
 from src.schedulers.csop.genetic_algorithm.genetic_algorithm_solver import GeneticAlgorithmSolver
 from src.schedulers.csp.csp_scheduler import CSPScheduler
@@ -23,14 +23,38 @@ from src.schedulers.csp.csp_solver import CSPSolver
 from src.schedulers.csp_module.module_solver import ModuleSolver
 
 
-def main(input_path: str, export_path: str | None = None, constraint_checker_flag: int = 1,
-         use_python_module: bool = False, use_branch_and_bound_solver: int = 0,
-         use_genetic_algorithm: int = 0, forward_check=False) -> CompleteGames | None:
-    if constraint_checker_flag:
-        run_constraint_checker(input_path, export_path, constraint_checker_flag)
+def main() -> None:
+    parser = ArgumentParser('Automated Event Scheduler')
+    parser.add_argument("--import_path", required=True, type=str, help="read json input from this path")
+    parser.add_argument("--export_path", required=False, type=str, help="export json output to this path")
+    parser.add_argument("-c", required=False, type=int, metavar='N',
+                        help="run input_path on constraint checker and allow up to N changed events")
+    parser.add_argument("-m", action='store_true', help="run on CSP module solver")
+    parser.add_argument("-b", action='store_true', help="run on CSP backtracking solver")
+    parser.add_argument("-hb", required=False, type=int, metavar='N',
+                        help="run on CSOP heuristic_backtracking solver using N schedules for each sport")
+    parser.add_argument("-g", required=False, type=int, nargs=2, metavar=('P', 'G'),
+                        help="run on CSOP genetic algorithm solver with iniital population of size P and G generations")
+    parser.add_argument("-forward_check", action='store_true', help="run forward checking algorithm on solver")
+
+    args = parser.parse_args()
+
+    if not os.path.exists(args.import_path):
+        handle_error("Path does not exist")
+
+    if (args.c is not None) + args.m + args.b + (args.hb is not None) + (args.g is not None) != 1:
+        handle_error(
+            "Must select exactly one of constraint checker, module solver, backtracking solver, heuristic backtracking solver and genetic algorithm solver")
+
+    start_time = time.time()
+    if args.c:
+        run_constraint_checker(args.import_path, args.export_path, args.c)
     else:
-        return run_solver(input_path, use_python_module, use_branch_and_bound_solver, use_genetic_algorithm,
-                          forward_check, export_path)
+        run_solver(args.import_path, args.m, args.b, args.hb,
+                   args.g, args.forward_check, args.export_path)
+
+    end_time = time.time()
+    print("\nTime Taken: " + str(end_time - start_time), "\n")
 
 
 def run_constraint_checker(input_path: str, export_path: str | None = None, num_changes=1) -> None:
@@ -71,10 +95,11 @@ def run_constraint_checker(input_path: str, export_path: str | None = None, num_
         else:
             print("No export path given")
 
-    exit()
+    return result
 
 
-def run_solver(input_path: str, use_python_module: bool, use_branch_and_bound_solver: int, use_genetic_algorithm: int,
+def run_solver(input_path: str, use_python_module: bool, use_backtracking_solver: bool,
+               use_heuristic_backtracking_solver: int, use_genetic_algorithm: list | None,
                forward_check: bool, export_path: str | None = None) -> None:
     input_json = read_and_validate_input(input_path, 'schemata/input_schema.json')
 
@@ -87,18 +112,20 @@ def run_solver(input_path: str, use_python_module: bool, use_branch_and_bound_so
     if use_python_module:
         solver = ModuleSolver
         scheduler = CSPScheduler
+    elif use_heuristic_backtracking_solver:  # heuristic_backtracking CSOP solver
+        solver = HeuristicBacktrackingSolver
+        scheduler = CSOPScheduler
+        data['num_results_to_collect'] = use_heuristic_backtracking_solver
+    elif use_genetic_algorithm:  # genetic_algorithm CSOP solver
+        solver = GeneticAlgorithmSolver
+        scheduler = GeneticAlgorithmScheduler
+        data["initial_population_size"] = use_genetic_algorithm[0]
+        data["genetic_algorithm_iterations"] = use_genetic_algorithm[1]
+    elif use_backtracking_solver:  # CSP solver
+        solver = CSPSolver
+        scheduler = CSPScheduler
     else:
-        if use_branch_and_bound_solver:  # branch_and_bound CSOP solver
-            solver = BranchAndBoundSolver
-            scheduler = CSOPScheduler
-            data['num_results_to_collect'] = use_branch_and_bound_solver
-        elif use_genetic_algorithm:  # genetic_algorithm CSOP solver
-            solver = GeneticAlgorithmSolver
-            scheduler = GeneticAlgorithmScheduler
-            data["genetic_algorithm_iterations"] = use_genetic_algorithm
-        else:  # CSP solver
-            solver = CSPSolver
-            scheduler = CSPScheduler
+        handle_error("No scheduler selected")
 
     scheduler = scheduler(solver, sports, data, forward_check)
     result = scheduler.schedule_events()
@@ -118,38 +145,4 @@ def run_solver(input_path: str, use_python_module: bool, use_branch_and_bound_so
 
 
 if __name__ == "__main__":
-    # random.seed(a=1)
-
-    # Setup command line arguments
-    parser = ArgumentParser('Automated Event Scheduler')
-    parser.add_argument("--import_path", required=True, type=str, help="read json input from this path")
-    parser.add_argument("--export_path", required=False, type=str, help="export json output to this path")
-    parser.add_argument("-c", required=False, type=int,
-                        help="run input_path on constraint checker and allow up to c changed events")
-    parser.add_argument("-m", action='store_true', help="run on python-constraint CSP solver")
-    parser.add_argument("-b", required=False, type=int,
-                        help="run on CSOP heuristic_backtracking solver, will take longer to run but produce more optimal results")
-    parser.add_argument("-g", required=False, type=int,
-                        help="run on CSOP genetic algorithm solver, will take longer to run but produce more optimal results")
-    parser.add_argument("-forward_check", action='store_true', help="run forward checking algorithm on solver")
-
-    args = parser.parse_args()
-
-    if not os.path.exists(args.import_path):
-        handle_error("Path does not exist")
-
-    if (args.c is not None) + args.m + (args.b is not None) + (args.g is not None) > 1:
-        handle_error(
-            "Can select only one of constraint checker, module solver, backtracking solver, heuristic backtracking solver and genetic algorithm solver")
-
-    start_time = time.time()
-    result = None
-    if args.export_path:
-        main(args.import_path, args.export_path, constraint_checker_flag=args.c, use_python_module=args.m,
-             use_branch_and_bound_solver=args.b, use_genetic_algorithm=args.g,
-             forward_check=args.forward_check)
-    else:
-        main(args.import_path, constraint_checker_flag=args.c)
-
-    end_time = time.time()
-    print("\nTime Taken: " + str(end_time - start_time))
+    main()

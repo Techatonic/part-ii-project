@@ -1,9 +1,9 @@
 import copy
 import time
 
-from src.constraints.constraint import Constraint, get_constraint_from_string, constraints_list
+from src.constraints.constraint import Constraint, get_constraint_from_string
 from src.constraints.constraint_checker import constraint_check
-from src.error_handling.handle_error import handle_error
+from src.helper.handle_error import handle_error
 
 from src.events.event import Event
 from src.helper.helper import copy_assignments
@@ -75,7 +75,7 @@ class ConstraintFixingSolver:
                 print("Success by changing ", path + [changed_event.id], " at depth: ", new_depth + 1)
                 print(f'{count} nodes checked in {time.time() - start} seconds')
                 return assignments
-            if new_constraints_failed > constraints_failed or new_depth == self.num_changes_allowed:
+            if new_constraints_failed > constraints_failed or new_depth == self.num_changes_allowed - 1:
                 continue
             for next_event in all_events:
                 if not (next_event.id in (path + [changed_event.id])):

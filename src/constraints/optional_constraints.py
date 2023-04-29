@@ -6,8 +6,8 @@ from typing import Type
 
 import pgeocode
 
-from src.constraints.constraint import ConstraintType, Constraint
-from src.error_handling.handle_error import handle_error
+from src.constraints.constraint import ConstraintType
+from src.helper.handle_error import handle_error
 from src.events.event import Event
 from src.helper.helper import flatten_events_by_sport_to_list, remove_scores_from_dict
 from src.schedulers.solver import Solver

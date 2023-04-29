@@ -27,10 +27,13 @@ class PriorityQueue:
 
 
 class QueueNode:
-    def __init__(self, variable: str, domain, comparator) -> None:
+    def __init__(self, variable: str, domain: list, comparator) -> None:
         self.variable = variable
         self.domain = domain
         self.comparator = comparator
+
+    def remove(self, item):
+        self.domain.remove(item)
 
     def __lt__(self, other) -> bool:
         return self.comparator(self, other)

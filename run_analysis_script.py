@@ -23,4 +23,4 @@ for run in range(args.n):
 
 df = pd.DataFrame(times)
 print()
-print(df.describe().transpose())
+print(df.describe(percentiles=[0.05, 0.95]).transpose())

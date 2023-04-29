@@ -1,8 +1,8 @@
 from src.constraints.constraint import ConstraintType, constraints_list, get_constraint_from_string, Constraint
-from src.error_handling.handle_error import handle_error
+from src.helper.handle_error import handle_error
 from src.events.event import Event
 from src.sports.sport import Sport
-from src.helper.helper import get_alL_events, convert_events_list_to_dict
+from src.helper.helper import get_alL_events, convert_events_list_to_dict, remove_tuple_from_events
 
 from typing import Type
 
@@ -39,6 +39,7 @@ def constraint_check(constraint: Type[Constraint], events, constraint_checker_fl
         result = binary_constraint_check(constraint, events, constraint_checker_flag)
     else:
         result = all_event_constraint_check(constraint, events, constraint_checker_flag)
+    # print(result)
     return result
 
 
@@ -48,7 +49,11 @@ def valid_constraint_check(constraint: Type[Constraint], events) -> bool:
 
 # TODO: If I keep changes to constraint class, fix this
 def single_constraint_check(constraint: Type[Constraint], *events) -> bool:
-    events = convert_events_list_to_dict(list(events))
+    events = remove_tuple_from_events(events)
+    if type(events) == Event:
+        events = {events.id: events}
+    if type(events) == list:
+        events = convert_events_list_to_dict(list(events))
     return len(constraint.eval_constraint(events)) == 0
 
 

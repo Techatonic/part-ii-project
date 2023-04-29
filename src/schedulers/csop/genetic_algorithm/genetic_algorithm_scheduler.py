@@ -4,7 +4,7 @@ import time
 from abc import ABC
 from typing import Type
 
-from src.error_handling.handle_error import handle_error
+from src.helper.handle_error import handle_error
 from src.events.event import Event
 from src.games.complete_games import CompleteGames
 from src.rounds.knockout_rounds import generate_round_order, Round
@@ -134,6 +134,7 @@ class GeneticAlgorithmScheduler(Scheduler, ABC):
         try:
             start_time = time.time()
             result, eval_score, eval_by_iteration = multisport_csp.solve()
+            print(f'Eval Score: {eval_score}')
             end_time = time.time()
             if result is None:
                 print("No results")

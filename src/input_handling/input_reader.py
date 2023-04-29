@@ -2,7 +2,7 @@ import json
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError, SchemaError
 
-from src.error_handling.handle_error import handle_error
+from src.helper.handle_error import handle_error
 
 
 def read_and_validate_input(path: str, schema_path: str) -> dict:

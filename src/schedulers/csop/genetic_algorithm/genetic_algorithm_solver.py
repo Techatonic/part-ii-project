@@ -7,10 +7,10 @@ import time
 import random
 
 from src.constraints.constraint import Constraint, get_constraint_from_string, ConstraintType
-from src.constraints.constraint_checker import constraint_check
+from src.constraints.constraint_checker import constraint_check, single_constraint_check
 from src.constraints.optional_constraints import get_optional_constraint_from_string, \
     get_inequality_operator_from_input, take_average_of_heuristics_across_all_sports
-from src.error_handling.handle_error import handle_error
+from src.helper.handle_error import handle_error
 from src.events.event import Event
 from src.helper.helper import flatten_events_by_sport_to_dict
 from src.schedulers.csp.csp_scheduler import CSPScheduler
@@ -22,7 +22,7 @@ from src.sports.sport import Sport
 
 # random.seed(1)
 
-def generate_single_population(sports, data, num_iterations):
+def generate_population(sports, data, num_iterations):
     populations = []
     for i in range(num_iterations):
         csp_scheduler = CSPScheduler(CSPSolver, sports, data, False)
@@ -73,7 +73,7 @@ class GeneticAlgorithmSolver(Solver):
         for unary_constraint in unary_constraints:
             for variable in self.variables:
                 for option in self.variables[variable]:
-                    if not unary_constraint.eval_constraint({option.id: option}):
+                    if not single_constraint_check(unary_constraint, {option.id: option}):
                         self.variables[variable].remove(option)
             self.constraints.remove(unary_constraint)
 
@@ -87,7 +87,7 @@ class GeneticAlgorithmSolver(Solver):
         inputs = [(self.data['sports'], self.data, num_iterations)] * pool_size
 
         pool = Pool()
-        population = pool.starmap(generate_single_population, inputs)
+        population = pool.starmap(generate_population, inputs)
         population = [item for sublist in population for item in sublist]
         population = population[:initial_population_size]
         return population
@@ -121,9 +121,6 @@ class GeneticAlgorithmSolver(Solver):
             fittest_assignments = [assignments for (assignments, fitness_value) in
                                    sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True)][
                                   :num_fittest_assignments]
-            # fittest_assignments = [assignments for (assignments, fitness_value) in
-            #                        sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True) if
-            #                        fitness_value > epsilon]
 
             if len(fittest_assignments) < 2:
                 handle_error("Less than 2 fit assignments", exit_program=False)
@@ -134,9 +131,11 @@ class GeneticAlgorithmSolver(Solver):
             new_options = []
             while len(new_options) < len(population) - len(fittest_assignments):
                 parent_1, parent_2 = random.sample(fittest_assignments, 2)
-                child = self.__crossover(parent_1, parent_2)
-                child = self.__mutate(delta, child)
-                new_options.append(child)
+                child_1, child_2 = self.__crossover(parent_1, parent_2)
+                child_1 = self.__mutate(delta, child_1)
+                child_2 = self.__mutate(delta, child_2)
+                new_options.append(child_1)
+                new_options.append(child_2)
 
             population = fittest_assignments + new_options
 
@@ -187,24 +186,30 @@ class GeneticAlgorithmSolver(Solver):
 
         return optional_constraints_score / (2 ** constraints_broken)
 
-    def __crossover(self, x: dict[str, dict[str, Event]], y: dict[str, dict[str, Event]]) -> dict[
-        str, dict[str, Event]]:
-        # Only differences are venue, date and time
-        child = {}
-        for sport in x:
-            child[sport] = {}
-            for variable in x[sport]:
-                if random.random() < 0.5:
-                    child[sport][variable] = x[sport][variable]
+    def __crossover(self, parent_1: dict[str, dict[str, Event]], parent_2: dict[str, dict[str, Event]]) -> tuple[dict[
+        str, dict[str, Event]], dict[str, dict[str, Event]]]:
+        list_of_events = sorted([x for sport in parent_1 for x in list(parent_1[sport].keys())])
+        split_1 = list_of_events[:len(list_of_events) // 2]
+
+        child_1 = {}
+        child_2 = {}
+        for sport in parent_1:
+            child_1[sport] = {}
+            child_2[sport] = {}
+            for variable in parent_1[sport]:
+                if variable in split_1:
+                    child_1[sport][variable] = parent_1[sport][variable]
+                    child_2[sport][variable] = parent_2[sport][variable]
                 else:
-                    child[sport][variable] = y[sport][variable]
-        return child
+                    child_1[sport][variable] = parent_2[sport][variable]
+                    child_2[sport][variable] = parent_1[sport][variable]
+        return child_1, child_2
 
     def __mutate(self, delta: float, child: dict[str, dict[str, Event]]) -> dict[str, dict[str, Event]]:
-        if random.random() > delta:
-            return child
-        # Mutate one variable from each sport
+        # if random.random() > delta:
+        #     return child
         for sport in child:
-            variable_to_mutate = random.choice(list(child[sport].keys()))
-            child[sport][variable_to_mutate] = random.choice(self.variables[variable_to_mutate])
+            if random.random() < delta:
+                variable_to_mutate = random.choice(list(child[sport].keys()))
+                child[sport][variable_to_mutate] = random.choice(self.variables[variable_to_mutate])
         return child

@@ -107,7 +107,8 @@
             "min_time_between_matches": 2
           },
           "no_later_rounds_before_earlier_rounds": {},
-          "max_capacity_at_final": {}
+          "max_capacity_at_final": {},
+          "max_matches_per_day": {"max_matches_per_day":  2}
         },
         "optional": {
           "avg_distance_to_travel": {

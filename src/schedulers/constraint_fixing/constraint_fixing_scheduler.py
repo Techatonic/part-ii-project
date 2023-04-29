@@ -2,10 +2,8 @@ import copy
 import math
 from abc import ABC
 import random
-from typing import Type
 
-from src.constraints.constraint import get_constraint_from_string, Constraint
-from src.error_handling.handle_error import handle_error
+from src.helper.handle_error import handle_error
 from src.events.event import Event
 from src.games.complete_games import CompleteGames
 from src.helper.helper import remove_duplicates_from_list

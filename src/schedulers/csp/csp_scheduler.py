@@ -35,6 +35,7 @@ class CSPScheduler(Scheduler, ABC):
             max_finish_day: int = self.data[
                 "tournament_length"] if sport.max_finish_day is None else sport.max_finish_day
             round_order: list[Round] = list(reversed(generate_round_order(sport.num_teams, sport.num_teams_per_game)))
+            # print(round_order)
 
             csp_data = copy.deepcopy(self.data)
             csp_data[sport.name] = {
@@ -50,11 +51,13 @@ class CSPScheduler(Scheduler, ABC):
                 "sports": [sport],
                 "wait_time": 5
             }
-            csp_data["comparator"] = lambda curr, other: curr.domain[0].round.round_index > other.domain[
-                0].round.round_index or curr.domain[0].round.round_index == other.domain[0].round.round_index and len(
-                curr.domain) < len(other.domain) or curr.domain[0].round.round_index == other.domain[
-                                                             0].round.round_index and len(curr.domain) == len(
-                other.domain) and curr.variable < other.variable
+            # csp_data["comparator"] = lambda curr, other: curr.domain[0].round.round_index > other.domain[
+            #     0].round.round_index or curr.domain[0].round.round_index == other.domain[0].round.round_index and len(
+            #     curr.domain) < len(other.domain) or curr.domain[0].round.round_index == other.domain[
+            #                                                  0].round.round_index and len(curr.domain) == len(
+            #     other.domain) and curr.variable < other.variable
+            csp_data["comparator"] = lambda curr, other: curr.domain[0].round.round_index / len(curr.domain) > \
+                                                         other.domain[0].round.round_index / len(other.domain)
 
             csp_problem = generate_csp_problem(self.solver, csp_data, self.forward_check, sport)
 

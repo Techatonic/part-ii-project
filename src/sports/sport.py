@@ -1,4 +1,4 @@
-from src.error_handling.handle_error import handle_error
+from src.helper.handle_error import handle_error
 from src.venues.venue import Venue
 
 
@@ -22,8 +22,6 @@ class Sport:
         self.min_start_time = min_start_time
         self.max_finish_time = max_finish_time
         self.constraints = constraints
-        self.max_matches_per_day = 1 if "max_matches_per_day" in self.constraints else None
-        self.time_between_matches = 2 if "time_between_matches" in self.constraints else None
 
     def __str__(self):
         return self.__repr__()
@@ -43,11 +41,3 @@ class Sport:
 
     def __eq__(self, other) -> bool:
         return type(self) == type(other) and self.name == other.name
-
-
-def convert_string_to_sport_instance(sport_string, sports) -> Sport:
-    for sport in sports:
-        if sport_string == sport:
-            return sport
-
-    handle_error("Sport '" + sport_string + "' does not exist")

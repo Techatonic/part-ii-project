@@ -1,7 +1,7 @@
 from bisect import insort
 
 
-# class BranchAndBound:
+# class HeuristicBacktracking:
 #     def __init__(self, num_results=100):
 #         self.best_solutions = []
 #         # TODO Add this as an input field (curr defined in scheduler) - call it something like 'optimality' and say it
@@ -31,11 +31,11 @@ from bisect import insort
 #             bound: {[x[0] for x in self.best_solutions]},
 #         \n}}"""
 
-class BranchAndBound:
+class BestSolution:
     def __init__(self):
         self.__best_solution = None
 
-    def update_bounds(self, heuristic_val: float, assignments):
+    def update_best_solution(self, heuristic_val: float, assignments):
         self.__best_solution = (heuristic_val, assignments)
 
     def get_best_solution(self):

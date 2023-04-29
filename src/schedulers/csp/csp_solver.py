@@ -1,9 +1,9 @@
 import copy
 from typing import Type
 
-from src.constraints.constraint import Constraint, get_constraint_from_string
+from src.constraints.constraint import Constraint, get_constraint_from_string, NoLaterRoundsBeforeEarlierRounds
 from src.constraints.constraint_checker import constraint_check
-from src.error_handling.handle_error import handle_error
+from src.helper.handle_error import handle_error
 
 from src.events.event import Event
 from src.helper.ac3 import ac3
@@ -52,7 +52,7 @@ class CSPSolver:
                 return None
             self.queue.set(new_queue.variables)
 
-        result = self.__solve_variable({}, self.queue)
+        result = self.__solve_variable({}, self.queue, 0)
         return result
 
     def __add_all_events_to_constraints(self) -> list[Constraint]:
@@ -66,12 +66,14 @@ class CSPSolver:
             # print(self.constraints[constraint].variables)
         return self.constraints
 
-    def __solve_variable(self, assignments, queue: PriorityQueue) -> dict[str, Event] | None:
+    def __solve_variable(self, assignments, queue: PriorityQueue, depth=0) -> dict[str, Event] | None:
+        # print(f'Depth: {depth}')
         assignments: dict[str, Event] = copy_assignments(assignments)
         queue = queue.__copy__()
 
         while len(queue.variables) > 0:
             variable = queue.pop()
+
             for option in variable.domain:
                 assignments[variable.variable] = option
 
@@ -86,7 +88,18 @@ class CSPSolver:
                         if not valid:
                             continue
                         queue.set(new_queue.variables)
-                    result = self.__solve_variable(assignments, queue)
+
+                    # ############ Remove items from domains ##############
+                    # for other_var in queue.variables:
+                    #     for other_option in other_var.domain:
+                    #         if not self.__test_constraints(
+                    #                 {variable.variable: option, other_var.variable: other_option}, [
+                    #                     NoLaterRoundsBeforeEarlierRounds(
+                    #                         {variable.variable: option, other_var.variable: other_option})]):
+                    #             other_var.domain.remove(other_option)
+                    # #####################################################
+
+                    result = self.__solve_variable(assignments, queue, depth + 1)
                     if result is not None:
                         # print(self.counter)
                         return result

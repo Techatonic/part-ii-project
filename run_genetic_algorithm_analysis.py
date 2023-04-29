@@ -18,7 +18,7 @@ from src.schedulers.csop.genetic_algorithm.genetic_algorithm_solver import Genet
 from src.schedulers.csp.csp_scheduler import CSPScheduler
 from src.schedulers.csp.csp_solver import CSPSolver
 
-import_path = "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/inputs/example_input.json"
+import_path = "/examples/inputs/example_input_normal_192.json"
 export_path = "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/outputs/test_output.json"
 
 input_json = read_and_validate_input(import_path, 'schemata/input_schema.json')

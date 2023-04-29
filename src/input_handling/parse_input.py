@@ -1,4 +1,4 @@
-from ..error_handling.handle_error import handle_error
+from src.helper.handle_error import handle_error
 from ..events.event import Event
 from ..rounds.knockout_rounds import convert_string_to_round_instance
 from ..sports.sport import Sport

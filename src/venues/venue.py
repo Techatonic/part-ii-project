@@ -1,4 +1,4 @@
-from src.error_handling.handle_error import handle_error
+from src.helper.handle_error import handle_error
 
 
 class Venue:

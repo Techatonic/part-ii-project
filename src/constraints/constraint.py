@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from enum import Enum
 
-from src.error_handling.handle_error import handle_error
+from src.helper.handle_error import handle_error
 from src.events.event import Event
 from src.helper import global_variables
 from src.helper.helper import remove_tuple_from_events, remove_duplicates_from_list
@@ -238,7 +238,7 @@ class NoLaterRoundsBeforeEarlierRounds(Constraint):
                             if event_1.day >= event_2.day:
                                 if not constraint_check:  # If we're not getting all conflicting events, we just return one
                                     # print("err", [event_1.event_id, event_2.event_id])
-                                    return [event_1.id]
+                                    return [event_1.id, event_2.id]
                                 conflicts += [event_1.id, event_2.id]
 
         # print(7, remove_duplicates_from_list(conflicts))
@@ -309,7 +309,7 @@ class SameSportMaxMatchesPerDay(Constraint):
                     sports[sport_name][event.day] = [event.id]
                 else:
                     sports[sport_name][event.day].append(event.id)
-                if len(sports[sport_name][event.day]) > event.sport.max_matches_per_day:
+                if len(sports[sport_name][event.day]) > int(self.get_params()["max_matches_per_day"]):
                     if not constraint_check:
                         # print(9, sports[sport_name][event.day])
                         return sports[sport_name][event.day]
@@ -382,5 +382,5 @@ constraints_list = {
     "venue_time_between_matches": VenueTimeBetweenMatches,
     "max_matches_per_day": SameSportMaxMatchesPerDay,
     "max_capacity_at_final": MaxCapacityAtFinal,
-    "valid_match_time": ValidMatchTime
+    "valid_match_time": ValidMatchTime,
 }
