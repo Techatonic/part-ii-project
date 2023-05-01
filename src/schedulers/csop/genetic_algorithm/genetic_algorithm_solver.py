@@ -111,7 +111,7 @@ class GeneticAlgorithmSolver(Solver):
         population = self.__initialise_population(initial_population_size)
         print("Time taken: ", time.time() - a)
 
-        evaluation_by_iteration = []
+        evaluation_by_iteration = {}
 
         num_fittest_assignments = max(math.ceil(len(population) / 10), 5)
 
@@ -129,7 +129,6 @@ class GeneticAlgorithmSolver(Solver):
                 self.initial_population = None
                 return self.solve(attempt + 1)
 
-            evaluation_by_iteration.append([iteration, self.__calculate_fitness(fittest_assignments[0])])
             new_options = []
             while len(new_options) < len(population) - len(fittest_assignments):
                 parent_1, parent_2 = random.sample(fittest_assignments, 2)
@@ -140,12 +139,14 @@ class GeneticAlgorithmSolver(Solver):
                 new_options.append(child_2)
 
             population = fittest_assignments + new_options
-            self.data["time_taken"][iteration] = time.time() - self.data["start_time"]
+            self.data["time_taken"][iteration + 1] = time.time() - self.data["start_time"]
 
-        fitness_of_population = [self.__calculate_fitness(assignments) for assignments in population]
-        fittest_assignments = [assignments for (assignments, fitness_value) in
-                               sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True)][
-                              :math.ceil(len(population) / 10)]
+            fitness_of_population = [self.__calculate_fitness(assignments) for assignments in population]
+            fittest_assignments = [assignments for (assignments, fitness_value) in
+                                   sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True)][
+                                  :math.ceil(len(population) / 10)]
+            evaluation_by_iteration[iteration + 1] = self.__calculate_fitness(fittest_assignments[0])
+
         return fittest_assignments[0], self.__calculate_fitness(fittest_assignments[0]), evaluation_by_iteration, \
             self.data['time_taken']
 

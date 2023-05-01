@@ -33,7 +33,6 @@ data["general_constraints"] = general_constraints
 
 
 def compare_iterations_inner(n):
-    data["initial_population_size"] = 10
     _data = copy.deepcopy(data)
     scheduler = GeneticAlgorithmScheduler(GeneticAlgorithmSolver, sports, _data, False)
     result = scheduler.schedule_events()
@@ -44,6 +43,7 @@ def compare_iterations():
     iterations = 4
     ga_iterations = 10
     data["genetic_algorithm_iterations"] = ga_iterations
+    data["initial_population_size"] = 10
 
     pool = multiprocessing.Pool(4)
     outputs = pool.map(compare_iterations_inner, range(iterations))
@@ -127,10 +127,9 @@ def compare_population_size():
     # populations = [50, 60, 70, 80, 90, 100, 125, 150, 175, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800,
     #                900, 1000]
 
-    iterations = 4
-    ga_iterations = 250
-    populations = [50, 60, 70, 80, 90, 100, 125, 150, 175, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800,
-                   900, 1000]
+    iterations = 10
+    ga_iterations = 25
+    populations = [50, 60]
 
     avg_eval_score_by_population_size = {}
     for size in populations:
@@ -179,20 +178,25 @@ def compare_iterations_and_population_size_run(run, populations, ga_iterations):
     run_start_time = time.time()
     scores = []
     for size in populations:
-        for iterations in ga_iterations:
-            data["genetic_algorithm_iterations"] = iterations
-            data["initial_population_size"] = size
-            scheduler = GeneticAlgorithmScheduler(GeneticAlgorithmSolver, sports, data, False,
-                                                  initial_population=initial_population[:size])
-            result = scheduler.schedule_events()
-            if result is None:
-                continue
-            result_eval = result.complete_games["eval_score"]
-            time_taken = result.complete_games["time_taken"]
+        # for iterations in ga_iterations:
+        data["genetic_algorithm_iterations"] = max(ga_iterations)
+        data["initial_population_size"] = size
+        scheduler = GeneticAlgorithmScheduler(GeneticAlgorithmSolver, sports, data, False,
+                                              initial_population=initial_population[:size])
+        result = scheduler.schedule_events()
+        if result is None:
+            continue
+        result_eval = result.complete_games["eval_score"]
+        time_taken = result.complete_games["time_taken"]
+        eval_by_iteration = result.complete_games["eval_by_iteration"]
+        time_taken_by_iteration = result.complete_games["time_taken_by_iteration"]
+        # print(eval_by_iteration)
+        # print("\n\n")
+        # print(time_taken_by_iteration)
 
-            print("Run # ", run + 1, " " * 4, "Initial Population: ", size, " " * 4, "ga_iterations: ", iterations,
-                  " " * 4, "eval_score: ", result_eval, " " * 4, "Time Taken: ", time_taken)
-            scores.append([size, iterations, result_eval, time_taken + initialise_time * size])
+        print("Run # ", run + 1, " " * 4, "Initial Population: ", size, " " * 4, " " * 4, "Time Taken: ", time_taken)
+        for key in eval_by_iteration:
+            scores.append([size, key, eval_by_iteration[key], time_taken_by_iteration[key] + initialise_time * size])
 
     run_end_time = time.time()
     print("Runtime for run #", run + 1, ": ", run_end_time - run_start_time)
@@ -210,30 +214,18 @@ def draw_heatmap(data_to_show, cmap, x_labels, y_labels, title, x_title, y_title
     ax.set_xlabel(x_title)
     ax.set_ylabel(y_title)
     ax.set_title("\n".join(wrap(title, 40)))
-    plt.show()
-
-    # fig = plt.figure(figsize=(300, 300))
-    # seaborn.heatmap(data_to_show, cmap=cmap, annot=True, square=True, fmt='.3f')
-    #
-    # ax = plt.gca()
-    # ax.set_xticks(np.arange(len(x_labels)) + 0.5, labels=x_labels)
-    # ax.set_yticks(np.arange(len(y_labels)) + 0.5, labels=y_labels)
-    # ax.set_xlabel(x_title)
-    # ax.set_ylabel(y_title)
-    # ax.invert_yaxis()
-    # ax.set_title("\n".join(wrap(title, 40)))
-    #
+    plt.savefig("ga_heatmap_" + title + ".png")
     # plt.show()
 
 
 def compare_iterations_and_population_size():
     total_start_time = time.time()
-    iterations = 32
-    ga_iterations = [25, 50, 100, 250, 500, 750, 1000]
-    populations = [25, 50, 100, 250, 500, 750, 1000]
-    # iterations = 2
-    # ga_iterations = [i for i in range(1, 4)]
-    # populations = [i for i in range(10, 13)]
+    # iterations = 1
+    # ga_iterations = [25, 50, 100, 250, 500, 750, 1000]
+    # populations = [25, 50, 100, 250]
+    iterations = 2
+    ga_iterations = [i for i in range(1, 5)]
+    populations = [i for i in range(4, 7)]
     # iterations = 32
     # ga_iterations = [i for i in range(100, 1001, 100)]
     # populations = [i for i in range(100, 1001, 100)]
@@ -258,19 +250,24 @@ def compare_iterations_and_population_size():
     eval_scores = [[[] for j in range(len(ga_iterations))] for i in range(len(populations))]
     runtimes = [[[] for j in range(len(ga_iterations))] for i in range(len(populations))]
 
+    print(eval_scores)
+
     avg_eval_scores = [[0.0 for j in range(len(ga_iterations))] for i in range(len(populations))]
     avg_runtimes = [[0.0 for j in range(len(ga_iterations))] for i in range(len(populations))]
     print("\n")
     for size_result in outputs:
         for size_iteration_result in size_result:
+            # if not size_iteration_result:
+            #     continue
             x = populations.index(size_iteration_result[0])
             y = ga_iterations.index(size_iteration_result[1])
-            print(size_iteration_result)
             eval_scores[x][y].append(size_iteration_result[2])
             runtimes[x][y].append(size_iteration_result[3])
-
+    pprint.pprint(runtimes)
     for size in range(len(eval_scores)):
         for size_iteration in range(len(eval_scores[size])):
+            # if len(eval_scores[size][size_iteration]) == 0:
+            #     continue
             avg_eval_score = sum(eval_scores[size][size_iteration]) / len(
                 eval_scores[size][size_iteration])
             avg_eval_scores[size][size_iteration] = round(avg_eval_score, 3)
