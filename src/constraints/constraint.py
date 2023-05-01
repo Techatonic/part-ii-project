@@ -143,7 +143,7 @@ class TeamTimeBetweenMatches(Constraint):
                             if not constraint_check:
                                 # print(4, [event.event_id, other_event])
                                 return [event.id, other_event]
-                            conflicts += [event.id, other_event.id]
+                            conflicts += [event.id, other_event]
                     teams[team][event.id] = event_day
         # print(4, remove_duplicates_from_list(conflicts))
         return remove_duplicates_from_list(conflicts)

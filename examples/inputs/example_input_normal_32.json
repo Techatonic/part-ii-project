@@ -1061,6 +1061,21 @@
         "weight": 1,
         "acceptable": 10,
         "inequality": "MINIMISE"
+      },
+      "avg_distance_to_travel":{
+        "weight":1,
+        "inequality":"MINIMISE",
+        "acceptable":10
+      },
+      "avg_rest_between_matches":{
+        "weight":1,
+        "inequality":"MAXIMISE",
+        "acceptable":1
+      },
+      "avg_capacity":{
+        "weight":1,
+        "inequality":"MAXIMISE",
+        "acceptable":15000
       }
     }
   },

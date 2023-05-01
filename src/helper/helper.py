@@ -2,6 +2,7 @@ import copy
 
 from src.events.event import Event
 from src.helper import global_variables
+from src.helper.handle_error import handle_error
 from src.sports.sport import Sport
 
 
@@ -109,25 +110,60 @@ def add_global_variables(sports: dict[str, Sport], data, general_constraints):
                 constraint]
     global_variables.constraint_params["general"] = general_constraints
 
+    # def heuristic(assignments: dict[str, dict[str, Event]], optional_constraints, csp_instance) -> float:
+    #     normalising_factor = sum(optional_constraint_heuristic.params["weight"] for optional_constraint_heuristic in
+    #                              optional_constraints)
+    #     if normalising_factor == 0:
+    #         handle_error("Weights of optional constraints sum to 0")
+    #
+    #     assignments_by_sport_with_tuple = {}
+    #     for sport in assignments:
+    #         assignments_by_sport_with_tuple[sport] = (0, assignments[sport])
+    #
+    #     score = 0
+    #     for heuristic in optional_constraints:
+    #         if heuristic.sport is not None:
+    #             from src.constraints.optional_constraints import take_average_of_heuristics_across_all_sports
+    #             score += take_average_of_heuristics_across_all_sports(csp_instance, assignments,
+    #                                                                   heuristic) * heuristic.params["weight"]
+    #         else:
+    #             score += heuristic.constraint.function(csp_instance, assignments_by_sport_with_tuple)[1] * heuristic.params[
+    #                 "weight"]
+    #     return score / normalising_factor
+
 
 def heuristic(assignments: dict[str, dict[str, Event]], optional_constraints, csp_instance) -> float:
-    normalising_factor = sum(optional_constraint_heuristic.params["weight"] for optional_constraint_heuristic in
-                             optional_constraints)
-    if normalising_factor == 0:
+    if len(optional_constraints) == 0:
         return 1
+    normalising_factor = sum(
+        optional_constraint_heuristic.get_params()["weight"] for optional_constraint_heuristic in
+        optional_constraints)
+
+    # print(f"Normalising Factor: {normalising_factor}")
+    # exit()
+    if normalising_factor == 0:
+        handle_error("Weights of optional constraints sum to 0")
     assignments_by_sport_with_tuple = {}
     for sport in assignments:
         assignments_by_sport_with_tuple[sport] = (0, assignments[sport])
 
     score = 0
     for heuristic in optional_constraints:
-        if heuristic.sport is not None:
+        if heuristic.get_sport() is None:
             from src.constraints.optional_constraints import take_average_of_heuristics_across_all_sports
             score += take_average_of_heuristics_across_all_sports(csp_instance, assignments,
-                                                                  heuristic) * heuristic.params["weight"]
+                                                                  heuristic) * heuristic.get_params()["weight"]
         else:
-            score += heuristic.constraint.function(csp_instance, assignments_by_sport_with_tuple)[1] * heuristic.params[
-                "weight"]
+            individual_score = heuristic.eval_constraint(csp_instance,
+                                                         {heuristic.get_sport().name: assignments[
+                                                             heuristic.get_sport().name]})[
+                                   1] * heuristic.get_params()["weight"]
+            if individual_score < 0 or individual_score > 1:
+                handle_error(
+                    f'Constraint eval score out of bounds: \nsport: {heuristic.get_sport().name}  -  constraint: {heuristic.get_constraint_string()}  -  score: {individual_score}')
+            score += individual_score
+            # print(
+            #     f'sport: {heuristic.get_sport().name}  -  constraint: {heuristic.get_constraint_string()}  -  score: {heuristic.eval_constraint(self, {heuristic.get_sport().name: assignments[heuristic.get_sport().name]})[1] * heuristic.get_params()["weight"]}')
     return score / normalising_factor
 
 

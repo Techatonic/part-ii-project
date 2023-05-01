@@ -36,6 +36,8 @@ class ConstraintFixingScheduler(Scheduler, ABC):
     def schedule_events(self) -> CompleteGames | None:
         total_events = {}
 
+        total_nodes_checked = 0
+
         for sport in self.sports:
             sport = self.sports[sport]
             sport.constraints['required']["valid_match_time"] = {}
@@ -71,10 +73,15 @@ class ConstraintFixingScheduler(Scheduler, ABC):
             if result is None:
                 return None
 
+            events, nodes_checked = result
+
+            total_nodes_checked += nodes_checked
+
             # Add all sport-specific events to list of all events
-            total_events[sport.name] = result
+            total_events[sport.name] = events
 
         complete_games = CompleteGames(self.data["tournament_length"], self.sports)
+        complete_games.complete_games["nodes_checked"] = total_nodes_checked
         for sport in total_events:
             for event in total_events[sport]:
                 complete_games.add_event(total_events[sport][event])

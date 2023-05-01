@@ -15,7 +15,7 @@ from src.sports.sport import Sport
 from src.venues.venue import Venue
 
 
-class CSOPScheduler(Scheduler, ABC):
+class HeuristicBacktrackingScheduler(Scheduler, ABC):
 
     def __init__(self, solver: Type[Solver], sports: dict[str, Sport], data: dict, forward_check: bool):
         """
@@ -33,8 +33,10 @@ class CSOPScheduler(Scheduler, ABC):
         total_events = {}
         num_total_events = {}
 
+        sport_specific_data = {}
+
         for sport in self.sports:
-            print(f'Sport: {self.sports[sport].name}')
+            # print(f'Sport: {self.sports[sport].name}')
             sport = self.sports[sport]
             venues: list[Venue] = sport.possible_venues
             min_start_day: int = 0 if sport.min_start_day is None else sport.min_start_day
@@ -43,7 +45,7 @@ class CSOPScheduler(Scheduler, ABC):
             round_order: list[Round] = list(reversed(generate_round_order(sport.num_teams, sport.num_teams_per_game)))
 
             csp_data = copy.deepcopy(self.data)
-            csp_data[sport.name] = {
+            sport_specific_data[sport.name] = {
                 "sport": sport,
                 "round_order": round_order,
                 "venues": venues,
@@ -52,6 +54,7 @@ class CSOPScheduler(Scheduler, ABC):
                 "sport_specific": True,
                 "sports": [sport],
             }
+            csp_data[sport.name] = sport_specific_data[sport.name]
             csp_data.update({
                 "comparator": lambda curr, other: curr.domain[0].round.round_index > other.domain[
                     0].round.round_index or curr.domain[0].round.round_index == other.domain[
@@ -121,10 +124,12 @@ class CSOPScheduler(Scheduler, ABC):
         # multisport_csp.add_optional_constraint("maximise_sport_specific_constraints",
         #                                        params={"inequality": "MAXIMISE", "acceptable": 0})
 
+        csp_data.update(sport_specific_data)
+
         while len(total_events) > 1:
             results = []
             multisport_csp = self.solver(csp_data, self.forward_check)
-            print("Multisport CSP")
+            # print("Multisport CSP")
             sport_1 = list(total_events.keys())[0]
             sport_2 = list(total_events.keys())[1]
 
@@ -141,8 +146,8 @@ class CSOPScheduler(Scheduler, ABC):
                                                        params=self.data["general_constraints"]["optional"][
                                                            optional_constraint], sport=None)
 
-            multisport_csp.add_optional_constraint("maximise_sport_specific_constraints",
-                                                   params={"inequality": "MAXIMISE", "acceptable": 0})
+            # multisport_csp.add_optional_constraint("maximise_sport_specific_constraints",
+            #                                        params={"inequality": "MAXIMISE", "acceptable": 0})
 
             result = multisport_csp.solve()
             # print(result)
@@ -161,7 +166,7 @@ class CSOPScheduler(Scheduler, ABC):
             # total_events[sport_1 + sport_2] = (result[0], flatten_events_by_sport_to_dict_with_scores(result[1]))
             # print(total_events[sport_1 + sport_2])
 
-        print("Finished?")
+        # print("Finished?")
         result = list(total_events.values())[0]
         result = sorted(result, key=lambda option: -option[0])[0]
 

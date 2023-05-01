@@ -1,3 +1,4 @@
+import copy
 import multiprocessing
 import pprint
 import time
@@ -9,6 +10,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 from textwrap import wrap
+import sys
+
+sys.path.append("/home/danny/Documents/Uni/Year3/Diss/part-ii-project/")
 
 from src.helper.helper import add_global_variables
 from src.input_handling.input_reader import read_and_validate_input
@@ -18,48 +22,78 @@ from src.schedulers.csop.genetic_algorithm.genetic_algorithm_solver import Genet
 from src.schedulers.csp.csp_scheduler import CSPScheduler
 from src.schedulers.csp.csp_solver import CSPSolver
 
-import_path = "/examples/inputs/example_input_normal_192.json"
+import_path = "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/inputs/example_input_normal_32.json"
 export_path = "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/outputs/test_output.json"
 
-input_json = read_and_validate_input(import_path, 'schemata/input_schema.json')
+input_json = read_and_validate_input(import_path,
+                                     '/home/danny/Documents/Uni/Year3/Diss/part-ii-project/schemata/input_schema.json')
 [sports, general_constraints, data] = parse_input(input_json)
 add_global_variables(sports, data, general_constraints)
 data["general_constraints"] = general_constraints
 
 
+def compare_iterations_inner(n):
+    data["initial_population_size"] = 10
+    _data = copy.deepcopy(data)
+    scheduler = GeneticAlgorithmScheduler(GeneticAlgorithmSolver, sports, _data, False)
+    result = scheduler.schedule_events()
+    return result.complete_games
+
+
 def compare_iterations():
-    iterations = 100
-    ga_iterations = 1000
+    iterations = 4
+    ga_iterations = 10
+    data["genetic_algorithm_iterations"] = ga_iterations
+
+    pool = multiprocessing.Pool(4)
+    outputs = pool.map(compare_iterations_inner, range(iterations))
 
     avg_eval_score_by_iteration = {}
     for iteration in range(ga_iterations):
         avg_eval_score_by_iteration[iteration] = []
 
-    for run in range(iterations):
-        data["genetic_algorithm_iterations"] = ga_iterations
-        data["initial_population_size"] = 250
-        scheduler = GeneticAlgorithmScheduler(GeneticAlgorithmSolver, sports, data, False)
-        result = scheduler.schedule_events()
-        if result is None:
-            continue
-        result_eval = result.complete_games["eval_score"]
-        eval_by_iteration = result.complete_games["eval_by_iteration"]
+    avg_runtime_by_iteration = {}
+    for iteration in range(ga_iterations):
+        avg_runtime_by_iteration[iteration] = []
+
+    for result in outputs:
+        eval_by_iteration = result["eval_by_iteration"]
+        time_taken_by_iteration = result["time_taken_by_iteration"]
         for [iteration, score] in eval_by_iteration:
             avg_eval_score_by_iteration[iteration].append(score)
-
-        print("Iteration # ", run + 1, " " * 6, "Final Evaluation Score: ", result_eval)
+        for iteration, time_taken in time_taken_by_iteration.items():
+            avg_runtime_by_iteration[iteration].append(time_taken)
 
     for iteration in avg_eval_score_by_iteration:
         avg_eval_score_by_iteration[iteration] = sum(avg_eval_score_by_iteration[iteration]) / len(
             avg_eval_score_by_iteration[iteration])
+    for iteration in avg_runtime_by_iteration:
+        avg_runtime_by_iteration[iteration] = sum(avg_runtime_by_iteration[iteration]) / len(
+            avg_runtime_by_iteration[iteration])
 
     df = pd.DataFrame({
         "iterations": list(avg_eval_score_by_iteration.keys()),
-        "avg_eval_score": list(avg_eval_score_by_iteration.values())
+        "avg_eval_score": list(avg_eval_score_by_iteration.values()),
+        "runtimes": list(avg_runtime_by_iteration.values())
     })
     print(df.head())
-    ax = df.plot.line(x="iterations", y="avg_eval_score")
+
+    df.to_csv("ga_iterations_analysis.csv", index_label="GA Iterations")
+
+    fig, ax = plt.subplots()
+    line_1 = ax.plot(df["iterations"], df["avg_eval_score"], label="Eval Score")
     ax.set_xticks([i for i in range(0, ga_iterations + 1, 25)])
+    ax.set_ylabel("Eval Score")
+    ax.set_xlabel("GA Iterations")
+
+    ax1 = ax.twinx()
+    line_2 = ax1.plot(df['iterations'], df['runtimes'], label="Runtime (s)", color="orange")
+    ax1.set_ylabel("Runtime (s)")
+
+    lns = line_1 + line_2
+    labs = [l.get_label() for l in lns]
+    ax.legend(lns, labs, loc=0)
+
     plt.show(block=True)
 
 
@@ -336,13 +370,13 @@ except:
     print("Invalid input")
     exit()
 
-combine_heatmaps()
-# if args.i + args.ip + args.iip != 1:
-#     raise Exception
-# if args.i:
-#     compare_iterations()
-# if args.ip:
-#     compare_population_size()
-#
-# if args.iip:
-#     compare_iterations_and_population_size()
+# combine_heatmaps()
+if args.i + args.ip + args.iip != 1:
+    raise Exception
+if args.i:
+    compare_iterations()
+if args.ip:
+    compare_population_size()
+
+if args.iip:
+    compare_iterations_and_population_size()

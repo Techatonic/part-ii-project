@@ -6,11 +6,11 @@ from typing import Type
 from src.constraints.constraint import Constraint, get_constraint_from_string, ConstraintType
 from src.constraints.constraint_checker import constraint_check
 from src.constraints.optional_constraints import get_optional_constraint_from_string, \
-    get_inequality_operator_from_input, OptionalConstraint
+    get_inequality_operator_from_input, OptionalConstraint, take_average_of_heuristics_across_all_sports
 from src.helper.handle_error import handle_error
 from src.helper.best_solution import BestSolutions
 
-from src.helper.helper import copy_assignments
+from src.helper.helper import copy_assignments, flatten_events_by_sport_to_dict, widen_events_to_events_by_sport
 from src.helper.priority_queue import PriorityQueue
 from src.schedulers.solver import Solver
 from src.sports.sport import Sport
@@ -123,13 +123,31 @@ class HeuristicBacktrackingSolver(Solver, ABC):
             optional_constraint_heuristic.get_params()["weight"] for optional_constraint_heuristic in
             self.optional_constraints)
         if normalising_factor == 0:
-            return 1
+            handle_error("Weights of optional constraints sum to 0")
         if not self.__test_constraints(assignments, self.constraints):
             return 0
-        return sum(
-            optional_constraint_heuristic.eval_constraint(self, assignments)[1] *
-            optional_constraint_heuristic.get_params()["weight"] for optional_constraint_heuristic in
-            self.optional_constraints) / normalising_factor
+
+        # return sum(
+        #     optional_constraint_heuristic.eval_constraint(self, assignments)[1] *
+        #     optional_constraint_heuristic.get_params()["weight"] for optional_constraint_heuristic in
+        #     self.optional_constraints) / normalising_factor
+
+        assignments = {k: v[1] for k, v in assignments.items()}
+        assignments = flatten_events_by_sport_to_dict(assignments)
+        assignments = widen_events_to_events_by_sport(assignments)
+
+        score = 0
+        for heuristic in self.optional_constraints:
+            if heuristic.get_sport() is None:
+                score += take_average_of_heuristics_across_all_sports(self, assignments,
+                                                                      heuristic) * heuristic.get_params()["weight"]
+            else:
+                # print(assignments[heuristic.get_sport().name])
+                score += \
+                    heuristic.eval_constraint(self,
+                                              {heuristic.get_sport().name: assignments[heuristic.get_sport().name]})[
+                        1] * heuristic.get_params()["weight"]
+        return score / normalising_factor
 
     def __test_constraints(self, assignments, constraints: list[Constraint]) -> bool:
         conflicts = []

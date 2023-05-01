@@ -1,6 +1,7 @@
 import copy
 import math
 import os
+import pprint
 
 from multiprocess.pool import Pool
 import time
@@ -12,7 +13,7 @@ from src.constraints.optional_constraints import get_optional_constraint_from_st
     get_inequality_operator_from_input, take_average_of_heuristics_across_all_sports
 from src.helper.handle_error import handle_error
 from src.events.event import Event
-from src.helper.helper import flatten_events_by_sport_to_dict
+from src.helper.helper import flatten_events_by_sport_to_dict, heuristic, calculate_fitness
 from src.schedulers.csp.csp_scheduler import CSPScheduler
 from src.schedulers.csp.csp_solver import CSPSolver
 from src.schedulers.solver import Solver
@@ -114,9 +115,10 @@ class GeneticAlgorithmSolver(Solver):
 
         num_fittest_assignments = max(math.ceil(len(population) / 10), 5)
 
+        self.data["time_taken"] = {}
+
         for iteration in range(max_iterations):
-            if iteration % 50 == 0:
-                print(f'Iteration # {iteration}')
+            print(f'Iteration # {iteration}   -   Time taken so far: {time.time() - self.data["start_time"]}')
             fitness_of_population = [self.__calculate_fitness(assignments) for assignments in population]
             fittest_assignments = [assignments for (assignments, fitness_value) in
                                    sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True)][
@@ -138,33 +140,14 @@ class GeneticAlgorithmSolver(Solver):
                 new_options.append(child_2)
 
             population = fittest_assignments + new_options
+            self.data["time_taken"][iteration] = time.time() - self.data["start_time"]
 
         fitness_of_population = [self.__calculate_fitness(assignments) for assignments in population]
         fittest_assignments = [assignments for (assignments, fitness_value) in
                                sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True)][
                               :math.ceil(len(population) / 10)]
-        self.data["time_taken"] = time.time() - self.data["start_time"]
-        return fittest_assignments[0], self.__calculate_fitness(fittest_assignments[0]), evaluation_by_iteration
-
-    def __heuristic(self, assignments: dict[str, dict[str, Event]]) -> float:
-        normalising_factor = sum(
-            optional_constraint_heuristic.get_params()["weight"] for optional_constraint_heuristic in
-            self.optional_constraints)
-        if normalising_factor == 0:
-            return 1
-        assignments_by_sport_with_tuple = {}
-        for sport in assignments:
-            assignments_by_sport_with_tuple[sport] = (0, assignments[sport])
-
-        score = 0
-        for heuristic in self.optional_constraints:
-            if heuristic.get_sport() is not None:
-                score += take_average_of_heuristics_across_all_sports(self, assignments,
-                                                                      heuristic) * heuristic.get_params()["weight"]
-            else:
-                score += heuristic.eval_constraint(self, assignments_by_sport_with_tuple)[1] * heuristic.get_params()[
-                    "weight"]
-        return score / normalising_factor
+        return fittest_assignments[0], self.__calculate_fitness(fittest_assignments[0]), evaluation_by_iteration, \
+            self.data['time_taken']
 
     def __test_constraints(self, assignments, constraints: list[Constraint]) -> bool:
         conflicts = []
@@ -173,18 +156,7 @@ class GeneticAlgorithmSolver(Solver):
         return len(conflicts) == 0
 
     def __calculate_fitness(self, assignments: dict[str, dict[str, Event]]) -> float:
-        constraints_broken = 0
-        assignments_flatten = flatten_events_by_sport_to_dict(assignments)
-        for constraint in self.constraints:
-            if constraint.get_sport() is None:
-                constraints_broken += len(constraint_check(constraint, assignments_flatten)) > 0
-            else:
-                sport_name = constraint.get_sport().name
-                constraints_broken += len(constraint_check(constraint, assignments[sport_name])) > 0
-
-        optional_constraints_score = self.__heuristic(assignments)
-
-        return optional_constraints_score / (2 ** constraints_broken)
+        return calculate_fitness(assignments, self.constraints, self.optional_constraints, self, True)
 
     def __crossover(self, parent_1: dict[str, dict[str, Event]], parent_2: dict[str, dict[str, Event]]) -> tuple[dict[
         str, dict[str, Event]], dict[str, dict[str, Event]]]:

@@ -28,7 +28,7 @@ class CSPScheduler(Scheduler, ABC):
         total_events = {}
 
         for sport in self.sports:
-            print(f'Sport: {sport}')
+            # print(f'Sport: {sport}')
             sport = self.sports[sport]
             venues: list[Venue] = sport.possible_venues
             min_start_day: int = 0 if sport.min_start_day is None else sport.min_start_day

@@ -14,7 +14,7 @@ from src.input_handling.input_reader import read_and_validate_input
 from src.input_handling.parse_input import parse_input, parse_input_constraint_checker
 from src.schedulers.constraint_fixing.constraint_fixing_scheduler import ConstraintFixingScheduler
 from src.schedulers.constraint_fixing.constraint_fixing_solver import ConstraintFixingSolver
-from src.schedulers.csop.heuristic_backtracking.heuristic_backtracking_scheduler import CSOPScheduler
+from src.schedulers.csop.heuristic_backtracking.heuristic_backtracking_scheduler import HeuristicBacktrackingScheduler
 from src.schedulers.csop.heuristic_backtracking.heuristic_backtracking_solver import HeuristicBacktrackingSolver
 from src.schedulers.csop.genetic_algorithm.genetic_algorithm_scheduler import GeneticAlgorithmScheduler
 from src.schedulers.csop.genetic_algorithm.genetic_algorithm_solver import GeneticAlgorithmSolver
@@ -73,7 +73,7 @@ def run_constraint_checker(input_path: str, export_path: str | None = None, num_
     if len(conflicts) == 0:
         print("No conflicts found - all constraints are satisfied")
     else:
-        handle_error("Errors found - See below:", exit_program=False)
+        handle_error("Conflicts found - See below:", exit_program=False)
         for conflict in conflicts:
             conflict_str = conflict[0].ljust(35) + str(conflict[1])
             handle_error(conflict_str, exit_program=False)
@@ -114,7 +114,7 @@ def run_solver(input_path: str, use_python_module: bool, use_backtracking_solver
         scheduler = CSPScheduler
     elif use_heuristic_backtracking_solver:  # heuristic_backtracking CSOP solver
         solver = HeuristicBacktrackingSolver
-        scheduler = CSOPScheduler
+        scheduler = HeuristicBacktrackingScheduler
         data['num_results_to_collect'] = use_heuristic_backtracking_solver
     elif use_genetic_algorithm:  # genetic_algorithm CSOP solver
         solver = GeneticAlgorithmSolver

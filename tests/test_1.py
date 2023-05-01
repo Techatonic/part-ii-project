@@ -21,7 +21,7 @@ base_args = [
 base_args_constraint_checker = [
     "main.py",
     "--import_path",
-    "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/inputs/example_input_constraint_checker.json",
+    "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/inputs/example_input_constraint_checker_1.json",
     "--export_path",
     "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/outputs/example_output_constraint_checker.json",
 ]

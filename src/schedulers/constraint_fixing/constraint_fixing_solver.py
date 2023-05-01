@@ -46,7 +46,7 @@ class ConstraintFixingSolver:
             self.constraints[constraint].set_variables(events)
         return self.constraints
 
-    def solve(self) -> dict[str, Event] | None:
+    def solve(self) -> tuple[dict[str, Event], int] | None:
         # Add all events to constraints for all events
         self.constraints = self.__add_all_events_to_constraints()
 
@@ -54,7 +54,7 @@ class ConstraintFixingSolver:
 
         constraints_failed = self.__test_constraints(self.assignments, self.constraints)
         if constraints_failed == 0:
-            return self.assignments
+            return self.assignments, 0
 
         queue = [(0, value, self.assignments, [], constraints_failed) for value in all_events]
 
@@ -72,9 +72,10 @@ class ConstraintFixingSolver:
             assignments[changed_event.id] = changed_event
             new_constraints_failed = self.__test_constraints(assignments, self.constraints)
             if new_constraints_failed == 0:
-                print("Success by changing ", path + [changed_event.id], " at depth: ", new_depth + 1)
-                print(f'{count} nodes checked in {time.time() - start} seconds')
-                return assignments
+                # print("Success by changing ", path + [changed_event.id], " at depth: ", new_depth + 1)
+                print(
+                    f'num_changes_allowed: {self.num_changes_allowed}  -  {count} nodes checked in {time.time() - start} seconds')
+                return assignments, count
             if new_constraints_failed > constraints_failed or new_depth == self.num_changes_allowed - 1:
                 continue
             for next_event in all_events:

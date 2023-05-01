@@ -624,7 +624,7 @@
                 "event_id": "football_31",
                 "venue": "Olympic Stadium",
                 "day": 14,
-                "start_time": 2,
+                "start_time": 15,
                 "duration": 1.5,
                 "teams_involved": [
                     "Brazil",
@@ -939,8 +939,8 @@
                 "sport": "tennis",
                 "event_id": "tennis_12",
                 "venue": "Wimbledon_Centre_Court",
-                "day": 9,
-                "start_time": 18,
+                "day": 13,
+                "start_time": 12,
                 "duration": 3,
                 "teams_involved": [
                     "Pablo Carreno Busta",
