@@ -4,7 +4,7 @@
 # TODO Make all copies use custom deepcopy
 import time
 import os
-from argparse import ArgumentParser
+from argparse import ArgumentParser, ArgumentTypeError
 
 from src.constraints.constraint_checker import constraint_checker
 from src.helper.handle_error import handle_error
@@ -20,16 +20,16 @@ from src.schedulers.csop.genetic_algorithm.genetic_algorithm_scheduler import Ge
 from src.schedulers.csop.genetic_algorithm.genetic_algorithm_solver import GeneticAlgorithmSolver
 from src.schedulers.csp.csp_scheduler import CSPScheduler
 from src.schedulers.csp.csp_solver import CSPSolver
-from src.schedulers.csp_module.module_solver import ModuleSolver
+from src.schedulers.base.base_solver import ModuleSolver
 
 
-def main() -> None:
+def main():
     parser = ArgumentParser('Automated Event Scheduler')
     parser.add_argument("--import_path", required=True, type=str, help="read json input from this path")
     parser.add_argument("--export_path", required=False, type=str, help="export json output to this path")
     parser.add_argument("-c", required=False, type=int, metavar='N',
                         help="run input_path on constraint checker and allow up to N changed events")
-    parser.add_argument("-m", action='store_true', help="run on CSP module solver")
+    parser.add_argument("-m", action='store_true', help="run on CSP base solver")
     parser.add_argument("-b", action='store_true', help="run on CSP backtracking solver")
     parser.add_argument("-hb", required=False, type=int, metavar='N',
                         help="run on CSOP heuristic_backtracking solver using N schedules for each sport")
@@ -46,18 +46,24 @@ def main() -> None:
         handle_error(
             "Must select exactly one of constraint checker, module solver, backtracking solver, heuristic backtracking solver and genetic algorithm solver")
 
+    if args.c and args.c < 0 or args.hb and args.hb < 0 or args.g and any(x < 0 for x in args.g):
+        handle_error("Negative arguments are not permitted")
+
     start_time = time.time()
+    result = None
     if args.c:
-        run_constraint_checker(args.import_path, args.export_path, args.c)
+        result = run_constraint_checker(args.import_path, args.export_path, args.c)
     else:
-        run_solver(args.import_path, args.m, args.b, args.hb,
-                   args.g, args.forward_check, args.export_path)
+        result = run_solver(args.import_path, args.m, args.b, args.hb,
+                            args.g, args.forward_check, args.export_path)
 
     end_time = time.time()
     print("\nTime Taken: " + str(end_time - start_time), "\n")
+    result.complete_games["time_taken"] = end_time - start_time
+    return result
 
 
-def run_constraint_checker(input_path: str, export_path: str | None = None, num_changes=1) -> None:
+def run_constraint_checker(input_path: str, export_path: str | None = None, num_changes=1):
     input_json = read_and_validate_input(input_path, 'schemata/input_schema_constraint_checker.json')
 
     [sports, events, general_constraints, data] = parse_input_constraint_checker(input_json)
@@ -100,7 +106,7 @@ def run_constraint_checker(input_path: str, export_path: str | None = None, num_
 
 def run_solver(input_path: str, use_python_module: bool, use_backtracking_solver: bool,
                use_heuristic_backtracking_solver: int, use_genetic_algorithm: list | None,
-               forward_check: bool, export_path: str | None = None) -> None:
+               forward_check: bool, export_path: str | None = None):
     input_json = read_and_validate_input(input_path, 'schemata/input_schema.json')
 
     [sports, general_constraints, data] = parse_input(input_json)

@@ -125,7 +125,7 @@ class ConstraintFixingScheduler(Scheduler, ABC):
             for venue in self.sports_data[sport_name]["venues"]:
                 min_start_time = max(sport.min_start_time, venue.min_start_time)
                 max_finish_time = min(sport.max_finish_time, venue.max_finish_time)
-                time_order = list(range(min_start_time, math.ceil(max_finish_time - sport.match_duration)))
+                time_order = list(range(min_start_time, math.ceil(max_finish_time - sport.match_duration) + 1))
                 for time in time_order:
                     for day in day_order:
                         options.append(

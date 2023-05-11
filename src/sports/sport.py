@@ -26,6 +26,9 @@ class Sport:
     def __str__(self):
         return self.__repr__()
 
+    def __hash__(self):
+        return hash(self.name)
+
     def __repr__(self) -> str:
         return f"""{{
             sport: {self.name},

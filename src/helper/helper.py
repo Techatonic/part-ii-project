@@ -154,16 +154,17 @@ def heuristic(assignments: dict[str, dict[str, Event]], optional_constraints, cs
             score += take_average_of_heuristics_across_all_sports(csp_instance, assignments,
                                                                   heuristic) * heuristic.get_params()["weight"]
         else:
-            individual_score = heuristic.eval_constraint(csp_instance,
-                                                         {heuristic.get_sport().name: assignments[
-                                                             heuristic.get_sport().name]})[
-                                   1] * heuristic.get_params()["weight"]
-            if individual_score < 0 or individual_score > 1:
-                handle_error(
-                    f'Constraint eval score out of bounds: \nsport: {heuristic.get_sport().name}  -  constraint: {heuristic.get_constraint_string()}  -  score: {individual_score}')
-            score += individual_score
-            # print(
-            #     f'sport: {heuristic.get_sport().name}  -  constraint: {heuristic.get_constraint_string()}  -  score: {heuristic.eval_constraint(self, {heuristic.get_sport().name: assignments[heuristic.get_sport().name]})[1] * heuristic.get_params()["weight"]}')
+            if heuristic.get_sport().name in assignments:
+                individual_score = heuristic.eval_constraint(csp_instance,
+                                                             {heuristic.get_sport().name: assignments[
+                                                                 heuristic.get_sport().name]})[
+                                       1] * heuristic.get_params()["weight"]
+                if individual_score < 0 or individual_score > 1:
+                    handle_error(
+                        f'Constraint eval score out of bounds: \nsport: {heuristic.get_sport().name}  -  constraint: {heuristic.get_constraint_string()}  -  score: {individual_score}')
+                score += individual_score
+            else:
+                normalising_factor -= 1
     return score / normalising_factor
 
 

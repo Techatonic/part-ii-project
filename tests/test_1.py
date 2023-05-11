@@ -21,7 +21,7 @@ base_args = [
 base_args_constraint_checker = [
     "main.py",
     "--import_path",
-    "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/inputs/example_input_constraint_checker_1.json",
+    "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/inputs/example_input_constraint_checker_4.json",
     "--export_path",
     "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/outputs/example_output_constraint_checker.json",
 ]
@@ -30,7 +30,7 @@ base_args_constraint_checker = [
 def test_valid_command_line_arguments():
     for solver_argument in [['-b'], ['-m'], ['-hb', '10'], ['-g', '100', '100']]:
         sys.argv = base_args + solver_argument
-        assert main.main() is None
+        assert main.main()
 
 
 def test_invalid_command_line_arguments():
@@ -75,7 +75,7 @@ def test_output_file_validates_against_schema():
 
 def test_possible_constraint_checker():
     sys.argv = base_args_constraint_checker + ['-c', '10']
-    assert main.main() is None
+    assert main.main()
 
 
 def test_impossible_constraint_checker():
@@ -92,4 +92,4 @@ def test_invalid_constraint_checker_arguments():
 
 def test_ac3_algorithm():
     sys.argv = base_args + ['-b', '-forward_check']
-    assert main.main() is None
+    assert main.main()

@@ -46,12 +46,15 @@ class HeuristicBacktrackingSolver(Solver, ABC):
 
     def add_optional_constraint(self, function_name: str, sport: Sport | None = None, params=None):
         params_copy = copy.deepcopy(params)
+        # print(params_copy)
         if params_copy is None:
             params_copy = {}
-        if not ("weight" in params_copy):
-            params_copy["weight"] = 1
-        if "inequality" in params_copy:
+            if not ("weight" in params_copy):
+                params_copy["weight"] = 1
+        if "inequality" in params_copy and type(params_copy['inequality']) == str:
             params_copy["inequality"] = get_inequality_operator_from_input(params_copy["inequality"])
+
+        # print(params_copy['inequality'])
 
         constraint = get_optional_constraint_from_string(function_name)
         self.optional_constraints.append(constraint(None, sport, params_copy))
@@ -143,10 +146,14 @@ class HeuristicBacktrackingSolver(Solver, ABC):
                                                                       heuristic) * heuristic.get_params()["weight"]
             else:
                 # print(assignments[heuristic.get_sport().name])
-                score += \
-                    heuristic.eval_constraint(self,
-                                              {heuristic.get_sport().name: assignments[heuristic.get_sport().name]})[
-                        1] * heuristic.get_params()["weight"]
+                if heuristic.get_sport().name in assignments:
+                    score += \
+                        heuristic.eval_constraint(self,
+                                                  {heuristic.get_sport().name: assignments[
+                                                      heuristic.get_sport().name]})[
+                            1] * heuristic.get_params()["weight"]
+                else:
+                    normalising_factor -= 1
         return score / normalising_factor
 
     def __test_constraints(self, assignments, constraints: list[Constraint]) -> bool:

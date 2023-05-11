@@ -40,6 +40,7 @@ class GeneticAlgorithmSolver(Solver):
         self.forward_check: bool = forward_check
         self.variables = {}
         self.initial_population = None if initial_population is None else initial_population
+        self.fitness_values = {}
 
     def add_variable(self, new_var: str, domain) -> None:
         if new_var in self.variables:
@@ -73,9 +74,10 @@ class GeneticAlgorithmSolver(Solver):
                                         self.constraints))
         for unary_constraint in unary_constraints:
             for variable in self.variables:
-                for option in self.variables[variable]:
-                    if not single_constraint_check(unary_constraint, {option.id: option}):
-                        self.variables[variable].remove(option)
+                self.variables[variable] = [option for option in self.variables[variable] if
+                                            single_constraint_check(unary_constraint, option)]
+                if len(self.variables[variable]) == 0:
+                    handle_error("No solutions found for this input")
             self.constraints.remove(unary_constraint)
 
     def __initialise_population(self, initial_population_size):
@@ -138,6 +140,14 @@ class GeneticAlgorithmSolver(Solver):
                 new_options.append(child_1)
                 new_options.append(child_2)
 
+                # hashes = []
+                # events = list(flatten_events_by_sport_to_dict(child_1).values())
+                # for event in events:
+                #     hashes.append(hash(event))
+
+                # hash_value = hash(tuple(hashes))
+                # print(hash_value in self.fitness_values)
+
             population = fittest_assignments + new_options
             self.data["time_taken"][iteration + 1] = time.time() - self.data["start_time"]
 
@@ -150,14 +160,20 @@ class GeneticAlgorithmSolver(Solver):
         return fittest_assignments[0], self.__calculate_fitness(fittest_assignments[0]), evaluation_by_iteration, \
             self.data['time_taken']
 
-    def __test_constraints(self, assignments, constraints: list[Constraint]) -> bool:
-        conflicts = []
-        for constraint in constraints:
-            conflicts += constraint_check(constraint, assignments)
-        return len(conflicts) == 0
-
     def __calculate_fitness(self, assignments: dict[str, dict[str, Event]]) -> float:
-        return calculate_fitness(assignments, self.constraints, self.optional_constraints, self, True)
+        hashes = []
+        events = list(flatten_events_by_sport_to_dict(assignments).values())
+        for event in events:
+            hashes.append(hash(event))
+
+        hash_value = hash(tuple(hashes))
+
+        if hash_value in self.fitness_values:
+            return self.fitness_values[hash_value]
+        # print(1)
+        fitness = calculate_fitness(assignments, self.constraints, self.optional_constraints, self, True)
+        self.fitness_values[hash_value] = fitness
+        return fitness
 
     def __crossover(self, parent_1: dict[str, dict[str, Event]], parent_2: dict[str, dict[str, Event]]) -> tuple[dict[
         str, dict[str, Event]], dict[str, dict[str, Event]]]:
@@ -184,5 +200,8 @@ class GeneticAlgorithmSolver(Solver):
         for sport in child:
             if random.random() < delta:
                 variable_to_mutate = random.choice(list(child[sport].keys()))
+                print(list(child[sport].keys()))
+                print(variable_to_mutate)
+                print(self.variables[variable_to_mutate])
                 child[sport][variable_to_mutate] = random.choice(self.variables[variable_to_mutate])
         return child

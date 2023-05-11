@@ -36,10 +36,10 @@ def run(n, run):
     return complete_games
 
 
-n_range = range(5, 11, 5)  # Range of num_results_to_collect values to check
-iterations = range(1, 2)  # Average across 10 tests
+n_range = range(5, 51, 5)  # Range of num_results_to_collect values to check
+iterations = range(1, 101)  # Average across 10 tests
 inputs = [(n, it) for n in n_range for it in iterations]
-pool = multiprocessing.Pool(4)
+pool = multiprocessing.Pool(8)
 outputs = pool.starmap(run, inputs)
 
 avg_eval_score_by_iteration = {}
@@ -73,6 +73,8 @@ print(df.head())
 
 df.to_csv("heuristic_backtracking_analysis.csv")
 
+# df = pd.read_csv("heuristic_backtracking_analysis.csv")
+
 fig, ax = plt.subplots()
 line_1 = ax.plot(df["num_results_to_collect"], df["avg_eval_score"], label="Eval Score")
 ax.set_xticks([i for i in range(0, n_range.stop, 5)])
@@ -86,5 +88,8 @@ ax1.set_ylabel("Runtime (s)")
 lns = line_1 + line_2
 labs = [l.get_label() for l in lns]
 ax.legend(lns, labs, loc=0)
+
+plt.tight_layout()
+plt.savefig("heuristic_backtracking_analysis_graph.pdf")
 
 plt.show(block=True)

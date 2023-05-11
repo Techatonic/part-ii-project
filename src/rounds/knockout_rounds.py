@@ -17,6 +17,9 @@ class Round:
     def __repr__(self) -> str:
         return self.round_name
 
+    def __hash__(self):
+        return hash((self.round_name, self.round_index, self.num_matches))
+
     def __eq__(self, other):
         return type(self) == type(other) and self.round_name == other.round_name
 

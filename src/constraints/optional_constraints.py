@@ -10,7 +10,8 @@ import pgeocode
 from src.constraints.constraint import ConstraintType
 from src.helper.handle_error import handle_error
 from src.events.event import Event
-from src.helper.helper import flatten_events_by_sport_to_list
+from src.helper.helper import flatten_events_by_sport_to_list, widen_events_to_events_by_sport, \
+    flatten_events_by_sport_to_dict
 from src.schedulers.solver import Solver
 from src.sports.sport import Sport
 
@@ -73,6 +74,8 @@ class OptionalConstraint(ABC):
 def take_average_of_heuristics_across_all_sports(csp_instance: Solver,
                                                  assignments_by_sport: dict[str, dict[str, Event]],
                                                  heuristic: Type[OptionalConstraint]) -> float:
+    assignments_by_sport = widen_events_to_events_by_sport(flatten_events_by_sport_to_dict(assignments_by_sport))
+
     heuristic_count = 0
     sport_count = 0
     for sport in assignments_by_sport:
@@ -161,7 +164,7 @@ class AvgCapacityHeuristic(OptionalConstraint):
         self._variables = val
 
     def __init__(self, variables=None, sport: Sport = None, params: dict = None):
-        self._constraint_string = "avg_capacity_heuristic"
+        self._constraint_string = "avg_capacity"
         self._constraint_type = ConstraintType.ALL
         self._variables = variables
         self._sport = sport
@@ -242,6 +245,33 @@ class AvgDistanceToTravel(OptionalConstraint):
         return current / event_count, round(min_distance_total / current, 6)
 
 
+class MaximiseViewership(OptionalConstraint):
+    def __init__(self, variables=None, sport: Sport = None, params: dict = None):
+        self._constraint_string = "maximise_viewership"
+        self._constraint_type = ConstraintType.ALL
+        self._variables = variables
+        self._sport = sport
+        self._params = params
+
+    def set_variables(self, val):
+        self._variables = val
+
+    def eval_constraint(self, csp_instance: Solver, assignments: dict[str, dict[str, Event]]) -> tuple[float, float]:
+        events = flatten_events_by_sport_to_list(assignments)
+        count = 0
+        optimal = 0
+        for event in events:
+            optimal += 1
+            time = event.start_time
+            if 17 <= time <= 21:
+                count += 1
+            elif 12 <= time <= 21:
+                count += 0.5
+            else:
+                count += 0.25
+        return count, count / optimal
+
+
 class AvgRestBetweenMatches(OptionalConstraint):
     def set_variables(self, val):
         self._variables = val
@@ -258,12 +288,14 @@ class AvgRestBetweenMatches(OptionalConstraint):
             rest_team_list = []
             rest_dict = {k: v for k, v in rest_dict.items() if len(rest_dict[k]) > 1}
             if rest_dict == {}:
-                return 0
+                return 0, 0
             for temp_team in rest_dict:
-                count = 0
-                for temp_match in range(len(rest_dict[temp_team]) - 1):
-                    count += rest_dict[temp_team][temp_match + 1] - rest_dict[temp_team][temp_match]
-                rest_team_list.append(count / (len(rest_dict[temp_team]) - 1))
+                # count = 0
+                # for temp_match in range(len(rest_dict[temp_team]) - 1):
+                #     count += rest_dict[temp_team][temp_match + 1] - rest_dict[temp_team][temp_match]
+                # rest_team_list.append(count / (len(rest_dict[temp_team]) - 1))
+                rest_team_list.append(
+                    (rest_dict[temp_team][-1] - rest_dict[temp_team][0]) / (len(rest_dict[temp_team]) - 1))
 
             return sum(rest_team_list) / len(rest_team_list), len(rest_team_list)
 
@@ -290,7 +322,7 @@ class AvgRestBetweenMatches(OptionalConstraint):
             days_available = csp_instance.data[sport_name]["max_finish_day"] - csp_instance.data[sport_name][
                 "min_start_day"] + 1
 
-            optimal = days_available / (matches_to_win - 1)
+            optimal = (days_available - 1) / (matches_to_win - 1)
             # print()
             # print(sport_name)
             # print(curr, num_teams)
@@ -300,6 +332,14 @@ class AvgRestBetweenMatches(OptionalConstraint):
             current += curr * num_teams
             max_rest_total += optimal * num_teams
             team_count += num_teams
+
+        if current > max_rest_total:
+            handle_error("ALERT ALERT: PROBLEM - MAX REST EVAL = " + str(current / max_rest_total) + " - " + str(
+                current) + " - " + str(max_rest_total), False)
+            return current / team_count, 1
+
+        if team_count == 0 or max_rest_total == 0:
+            return 0, 1
 
         # print(f'\neval score: {current / max_rest_total}')
         return current / team_count, current / max_rest_total
@@ -326,6 +366,7 @@ optional_constraints_list = {
     "avg_capacity": AvgCapacityHeuristic,
     "avg_distance_to_travel": AvgDistanceToTravel,
     "avg_rest_between_matches": AvgRestBetweenMatches,
+    "maximise_viewership": MaximiseViewership,
     # "maximise_sport_specific_constraints": MaximiseSportSpecificConstraints
 }
 

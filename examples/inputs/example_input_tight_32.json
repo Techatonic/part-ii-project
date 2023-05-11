@@ -12,9 +12,48 @@
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
           "min_start_time": 12,
-          "max_finish_time": 16,
+          "max_finish_time": 18,
           "capacity": 40000,
-          "max_matches_per_day": 4
+          "max_matches_per_day": 2
+        },
+        {
+          "name": "Olympic Stadium",
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
+          "location_address": "Queen Elizabeth Olympic Park, London E20 2ST",
+          "location_postcode": "E20 2ST",
+          "min_start_time": 12,
+          "max_finish_time": 22,
+          "capacity": 66000,
+          "max_matches_per_day": 3
+        },
+        {
+          "name": "Ricoh Arena",
+          "location_coordinates": [
+            52.448212,
+            -1.496943
+          ],
+          "location_address": "Judds Ln, Coventry CV6 6GE",
+          "location_postcode": "CV6 6GE",
+          "min_start_time": 12,
+          "max_finish_time": 22,
+          "capacity": 32753,
+          "max_matches_per_day": 3
+        },
+        {
+          "name": "The Den",
+          "location_coordinates": [
+            51.4849030604,
+            -0.05056979772
+          ],
+          "location_address": "Senegal Rd, London SE16 3LP",
+          "location_postcode": "SE16 3LP",
+          "min_start_time": 12,
+          "max_finish_time": 22,
+          "capacity": 20146,
+          "max_matches_per_day": 3
         }
       ],
       "teams": [
@@ -25,15 +64,39 @@
         "England",
         "Netherlands",
         "Croatia",
-        "Italy"
+        "Italy",
+        "Team 9",
+        "Team 10",
+        "Team 11",
+        "Team 12",
+        "Team 13",
+        "Team 14",
+        "Team 15",
+        "Team 16",
+        "Team 17",
+        "Team 18",
+        "Team 19",
+        "Team 20",
+        "Team 21",
+        "Team 22",
+        "Team 23",
+        "Team 24",
+        "Team 25",
+        "Team 26",
+        "Team 27",
+        "Team 28",
+        "Team 29",
+        "Team 30",
+        "Team 31",
+        "Team 32"
       ],
       "num_teams_per_game": 2,
       "is_knockout": true,
       "group_stage": null,
       "min_start_day": 1,
-      "max_finish_day": 10,
+      "max_finish_day": 9,
       "min_start_time": 12,
-      "max_finish_time": 16,
+      "max_finish_time": 22,
       "duration": 1.5,
       "constraints": {
         "required": {
@@ -43,11 +106,11 @@
             "min_time_between_matches": 1
           },
           "venue_time_between_matches": {
-            "min_time_between_matches": 1
+            "min_time_between_matches": 0.5
           },
           "no_later_rounds_before_earlier_rounds": {},
           "max_capacity_at_final": {},
-          "max_matches_per_day": {"max_matches_per_day":  32}
+          "max_matches_per_day": {"max_matches_per_day":  12}
         },
         "optional": {
           "avg_distance_to_travel": {
@@ -72,17 +135,56 @@
       "name": "football_women",
       "venues": [
         {
-          "name": "Wembley Stadium",
+          "name": "Craven Cottage",
           "location_coordinates": [
-            51.555973,
-            -0.279672
+            51.47166478,
+            -0.219665788
           ],
-          "location_address": "South Way, London HA9 0WS",
-          "location_postcode": "HA9 0WS",
+          "location_address": "Stevenage Rd, London SW6 6HH",
+          "location_postcode": "SW6 6HH",
+          "min_start_time": 11,
+          "max_finish_time": 17,
+          "capacity": 25700,
+          "max_matches_per_day": 2
+        },
+        {
+          "name": "Twickenham Stadium",
+          "location_coordinates": [
+            51.453664852,
+            -0.33833198
+          ],
+          "location_address": "200 Whitton Rd, Twickenham TW2 7BA",
+          "location_postcode": "TW2 7BA",
+          "min_start_time": 13,
+          "max_finish_time": 20,
+          "capacity": 82000,
+          "max_matches_per_day": 2
+        },
+        {
+          "name": "Old Trafford",
+          "location_coordinates": [
+            53.463493,
+            -2.292279
+          ],
+          "location_address": "Sir Matt Busby Way, Old Trafford, Stretford, Manchester M16 0RA",
+          "location_postcode": "M16 0RA",
           "min_start_time": 12,
           "max_finish_time": 22,
-          "capacity": 90000,
-          "max_matches_per_day": 4
+          "capacity": 74310,
+          "max_matches_per_day": 3
+        },
+        {
+          "name": "Hampden Park",
+          "location_coordinates": [
+            55.825851,
+            -4.253047
+          ],
+          "location_address": "Hampden Park, Glasgow, City Of Glasgow, G42 9BA",
+          "location_postcode": "G42 9BA",
+          "min_start_time": 12,
+          "max_finish_time": 22,
+          "capacity": 51866,
+          "max_matches_per_day": 3
         }
       ],
       "teams": [
@@ -93,29 +195,53 @@
         "England",
         "Netherlands",
         "Croatia",
-        "Italy"
+        "Italy",
+        "Team 9",
+        "Team 10",
+        "Team 11",
+        "Team 12",
+        "Team 13",
+        "Team 14",
+        "Team 15",
+        "Team 16",
+        "Team 17",
+        "Team 18",
+        "Team 19",
+        "Team 20",
+        "Team 21",
+        "Team 22",
+        "Team 23",
+        "Team 24",
+        "Team 25",
+        "Team 26",
+        "Team 27",
+        "Team 28",
+        "Team 29",
+        "Team 30",
+        "Team 31",
+        "Team 32"
       ],
       "num_teams_per_game": 2,
       "is_knockout": true,
       "group_stage": null,
       "min_start_day": 1,
-      "max_finish_day": 14,
-      "min_start_time": 12,
-      "max_finish_time": 16,
+      "max_finish_day": 9,
+      "min_start_time": 11,
+      "max_finish_time": 22,
       "duration": 1.5,
       "constraints": {
         "required": {
           "same_venue_overlapping_time": {},
           "same_venue_max_matches_per_day": {},
           "team_time_between_matches": {
-            "min_time_between_matches": 4
+            "min_time_between_matches": 1
           },
           "venue_time_between_matches": {
             "min_time_between_matches": 1
           },
           "no_later_rounds_before_earlier_rounds": {},
           "max_capacity_at_final": {},
-          "max_matches_per_day": {"max_matches_per_day":  32}
+          "max_matches_per_day": {"max_matches_per_day":  12}
         },
         "optional": {
           "avg_distance_to_travel": {
@@ -147,8 +273,8 @@
           ],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
-          "min_start_time": 12,
-          "max_finish_time": 22,
+          "min_start_time": 6,
+          "max_finish_time": 23,
           "capacity": 20000,
           "max_matches_per_day": 4
         },
@@ -160,8 +286,21 @@
           ],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
-          "min_start_time": 12,
-          "max_finish_time": 22,
+          "min_start_time": 6,
+          "max_finish_time": 23,
+          "capacity": 20000,
+          "max_matches_per_day": 4
+        },
+        {
+          "name": "Wimbledon_Court_2",
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "min_start_time": 6,
+          "max_finish_time": 23,
           "capacity": 20000,
           "max_matches_per_day": 4
         }
@@ -174,15 +313,39 @@
         "Novak Djokovic",
         "Felix Auger-Aliassime",
         "Daniil Medvedev",
-        "Andrey Rublev"
+        "Andrey Rublev",
+        "Team 9",
+        "Team 10",
+        "Team 11",
+        "Team 12",
+        "Team 13",
+        "Team 14",
+        "Team 15",
+        "Team 16",
+        "Team 17",
+        "Team 18",
+        "Team 19",
+        "Team 20",
+        "Team 21",
+        "Team 22",
+        "Team 23",
+        "Team 24",
+        "Team 25",
+        "Team 26",
+        "Team 27",
+        "Team 28",
+        "Team 29",
+        "Team 30",
+        "Team 31",
+        "Team 32"
       ],
       "num_teams_per_game": 2,
       "is_knockout": true,
       "group_stage": null,
       "min_start_day": 1,
-      "max_finish_day": 14,
-      "min_start_time": 12,
-      "max_finish_time": 23,
+      "max_finish_day": 9,
+      "min_start_time": 1,
+      "max_finish_time": 24,
       "duration": 2,
       "constraints": {
         "required": {
@@ -196,7 +359,7 @@
           },
           "no_later_rounds_before_earlier_rounds": {},
           "max_capacity_at_final": {},
-          "max_matches_per_day": {"max_matches_per_day":  32}
+          "max_matches_per_day": {"max_matches_per_day":  12}
         },
         "optional": {
           "avg_distance_to_travel": {
@@ -228,8 +391,8 @@
           ],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
-          "min_start_time": 12,
-          "max_finish_time": 22,
+          "min_start_time": 6,
+          "max_finish_time": 23,
           "capacity": 2000,
           "max_matches_per_day": 4
         },
@@ -241,8 +404,21 @@
           ],
           "location_address": "Fulham Rd., London SW6 1HS",
           "location_postcode": "SW6 1HS",
-          "min_start_time": 12,
-          "max_finish_time": 22,
+          "min_start_time": 6,
+          "max_finish_time": 23,
+          "capacity": 2000,
+          "max_matches_per_day": 4
+        },
+        {
+          "name": "Wimbledon_Court_10",
+          "location_coordinates": [
+            51.4817,
+            -0.1910
+          ],
+          "location_address": "Fulham Rd., London SW6 1HS",
+          "location_postcode": "SW6 1HS",
+          "min_start_time": 6,
+          "max_finish_time": 23,
           "capacity": 2000,
           "max_matches_per_day": 4
         }
@@ -255,14 +431,38 @@
         "Caroline Garcia",
         "Coco Gauff",
         "Elena Rybakina",
-        "Daria Kasatkina"
+        "Daria Kasatkina",
+        "Team 9",
+        "Team 10",
+        "Team 11",
+        "Team 12",
+        "Team 13",
+        "Team 14",
+        "Team 15",
+        "Team 16",
+        "Team 17",
+        "Team 18",
+        "Team 19",
+        "Team 20",
+        "Team 21",
+        "Team 22",
+        "Team 23",
+        "Team 24",
+        "Team 25",
+        "Team 26",
+        "Team 27",
+        "Team 28",
+        "Team 29",
+        "Team 30",
+        "Team 31",
+        "Team 32"
       ],
       "num_teams_per_game": 2,
       "is_knockout": true,
       "group_stage": null,
       "min_start_day": 1,
-      "max_finish_day": 14,
-      "min_start_time": 12,
+      "max_finish_day": 9,
+      "min_start_time": 1,
       "max_finish_time": 23,
       "duration": 2,
       "constraints": {
@@ -277,7 +477,7 @@
           },
           "no_later_rounds_before_earlier_rounds": {},
           "max_capacity_at_final": {},
-          "max_matches_per_day": {"max_matches_per_day":  32}
+          "max_matches_per_day": {"max_matches_per_day":  12}
         },
         "optional": {
           "avg_distance_to_travel": {
@@ -310,9 +510,9 @@
           "location_address": "Royal Victoria Dock, 1 Western Gateway, London E16 1XL",
           "location_postcode": "E16 1XL",
           "min_start_time": 12,
-          "max_finish_time": 20,
+          "max_finish_time": 18,
           "capacity": 20000,
-          "max_matches_per_day": 4
+          "max_matches_per_day": 3
         },
         {
           "name": "Excel_2",
@@ -323,35 +523,9 @@
           "location_address": "Royal Victoria Dock, 1 Western Gateway, London E16 1XL",
           "location_postcode": "E16 1XL",
           "min_start_time": 12,
-          "max_finish_time": 20,
+          "max_finish_time": 18,
           "capacity": 20000,
-          "max_matches_per_day": 4
-        },
-        {
-          "name": "Excel_3",
-          "location_coordinates": [
-            51.4817,
-            -0.1910
-          ],
-          "location_address": "Royal Victoria Dock, 1 Western Gateway, London E16 1XL",
-          "location_postcode": "E16 1XL",
-          "min_start_time": 12,
-          "max_finish_time": 20,
-          "capacity": 20000,
-          "max_matches_per_day": 4
-        },
-        {
-          "name": "Excel_4",
-          "location_coordinates": [
-            51.4817,
-            -0.1910
-          ],
-          "location_address": "Royal Victoria Dock, 1 Western Gateway, London E16 1XL",
-          "location_postcode": "E16 1XL",
-          "min_start_time": 12,
-          "max_finish_time": 20,
-          "capacity": 20000,
-          "max_matches_per_day": 4
+          "max_matches_per_day": 3
         }
       ],
       "teams": [
@@ -362,13 +536,37 @@
         "Joe Joyce",
         "Andy Ruiz Jr",
         "Dillian Whyte",
-        "Luis Ortiz"
+        "Luis Ortiz",
+        "Team 9",
+        "Team 10",
+        "Team 11",
+        "Team 12",
+        "Team 13",
+        "Team 14",
+        "Team 15",
+        "Team 16",
+        "Team 17",
+        "Team 18",
+        "Team 19",
+        "Team 20",
+        "Team 21",
+        "Team 22",
+        "Team 23",
+        "Team 24",
+        "Team 25",
+        "Team 26",
+        "Team 27",
+        "Team 28",
+        "Team 29",
+        "Team 30",
+        "Team 31",
+        "Team 32"
       ],
       "num_teams_per_game": 2,
       "is_knockout": true,
       "group_stage": null,
       "min_start_day": 1,
-      "max_finish_day": 14,
+      "max_finish_day": 10,
       "min_start_time": 10,
       "max_finish_time": 20,
       "duration": 0.5,
@@ -377,14 +575,14 @@
           "same_venue_overlapping_time": {},
           "same_venue_max_matches_per_day": {},
           "team_time_between_matches": {
-            "min_time_between_matches": 2
+            "min_time_between_matches": 1
           },
           "venue_time_between_matches": {
             "min_time_between_matches": 0.1
           },
           "no_later_rounds_before_earlier_rounds": {},
           "max_capacity_at_final": {},
-          "max_matches_per_day": {"max_matches_per_day":  16}
+          "max_matches_per_day": {"max_matches_per_day":  6}
         },
         "optional": {
           "avg_distance_to_travel": {
@@ -417,9 +615,9 @@
           "location_address":"Olympic Park, Stratford, London E20 3ZH",
           "location_postcode":"E20 3ZH",
           "min_start_time":12,
-          "max_finish_time":20,
+          "max_finish_time":22,
           "capacity":15000,
-          "max_matches_per_day":3
+          "max_matches_per_day": 3
         },
         {
           "name":"riverbank_arena_2",
@@ -430,35 +628,9 @@
           "location_address":"Olympic Park, Stratford, London E20 3ZH",
           "location_postcode":"E20 3ZH",
           "min_start_time":12,
-          "max_finish_time":20,
+          "max_finish_time":22,
           "capacity":15000,
-          "max_matches_per_day":3
-        },
-        {
-          "name":"riverbank_arena_3",
-          "location_coordinates":[
-            51.542997828,
-            -0.018999924
-          ],
-          "location_address":"Olympic Park, Stratford, London E20 3ZH",
-          "location_postcode":"E20 3ZH",
-          "min_start_time":12,
-          "max_finish_time":20,
-          "capacity":15000,
-          "max_matches_per_day":3
-        },
-        {
-          "name":"riverbank_arena_4",
-          "location_coordinates":[
-            51.542997828,
-            -0.018999924
-          ],
-          "location_address":"Olympic Park, Stratford, London E20 3ZH",
-          "location_postcode":"E20 3ZH",
-          "min_start_time":12,
-          "max_finish_time":20,
-          "capacity":15000,
-          "max_matches_per_day":3
+          "max_matches_per_day": 3
         }
       ],
       "teams":[
@@ -469,29 +641,53 @@
         "Australia",
         "England",
         "Argentina",
-        "Spain"
+        "Spain",
+        "Team 9",
+        "Team 10",
+        "Team 11",
+        "Team 12",
+        "Team 13",
+        "Team 14",
+        "Team 15",
+        "Team 16",
+        "Team 17",
+        "Team 18",
+        "Team 19",
+        "Team 20",
+        "Team 21",
+        "Team 22",
+        "Team 23",
+        "Team 24",
+        "Team 25",
+        "Team 26",
+        "Team 27",
+        "Team 28",
+        "Team 29",
+        "Team 30",
+        "Team 31",
+        "Team 32"
       ],
       "num_teams_per_game":2,
       "is_knockout":true,
       "group_stage":null,
       "min_start_day":1,
-      "max_finish_day":14,
+      "max_finish_day":10,
       "min_start_time":12,
-      "max_finish_time":18,
+      "max_finish_time":22,
       "duration":2,
       "constraints":{
         "required":{
           "same_venue_overlapping_time":{},
           "same_venue_max_matches_per_day":{},
           "team_time_between_matches":{
-            "min_time_between_matches":2
+            "min_time_between_matches":1
           },
           "venue_time_between_matches":{
             "min_time_between_matches":0.5
           },
           "no_later_rounds_before_earlier_rounds":{},
           "max_capacity_at_final":{},
-          "max_matches_per_day": {"max_matches_per_day":  10}
+          "max_matches_per_day": {"max_matches_per_day":  6}
         },
         "optional":{
           "avg_distance_to_travel":{
@@ -545,7 +741,55 @@
         "Nilson Andre",
         "Masashi Eriguchi",
         "Barakat Al-Harthi",
-        "Fernando Lumain"
+        "Fernando Lumain",
+        "Ryan Bailey",
+        "Ben Youssef Meite",
+        "Justyn Warner",
+        "Kemar Hyman",
+        "Suwaibou Sanneh",
+        "Rytis Sakalauskas",
+        "Beranger Aymard Bosse",
+        "Artur Bruno Rojas",
+        "Usain Bolt",
+        "Daniel Bailey",
+        "James Dasaolu",
+        "Amr Ibrahim Mostafa Seoud",
+        "Jason Rogers",
+        "Ogho-Oghene Egwero",
+        "Holder da Silva",
+        "Idrissa Adam",
+        "Team 33",
+        "Team 34",
+        "Team 35",
+        "Team 36",
+        "Team 37",
+        "Team 38",
+        "Team 39",
+        "Team 40",
+        "Team 41",
+        "Team 42",
+        "Team 43",
+        "Team 44",
+        "Team 45",
+        "Team 46",
+        "Team 47",
+        "Team 48",
+        "Team 49",
+        "Team 50",
+        "Team 51",
+        "Team 52",
+        "Team 53",
+        "Team 54",
+        "Team 55",
+        "Team 56",
+        "Team 57",
+        "Team 58",
+        "Team 59",
+        "Team 60",
+        "Team 61",
+        "Team 62",
+        "Team 63",
+        "Team 64"
       ],
       "num_teams_per_game":4,
       "is_knockout":true,

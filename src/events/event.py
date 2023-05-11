@@ -31,8 +31,8 @@ class Event:
 
     # Uses hash instead of __eq__ because Event classes are turned into Variable classes by the python-constraint module
     def __hash__(self):
-        hash((self.round, self.sport, self.id, self.venue, self.day, self.start_time, self.duration,
-              self.teams_involved))
+        return hash((self.round, self.sport, self.id, self.venue, self.day, self.start_time, self.duration,
+                     frozenset(self.teams_involved)))
 
     def __copy__(self):
         return Event(self.sport, self.id, self.venue, self.round, self.day, self.start_time, self.duration,

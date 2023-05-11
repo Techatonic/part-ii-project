@@ -3,6 +3,7 @@ from typing import Type
 
 from src.constraints.constraint import Constraint, get_constraint_from_string, NoLaterRoundsBeforeEarlierRounds
 from src.constraints.constraint_checker import constraint_check
+from src.constraints.optional_constraints import get_inequality_operator_from_input, get_optional_constraint_from_string
 from src.helper.handle_error import handle_error
 
 from src.events.event import Event
@@ -17,6 +18,7 @@ class CSPSolver:
         self.queue = PriorityQueue(data["comparator"])
         self.data = data
         self.constraints = []
+        self.optional_constraints = []
         self.forward_check = forward_check
         # Todo remove this
         self.counter = [0, 0]
@@ -40,7 +42,16 @@ class CSPSolver:
         self.constraints.append(class_ref(variables, sport, copy.deepcopy(params)))
 
     def add_optional_constraint(self, function_name: str, sport: Sport | None = None, params: object = None):
-        pass
+        params_copy = copy.deepcopy(params)
+        if params_copy is None:
+            params_copy = {}
+        if not ("weight" in params_copy):
+            params_copy["weight"] = 1
+        if "inequality" in params_copy:
+            params_copy["inequality"] = get_inequality_operator_from_input(params_copy["inequality"])
+
+        constraint = get_optional_constraint_from_string(function_name)
+        self.optional_constraints.append(constraint(None, sport, params_copy))
 
     def solve(self) -> dict[str, Event] | None:
         # Add all events to constraints for all events
