@@ -21,8 +21,6 @@ from src.schedulers.solver import Solver
 from src.sports.sport import Sport
 
 
-# random.seed(1)
-
 def generate_population(sports, data, num_iterations):
     populations = []
     for i in range(num_iterations):
@@ -106,12 +104,10 @@ class GeneticAlgorithmSolver(Solver):
         initial_population_size = ("initial_population_size" in self.data and self.data[
             "initial_population_size"]) or 250
 
-        epsilon = 0.75  # fitness_threshold
         delta = 0.1  # mutation percentage
 
         a = time.time()
         population = self.__initialise_population(initial_population_size)
-        print("Time taken: ", time.time() - a)
 
         evaluation_by_iteration = {}
 
@@ -120,14 +116,13 @@ class GeneticAlgorithmSolver(Solver):
         self.data["time_taken"] = {}
 
         for iteration in range(max_iterations):
-            print(f'Iteration # {iteration}   -   Time taken so far: {time.time() - self.data["start_time"]}')
             fitness_of_population = [self.__calculate_fitness(assignments) for assignments in population]
             fittest_assignments = [assignments for (assignments, fitness_value) in
                                    sorted(zip(population, fitness_of_population), key=lambda x: x[1], reverse=True)][
                                   :num_fittest_assignments]
 
             if len(fittest_assignments) < 2:
-                handle_error("Less than 2 fit assignments", exit_program=False)
+                handle_error("Less than 2 fit assignments.\nNo solutions found.")
                 self.initial_population = None
                 return self.solve(attempt + 1)
 
@@ -170,7 +165,7 @@ class GeneticAlgorithmSolver(Solver):
 
         if hash_value in self.fitness_values:
             return self.fitness_values[hash_value]
-        # print(1)
+
         fitness = calculate_fitness(assignments, self.constraints, self.optional_constraints, self, True)
         self.fitness_values[hash_value] = fitness
         return fitness
@@ -195,13 +190,8 @@ class GeneticAlgorithmSolver(Solver):
         return child_1, child_2
 
     def __mutate(self, delta: float, child: dict[str, dict[str, Event]]) -> dict[str, dict[str, Event]]:
-        # if random.random() > delta:
-        #     return child
         for sport in child:
             if random.random() < delta:
                 variable_to_mutate = random.choice(list(child[sport].keys()))
-                print(list(child[sport].keys()))
-                print(variable_to_mutate)
-                print(self.variables[variable_to_mutate])
                 child[sport][variable_to_mutate] = random.choice(self.variables[variable_to_mutate])
         return child

@@ -1,4 +1,3 @@
-import argparse
 import json
 
 import pytest
@@ -8,22 +7,22 @@ from jsonschema.validators import validate
 import sys
 import copy
 
-sys.path.append("/home/danny/Documents/Uni/Year3/Diss/part-ii-project/")
+sys.path.append("./")
 import main
 
 base_args = [
     "main.py",
     "--import_path",
-    "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/inputs/example_input_very_simple.json",
+    "examples/inputs/example_input_very_simple.json",
     "--export_path",
-    "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/outputs/test_output_very_simple.json",
+    "examples/outputs/test_output_very_simple.json",
 ]
 base_args_constraint_checker = [
     "main.py",
     "--import_path",
-    "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/inputs/example_input_constraint_checker_4.json",
+    "examples/inputs/example_input_constraint_checker_4.json",
     "--export_path",
-    "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/outputs/example_output_constraint_checker.json",
+    "examples/outputs/example_output_constraint_checker.json",
 ]
 
 

@@ -12,7 +12,6 @@ def constraint_checker(sports: dict[str, Sport], events: dict[str, list[Event]],
     conflicts = []
 
     for sport_name in sports:
-        # TODO: Only handles required constraints at the moment
         for constraint_string in sports[sport_name].constraints['required']:
             constraint = get_constraint_from_string(constraint_string)(events, sports, None)
             curr_conflicts = constraint_check(constraint, events[sport_name], constraint_checker_flag=True)
@@ -47,7 +46,6 @@ def valid_constraint_check(constraint: Type[Constraint], events) -> bool:
     return len(constraint_check(constraint, events)) == 0
 
 
-# TODO: If I keep changes to constraint class, fix this
 def single_constraint_check(constraint: Type[Constraint], *events) -> bool:
     events = remove_tuple_from_events(events)
     if type(events) == Event:

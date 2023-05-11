@@ -5,7 +5,7 @@ from typing import Type
 from src.events.event import Event
 from src.games.complete_games import CompleteGames
 from src.helper.helper import calculate_fitness, widen_events_to_events_by_sport, flatten_events_by_sport_to_dict, \
-    flatten_events_by_sport_to_dict_with_scores, remove_scores_from_dict
+    remove_scores_from_dict
 from src.rounds.knockout_rounds import generate_round_order, Round
 from src.schedulers.csp.csp_solver import CSPSolver
 from src.schedulers.scheduler import Scheduler
@@ -38,7 +38,6 @@ class HeuristicBacktrackingScheduler(Scheduler, ABC):
         sport_specific_data = {}
 
         for sport in self.sports:
-            # print(f'Sport: {self.sports[sport].name}')
             sport = self.sports[sport]
             venues: list[Venue] = sport.possible_venues
             min_start_day: int = 0 if sport.min_start_day is None else sport.min_start_day
@@ -82,7 +81,6 @@ class HeuristicBacktrackingScheduler(Scheduler, ABC):
                         sport_specific_data[sport.name]['optional_constraints'].append(optional_constraint)
                     try:
                         result = csp_problem.solve()
-                        # print(result)
                         fitness = calculate_fitness(widen_events_to_events_by_sport(result), csp_problem.constraints,
                                                     csp_problem.optional_constraints, csp_problem)
                         if result is None:
@@ -99,7 +97,6 @@ class HeuristicBacktrackingScheduler(Scheduler, ABC):
             total_events[sport.name] = sport_results
 
         csp_data = copy.deepcopy(self.data)
-        # print(total_events)
 
         num_total_events = sum(num_total_events.values())
 
@@ -113,65 +110,30 @@ class HeuristicBacktrackingScheduler(Scheduler, ABC):
             "wait_time": 25,
         })
 
-        # multisport_csp = self.solver(csp_data, self.forward_check)
-        # print("Multisport CSP")
-        # for sport_key in total_events:
-        #     sorted_options_by_optimality = sorted(total_events[sport_key], key=lambda option: -option[0])
-        #     multisport_csp.add_variable(sport_key, sorted_options_by_optimality)
-        #
-        # for required_constraint in self.data["general_constraints"]["required"]:
-        #     multisport_csp.add_constraint(required_constraint,
-        #                                   params=self.data["general_constraints"]["required"][required_constraint])
-        # for optional_constraint in self.data["general_constraints"]["optional"]:
-        #     multisport_csp.add_optional_constraint(optional_constraint,
-        #                                            params=self.data["general_constraints"]["optional"][
-        #                                                optional_constraint], sport=None)
-        #
-        # multisport_csp.add_optional_constraint("maximise_sport_specific_constraints",
-        #                                        params={"inequality": "MAXIMISE", "acceptable": 0})
-
         csp_data.update(sport_specific_data)
 
-        print("Total Events: ", len(total_events))
         while len(total_events) > 1:
             results = []
             multisport_csp = self.solver(csp_data, self.forward_check)
-            # print("Multisport CSP")
             sport_1 = list(total_events.keys())[0]
             sport_2 = list(total_events.keys())[1]
 
             for sport_key in [sport_1, sport_2]:
                 sorted_options_by_optimality = sorted(total_events[sport_key], key=lambda option: option[0],
                                                       reverse=True)
-                # print([x[0] for x in sorted_options_by_optimality])
                 multisport_csp.add_variable(sport_key, sorted_options_by_optimality)
 
             for required_constraint in self.data["general_constraints"]["required"]:
                 multisport_csp.add_constraint(required_constraint,
                                               params=self.data["general_constraints"]["required"][required_constraint])
 
-            # for sport_key in [sport_1, sport_2]:
-            #     sport_names = []
-            #     if sport_key in sport_specific_data:
-            #         sport_names.append(sport_key)
-            #     else:
-            #         sport_names += sport_key.split("#")
-            #     for sport_name in sport_names:
-            #         for optional_constraint in sport_specific_data[sport_name]['optional_constraints']:
-            #             multisport_csp.optional_constraints.append(optional_constraint)
-
             for optional_constraint in self.data["general_constraints"]["optional"]:
                 multisport_csp.add_optional_constraint(optional_constraint,
                                                        params=self.data["general_constraints"]["optional"][
                                                            optional_constraint], sport=None)
 
-            # multisport_csp.add_optional_constraint("maximise_sport_specific_constraints",
-            #                                        params={"inequality": "MAXIMISE", "acceptable": 0})
-
             result = multisport_csp.solve()
-            # print(result)
             if result is None:
-                print("No results")
                 return None
             del total_events[sport_1]
             del total_events[sport_2]
@@ -184,11 +146,8 @@ class HeuristicBacktrackingScheduler(Scheduler, ABC):
                 events = flatten_events_by_sport_to_dict(events)
                 result[individual_result] = (eval_score, events)
             total_events[sport_1 + "#" + sport_2] = result
-            # total_events[sport_1 + sport_2] = (result[0], flatten_events_by_sport_to_dict_with_scores(result[1]))
-            # print(total_events[sport_1 + sport_2])
             most_recent_csp = multisport_csp
 
-        # print("Finished?")
         result = list(total_events.values())[0]
         result = sorted(result, key=lambda option: -option[0])[0]
 

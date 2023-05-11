@@ -1,4 +1,3 @@
-import copy
 import multiprocessing
 import sys
 import time
@@ -6,7 +5,7 @@ import time
 import pandas as pd
 from matplotlib import pyplot as plt
 
-sys.path.append("/home/danny/Documents/Uni/Year3/Diss/part-ii-project/")
+sys.path.append("./")
 
 from src.constraints.constraint_checker import constraint_checker
 from src.schedulers.constraint_fixing.constraint_fixing_scheduler import ConstraintFixingScheduler
@@ -15,20 +14,16 @@ from src.helper.helper import add_global_variables
 from src.input_handling.input_reader import read_and_validate_input
 from src.input_handling.parse_input import parse_input_constraint_checker
 
-export_path = "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/outputs/test_output.json"
+export_path = "examples/outputs/test_output.json"
 
 
 def run(n, run):
-    import_path = "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/inputs/example_input_constraint_checker_" + str(
-        n) + ".json"
+    import_path = "examples/inputs/example_input_constraint_checker_" + str(n) + ".json"
 
-    input_json = read_and_validate_input(import_path,
-                                         '/home/danny/Documents/Uni/Year3/Diss/part-ii-project/schemata/input_schema_constraint_checker.json')
+    input_json = read_and_validate_input(import_path, 'schemata/input_schema_constraint_checker.json')
     [sports, events, general_constraints, data] = parse_input_constraint_checker(input_json)
     add_global_variables(sports, data, general_constraints)
     data["general_constraints"] = general_constraints
-
-    # print(n, run)
 
     default_constraints = {"valid_match_time": {}}
     general_constraints['required'].update(default_constraints)
@@ -41,7 +36,6 @@ def run(n, run):
     complete_games = scheduler.schedule_events().complete_games
     complete_games["time_taken"] = time.time() - start_time
     complete_games["num_fixes"] = n
-    # print(f'num_fixes: {n}  -  time taken: {complete_games["time_taken"]}')
     return complete_games
 
 
@@ -73,12 +67,11 @@ df = pd.DataFrame({
     "runtimes": list(avg_runtime_by_iteration.values()),
     "nodes_checked": list(avg_nodes_checked.values())
 })
-print(df.head())
 
 df.to_csv("bfs_analysis.csv")
 
 fig, ax = plt.subplots()
-line_1 = ax.plot(df["num_fixes"], df["runtimes"], label="Runtime")
+ax.plot(df["num_fixes"], df["runtimes"], label="Runtime")
 ax.set_xticks([i for i in range(0, n_range.stop)])
 ax.set_ylabel("Runtime (s)")
 ax.set_xlabel("Num Fixes Required")

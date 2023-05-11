@@ -6,8 +6,7 @@ from src.helper.priority_queue import PriorityQueue
 from src.schedulers.solver import Solver
 
 
-def ac3(queue: PriorityQueue, constraints: list[Constraint], csp_instance: Type[Solver]) -> object:
-    csp_instance.counter[0] += 1
+def ac3(queue: PriorityQueue, constraints: list[Constraint]) -> object:
     done = False
 
     temp_queue = queue.__copy__()
@@ -30,10 +29,8 @@ def ac3(queue: PriorityQueue, constraints: list[Constraint], csp_instance: Type[
         changes_made = arc_reduce(x, y, binary_constraints, all_constraints)
         if changes_made > 0:
             if not done:
-                csp_instance.counter[1] += 1
                 done = True
             if len(x.domain) == 0:
-                print("AC-3 return false - ", x.variable)
                 return False, None
 
             worklist += [(x, z) for z in temp_queue.variables if z != y and z != x]

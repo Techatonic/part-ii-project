@@ -98,12 +98,10 @@ class SameVenueOverlappingTime(Constraint):
                         if (event.start_time <= time_check[0] < event.start_time + event.duration) or \
                                 (time_check[0] <= event.start_time < time_check[0] + time_check[1]):
                             if not constraint_check:
-                                # print(3, [event.event_id, other_event])
                                 return [event.id, other_event]
                             conflicts += [event.id, other_event]
                     venues[venue_name][event.day][event.id] = [event.start_time,
                                                                event.start_time + event.duration]
-        # print(3, remove_duplicates_from_list(conflicts))
         return remove_duplicates_from_list(conflicts)
 
 
@@ -141,11 +139,9 @@ class TeamTimeBetweenMatches(Constraint):
                                 global_variables.constraint_params[sport]["required"]["team_time_between_matches"][
                                     "min_time_between_matches"]:
                             if not constraint_check:
-                                # print(4, [event.event_id, other_event])
                                 return [event.id, other_event]
                             conflicts += [event.id, other_event]
                     teams[team][event.id] = event_day
-        # print(4, remove_duplicates_from_list(conflicts))
         return remove_duplicates_from_list(conflicts)
 
 
@@ -186,11 +182,9 @@ class VenueTimeBetweenMatches(Constraint):
                                 global_variables.constraint_params[sport]["required"]["venue_time_between_matches"][
                                     "min_time_between_matches"]:
                             if not constraint_check:
-                                # print("err", [event.event_id, other_event])
                                 return [event.id, other_event]
                             conflicts += [event.id, other_event]
                     venues[venue_name][event.day][event.id] = event.start_time
-        # print(5, remove_duplicates_from_list(conflicts))
         return remove_duplicates_from_list(conflicts)
 
 
@@ -232,16 +226,13 @@ class NoLaterRoundsBeforeEarlierRounds(Constraint):
 
             for index in range(len(sorted_rounds) - 1):
                 if min_max_days[sorted_rounds[index]][1] >= min_max_days[sorted_rounds[index + 1]][0]:
-                    # Get all conflicting events
                     for event_1 in sport_variables[sorted_rounds[index]]:
                         for event_2 in sport_variables[sorted_rounds[index + 1]]:
                             if event_1.day >= event_2.day:
-                                if not constraint_check:  # If we're not getting all conflicting events, we just return one
-                                    # print("err", [event_1.event_id, event_2.event_id])
+                                if not constraint_check:
                                     return [event_1.id, event_2.id]
                                 conflicts += [event_1.id, event_2.id]
 
-        # print(7, remove_duplicates_from_list(conflicts))
         return remove_duplicates_from_list(conflicts)
 
 
@@ -275,10 +266,8 @@ class SameVenueMaxMatchesPerDay(Constraint):
                     venues[venue_name][event.day].append(event.id)
                 if len(venues[venue_name][event.day]) > event.venue.max_matches_per_day:
                     if not constraint_check:
-                        # print(8, venues[venue_name][event.day])
                         return venues[venue_name][event.day]
                     conflicts += venues[venue_name][event.day]
-        # print(8, remove_duplicates_from_list(conflicts))
         return remove_duplicates_from_list(conflicts)
 
 
@@ -311,10 +300,8 @@ class SameSportMaxMatchesPerDay(Constraint):
                     sports[sport_name][event.day].append(event.id)
                 if len(sports[sport_name][event.day]) > int(self.get_params()["max_matches_per_day"]):
                     if not constraint_check:
-                        # print(9, sports[sport_name][event.day])
                         return sports[sport_name][event.day]
                     conflicts += sports[sport_name][event.day]
-        # print(9, remove_duplicates_from_list(conflicts))
         return remove_duplicates_from_list(conflicts)
 
 
@@ -333,7 +320,6 @@ class MaxCapacityAtFinal(Constraint):
         event = list(event.values())[0]
         bool_val = not (event.round.round_index == 0) or event.venue == max(global_variables.venues[event.sport.name],
                                                                             key=lambda venue: venue.capacity)
-        # print(10, [] if bool_val else [event.event_id])
         return [] if bool_val else [event.id]
 
 
@@ -354,26 +340,16 @@ class ValidMatchTime(Constraint):
         bool_val = sport.min_start_day <= event.day <= sport.max_finish_day and \
                    sport.min_start_time <= event.start_time and \
                    event.start_time + event.duration <= sport.max_finish_time
-        # print(11, [] if bool_val else [event.event_id])
         return [] if bool_val else [event.id]
 
 
-# Helper Functions
-def get_constraint_from_string(string: str):  # -> Type[Constraint]:
+def get_constraint_from_string(string: str):
     if not (string in constraints_list):
         handle_error("Constraint does not exist: " + string)
     return constraints_list[string]
 
 
-# def get_constraint_string_from_lambda(function) -> str:
-#     for key in constraints_list:
-#         if constraints_list[key].function == function:
-#             return key
-#
-#     handle_error("Constraint does not exist")
-
-
-# Params and constraint list
+# Constraint list
 constraints_list = {
     "same_venue_overlapping_time": SameVenueOverlappingTime,
     "no_later_rounds_before_earlier_rounds": NoLaterRoundsBeforeEarlierRounds,

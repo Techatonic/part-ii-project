@@ -2,7 +2,6 @@ import math
 from abc import ABC, abstractmethod
 from bisect import insort
 import operator
-from enum import Enum
 from typing import Type
 
 import pgeocode
@@ -98,13 +97,11 @@ class MaxMatchesPerDayHeuristic(OptionalConstraint):
         self._params = params
 
     def eval_constraint(self, csp_instance: Solver, assignments: dict[str, dict[str, Event]]) -> tuple[float, float]:
-        # assignments_heuristic = remove_scores_from_dict(assignments)
         events = flatten_events_by_sport_to_list(assignments)
 
         num_events_to_add = csp_instance.data["num_total_events"] - len(events)
 
         def get_matches_per_day(temp_assignments: list[Event]):
-            # print(temp_assignments)
             temp_assignments_by_day = {}
             for event in temp_assignments:
                 if not (event.day in temp_assignments_by_day):
@@ -133,32 +130,6 @@ class MaxMatchesPerDayHeuristic(OptionalConstraint):
         return curr, score
 
 
-# class MaximiseSportSpecificConstraints(OptionalConstraint):
-#     def set_variables(self, val):
-#         self._variables = val
-#
-#     def __init__(self, variables=None, sport: Sport = None, params: dict = None):
-#         self._constraint_string = "maximise_sport_specific_constraints"
-#         self._constraint_type = ConstraintType.ALL
-#         self._variables = variables
-#         self._sport = sport
-#         self._params = params
-#
-#     def eval_constraint(self, csp_instance: Type[Solver], assignments: dict[str, Event]) -> tuple[float, float]:
-#         curr = sum(assignments[sport][0] for sport in assignments)
-#
-#         optimal = 0
-#         try:
-#             for sport in csp_instance.queue.variables:
-#                 optimal += max(option[0] for option in sport.domain)
-#         except:
-#             handle_error("Non-CSOPSolver solver used when CSOPSolver was expected")
-#
-#         score = (curr + sum(max(option[0] for option in sport.domain) for sport in csp_instance.queue.variables if
-#                             not (sport.variable in assignments))) / optimal
-#         return curr, score
-
-
 class AvgCapacityHeuristic(OptionalConstraint):
     def set_variables(self, val):
         self._variables = val
@@ -172,7 +143,6 @@ class AvgCapacityHeuristic(OptionalConstraint):
 
     def eval_constraint(self, csp_instance: Type[Solver], assignments: dict[str, dict[str, Event]]) -> tuple[
         float, float]:
-        # print(f'Constraint: {self.get_constraint_string()}  - sport: {self.get_sport().name}')
         sports = list(assignments.keys())
 
         current = 0
@@ -235,7 +205,6 @@ class AvgDistanceToTravel(OptionalConstraint):
             for event in assignments:
                 match_distances.append(csp_instance.data["distances_to_travel"][sport_name][event.venue.name])
 
-            # curr = sum(match_distances) / len(match_distances)
             current += sum(match_distances)
 
             min_distance = min(csp_instance.data["distances_to_travel"][sport_name].values())
@@ -290,10 +259,6 @@ class AvgRestBetweenMatches(OptionalConstraint):
             if rest_dict == {}:
                 return 0, 0
             for temp_team in rest_dict:
-                # count = 0
-                # for temp_match in range(len(rest_dict[temp_team]) - 1):
-                #     count += rest_dict[temp_team][temp_match + 1] - rest_dict[temp_team][temp_match]
-                # rest_team_list.append(count / (len(rest_dict[temp_team]) - 1))
                 rest_team_list.append(
                     (rest_dict[temp_team][-1] - rest_dict[temp_team][0]) / (len(rest_dict[temp_team]) - 1))
 
@@ -323,25 +288,17 @@ class AvgRestBetweenMatches(OptionalConstraint):
                 "min_start_day"] + 1
 
             optimal = (days_available - 1) / (matches_to_win - 1)
-            # print()
-            # print(sport_name)
-            # print(curr, num_teams)
-            # print(optimal, num_teams)
 
-            # num_teams = len(list(rest_between_matches.keys()))
             current += curr * num_teams
             max_rest_total += optimal * num_teams
             team_count += num_teams
 
         if current > max_rest_total:
-            handle_error("ALERT ALERT: PROBLEM - MAX REST EVAL = " + str(current / max_rest_total) + " - " + str(
-                current) + " - " + str(max_rest_total), False)
             return current / team_count, 1
 
         if team_count == 0 or max_rest_total == 0:
             return 0, 1
 
-        # print(f'\neval score: {current / max_rest_total}')
         return current / team_count, current / max_rest_total
 
 
@@ -367,7 +324,6 @@ optional_constraints_list = {
     "avg_distance_to_travel": AvgDistanceToTravel,
     "avg_rest_between_matches": AvgRestBetweenMatches,
     "maximise_viewership": MaximiseViewership,
-    # "maximise_sport_specific_constraints": MaximiseSportSpecificConstraints
 }
 
 

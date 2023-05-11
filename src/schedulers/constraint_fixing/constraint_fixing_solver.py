@@ -72,7 +72,6 @@ class ConstraintFixingSolver:
             assignments[changed_event.id] = changed_event
             new_constraints_failed = self.__test_constraints(assignments, self.constraints)
             if new_constraints_failed == 0:
-                # print("Success by changing ", path + [changed_event.id], " at depth: ", new_depth + 1)
                 print(
                     f'num_changes_allowed: {self.num_changes_allowed}  -  {count} nodes checked in {time.time() - start} seconds')
                 return assignments, count
@@ -84,7 +83,6 @@ class ConstraintFixingSolver:
                         (new_depth + 1, next_event, assignments, path + [changed_event.id], new_constraints_failed))
         return None
 
-    # TODO This is basically the same as constraint_check in constraint_checker.py (except this is multiple constraints). Possibly merge them
     def __test_constraints(self, assignments, constraints: list[Constraint]) -> int:
         conflicts = []
         for constraint in constraints:

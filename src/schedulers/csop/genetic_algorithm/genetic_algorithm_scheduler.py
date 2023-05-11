@@ -110,8 +110,6 @@ class GeneticAlgorithmScheduler(Scheduler, ABC):
                 "num_total_events"] = match_num  # match_num at end of iteration = total number of matches
 
             for sport_specific_constraint in sport.constraints["required"]:
-                # TODO This has been changed to make it so you just add the constraint, not the specific events involved.
-                # TODO Fix the effects of this in other places, particularly with the constraint checker functionality
                 multisport_csp.add_constraint(sport_specific_constraint, sport=sport,
                                               params=sport.constraints["required"][sport_specific_constraint])
             for optional_constraint in sport.constraints["optional"]:
@@ -135,10 +133,8 @@ class GeneticAlgorithmScheduler(Scheduler, ABC):
         try:
             start_time = time.time()
             result, eval_score, eval_by_iteration, time_taken_by_iteration = multisport_csp.solve()
-            print(f'Eval Score: {eval_score}')
             end_time = time.time()
             if result is None:
-                print("No results")
                 return None
             complete_games = CompleteGames(self.data["tournament_length"], self.sports, eval_score=eval_score)
             for sport in result:

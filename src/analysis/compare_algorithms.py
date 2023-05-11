@@ -4,14 +4,17 @@ import sys
 import multiprocessing
 from multiprocessing import Queue
 
-sys.path.append("/home/danny/Documents/Uni/Year3/Diss/part-ii-project/")
+sys.path.append("")
 
 import main
 
 inputs = [
-    "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/inputs/example_input_tight_8.json",
-    "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/inputs/example_input_tight_16.json",
-    "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/inputs/example_input_tight_32.json"
+    "examples/inputs/example_input_tight_8.json",
+    "examples/inputs/example_input_tight_16.json",
+    "examples/inputs/example_input_tight_32.json",
+    "examples/inputs/example_input_normal_8.json"
+    "examples/inputs/example_input_normal_16.json"
+    "examples/inputs/example_input_normal_32.json"
 ]
 
 base_args = [
@@ -19,7 +22,7 @@ base_args = [
     "--import_path",
     "",
     "--export_path",
-    "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/outputs/test_output.json",
+    "examples/outputs/test_output.json",
 ]
 algorithms = {
     "backtracking": ['-b'],
@@ -52,28 +55,16 @@ for algorithm in algorithms:
         runtimes = []
         eval_scores = []
         for iteration in range(num_runs):
-            print(algorithm, import_path)
-
             base_args[2] = inputs[import_path]
             sys.argv = base_args + algorithms[algorithm]
 
-            # manager = multiprocessing.Manager()
-            # return_dict = manager.dict()
-
             Q = Queue()
-
-            # Start foo as a process
             p = multiprocessing.Process(target=call_main, name="main", args=(Q,))
             p.start()
-
-            # Wait 10 seconds for foo
             p.join(timeout=timeout_time)
 
             if p.is_alive():
-                # Terminate foo
                 p.terminate()
-
-                # Cleanup
                 p.join()
 
                 print(f'Failed to finish in {timeout_time} seconds')
@@ -93,14 +84,10 @@ for algorithm in algorithms:
                 "eval_score": "N/A"
             }
         else:
-            print(runtimes)
-            print(eval_scores)
             results[algorithm][import_path] = {
                 "time_taken": sum(runtimes) / len(runtimes),
                 "eval_score": sum(eval_scores) / len(eval_scores)
             }
-
-# print(results)
 
 with open('compare_algorithms_result.json', 'w') as fp:
     json.dump(results, fp)

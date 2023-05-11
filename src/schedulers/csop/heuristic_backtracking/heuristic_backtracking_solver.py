@@ -46,7 +46,6 @@ class HeuristicBacktrackingSolver(Solver, ABC):
 
     def add_optional_constraint(self, function_name: str, sport: Sport | None = None, params=None):
         params_copy = copy.deepcopy(params)
-        # print(params_copy)
         if params_copy is None:
             params_copy = {}
             if not ("weight" in params_copy):
@@ -54,11 +53,8 @@ class HeuristicBacktrackingSolver(Solver, ABC):
         if "inequality" in params_copy and type(params_copy['inequality']) == str:
             params_copy["inequality"] = get_inequality_operator_from_input(params_copy["inequality"])
 
-        # print(params_copy['inequality'])
-
         constraint = get_optional_constraint_from_string(function_name)
         self.optional_constraints.append(constraint(None, sport, params_copy))
-        # print(self.optional_constraints[0])
 
     def solve(self):
         self.data["start_time"] = time.time()
@@ -80,24 +76,16 @@ class HeuristicBacktrackingSolver(Solver, ABC):
 
     def __solve_variable(self, assignments, queue: PriorityQueue, best_solution: BestSolutions) -> Type[
                                                                                                        BestSolutions] | None | str:
-        # TODO Maybe add this back - I'd say probably not
-        # if time.time() - self.data["start_time"] > self.data["wait_time"]:
-        #    raise TimeoutError
         variable_type = self.data["variable_type"]
         assignments: dict[str, variable_type] = copy_assignments(assignments)
         queue = queue.__copy__()
-        # print(self.__heuristic(assignments) if len(assignments) > 0 else None)
         if len(queue.variables) == 0:
             heuristic_val = self.__heuristic(assignments)
             if heuristic_val > best_solution.get_worst_bound():
                 best_solution.update_bounds(heuristic_val, assignments)
-                # print("Improved solution found: ", best_solution)
             else:
-                # print(heuristic_val, bound_data)
-                # print("Solution found - bound not good enough")
                 pass
         else:
-            # print(len(assignments))
             variable = queue.pop()
 
             ###### Sort options by eval score #########
@@ -119,7 +107,6 @@ class HeuristicBacktrackingSolver(Solver, ABC):
                     result = self.__solve_variable(assignments, queue, best_solution)
                     if result is not None:
                         return result
-        # print("Returning none at end of function")
 
     def __heuristic(self, assignments):
         normalising_factor = sum(
@@ -129,11 +116,6 @@ class HeuristicBacktrackingSolver(Solver, ABC):
             handle_error("Weights of optional constraints sum to 0")
         if not self.__test_constraints(assignments, self.constraints):
             return 0
-
-        # return sum(
-        #     optional_constraint_heuristic.eval_constraint(self, assignments)[1] *
-        #     optional_constraint_heuristic.get_params()["weight"] for optional_constraint_heuristic in
-        #     self.optional_constraints) / normalising_factor
 
         assignments = {k: v[1] for k, v in assignments.items()}
         assignments = flatten_events_by_sport_to_dict(assignments)
@@ -145,7 +127,6 @@ class HeuristicBacktrackingSolver(Solver, ABC):
                 score += take_average_of_heuristics_across_all_sports(self, assignments,
                                                                       heuristic) * heuristic.get_params()["weight"]
             else:
-                # print(assignments[heuristic.get_sport().name])
                 if heuristic.get_sport().name in assignments:
                     score += \
                         heuristic.eval_constraint(self,
@@ -159,6 +140,5 @@ class HeuristicBacktrackingSolver(Solver, ABC):
     def __test_constraints(self, assignments, constraints: list[Constraint]) -> bool:
         conflicts = []
         for constraint in constraints:
-            # print(constraint)
             conflicts += constraint_check(constraint, assignments)
         return len(conflicts) == 0

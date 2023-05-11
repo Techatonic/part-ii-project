@@ -20,8 +20,6 @@ class CSPSolver:
         self.constraints = []
         self.optional_constraints = []
         self.forward_check = forward_check
-        # Todo remove this
-        self.counter = [0, 0]
 
     def add_variable(self, new_var: str, domain: list[Event]) -> None:
         if new_var in [variable.variable for variable in self.queue.variables]:
@@ -58,7 +56,7 @@ class CSPSolver:
         self.constraints = self.__add_all_events_to_constraints()
 
         if self.forward_check:
-            valid, new_queue = ac3(self.queue, self.constraints, self)
+            valid, new_queue = ac3(self.queue, self.constraints)
             if not valid:
                 return None
             self.queue.set(new_queue.variables)
@@ -69,16 +67,12 @@ class CSPSolver:
     def __add_all_events_to_constraints(self) -> list[Constraint]:
         events = [variable.variable for variable in self.queue.variables]
         for constraint in range(len(self.constraints)):
-            # print(self.constraints[constraint].variables)
             if self.constraints[constraint].get_variables() is not None:
                 continue
             self.constraints[constraint].set_variables(events)
-            # print()
-            # print(self.constraints[constraint].variables)
         return self.constraints
 
     def __solve_variable(self, assignments, queue: PriorityQueue, depth=0) -> dict[str, Event] | None:
-        # print(f'Depth: {depth}')
         assignments: dict[str, Event] = copy_assignments(assignments)
         queue = queue.__copy__()
 
@@ -93,32 +87,19 @@ class CSPSolver:
                                         variable.variable in constraint.get_variables()]
                 satisfies_all_constraints = self.__test_constraints(assignments, constraints_to_check)
                 if satisfies_all_constraints:
-                    # Remove from all other domains affected
                     if self.forward_check:
-                        valid, new_queue = ac3(queue, self.constraints, self)
+                        valid, new_queue = ac3(queue, self.constraints)
                         if not valid:
                             continue
                         queue.set(new_queue.variables)
 
-                    # ############ Remove items from domains ##############
-                    # for other_var in queue.variables:
-                    #     for other_option in other_var.domain:
-                    #         if not self.__test_constraints(
-                    #                 {variable.variable: option, other_var.variable: other_option}, [
-                    #                     NoLaterRoundsBeforeEarlierRounds(
-                    #                         {variable.variable: option, other_var.variable: other_option})]):
-                    #             other_var.domain.remove(other_option)
-                    # #####################################################
-
                     result = self.__solve_variable(assignments, queue, depth + 1)
                     if result is not None:
-                        # print(self.counter)
                         return result
             return None  # There is no valid assignment for this variable
 
         return assignments  # We have a valid assignment, return it
 
-    # TODO This is basically the same as constraint_check in constraint_checker.py (except this is multiple constraints). Possibly merge them
     def __test_constraints(self, assignments, constraints: list[Type[Constraint]]) -> bool:
         conflicts = []
         for constraint in constraints:

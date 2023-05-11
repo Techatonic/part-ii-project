@@ -1,12 +1,9 @@
 import copy
 import multiprocessing
-import sys
 import time
 
 import pandas as pd
 from matplotlib import pyplot as plt
-
-sys.path.append("/home/danny/Documents/Uni/Year3/Diss/part-ii-project/")
 
 from src.helper.helper import add_global_variables
 from src.input_handling.input_reader import read_and_validate_input
@@ -14,11 +11,10 @@ from src.input_handling.parse_input import parse_input
 from src.schedulers.csop.heuristic_backtracking.heuristic_backtracking_scheduler import HeuristicBacktrackingScheduler
 from src.schedulers.csop.heuristic_backtracking.heuristic_backtracking_solver import HeuristicBacktrackingSolver
 
-import_path = "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/inputs/example_input_normal_16.json"
-export_path = "/home/danny/Documents/Uni/Year3/Diss/part-ii-project/examples/outputs/test_output.json"
+import_path = "examples/inputs/example_input_normal_16.json"
+export_path = "examples/outputs/test_output.json"
+input_json = read_and_validate_input(import_path, 'schemata/input_schema.json')
 
-input_json = read_and_validate_input(import_path,
-                                     '/home/danny/Documents/Uni/Year3/Diss/part-ii-project/schemata/input_schema.json')
 [sports, general_constraints, data] = parse_input(input_json)
 add_global_variables(sports, data, general_constraints)
 data["general_constraints"] = general_constraints
@@ -37,7 +33,7 @@ def run(n, run):
 
 
 n_range = range(5, 51, 5)  # Range of num_results_to_collect values to check
-iterations = range(1, 101)  # Average across 10 tests
+iterations = range(1, 101)  # Average across 100 tests
 inputs = [(n, it) for n in n_range for it in iterations]
 pool = multiprocessing.Pool(8)
 outputs = pool.starmap(run, inputs)
@@ -69,11 +65,8 @@ df = pd.DataFrame({
     "avg_eval_score": list(avg_eval_score_by_iteration.values()),
     "runtimes": list(avg_runtime_by_iteration.values())
 })
-print(df.head())
 
 df.to_csv("heuristic_backtracking_analysis.csv")
-
-# df = pd.read_csv("heuristic_backtracking_analysis.csv")
 
 fig, ax = plt.subplots()
 line_1 = ax.plot(df["num_results_to_collect"], df["avg_eval_score"], label="Eval Score")

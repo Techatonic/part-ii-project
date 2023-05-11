@@ -1,14 +1,12 @@
 """
     A script for generating a solution to a CST scheduling problem
 """
-# TODO Make all copies use custom deepcopy
 import time
 import os
-from argparse import ArgumentParser, ArgumentTypeError
+from argparse import ArgumentParser
 
 from src.constraints.constraint_checker import constraint_checker
 from src.helper.handle_error import handle_error
-from src.games.complete_games import CompleteGames
 from src.helper.helper import add_global_variables
 from src.input_handling.input_reader import read_and_validate_input
 from src.input_handling.parse_input import parse_input, parse_input_constraint_checker
@@ -58,7 +56,6 @@ def main():
                             args.g, args.forward_check, args.export_path)
 
     end_time = time.time()
-    print("\nTime Taken: " + str(end_time - start_time), "\n")
     result.complete_games["time_taken"] = end_time - start_time
     return result
 
@@ -73,8 +70,6 @@ def run_constraint_checker(input_path: str, export_path: str | None = None, num_
     general_constraints['required'].update(default_constraints)
 
     conflicts = constraint_checker(sports, events, general_constraints)
-    # print(conflicts)
-    print(conflicts)
 
     if len(conflicts) == 0:
         print("No conflicts found - all constraints are satisfied")
@@ -115,7 +110,7 @@ def run_solver(input_path: str, use_python_module: bool, use_backtracking_solver
 
     solver = None
     scheduler = None
-    if use_python_module:
+    if use_python_module:  # Base solver
         solver = ModuleSolver
         scheduler = CSPScheduler
     elif use_heuristic_backtracking_solver:  # heuristic_backtracking CSOP solver

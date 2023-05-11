@@ -1,4 +1,3 @@
-from src.helper.handle_error import handle_error
 from src.venues.venue import Venue
 
 
