@@ -20,7 +20,8 @@ def generate_csp_problem(solver: Type[Solver], data: dict, forward_check: bool, 
     min_start_day: int = 0 if sport.min_start_day is None else sport.min_start_day
     max_finish_day: int = data[
         "tournament_length"] if sport.max_finish_day is None else sport.max_finish_day
-    round_order: list[Round] = list(reversed(generate_round_order(sport.num_teams, sport.num_teams_per_game)))
+    round_order: list[Round] = list(
+        reversed(generate_round_order(sport.num_teams, sport.num_teams_per_game)))
 
     for optional_constraint in sport.constraints["optional"]:
         csp_problem.add_optional_constraint(optional_constraint, sport,
@@ -42,13 +43,15 @@ def generate_csp_problem(solver: Type[Solver], data: dict, forward_check: bool, 
         max_per_day = sum(venue.max_matches_per_day for venue in venues)
 
     for _round in range(1, len(round_order)):
-        num_matches = len(matches) / 2 ** (round_order[0].round_index - round_order[_round - 1].round_index)
+        num_matches = len(
+            matches) / 2 ** (round_order[0].round_index - round_order[_round - 1].round_index)
         min_starts.append(min_starts[_round - 1] + max(math.ceil(num_matches / max_per_day),
                                                        sport.constraints['required']['team_time_between_matches'][
                                                            'min_time_between_matches']))
 
     for _round in range(len(round_order) - 2, -1, -1):
-        num_matches = len(matches) / 2 ** (round_order[0].round_index - round_order[_round + 1].round_index)
+        num_matches = len(
+            matches) / 2 ** (round_order[0].round_index - round_order[_round + 1].round_index)
         max_finishes.insert(0, max_finishes[0] - max(math.ceil(num_matches / max_per_day),
                                                      sport.constraints['required']['team_time_between_matches'][
                                                          'min_time_between_matches']))
@@ -59,25 +62,32 @@ def generate_csp_problem(solver: Type[Solver], data: dict, forward_check: bool, 
         for match in matches:
             options = []
             specific_min_start_day = min_starts[round_order.index(event_round)]
-            specific_max_finish_day = max_finishes[round_order.index(event_round)]
+            specific_max_finish_day = max_finishes[round_order.index(
+                event_round)]
 
             if specific_min_start_day > specific_max_finish_day and len(round_order) > 1:
-                handle_error("Insufficient number of days given for sport: ", sport.name)
+                handle_error(
+                    "Insufficient number of days given for sport: ", sport.name)
             if specific_max_finish_day - specific_min_start_day + 1 < len(matches) / max_per_day:
-                handle_error("Insufficient number of days given for sport: ", sport.name)
-            day_order = list(range(specific_min_start_day, specific_max_finish_day + 1))
+                handle_error(
+                    "Insufficient number of days given for sport: ", sport.name)
+            day_order = list(range(specific_min_start_day,
+                             specific_max_finish_day + 1))
             event_id = sport.name + "_" + str(match_num)
             for venue in venues:
-                min_start_time = max(sport.min_start_time, venue.min_start_time)
-                max_finish_time = min(sport.max_finish_time, venue.max_finish_time)
+                min_start_time = max(sport.min_start_time,
+                                     venue.min_start_time)
+                max_finish_time = min(
+                    sport.max_finish_time, venue.max_finish_time)
                 if "venue_time_between_matches" in sport.constraints['required']:
                     time_order = [int(x) for x in
                                   np.arange(min_start_time, math.ceil(max_finish_time - sport.match_duration) + 1,
                                             max(sport.constraints['required'][
-                                                    'venue_time_between_matches'][
-                                                    'min_time_between_matches'], 1))]
+                                                'venue_time_between_matches'][
+                                                'min_time_between_matches'], 1))]
                 else:
-                    time_order = list(range(min_start_time, math.ceil(max_finish_time - sport.match_duration) + 1))
+                    time_order = list(range(min_start_time, math.ceil(
+                        max_finish_time - sport.match_duration) + 1))
                 for time in time_order:
                     for day in day_order:
                         options.append(Event(sport, event_id, venue=venue, event_round=event_round,
@@ -86,7 +96,8 @@ def generate_csp_problem(solver: Type[Solver], data: dict, forward_check: bool, 
 
             random.shuffle(options)
 
-            csp_problem.add_variable(sport_name + "_" + str(match_num), options)
+            csp_problem.add_variable(
+                sport_name + "_" + str(match_num), options)
             variable_list.append(sport_name + "_" + str(match_num))
             match_num += 1
 

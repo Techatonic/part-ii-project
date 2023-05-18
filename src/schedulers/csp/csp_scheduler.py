@@ -37,7 +37,8 @@ class CSPScheduler(Scheduler, ABC):
             min_start_day: int = 0 if sport.min_start_day is None else sport.min_start_day
             max_finish_day: int = self.data[
                 "tournament_length"] if sport.max_finish_day is None else sport.max_finish_day
-            round_order: list[Round] = list(reversed(generate_round_order(sport.num_teams, sport.num_teams_per_game)))
+            round_order: list[Round] = list(
+                reversed(generate_round_order(sport.num_teams, sport.num_teams_per_game)))
 
             self.data[sport.name] = {
                 "domain_type": list[Event],
@@ -56,10 +57,11 @@ class CSPScheduler(Scheduler, ABC):
             csp_data["comparator"] = lambda curr, other: curr.domain[0].round.round_index > other.domain[
                 0].round.round_index or curr.domain[0].round.round_index == other.domain[0].round.round_index and len(
                 curr.domain) < len(other.domain) or curr.domain[0].round.round_index == other.domain[
-                                                             0].round.round_index and len(curr.domain) == len(
+                0].round.round_index and len(curr.domain) == len(
                 other.domain) and curr.variable < other.variable
 
-            csp_problem = generate_csp_problem(self.solver, csp_data, self.forward_check, sport)
+            csp_problem = generate_csp_problem(
+                self.solver, csp_data, self.forward_check, sport)
             self.constraints += csp_problem.constraints
             self.optional_constraints += csp_problem.optional_constraints
 
@@ -70,8 +72,10 @@ class CSPScheduler(Scheduler, ABC):
             # Add all sport-specific events to list of all events
             total_events[sport.name] = result
 
-        eval_score = calculate_fitness(total_events, self.constraints, self.optional_constraints, self, False)
-        complete_games = CompleteGames(self.data["tournament_length"], self.sports, eval_score=eval_score)
+        eval_score = calculate_fitness(
+            total_events, self.constraints, self.optional_constraints, self, False)
+        complete_games = CompleteGames(
+            self.data["tournament_length"], self.sports, eval_score=eval_score)
 
         for sport in total_events:
             for event in total_events[sport]:

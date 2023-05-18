@@ -42,7 +42,8 @@ class ConstraintFixingScheduler(Scheduler, ABC):
             min_start_day: int = 0 if sport.min_start_day is None else sport.min_start_day
             max_finish_day: int = self.data[
                 "tournament_length"] if sport.max_finish_day is None else sport.max_finish_day
-            round_order: list[Round] = list(reversed(generate_round_order(sport.num_teams, sport.num_teams_per_game)))
+            round_order: list[Round] = list(
+                reversed(generate_round_order(sport.num_teams, sport.num_teams_per_game)))
 
             csp_data = copy.deepcopy(self.data)
             csp_data.update({
@@ -64,7 +65,8 @@ class ConstraintFixingScheduler(Scheduler, ABC):
             })
             self.sports_data[sport.name] = csp_data
 
-            csp_problem = self.__generate_constraint_checker_csp_problem(sport.name)
+            csp_problem = self.__generate_constraint_checker_csp_problem(
+                sport.name)
 
             result = csp_problem.solve()
             if result is None:
@@ -77,7 +79,8 @@ class ConstraintFixingScheduler(Scheduler, ABC):
             # Add all sport-specific events to list of all events
             total_events[sport.name] = events
 
-        complete_games = CompleteGames(self.data["tournament_length"], self.sports)
+        complete_games = CompleteGames(
+            self.data["tournament_length"], self.sports)
         complete_games.complete_games["nodes_checked"] = total_nodes_checked
         for sport in total_events:
             for event in total_events[sport]:
@@ -85,7 +88,8 @@ class ConstraintFixingScheduler(Scheduler, ABC):
         return complete_games
 
     def __generate_constraint_checker_csp_problem(self, sport_name: str):
-        csp_problem = self.solver(self.sports_data[sport_name], forward_check=self.forward_check)
+        csp_problem = self.solver(
+            self.sports_data[sport_name], forward_check=self.forward_check)
         sport = self.sports[sport_name]
         csp_problem.data["num_total_events"] = self.sports_data[sport_name]["num_total_events"]
 
@@ -103,26 +107,31 @@ class ConstraintFixingScheduler(Scheduler, ABC):
             # Shuffle venues, days and times
             if "team_time_between_matches" in sport.constraints["required"]:
                 specific_min_start_day = self.sports_data[sport_name]["min_start_day"] + \
-                                         sport.constraints["required"]["team_time_between_matches"][
-                                             "min_time_between_matches"] * (self.sports_data[sport_name]["round_order"][
-                                                                                0].round_index - event_to_change.round.round_index)
+                    sport.constraints["required"]["team_time_between_matches"][
+                    "min_time_between_matches"] * (self.sports_data[sport_name]["round_order"][
+                        0].round_index - event_to_change.round.round_index)
                 specific_max_finish_day = self.sports_data[sport_name]["max_finish_day"] - \
-                                          sport.constraints["required"]["team_time_between_matches"][
-                                              "min_time_between_matches"] * event_to_change.round.round_index
+                    sport.constraints["required"]["team_time_between_matches"][
+                    "min_time_between_matches"] * event_to_change.round.round_index
             else:
                 specific_min_start_day = self.sports_data[sport_name]["min_start_day"] + \
-                                         self.sports_data[sport_name]["round_order"][
-                                             0].round_index - event_to_change.round.round_index
+                    self.sports_data[sport_name]["round_order"][
+                    0].round_index - event_to_change.round.round_index
                 specific_max_finish_day = self.sports_data[sport_name][
-                                              "max_finish_day"] - event_to_change.round.round_index
+                    "max_finish_day"] - event_to_change.round.round_index
             if specific_min_start_day >= specific_max_finish_day and len(
                     self.sports_data[sport_name]["round_order"]) > 1:
-                handle_error("Insufficient number of days given for sport: ", sport.name)
-            day_order = list(range(specific_min_start_day, specific_max_finish_day + 1))
+                handle_error(
+                    "Insufficient number of days given for sport: ", sport.name)
+            day_order = list(range(specific_min_start_day,
+                             specific_max_finish_day + 1))
             for venue in self.sports_data[sport_name]["venues"]:
-                min_start_time = max(sport.min_start_time, venue.min_start_time)
-                max_finish_time = min(sport.max_finish_time, venue.max_finish_time)
-                time_order = list(range(min_start_time, math.ceil(max_finish_time - sport.match_duration) + 1))
+                min_start_time = max(sport.min_start_time,
+                                     venue.min_start_time)
+                max_finish_time = min(
+                    sport.max_finish_time, venue.max_finish_time)
+                time_order = list(range(min_start_time, math.ceil(
+                    max_finish_time - sport.match_duration) + 1))
                 for time in time_order:
                     for day in day_order:
                         options.append(

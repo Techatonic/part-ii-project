@@ -7,7 +7,8 @@ class BestSolutions:
         self.num_results = num_results
 
     def update_bounds(self, heuristic_val: float, assignments):
-        insort(self.best_solutions, (heuristic_val, assignments), key=lambda x: x[0])
+        insort(self.best_solutions, (heuristic_val,
+               assignments), key=lambda x: x[0])
         while len(self.best_solutions) > self.num_results:
             self.best_solutions.pop(0)
 

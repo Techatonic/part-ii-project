@@ -37,7 +37,8 @@ def parse_input(json_input):
 def parse_input_constraint_checker(json_input):
     try:
         [sports, general_constraints, data] = parse_input(json_input)
-        venues = [venue for x in sports.values() for venue in x.possible_venues]
+        venues = [venue for x in sports.values()
+                  for venue in x.possible_venues]
         events = {}
 
         for sport in json_input['sports']:

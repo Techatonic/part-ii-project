@@ -40,4 +40,5 @@ class CompleteGames:
             "events": self.complete_games["events"]
         }
         with open(path, "w") as file:
-            json.dump(dict_to_export, file, indent=4, default=lambda o: o.__dict__, skipkeys=True)
+            json.dump(dict_to_export, file, indent=4,
+                      default=lambda o: o.__dict__, skipkeys=True)

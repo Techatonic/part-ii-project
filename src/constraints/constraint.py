@@ -62,7 +62,8 @@ class Constraint(ABC):
         return self._constraint_string == other.get_constraint_string() and self._variables == other.get_variables()
 
     def __hash__(self):
-        hash((self._constraint_string, self._sport, self._constraint_type, self._params, self._variables))
+        hash((self._constraint_string, self._sport,
+             self._constraint_type, self._params, self._variables))
 
 
 class SameVenueOverlappingTime(Constraint):
@@ -80,14 +81,16 @@ class SameVenueOverlappingTime(Constraint):
         if isinstance(variables[0], type(self)):
             variables = variables[1:]
         variables = remove_tuple_from_events(variables)
-        variables = list(variables.values()) if type(variables) == dict else variables
+        variables = list(variables.values()) if type(
+            variables) == dict else variables
         venues = {}
         conflicts = []
         for event in variables:
             venue_name = event.venue.name
             if not venue_name in venues:
                 venues[venue_name] = {
-                    event.day: {event.id: [event.start_time, event.start_time + event.duration]}
+                    event.day: {event.id: [
+                        event.start_time, event.start_time + event.duration]}
                 }
             else:
                 if not event.day in venues[venue_name]:
@@ -120,7 +123,8 @@ class TeamTimeBetweenMatches(Constraint):
         if isinstance(variables[0], type(self)):
             variables = variables[1:]
         variables = remove_tuple_from_events(variables)
-        variables = list(variables.values()) if type(variables) == dict else variables
+        variables = list(variables.values()) if type(
+            variables) == dict else variables
         conflicts = []
         if len(variables) == 0:
             return [] if constraint_check else True
@@ -160,7 +164,8 @@ class VenueTimeBetweenMatches(Constraint):
         if isinstance(variables[0], type(self)):
             variables = variables[1:]
         variables = remove_tuple_from_events(variables)
-        variables = list(variables.values()) if type(variables) == dict else variables
+        variables = list(variables.values()) if type(
+            variables) == dict else variables
         conflicts = []
         if len(variables) == 0:
             return [] if constraint_check else True
@@ -172,7 +177,8 @@ class VenueTimeBetweenMatches(Constraint):
                 venues[venue_name] = {event.day: {event.id: event.start_time}}
             else:
                 if not (event.day in venues[venue_name]):
-                    venues[venue_name][event.day] = {event.id: event.start_time}
+                    venues[venue_name][event.day] = {
+                        event.id: event.start_time}
                 else:
                     for other_event, other_time in venues[venue_name][event.day].items():
                         if abs(event.start_time + event.duration - other_time) < \
@@ -203,17 +209,21 @@ class NoLaterRoundsBeforeEarlierRounds(Constraint):
         if isinstance(variables[0], type(self)):
             variables = variables[1:]
         variables = remove_tuple_from_events(variables)
-        variables = list(variables.values()) if type(variables) == dict else variables
+        variables = list(variables.values()) if type(
+            variables) == dict else variables
         sports = {}
         conflicts = []
         for variable in variables:
             if not (variable.sport.name in sports):
-                sports[variable.sport.name] = {variable.round.round_index: [variable]}
+                sports[variable.sport.name] = {
+                    variable.round.round_index: [variable]}
             else:
                 if not (variable.round.round_index in sports[variable.sport.name]):
-                    sports[variable.sport.name][variable.round.round_index] = [variable]
+                    sports[variable.sport.name][variable.round.round_index] = [
+                        variable]
                 else:
-                    sports[variable.sport.name][variable.round.round_index].append(variable)
+                    sports[variable.sport.name][variable.round.round_index].append(
+                        variable)
         variables_by_sport = sports.values()
 
         for sport_variables in variables_by_sport:
@@ -251,7 +261,8 @@ class SameVenueMaxMatchesPerDay(Constraint):
         if isinstance(variables[0], type(self)):
             variables = variables[1:]
         variables = remove_tuple_from_events(variables)
-        variables = list(variables.values()) if type(variables) == dict else variables
+        variables = list(variables.values()) if type(
+            variables) == dict else variables
         venues = {}
         conflicts = []
 
@@ -287,7 +298,8 @@ class SameSportMaxMatchesPerDay(Constraint):
             variables = variables[1:]
         sports = {}
         variables = remove_tuple_from_events(variables)
-        variables = list(variables.values()) if type(variables) == dict else variables
+        variables = list(variables.values()) if type(
+            variables) == dict else variables
         conflicts = []
         for event in variables:
             sport_name = event.sport.name
@@ -338,8 +350,8 @@ class ValidMatchTime(Constraint):
         event = list(event.values())[0]
         sport = event.sport
         bool_val = sport.min_start_day <= event.day <= sport.max_finish_day and \
-                   sport.min_start_time <= event.start_time and \
-                   event.start_time + event.duration <= sport.max_finish_time
+            sport.min_start_time <= event.start_time and \
+            event.start_time + event.duration <= sport.max_finish_time
         return [] if bool_val else [event.id]
 
 

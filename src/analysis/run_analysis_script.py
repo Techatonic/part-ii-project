@@ -5,8 +5,10 @@ import numpy as np
 import pandas as pd
 
 parser = ArgumentParser('Analysis on Runtime of Event Scheduler')
-parser.add_argument("-n", required=True, type=int, help="Number of times to run the program")
-parser.add_argument("--stmt", required=True, type=str, help="statement to execute")
+parser.add_argument("-n", required=True, type=int,
+                    help="Number of times to run the program")
+parser.add_argument("--stmt", required=True, type=str,
+                    help="statement to execute")
 args = None
 try:
     args = parser.parse_args()

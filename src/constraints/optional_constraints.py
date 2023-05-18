@@ -67,18 +67,21 @@ class OptionalConstraint(ABC):
         return self._constraint_string == other.constraint.get_constraint_string() and self._variables == other.get_variables()
 
     def __hash__(self):
-        hash((self._constraint_string, self._sport, self._constraint_type, self._params, self._variables))
+        hash((self._constraint_string, self._sport,
+             self._constraint_type, self._params, self._variables))
 
 
 def take_average_of_heuristics_across_all_sports(csp_instance: Solver,
                                                  assignments_by_sport: dict[str, dict[str, Event]],
                                                  heuristic: Type[OptionalConstraint]) -> float:
-    assignments_by_sport = widen_events_to_events_by_sport(flatten_events_by_sport_to_dict(assignments_by_sport))
+    assignments_by_sport = widen_events_to_events_by_sport(
+        flatten_events_by_sport_to_dict(assignments_by_sport))
 
     heuristic_count = 0
     sport_count = 0
     for sport in assignments_by_sport:
-        _, score = heuristic.eval_constraint(csp_instance, {sport: assignments_by_sport[sport]})
+        _, score = heuristic.eval_constraint(
+            csp_instance, {sport: assignments_by_sport[sport]})
         heuristic_count += score
         sport_count += 1
     return heuristic_count / sport_count
@@ -142,7 +145,7 @@ class AvgCapacityHeuristic(OptionalConstraint):
         self._params = params
 
     def eval_constraint(self, csp_instance: Type[Solver], assignments: dict[str, dict[str, Event]]) -> tuple[
-        float, float]:
+            float, float]:
         sports = list(assignments.keys())
 
         current = 0
@@ -155,7 +158,8 @@ class AvgCapacityHeuristic(OptionalConstraint):
             count = sum(event.venue.capacity for event in assignments)
             current += count
             sport = assignments[0].sport
-            max_venue_capacity = max(venue.capacity for venue in sport.possible_venues)
+            max_venue_capacity = max(
+                venue.capacity for venue in sport.possible_venues)
             max_possible += len(assignments) * max_venue_capacity
             event_count += len(assignments)
 
@@ -174,7 +178,7 @@ class AvgDistanceToTravel(OptionalConstraint):
         self._params = params
 
     def eval_constraint(self, csp_instance: Type[Solver], assignments: dict[str, dict[str, Event]]) -> tuple[
-        float, float]:
+            float, float]:
         sports = list(assignments.keys())
 
         current = 0
@@ -197,17 +201,20 @@ class AvgDistanceToTravel(OptionalConstraint):
                         continue
                     sports_seen.append(sport)
                     for venue in sport.possible_venues:
-                        distances_to_travel[venue.name] = dist.query_postal_code(accommodation, venue.postcode)
+                        distances_to_travel[venue.name] = dist.query_postal_code(
+                            accommodation, venue.postcode)
                 csp_instance.data["distances_to_travel"][sport_name] = distances_to_travel
 
             match_distances = []
 
             for event in assignments:
-                match_distances.append(csp_instance.data["distances_to_travel"][sport_name][event.venue.name])
+                match_distances.append(
+                    csp_instance.data["distances_to_travel"][sport_name][event.venue.name])
 
             current += sum(match_distances)
 
-            min_distance = min(csp_instance.data["distances_to_travel"][sport_name].values())
+            min_distance = min(
+                csp_instance.data["distances_to_travel"][sport_name].values())
             min_distance_total += min_distance * len(match_distances)
             event_count += len(match_distances)
 
@@ -255,7 +262,8 @@ class AvgRestBetweenMatches(OptionalConstraint):
     def eval_constraint(self, csp_instance: Solver, assignments: dict[str, dict[str, Event]]) -> tuple[float, float]:
         def get_avg_rest(rest_dict) -> tuple[float, float]:
             rest_team_list = []
-            rest_dict = {k: v for k, v in rest_dict.items() if len(rest_dict[k]) > 1}
+            rest_dict = {k: v for k, v in rest_dict.items()
+                         if len(rest_dict[k]) > 1}
             if rest_dict == {}:
                 return 0, 0
             for temp_team in rest_dict:
@@ -333,4 +341,5 @@ def get_inequality_operator_from_input(inequality: str):
     elif inequality == "MINIMISE":
         return operator.lt
     else:
-        handle_error("Inequality given is: \n" + inequality + "\nInequality operator does not exist")
+        handle_error("Inequality given is: \n" + inequality +
+                     "\nInequality operator does not exist")

@@ -30,7 +30,8 @@ data["general_constraints"] = general_constraints
 
 def compare_iterations_inner(n):
     _data = copy.deepcopy(data)
-    scheduler = GeneticAlgorithmScheduler(GeneticAlgorithmSolver, sports, _data, False)
+    scheduler = GeneticAlgorithmScheduler(
+        GeneticAlgorithmSolver, sports, _data, False)
     result = scheduler.schedule_events()
     return result.complete_games
 
@@ -76,13 +77,15 @@ def compare_iterations():
     df.to_csv("ga_iterations_analysis.csv", index_label="GA Iterations")
 
     fig, ax = plt.subplots()
-    line_1 = ax.plot(df["iterations"], df["avg_eval_score"], label="Eval Score")
+    line_1 = ax.plot(df["iterations"],
+                     df["avg_eval_score"], label="Eval Score")
     ax.set_xticks([i for i in range(0, ga_iterations + 1, 25)])
     ax.set_ylabel("Eval Score")
     ax.set_xlabel("GA Iterations")
 
     ax1 = ax.twinx()
-    line_2 = ax1.plot(df['iterations'], df['runtimes'], label="Runtime (s)", color="orange")
+    line_2 = ax1.plot(df['iterations'], df['runtimes'],
+                      label="Runtime (s)", color="orange")
     ax1.set_ylabel("Runtime (s)")
 
     lns = line_1 + line_2
@@ -95,7 +98,8 @@ def compare_iterations():
 def compare_population_size_run(run, populations, ga_iterations):
     run_start_time = time.time()
     scores = []
-    initial_population = [initialise_population(run) for _ in range(populations[-1])]
+    initial_population = [initialise_population(
+        run) for _ in range(populations[-1])]
     for size in populations:
         data["genetic_algorithm_iterations"] = ga_iterations
         data["initial_population_size"] = size
@@ -106,7 +110,8 @@ def compare_population_size_run(run, populations, ga_iterations):
             continue
         result_eval = result.complete_games["eval_score"]
 
-        print("Run #", run + 1, " " * 4, "population size: ", size, " " * 4, "eval score: ", result_eval)
+        print("Run #", run + 1, " " * 4, "population size: ",
+              size, " " * 4, "eval score: ", result_eval)
         scores.append([size, result_eval])
 
     run_end_time = time.time()
@@ -154,9 +159,11 @@ def initialise_population(run):
 
 def compare_iterations_and_population_size_run(run, populations, ga_iterations):
     initialise_population_start_time = time.time()
-    initial_population = [initialise_population(run) for _ in range(max(populations))]
+    initial_population = [initialise_population(
+        run) for _ in range(max(populations))]
     initialise_population_end_time = time.time()
-    initialise_time = (initialise_population_end_time - initialise_population_start_time) / max(populations)
+    initialise_time = (initialise_population_end_time -
+                       initialise_population_start_time) / max(populations)
 
     run_start_time = time.time()
     scores = []
@@ -173,9 +180,11 @@ def compare_iterations_and_population_size_run(run, populations, ga_iterations):
         eval_by_iteration = result.complete_games["eval_by_iteration"]
         time_taken_by_iteration = result.complete_games["time_taken_by_iteration"]
 
-        print("Run # ", run + 1, " " * 4, "Initial Population: ", size, " " * 4, " " * 4, "Time Taken: ", time_taken)
+        print("Run # ", run + 1, " " * 4, "Initial Population: ",
+              size, " " * 4, " " * 4, "Time Taken: ", time_taken)
         for key in eval_by_iteration:
-            scores.append([size, key, eval_by_iteration[key], time_taken_by_iteration[key] + initialise_time * size])
+            scores.append([size, key, eval_by_iteration[key],
+                          time_taken_by_iteration[key] + initialise_time * size])
 
     run_end_time = time.time()
     print("Runtime for run #", run + 1, ": ", run_end_time - run_start_time)
@@ -186,13 +195,15 @@ def draw_heatmap(data_to_show, cmap, x_labels, y_labels, title, x_title, y_title
                  colorbar_label=None):
     fig = plt.figure(figsize=(20, 10))
     ax = plt.gca()
-    colormesh = ax.pcolormesh(x_labels, y_labels, data_to_show, cmap=cmap, linewidths=0.1)
+    colormesh = ax.pcolormesh(
+        x_labels, y_labels, data_to_show, cmap=cmap, linewidths=0.1)
     x_ticks = x_labels if x_ticks is None else x_ticks
     y_ticks = y_labels if y_ticks is None else y_ticks
 
     tick_positions_y = []
     for position in range(len(y_ticks) - 1):
-        tick_positions_y.append(y_ticks[position] + (y_ticks[position + 1] - y_ticks[position]) / 2)
+        tick_positions_y.append(
+            y_ticks[position] + (y_ticks[position + 1] - y_ticks[position]) / 2)
 
     ax.set_xticks(x_ticks)
     ax.set_yticks(tick_positions_y, y_ticks[:-1])
@@ -224,13 +235,18 @@ def compare_iterations_and_population_size():
         inputs.append([iteration, populations, ga_iterations])
 
     pool = multiprocessing.Pool(8)
-    outputs = list(zip(*pool.starmap(compare_iterations_and_population_size_run, inputs)))
+    outputs = list(
+        zip(*pool.starmap(compare_iterations_and_population_size_run, inputs)))
 
-    eval_scores = [[[] for j in range(len(ga_iterations))] for i in range(len(populations))]
-    runtimes = [[[] for j in range(len(ga_iterations))] for i in range(len(populations))]
+    eval_scores = [[[] for j in range(len(ga_iterations))]
+                   for i in range(len(populations))]
+    runtimes = [[[] for j in range(len(ga_iterations))]
+                for i in range(len(populations))]
 
-    avg_eval_scores = [[0.0 for j in range(len(ga_iterations))] for i in range(len(populations))]
-    avg_runtimes = [[0.0 for j in range(len(ga_iterations))] for i in range(len(populations))]
+    avg_eval_scores = [
+        [0.0 for j in range(len(ga_iterations))] for i in range(len(populations))]
+    avg_runtimes = [[0.0 for j in range(len(ga_iterations))]
+                    for i in range(len(populations))]
     for size_result in outputs:
         for size_iteration_result in size_result:
             x = populations.index(size_iteration_result[0])
@@ -248,15 +264,18 @@ def compare_iterations_and_population_size():
                 runtimes[size][size_iteration])
             avg_runtimes[size][size_iteration] = round(avg_runtime, 3)
 
-    df = pd.DataFrame(avg_eval_scores, columns=ga_iterations, index=populations)
+    df = pd.DataFrame(avg_eval_scores, columns=ga_iterations,
+                      index=populations)
     df.to_csv("./avg_eval_score.csv", index_label="Population Size")
 
     df = pd.DataFrame(avg_runtimes, columns=ga_iterations, index=populations)
     df.to_csv("./avg_runtimes.csv", index_label="Population Size")
 
     avg_performance_per_second = np.divide(avg_eval_scores, avg_runtimes)
-    df = pd.DataFrame(avg_performance_per_second, columns=ga_iterations, index=populations)
-    df.to_csv("./avg_performance_per_second.csv", index_label="Population Size")
+    df = pd.DataFrame(avg_performance_per_second,
+                      columns=ga_iterations, index=populations)
+    df.to_csv("./avg_performance_per_second.csv",
+              index_label="Population Size")
 
     cmap = LinearSegmentedColormap.from_list('rg', ["darkred", "red", "lightcoral", "palegreen", "green", "darkgreen"],
                                              N=256)
@@ -277,9 +296,12 @@ def compare_iterations_and_population_size():
 
 
 parser = ArgumentParser('Analysis of Genetic Algorithms')
-parser.add_argument("-i", action='store_true', help="iterations vs performance")
-parser.add_argument("-ip", action='store_true', help="initial population size vs performance")
-parser.add_argument("-iip", action='store_true', help="initial population size + iterations vs performance")
+parser.add_argument("-i", action='store_true',
+                    help="iterations vs performance")
+parser.add_argument("-ip", action='store_true',
+                    help="initial population size vs performance")
+parser.add_argument("-iip", action='store_true',
+                    help="initial population size + iterations vs performance")
 
 args = None
 try:

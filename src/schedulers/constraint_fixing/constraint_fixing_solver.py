@@ -33,7 +33,8 @@ class ConstraintFixingSolver:
     def add_constraint(self, function_name: str, variables: list[str] | None = None,
                        sport: Sport | None = None, params: dict = None) -> None:
         constraint = get_constraint_from_string(function_name)
-        self.constraints.append(constraint(variables, sport, copy.deepcopy(params)))
+        self.constraints.append(constraint(
+            variables, sport, copy.deepcopy(params)))
 
     def add_optional_constraint(self, function_name: str, sport: Sport | None = None, params: object = None):
         pass
@@ -50,13 +51,16 @@ class ConstraintFixingSolver:
         # Add all events to constraints for all events
         self.constraints = self.__add_all_events_to_constraints()
 
-        all_events = [value for variable in self.variables for value in self.variables[variable]]
+        all_events = [
+            value for variable in self.variables for value in self.variables[variable]]
 
-        constraints_failed = self.__test_constraints(self.assignments, self.constraints)
+        constraints_failed = self.__test_constraints(
+            self.assignments, self.constraints)
         if constraints_failed == 0:
             return self.assignments, 0
 
-        queue = [(0, value, self.assignments, [], constraints_failed) for value in all_events]
+        queue = [(0, value, self.assignments, [], constraints_failed)
+                 for value in all_events]
 
         start = time.time()
         count = 0
@@ -67,10 +71,12 @@ class ConstraintFixingSolver:
             if queue[0][0] > curr_depth:
                 queue = sorted(queue, key=lambda x: x[4])
                 curr_depth += 1
-            new_depth, changed_event, assignments, path, constraints_failed = queue.pop(0)
+            new_depth, changed_event, assignments, path, constraints_failed = queue.pop(
+                0)
             assignments = copy_assignments(assignments)
             assignments[changed_event.id] = changed_event
-            new_constraints_failed = self.__test_constraints(assignments, self.constraints)
+            new_constraints_failed = self.__test_constraints(
+                assignments, self.constraints)
             if new_constraints_failed == 0:
                 print(
                     f'num_changes_allowed: {self.num_changes_allowed}  -  {count} nodes checked in {time.time() - start} seconds')

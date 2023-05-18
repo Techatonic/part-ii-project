@@ -1,3 +1,4 @@
+import main
 import json
 
 import pytest
@@ -8,7 +9,6 @@ import sys
 import copy
 
 sys.path.append("./")
-import main
 
 base_args = [
     "main.py",

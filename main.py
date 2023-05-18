@@ -23,17 +23,22 @@ from src.schedulers.base.base_solver import ModuleSolver
 
 def main():
     parser = ArgumentParser('Automated Event Scheduler')
-    parser.add_argument("--import_path", required=True, type=str, help="read json input from this path")
-    parser.add_argument("--export_path", required=False, type=str, help="export json output to this path")
+    parser.add_argument("--import_path", required=True,
+                        type=str, help="read json input from this path")
+    parser.add_argument("--export_path", required=False,
+                        type=str, help="export json output to this path")
     parser.add_argument("-c", required=False, type=int, metavar='N',
                         help="run input_path on constraint checker and allow up to N changed events")
-    parser.add_argument("-m", action='store_true', help="run on CSP base solver")
-    parser.add_argument("-b", action='store_true', help="run on CSP backtracking solver")
+    parser.add_argument("-m", action='store_true',
+                        help="run on CSP base solver")
+    parser.add_argument("-b", action='store_true',
+                        help="run on CSP backtracking solver")
     parser.add_argument("-hb", required=False, type=int, metavar='N',
                         help="run on CSOP heuristic_backtracking solver using N schedules for each sport")
     parser.add_argument("-g", required=False, type=int, nargs=2, metavar=('P', 'G'),
                         help="run on CSOP genetic algorithm solver with iniital population of size P and G generations")
-    parser.add_argument("-forward_check", action='store_true', help="run forward checking algorithm on solver")
+    parser.add_argument("-forward_check", action='store_true',
+                        help="run forward checking algorithm on solver")
 
     args = parser.parse_args()
 
@@ -50,7 +55,8 @@ def main():
     start_time = time.time()
     result = None
     if args.c:
-        result = run_constraint_checker(args.import_path, args.export_path, args.c)
+        result = run_constraint_checker(
+            args.import_path, args.export_path, args.c)
     else:
         result = run_solver(args.import_path, args.m, args.b, args.hb,
                             args.g, args.forward_check, args.export_path)
@@ -61,9 +67,11 @@ def main():
 
 
 def run_constraint_checker(input_path: str, export_path: str | None = None, num_changes=1):
-    input_json = read_and_validate_input(input_path, 'schemata/input_schema_constraint_checker.json')
+    input_json = read_and_validate_input(
+        input_path, 'schemata/input_schema_constraint_checker.json')
 
-    [sports, events, general_constraints, data] = parse_input_constraint_checker(input_json)
+    [sports, events, general_constraints,
+        data] = parse_input_constraint_checker(input_json)
     add_global_variables(sports, data, general_constraints)
 
     default_constraints = {"valid_match_time": {}}
@@ -80,7 +88,8 @@ def run_constraint_checker(input_path: str, export_path: str | None = None, num_
             handle_error(conflict_str, exit_program=False)
         data['conflicts'] = conflicts
 
-        scheduler = ConstraintFixingScheduler(ConstraintFixingSolver, sports, data, False, events, num_changes)
+        scheduler = ConstraintFixingScheduler(
+            ConstraintFixingSolver, sports, data, False, events, num_changes)
 
         result = scheduler.schedule_events()
         if result is None:
@@ -92,7 +101,8 @@ def run_constraint_checker(input_path: str, export_path: str | None = None, num_
 
             except Exception as e:
                 print(e)
-                handle_error("Export failed. Please try again ensuring a valid output path is given")
+                handle_error(
+                    "Export failed. Please try again ensuring a valid output path is given")
         else:
             print("No export path given")
 
@@ -102,7 +112,8 @@ def run_constraint_checker(input_path: str, export_path: str | None = None, num_
 def run_solver(input_path: str, use_python_module: bool, use_backtracking_solver: bool,
                use_heuristic_backtracking_solver: int, use_genetic_algorithm: list | None,
                forward_check: bool, export_path: str | None = None):
-    input_json = read_and_validate_input(input_path, 'schemata/input_schema.json')
+    input_json = read_and_validate_input(
+        input_path, 'schemata/input_schema.json')
 
     [sports, general_constraints, data] = parse_input(input_json)
     add_global_variables(sports, data, general_constraints)
@@ -140,7 +151,8 @@ def run_solver(input_path: str, use_python_module: bool, use_backtracking_solver
 
         except Exception as e:
             print(e)
-            handle_error("Export failed. Please try again ensuring a valid output path is given")
+            handle_error(
+                "Export failed. Please try again ensuring a valid output path is given")
 
     return result
 

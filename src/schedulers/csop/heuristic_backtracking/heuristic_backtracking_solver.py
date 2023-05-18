@@ -42,7 +42,8 @@ class HeuristicBacktrackingSolver(Solver, ABC):
     def add_constraint(self, function_name: str, variables: list[str] | None = None,
                        sport: Sport | None = None, params: dict = None) -> None:
         constraint = get_constraint_from_string(function_name)
-        self.constraints.append(constraint(variables, sport, copy.deepcopy(params)))
+        self.constraints.append(constraint(
+            variables, sport, copy.deepcopy(params)))
 
     def add_optional_constraint(self, function_name: str, sport: Sport | None = None, params=None):
         params_copy = copy.deepcopy(params)
@@ -51,7 +52,8 @@ class HeuristicBacktrackingSolver(Solver, ABC):
             if not ("weight" in params_copy):
                 params_copy["weight"] = 1
         if "inequality" in params_copy and type(params_copy['inequality']) == str:
-            params_copy["inequality"] = get_inequality_operator_from_input(params_copy["inequality"])
+            params_copy["inequality"] = get_inequality_operator_from_input(
+                params_copy["inequality"])
 
         constraint = get_optional_constraint_from_string(function_name)
         self.optional_constraints.append(constraint(None, sport, params_copy))
@@ -75,7 +77,7 @@ class HeuristicBacktrackingSolver(Solver, ABC):
             self.constraints.remove(unary_constraint)
 
     def __solve_variable(self, assignments, queue: PriorityQueue, best_solution: BestSolutions) -> Type[
-                                                                                                       BestSolutions] | None | str:
+            BestSolutions] | None | str:
         variable_type = self.data["variable_type"]
         assignments: dict[str, variable_type] = copy_assignments(assignments)
         queue = queue.__copy__()
@@ -104,7 +106,8 @@ class HeuristicBacktrackingSolver(Solver, ABC):
                 assignments[variable.variable] = option
 
                 if self.__test_constraints(assignments, self.constraints):
-                    result = self.__solve_variable(assignments, queue, best_solution)
+                    result = self.__solve_variable(
+                        assignments, queue, best_solution)
                     if result is not None:
                         return result
 

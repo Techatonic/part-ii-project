@@ -43,7 +43,8 @@ class HeuristicBacktrackingScheduler(Scheduler, ABC):
             min_start_day: int = 0 if sport.min_start_day is None else sport.min_start_day
             max_finish_day: int = self.data[
                 "tournament_length"] if sport.max_finish_day is None else sport.max_finish_day
-            round_order: list[Round] = list(reversed(generate_round_order(sport.num_teams, sport.num_teams_per_game)))
+            round_order: list[Round] = list(
+                reversed(generate_round_order(sport.num_teams, sport.num_teams_per_game)))
 
             csp_data = copy.deepcopy(self.data)
             sport_specific_data[sport.name] = {
@@ -60,7 +61,7 @@ class HeuristicBacktrackingScheduler(Scheduler, ABC):
             csp_data.update({
                 "comparator": lambda curr, other: curr.domain[0].round.round_index > other.domain[
                     0].round.round_index or curr.domain[0].round.round_index == other.domain[
-                                                      0].round.round_index and len(
+                    0].round.round_index and len(
                     curr.domain) < len(other.domain),
                 "wait_time": 5,
                 "domain_type": list[Event],
@@ -73,12 +74,16 @@ class HeuristicBacktrackingScheduler(Scheduler, ABC):
             for _ in range(self.data['num_results_to_collect']):
                 attempts = 5
                 while True:
-                    csp_problem = generate_csp_problem(CSPSolver, csp_data, self.forward_check, sport)
+                    csp_problem = generate_csp_problem(
+                        CSPSolver, csp_data, self.forward_check, sport)
                     most_recent_csp = csp_problem
-                    csp_data[sport.name]["num_total_events"] = len(csp_problem.get_variables())
-                    num_total_events[sport.name] = len(csp_problem.get_variables())
+                    csp_data[sport.name]["num_total_events"] = len(
+                        csp_problem.get_variables())
+                    num_total_events[sport.name] = len(
+                        csp_problem.get_variables())
                     for optional_constraint in csp_problem.optional_constraints:
-                        sport_specific_data[sport.name]['optional_constraints'].append(optional_constraint)
+                        sport_specific_data[sport.name]['optional_constraints'].append(
+                            optional_constraint)
                     try:
                         result = csp_problem.solve()
                         fitness = calculate_fitness(widen_events_to_events_by_sport(result), csp_problem.constraints,
@@ -121,7 +126,8 @@ class HeuristicBacktrackingScheduler(Scheduler, ABC):
             for sport_key in [sport_1, sport_2]:
                 sorted_options_by_optimality = sorted(total_events[sport_key], key=lambda option: option[0],
                                                       reverse=True)
-                multisport_csp.add_variable(sport_key, sorted_options_by_optimality)
+                multisport_csp.add_variable(
+                    sport_key, sorted_options_by_optimality)
 
             for required_constraint in self.data["general_constraints"]["required"]:
                 multisport_csp.add_constraint(required_constraint,
@@ -157,7 +163,8 @@ class HeuristicBacktrackingScheduler(Scheduler, ABC):
         eval_score = calculate_fitness(result, most_recent_csp.constraints, most_recent_csp.optional_constraints,
                                        most_recent_csp)
 
-        complete_games = CompleteGames(self.data["tournament_length"], self.sports, eval_score)
+        complete_games = CompleteGames(
+            self.data["tournament_length"], self.sports, eval_score)
 
         for sport in result:
             for event in result[sport]:

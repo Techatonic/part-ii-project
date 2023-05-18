@@ -37,7 +37,8 @@ class CSPSolver:
     def add_constraint(self, class_name: str, variables: list[str] | None = None,
                        sport: Sport | None = None, params: dict = None) -> None:
         class_ref = get_constraint_from_string(class_name)
-        self.constraints.append(class_ref(variables, sport, copy.deepcopy(params)))
+        self.constraints.append(
+            class_ref(variables, sport, copy.deepcopy(params)))
 
     def add_optional_constraint(self, function_name: str, sport: Sport | None = None, params: object = None):
         params_copy = copy.deepcopy(params)
@@ -46,7 +47,8 @@ class CSPSolver:
         if not ("weight" in params_copy):
             params_copy["weight"] = 1
         if "inequality" in params_copy:
-            params_copy["inequality"] = get_inequality_operator_from_input(params_copy["inequality"])
+            params_copy["inequality"] = get_inequality_operator_from_input(
+                params_copy["inequality"])
 
         constraint = get_optional_constraint_from_string(function_name)
         self.optional_constraints.append(constraint(None, sport, params_copy))
@@ -85,7 +87,8 @@ class CSPSolver:
                 # Only need to test constraints involving the variable
                 constraints_to_check = [constraint for constraint in self.constraints if
                                         variable.variable in constraint.get_variables()]
-                satisfies_all_constraints = self.__test_constraints(assignments, constraints_to_check)
+                satisfies_all_constraints = self.__test_constraints(
+                    assignments, constraints_to_check)
                 if satisfies_all_constraints:
                     if self.forward_check:
                         valid, new_queue = ac3(queue, self.constraints)
@@ -93,7 +96,8 @@ class CSPSolver:
                             continue
                         queue.set(new_queue.variables)
 
-                    result = self.__solve_variable(assignments, queue, depth + 1)
+                    result = self.__solve_variable(
+                        assignments, queue, depth + 1)
                     if result is not None:
                         return result
             return None  # There is no valid assignment for this variable

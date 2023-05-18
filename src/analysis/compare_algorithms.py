@@ -1,3 +1,4 @@
+import main
 import copy
 import json
 import sys
@@ -6,7 +7,6 @@ from multiprocessing import Queue
 
 sys.path.append("")
 
-import main
 
 inputs = [
     "examples/inputs/example_input_tight_8.json",
@@ -59,7 +59,8 @@ for algorithm in algorithms:
             sys.argv = base_args + algorithms[algorithm]
 
             Q = Queue()
-            p = multiprocessing.Process(target=call_main, name="main", args=(Q,))
+            p = multiprocessing.Process(
+                target=call_main, name="main", args=(Q,))
             p.start()
             p.join(timeout=timeout_time)
 

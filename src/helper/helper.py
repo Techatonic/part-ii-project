@@ -37,7 +37,7 @@ def flatten_events_by_sport_to_dict(input_dict: dict[str, dict[str, Event]]) -> 
 
 
 def flatten_events_by_sport_to_dict_with_scores(input_dict: tuple[float, dict[str, dict[str, Event]]]) -> dict[
-    str, Event]:
+        str, Event]:
     events = {}
     for sport in input_dict[1]:
         for event in input_dict[1][sport][1]:
@@ -131,7 +131,7 @@ def heuristic(assignments: dict[str, dict[str, Event]], optional_constraints, cs
                 individual_score = heuristic.eval_constraint(csp_instance,
                                                              {heuristic.get_sport().name: assignments[
                                                                  heuristic.get_sport().name]})[
-                                       1] * heuristic.get_params()["weight"]
+                    1] * heuristic.get_params()["weight"]
                 if individual_score < 0 or individual_score > 1:
                     handle_error(
                         f'Constraint eval score out of bounds: \nsport: {heuristic.get_sport().name}  -  constraint: {heuristic.get_constraint_string()}  -  score: {individual_score}')
@@ -148,12 +148,15 @@ def calculate_fitness(assignments: dict[str, dict[str, Event]], constraints,
     assignments_flatten = flatten_events_by_sport_to_dict(assignments)
     for constraint in constraints:
         if constraint.get_sport() is None:
-            constraints_broken += len(constraint_check(constraint, assignments_flatten)) > 0
+            constraints_broken += len(constraint_check(constraint,
+                                      assignments_flatten)) > 0
         else:
             sport_name = constraint.get_sport().name
-            constraints_broken += len(constraint_check(constraint, assignments[sport_name])) > 0
+            constraints_broken += len(constraint_check(constraint,
+                                      assignments[sport_name])) > 0
 
-    optional_constraints_score = heuristic(assignments, optional_constraints, csp_instance)
+    optional_constraints_score = heuristic(
+        assignments, optional_constraints, csp_instance)
     if constraints_broken > 0 and not accept_invalid_solutions:
         return 0
     return optional_constraints_score / (2 ** constraints_broken)

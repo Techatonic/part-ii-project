@@ -22,7 +22,8 @@ def ac3(queue: PriorityQueue, constraints: list[Constraint]) -> object:
             variable.domain = [option for option in variable.domain if
                                valid_constraint_check(unary_constraint, {option.id: option})]
 
-    worklist = [(x, y) for x in temp_queue.variables for y in temp_queue.variables if x != y]
+    worklist = [(x, y)
+                for x in temp_queue.variables for y in temp_queue.variables if x != y]
 
     while len(worklist) > 0:
         (x, y) = worklist.pop(0)
@@ -33,7 +34,8 @@ def ac3(queue: PriorityQueue, constraints: list[Constraint]) -> object:
             if len(x.domain) == 0:
                 return False, None
 
-            worklist += [(x, z) for z in temp_queue.variables if z != y and z != x]
+            worklist += [(x, z)
+                         for z in temp_queue.variables if z != y and z != x]
 
     return True, temp_queue
 
