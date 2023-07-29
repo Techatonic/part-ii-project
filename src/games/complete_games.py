@@ -20,12 +20,18 @@ class CompleteGames:
         return self.__repr__()
 
     def __repr__(self) -> str:
-        return json.dumps(self.complete_games, indent=4, default=lambda o: o.__dict__, skipkeys=True)
+        return json.dumps(
+            self.complete_games, indent=4, default=lambda o: o.__dict__, skipkeys=True
+        )
 
     def __eq__(self, other):
-        return type(self) == type(other) and self.complete_games["days_of_tournament"] == other.complete_games[
-            "days_of_tournament"] and self.complete_games["sports"] == other.complete_games["sports"] and \
-            self.complete_games["events"] == other.complete_games["events"]
+        return (
+            type(self) == type(other)
+            and self.complete_games["days_of_tournament"]
+            == other.complete_games["days_of_tournament"]
+            and self.complete_games["sports"] == other.complete_games["sports"]
+            and self.complete_games["events"] == other.complete_games["events"]
+        )
 
     def export(self, path) -> None:
         for sport in self.complete_games["events"]:
@@ -37,8 +43,13 @@ class CompleteGames:
 
         dict_to_export = {
             "eval_score": self.complete_games["eval_score"],
-            "events": self.complete_games["events"]
+            "events": self.complete_games["events"],
         }
         with open(path, "w") as file:
-            json.dump(dict_to_export, file, indent=4,
-                      default=lambda o: o.__dict__, skipkeys=True)
+            json.dump(
+                dict_to_export,
+                file,
+                indent=4,
+                default=lambda o: o.__dict__,
+                skipkeys=True,
+            )

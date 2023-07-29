@@ -7,26 +7,26 @@ from ..venues.venue import Venue, convert_string_to_venue_instance
 
 def parse_input(json_input):
     try:
-        data = json_input['data']
-        general_constraints = json_input['general_constraints']
+        data = json_input["data"]
+        general_constraints = json_input["general_constraints"]
         sports = {}
-        for sport in json_input['sports'].values():
+        for sport in json_input["sports"].values():
             venues = []
-            for venue in sport['venues']:
+            for venue in sport["venues"]:
                 venues.append(parse_venue(venue))
 
-            sports[sport['name']] = Sport(
-                sport['name'],
+            sports[sport["name"]] = Sport(
+                sport["name"],
                 venues,
-                sport['teams'],
-                sport['num_teams_per_game'],
-                sport['duration'],
-                sport['is_knockout'],
-                sport['min_start_day'],
-                sport['max_finish_day'],
-                sport['min_start_time'],
-                sport['max_finish_time'],
-                sport['constraints']
+                sport["teams"],
+                sport["num_teams_per_game"],
+                sport["duration"],
+                sport["is_knockout"],
+                sport["min_start_day"],
+                sport["max_finish_day"],
+                sport["min_start_time"],
+                sport["max_finish_time"],
+                sport["constraints"],
             )
         return [sports, general_constraints, data]
     except Exception as e:
@@ -37,13 +37,12 @@ def parse_input(json_input):
 def parse_input_constraint_checker(json_input):
     try:
         [sports, general_constraints, data] = parse_input(json_input)
-        venues = [venue for x in sports.values()
-                  for venue in x.possible_venues]
+        venues = [venue for x in sports.values() for venue in x.possible_venues]
         events = {}
 
-        for sport in json_input['sports']:
+        for sport in json_input["sports"]:
             events[sport] = {}
-            for event in json_input['sports'][sport]['events']:
+            for event in json_input["sports"][sport]["events"]:
                 events[sport][event["event_id"]] = Event(
                     sports[event["sport"]],
                     event["event_id"],
@@ -52,7 +51,7 @@ def parse_input_constraint_checker(json_input):
                     event["day"],
                     event["start_time"],
                     event["duration"],
-                    event["teams_involved"]
+                    event["teams_involved"],
                 )
         return [sports, events, general_constraints, data]
     except Exception as e:
@@ -61,8 +60,16 @@ def parse_input_constraint_checker(json_input):
 
 
 def parse_venue(venue):
-    return Venue(venue['name'], venue['location_coordinates'], venue['location_address'], venue['location_postcode'],
-                 venue['capacity'], venue['min_start_time'], venue['max_finish_time'], venue['max_matches_per_day'])
+    return Venue(
+        venue["name"],
+        venue["location_coordinates"],
+        venue["location_address"],
+        venue["location_postcode"],
+        venue["capacity"],
+        venue["min_start_time"],
+        venue["max_finish_time"],
+        venue["max_matches_per_day"],
+    )
 
 
 def parse_group_stage(group_stage):

@@ -14,7 +14,7 @@ inputs = [
     "examples/inputs/example_input_tight_32.json",
     "examples/inputs/example_input_normal_8.json"
     "examples/inputs/example_input_normal_16.json"
-    "examples/inputs/example_input_normal_32.json"
+    "examples/inputs/example_input_normal_32.json",
 ]
 
 base_args = [
@@ -25,10 +25,10 @@ base_args = [
     "examples/outputs/test_output.json",
 ]
 algorithms = {
-    "backtracking": ['-b'],
-    "heuristic_backtracking": ['-hb', '25'],
-    "genetic_algorithm": ['-g', '100', '75'],
-    "base": ['-m'],
+    "backtracking": ["-b"],
+    "heuristic_backtracking": ["-hb", "25"],
+    "genetic_algorithm": ["-g", "100", "75"],
+    "base": ["-m"],
 }
 
 num_runs = 10
@@ -47,10 +47,7 @@ for algorithm in algorithms:
     should_break = False
     for import_path in range(len(inputs)):
         if should_break:
-            results[algorithm][import_path] = {
-                "time_taken": "N/A",
-                "eval_score": "N/A"
-            }
+            results[algorithm][import_path] = {"time_taken": "N/A", "eval_score": "N/A"}
             continue
         runtimes = []
         eval_scores = []
@@ -59,8 +56,7 @@ for algorithm in algorithms:
             sys.argv = base_args + algorithms[algorithm]
 
             Q = Queue()
-            p = multiprocessing.Process(
-                target=call_main, name="main", args=(Q,))
+            p = multiprocessing.Process(target=call_main, name="main", args=(Q,))
             p.start()
             p.join(timeout=timeout_time)
 
@@ -68,7 +64,7 @@ for algorithm in algorithms:
                 p.terminate()
                 p.join()
 
-                print(f'Failed to finish in {timeout_time} seconds')
+                print(f"Failed to finish in {timeout_time} seconds")
                 runtimes += ["N/A"] * (num_runs - iteration)
                 eval_scores += ["N/A"] * (num_runs - iteration)
                 should_break = True
@@ -76,19 +72,16 @@ for algorithm in algorithms:
 
             result = Q.get()
 
-            runtimes.append(result['time_taken'])
-            eval_scores.append(result['eval_score'])
+            runtimes.append(result["time_taken"])
+            eval_scores.append(result["eval_score"])
 
         if "N/A" in runtimes:
-            results[algorithm][import_path] = {
-                "time_taken": "N/A",
-                "eval_score": "N/A"
-            }
+            results[algorithm][import_path] = {"time_taken": "N/A", "eval_score": "N/A"}
         else:
             results[algorithm][import_path] = {
                 "time_taken": sum(runtimes) / len(runtimes),
-                "eval_score": sum(eval_scores) / len(eval_scores)
+                "eval_score": sum(eval_scores) / len(eval_scores),
             }
 
-with open('compare_algorithms_result.json', 'w') as fp:
+with open("compare_algorithms_result.json", "w") as fp:
     json.dump(results, fp)

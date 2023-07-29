@@ -1,9 +1,16 @@
 import copy
 from typing import Type
 
-from src.constraints.constraint import Constraint, get_constraint_from_string, NoLaterRoundsBeforeEarlierRounds
+from src.constraints.constraint import (
+    Constraint,
+    get_constraint_from_string,
+    NoLaterRoundsBeforeEarlierRounds,
+)
 from src.constraints.constraint_checker import constraint_check
-from src.constraints.optional_constraints import get_inequality_operator_from_input, get_optional_constraint_from_string
+from src.constraints.optional_constraints import (
+    get_inequality_operator_from_input,
+    get_optional_constraint_from_string,
+)
 from src.helper.handle_error import handle_error
 
 from src.events.event import Event
@@ -34,13 +41,19 @@ class CSPSolver:
             variables[variable.variable] = variable.domain
         return variables
 
-    def add_constraint(self, class_name: str, variables: list[str] | None = None,
-                       sport: Sport | None = None, params: dict = None) -> None:
+    def add_constraint(
+        self,
+        class_name: str,
+        variables: list[str] | None = None,
+        sport: Sport | None = None,
+        params: dict = None,
+    ) -> None:
         class_ref = get_constraint_from_string(class_name)
-        self.constraints.append(
-            class_ref(variables, sport, copy.deepcopy(params)))
+        self.constraints.append(class_ref(variables, sport, copy.deepcopy(params)))
 
-    def add_optional_constraint(self, function_name: str, sport: Sport | None = None, params: object = None):
+    def add_optional_constraint(
+        self, function_name: str, sport: Sport | None = None, params: object = None
+    ):
         params_copy = copy.deepcopy(params)
         if params_copy is None:
             params_copy = {}
@@ -48,7 +61,8 @@ class CSPSolver:
             params_copy["weight"] = 1
         if "inequality" in params_copy:
             params_copy["inequality"] = get_inequality_operator_from_input(
-                params_copy["inequality"])
+                params_copy["inequality"]
+            )
 
         constraint = get_optional_constraint_from_string(function_name)
         self.optional_constraints.append(constraint(None, sport, params_copy))
@@ -74,7 +88,9 @@ class CSPSolver:
             self.constraints[constraint].set_variables(events)
         return self.constraints
 
-    def __solve_variable(self, assignments, queue: PriorityQueue, depth=0) -> dict[str, Event] | None:
+    def __solve_variable(
+        self, assignments, queue: PriorityQueue, depth=0
+    ) -> dict[str, Event] | None:
         assignments: dict[str, Event] = copy_assignments(assignments)
         queue = queue.__copy__()
 
@@ -85,10 +101,14 @@ class CSPSolver:
                 assignments[variable.variable] = option
 
                 # Only need to test constraints involving the variable
-                constraints_to_check = [constraint for constraint in self.constraints if
-                                        variable.variable in constraint.get_variables()]
+                constraints_to_check = [
+                    constraint
+                    for constraint in self.constraints
+                    if variable.variable in constraint.get_variables()
+                ]
                 satisfies_all_constraints = self.__test_constraints(
-                    assignments, constraints_to_check)
+                    assignments, constraints_to_check
+                )
                 if satisfies_all_constraints:
                     if self.forward_check:
                         valid, new_queue = ac3(queue, self.constraints)
@@ -96,15 +116,16 @@ class CSPSolver:
                             continue
                         queue.set(new_queue.variables)
 
-                    result = self.__solve_variable(
-                        assignments, queue, depth + 1)
+                    result = self.__solve_variable(assignments, queue, depth + 1)
                     if result is not None:
                         return result
             return None  # There is no valid assignment for this variable
 
         return assignments  # We have a valid assignment, return it
 
-    def __test_constraints(self, assignments, constraints: list[Type[Constraint]]) -> bool:
+    def __test_constraints(
+        self, assignments, constraints: list[Type[Constraint]]
+    ) -> bool:
         conflicts = []
         for constraint in constraints:
             conflicts += constraint_check(constraint, assignments)

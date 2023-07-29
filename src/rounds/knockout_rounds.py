@@ -3,7 +3,7 @@ from src.helper.handle_error import handle_error
 
 class Round:
     """
-        Defines a generic round of a tournament
+    Defines a generic round of a tournament
     """
 
     def __init__(self, round_name, num_matches, round_index):
@@ -31,7 +31,7 @@ knockout_rounds = [
     Round("Round of 16", 8, 3),
     Round("Round of 32", 16, 4),
     Round("Round of 64", 32, 5),
-    Round("Round of 128", 64, 6)
+    Round("Round of 128", 64, 6),
 ]
 
 

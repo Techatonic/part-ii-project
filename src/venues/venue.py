@@ -3,12 +3,20 @@ from src.helper.handle_error import handle_error
 
 class Venue:
     """
-        Class defining a generic venue
+    Class defining a generic venue
     """
 
-    def __init__(self, name: str, coordinates: list[int] | None = None, address: str | None = None,
-                 postcode: str | None = None,
-                 capacity: int | None = None, min_start_time=1, max_finish_time=24, max_matches_per_day=1) -> None:
+    def __init__(
+        self,
+        name: str,
+        coordinates: list[int] | None = None,
+        address: str | None = None,
+        postcode: str | None = None,
+        capacity: int | None = None,
+        min_start_time=1,
+        max_finish_time=24,
+        max_matches_per_day=1,
+    ) -> None:
         self.name = name
         self.coordinates = coordinates
         self.address = address

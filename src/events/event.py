@@ -1,10 +1,19 @@
 class Event:
     """
-        Class for an event including its venue and start and end times
+    Class for an event including its venue and start and end times
     """
 
     def __init__(
-            self, sport, _id, venue, event_round, day, start_time, duration, teams_involved=None) -> None:
+        self,
+        sport,
+        _id,
+        venue,
+        event_round,
+        day,
+        start_time,
+        duration,
+        teams_involved=None,
+    ) -> None:
         self.round = event_round
         self.sport = sport
         self.id = _id
@@ -31,9 +40,27 @@ class Event:
 
     # Uses hash instead of __eq__ because Event classes are turned into Variable classes by the python-constraint module
     def __hash__(self):
-        return hash((self.round, self.sport, self.id, self.venue, self.day, self.start_time, self.duration,
-                     frozenset(self.teams_involved)))
+        return hash(
+            (
+                self.round,
+                self.sport,
+                self.id,
+                self.venue,
+                self.day,
+                self.start_time,
+                self.duration,
+                frozenset(self.teams_involved),
+            )
+        )
 
     def __copy__(self):
-        return Event(self.sport, self.id, self.venue, self.round, self.day, self.start_time, self.duration,
-                     self.teams_involved)
+        return Event(
+            self.sport,
+            self.id,
+            self.venue,
+            self.round,
+            self.day,
+            self.start_time,
+            self.duration,
+            self.teams_involved,
+        )

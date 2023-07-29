@@ -20,11 +20,18 @@ class Solver(ABC):
         pass
 
     @abstractmethod
-    def add_constraint(self, function_name: str, variables: list[str] | None = None,
-                       sport: Sport | None = None, params: dict = None) -> None:
+    def add_constraint(
+        self,
+        function_name: str,
+        variables: list[str] | None = None,
+        sport: Sport | None = None,
+        params: dict = None,
+    ) -> None:
         pass
 
-    def add_optional_constraint(self, function_name: str, sport: Sport | None = None, params: dict = None):
+    def add_optional_constraint(
+        self, function_name: str, sport: Sport | None = None, params: dict = None
+    ):
         pass
 
     @abstractmethod

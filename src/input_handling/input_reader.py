@@ -6,8 +6,8 @@ from src.helper.handle_error import handle_error
 
 
 def read_and_validate_input(path: str, schema_path: str) -> dict:
-    with open(path, 'r') as input_file:
-        with open(schema_path, 'r') as schemaFile:
+    with open(path, "r") as input_file:
+        with open(schema_path, "r") as schemaFile:
             input_json: dict = json.load(input_file)
             schema = json.load(schemaFile)
 

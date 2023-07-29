@@ -1,8 +1,12 @@
 from src.input_handling.parse_input import parse_input_constraint_checker
 from src.input_handling.input_reader import read_and_validate_input
 from src.helper.helper import add_global_variables
-from src.schedulers.constraint_fixing.constraint_fixing_solver import ConstraintFixingSolver
-from src.schedulers.constraint_fixing.constraint_fixing_scheduler import ConstraintFixingScheduler
+from src.schedulers.constraint_fixing.constraint_fixing_solver import (
+    ConstraintFixingSolver,
+)
+from src.schedulers.constraint_fixing.constraint_fixing_scheduler import (
+    ConstraintFixingScheduler,
+)
 from src.constraints.constraint_checker import constraint_checker
 import multiprocessing
 import sys
@@ -18,24 +22,26 @@ export_path = "examples/outputs/test_output.json"
 
 
 def run(n, run):
-    import_path = "examples/inputs/example_input_constraint_checker_" + \
-        str(n) + ".json"
+    import_path = "examples/inputs/example_input_constraint_checker_" + str(n) + ".json"
 
     input_json = read_and_validate_input(
-        import_path, 'schemata/input_schema_constraint_checker.json')
-    [sports, events, general_constraints,
-        data] = parse_input_constraint_checker(input_json)
+        import_path, "schemata/input_schema_constraint_checker.json"
+    )
+    [sports, events, general_constraints, data] = parse_input_constraint_checker(
+        input_json
+    )
     add_global_variables(sports, data, general_constraints)
     data["general_constraints"] = general_constraints
 
     default_constraints = {"valid_match_time": {}}
-    general_constraints['required'].update(default_constraints)
+    general_constraints["required"].update(default_constraints)
 
     conflicts = constraint_checker(sports, events, general_constraints)
-    data['conflicts'] = conflicts
+    data["conflicts"] = conflicts
 
     scheduler = ConstraintFixingScheduler(
-        ConstraintFixingSolver, sports, data, False, events, n)
+        ConstraintFixingSolver, sports, data, False, events, n
+    )
     start_time = time.time()
     complete_games = scheduler.schedule_events().complete_games
     complete_games["time_taken"] = time.time() - start_time
@@ -61,17 +67,21 @@ for result in outputs:
     avg_nodes_checked[result["num_fixes"]].append(result["nodes_checked"])
 
 for iteration in avg_runtime_by_iteration:
-    avg_runtime_by_iteration[iteration] = sum(avg_runtime_by_iteration[iteration]) / len(
-        avg_runtime_by_iteration[iteration])
+    avg_runtime_by_iteration[iteration] = sum(
+        avg_runtime_by_iteration[iteration]
+    ) / len(avg_runtime_by_iteration[iteration])
 for iteration in avg_nodes_checked:
-    avg_nodes_checked[iteration] = sum(
-        avg_nodes_checked[iteration]) / len(avg_nodes_checked[iteration])
+    avg_nodes_checked[iteration] = sum(avg_nodes_checked[iteration]) / len(
+        avg_nodes_checked[iteration]
+    )
 
-df = pd.DataFrame({
-    "num_fixes": list(avg_runtime_by_iteration.keys()),
-    "runtimes": list(avg_runtime_by_iteration.values()),
-    "nodes_checked": list(avg_nodes_checked.values())
-})
+df = pd.DataFrame(
+    {
+        "num_fixes": list(avg_runtime_by_iteration.keys()),
+        "runtimes": list(avg_runtime_by_iteration.values()),
+        "nodes_checked": list(avg_nodes_checked.values()),
+    }
+)
 
 df.to_csv("bfs_analysis.csv")
 

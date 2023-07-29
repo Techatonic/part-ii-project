@@ -9,8 +9,8 @@ from src.sports.sport import Sport
 
 
 class ConstraintType(Enum):
-    UNARY = 1,
-    BINARY = 2,
+    UNARY = (1,)
+    BINARY = (2,)
     ALL = 3
 
 
@@ -59,11 +59,21 @@ class Constraint(ABC):
         \n}}"""
 
     def __eq__(self, other):
-        return self._constraint_string == other.get_constraint_string() and self._variables == other.get_variables()
+        return (
+            self._constraint_string == other.get_constraint_string()
+            and self._variables == other.get_variables()
+        )
 
     def __hash__(self):
-        hash((self._constraint_string, self._sport,
-             self._constraint_type, self._params, self._variables))
+        hash(
+            (
+                self._constraint_string,
+                self._sport,
+                self._constraint_type,
+                self._params,
+                self._variables,
+            )
+        )
 
 
 class SameVenueOverlappingTime(Constraint):
@@ -77,34 +87,48 @@ class SameVenueOverlappingTime(Constraint):
         self._sport = sport
         self._params = params
 
-    def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
+    def eval_constraint(
+        self, *variables: dict[str, Event], constraint_check=False
+    ) -> list[str]:
         if isinstance(variables[0], type(self)):
             variables = variables[1:]
         variables = remove_tuple_from_events(variables)
-        variables = list(variables.values()) if type(
-            variables) == dict else variables
+        variables = list(variables.values()) if type(variables) == dict else variables
         venues = {}
         conflicts = []
         for event in variables:
             venue_name = event.venue.name
             if not venue_name in venues:
                 venues[venue_name] = {
-                    event.day: {event.id: [
-                        event.start_time, event.start_time + event.duration]}
+                    event.day: {
+                        event.id: [event.start_time, event.start_time + event.duration]
+                    }
                 }
             else:
                 if not event.day in venues[venue_name]:
                     venues[venue_name][event.day] = {
-                        event.id: [event.start_time, event.start_time + event.duration]}
+                        event.id: [event.start_time, event.start_time + event.duration]
+                    }
                 else:
-                    for other_event, time_check in venues[venue_name][event.day].items():
-                        if (event.start_time <= time_check[0] < event.start_time + event.duration) or \
-                                (time_check[0] <= event.start_time < time_check[0] + time_check[1]):
+                    for other_event, time_check in venues[venue_name][
+                        event.day
+                    ].items():
+                        if (
+                            event.start_time
+                            <= time_check[0]
+                            < event.start_time + event.duration
+                        ) or (
+                            time_check[0]
+                            <= event.start_time
+                            < time_check[0] + time_check[1]
+                        ):
                             if not constraint_check:
                                 return [event.id, other_event]
                             conflicts += [event.id, other_event]
-                    venues[venue_name][event.day][event.id] = [event.start_time,
-                                                               event.start_time + event.duration]
+                    venues[venue_name][event.day][event.id] = [
+                        event.start_time,
+                        event.start_time + event.duration,
+                    ]
         return remove_duplicates_from_list(conflicts)
 
 
@@ -119,12 +143,13 @@ class TeamTimeBetweenMatches(Constraint):
         self._sport = sport
         self._params = params
 
-    def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
+    def eval_constraint(
+        self, *variables: dict[str, Event], constraint_check=False
+    ) -> list[str]:
         if isinstance(variables[0], type(self)):
             variables = variables[1:]
         variables = remove_tuple_from_events(variables)
-        variables = list(variables.values()) if type(
-            variables) == dict else variables
+        variables = list(variables.values()) if type(variables) == dict else variables
         conflicts = []
         if len(variables) == 0:
             return [] if constraint_check else True
@@ -139,9 +164,12 @@ class TeamTimeBetweenMatches(Constraint):
                     teams[team] = {event.id: event_day}
                 else:
                     for other_event, other_day in teams[team].items():
-                        if abs(event_day - other_day) < \
-                                global_variables.constraint_params[sport]["required"]["team_time_between_matches"][
-                                    "min_time_between_matches"]:
+                        if (
+                            abs(event_day - other_day)
+                            < global_variables.constraint_params[sport]["required"][
+                                "team_time_between_matches"
+                            ]["min_time_between_matches"]
+                        ):
                             if not constraint_check:
                                 return [event.id, other_event]
                             conflicts += [event.id, other_event]
@@ -160,12 +188,13 @@ class VenueTimeBetweenMatches(Constraint):
         self._sport = sport
         self._params = params
 
-    def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
+    def eval_constraint(
+        self, *variables: dict[str, Event], constraint_check=False
+    ) -> list[str]:
         if isinstance(variables[0], type(self)):
             variables = variables[1:]
         variables = remove_tuple_from_events(variables)
-        variables = list(variables.values()) if type(
-            variables) == dict else variables
+        variables = list(variables.values()) if type(variables) == dict else variables
         conflicts = []
         if len(variables) == 0:
             return [] if constraint_check else True
@@ -177,16 +206,21 @@ class VenueTimeBetweenMatches(Constraint):
                 venues[venue_name] = {event.day: {event.id: event.start_time}}
             else:
                 if not (event.day in venues[venue_name]):
-                    venues[venue_name][event.day] = {
-                        event.id: event.start_time}
+                    venues[venue_name][event.day] = {event.id: event.start_time}
                 else:
-                    for other_event, other_time in venues[venue_name][event.day].items():
-                        if abs(event.start_time + event.duration - other_time) < \
-                                global_variables.constraint_params[sport]["required"]["venue_time_between_matches"][
-                                    "min_time_between_matches"] or \
-                                abs(event.start_time - (other_time + event.duration)) < \
-                                global_variables.constraint_params[sport]["required"]["venue_time_between_matches"][
-                                    "min_time_between_matches"]:
+                    for other_event, other_time in venues[venue_name][
+                        event.day
+                    ].items():
+                        if (
+                            abs(event.start_time + event.duration - other_time)
+                            < global_variables.constraint_params[sport]["required"][
+                                "venue_time_between_matches"
+                            ]["min_time_between_matches"]
+                            or abs(event.start_time - (other_time + event.duration))
+                            < global_variables.constraint_params[sport]["required"][
+                                "venue_time_between_matches"
+                            ]["min_time_between_matches"]
+                        ):
                             if not constraint_check:
                                 return [event.id, other_event]
                             conflicts += [event.id, other_event]
@@ -205,37 +239,42 @@ class NoLaterRoundsBeforeEarlierRounds(Constraint):
         self._sport = sport
         self._params = params
 
-    def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
+    def eval_constraint(
+        self, *variables: dict[str, Event], constraint_check=False
+    ) -> list[str]:
         if isinstance(variables[0], type(self)):
             variables = variables[1:]
         variables = remove_tuple_from_events(variables)
-        variables = list(variables.values()) if type(
-            variables) == dict else variables
+        variables = list(variables.values()) if type(variables) == dict else variables
         sports = {}
         conflicts = []
         for variable in variables:
             if not (variable.sport.name in sports):
-                sports[variable.sport.name] = {
-                    variable.round.round_index: [variable]}
+                sports[variable.sport.name] = {variable.round.round_index: [variable]}
             else:
                 if not (variable.round.round_index in sports[variable.sport.name]):
-                    sports[variable.sport.name][variable.round.round_index] = [
-                        variable]
+                    sports[variable.sport.name][variable.round.round_index] = [variable]
                 else:
                     sports[variable.sport.name][variable.round.round_index].append(
-                        variable)
+                        variable
+                    )
         variables_by_sport = sports.values()
 
         for sport_variables in variables_by_sport:
             min_max_days = {}
             for _round in set(sport_variables.keys()):
                 vals = sport_variables[_round]
-                min_max_days[_round] = [min(vals, key=lambda event: event.day).day,
-                                        max(vals, key=lambda event: event.day).day]
+                min_max_days[_round] = [
+                    min(vals, key=lambda event: event.day).day,
+                    max(vals, key=lambda event: event.day).day,
+                ]
             sorted_rounds = list(reversed(sorted(set(min_max_days.keys()))))
 
             for index in range(len(sorted_rounds) - 1):
-                if min_max_days[sorted_rounds[index]][1] >= min_max_days[sorted_rounds[index + 1]][0]:
+                if (
+                    min_max_days[sorted_rounds[index]][1]
+                    >= min_max_days[sorted_rounds[index + 1]][0]
+                ):
                     for event_1 in sport_variables[sorted_rounds[index]]:
                         for event_2 in sport_variables[sorted_rounds[index + 1]]:
                             if event_1.day >= event_2.day:
@@ -257,12 +296,13 @@ class SameVenueMaxMatchesPerDay(Constraint):
         self._sport = sport
         self._params = params
 
-    def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
+    def eval_constraint(
+        self, *variables: dict[str, Event], constraint_check=False
+    ) -> list[str]:
         if isinstance(variables[0], type(self)):
             variables = variables[1:]
         variables = remove_tuple_from_events(variables)
-        variables = list(variables.values()) if type(
-            variables) == dict else variables
+        variables = list(variables.values()) if type(variables) == dict else variables
         venues = {}
         conflicts = []
 
@@ -293,13 +333,14 @@ class SameSportMaxMatchesPerDay(Constraint):
         self._sport = sport
         self._params = params
 
-    def eval_constraint(self, *variables: dict[str, Event], constraint_check=False) -> list[str]:
+    def eval_constraint(
+        self, *variables: dict[str, Event], constraint_check=False
+    ) -> list[str]:
         if isinstance(variables[0], type(self)):
             variables = variables[1:]
         sports = {}
         variables = remove_tuple_from_events(variables)
-        variables = list(variables.values()) if type(
-            variables) == dict else variables
+        variables = list(variables.values()) if type(variables) == dict else variables
         conflicts = []
         for event in variables:
             sport_name = event.sport.name
@@ -310,7 +351,9 @@ class SameSportMaxMatchesPerDay(Constraint):
                     sports[sport_name][event.day] = [event.id]
                 else:
                     sports[sport_name][event.day].append(event.id)
-                if len(sports[sport_name][event.day]) > int(self.get_params()["max_matches_per_day"]):
+                if len(sports[sport_name][event.day]) > int(
+                    self.get_params()["max_matches_per_day"]
+                ):
                     if not constraint_check:
                         return sports[sport_name][event.day]
                     conflicts += sports[sport_name][event.day]
@@ -328,10 +371,13 @@ class MaxCapacityAtFinal(Constraint):
         self._sport = sport
         self._params = params
 
-    def eval_constraint(self, event: dict[str, Event], constraint_check=False) -> list[str]:
+    def eval_constraint(
+        self, event: dict[str, Event], constraint_check=False
+    ) -> list[str]:
         event = list(event.values())[0]
-        bool_val = not (event.round.round_index == 0) or event.venue == max(global_variables.venues[event.sport.name],
-                                                                            key=lambda venue: venue.capacity)
+        bool_val = not (event.round.round_index == 0) or event.venue == max(
+            global_variables.venues[event.sport.name], key=lambda venue: venue.capacity
+        )
         return [] if bool_val else [event.id]
 
 
@@ -346,12 +392,16 @@ class ValidMatchTime(Constraint):
         self._sport = sport
         self._params = params
 
-    def eval_constraint(self, event: dict[str, Event], constraint_check=False) -> list[str]:
+    def eval_constraint(
+        self, event: dict[str, Event], constraint_check=False
+    ) -> list[str]:
         event = list(event.values())[0]
         sport = event.sport
-        bool_val = sport.min_start_day <= event.day <= sport.max_finish_day and \
-            sport.min_start_time <= event.start_time and \
-            event.start_time + event.duration <= sport.max_finish_time
+        bool_val = (
+            sport.min_start_day <= event.day <= sport.max_finish_day
+            and sport.min_start_time <= event.start_time
+            and event.start_time + event.duration <= sport.max_finish_time
+        )
         return [] if bool_val else [event.id]
 
 

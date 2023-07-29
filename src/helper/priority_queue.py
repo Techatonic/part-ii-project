@@ -2,17 +2,20 @@ import heapq
 
 
 class PriorityQueue:
-    def __init__(self, comparator, variables_dict: dict[str, any] | None = None) -> None:
+    def __init__(
+        self, comparator, variables_dict: dict[str, any] | None = None
+    ) -> None:
         if variables_dict is None:
             variables_dict = {}
         self.comparator = comparator
-        self.variables = [QueueNode(
-            variable, variables_dict[variable], comparator) for variable in variables_dict]
+        self.variables = [
+            QueueNode(variable, variables_dict[variable], comparator)
+            for variable in variables_dict
+        ]
         heapq.heapify(self.variables)
 
     def add(self, variable_name: str, domain) -> None:
-        self.variables.append(
-            QueueNode(variable_name, domain, self.comparator))
+        self.variables.append(QueueNode(variable_name, domain, self.comparator))
         heapq.heapify(self.variables)
 
     def pop(self):
@@ -24,8 +27,12 @@ class PriorityQueue:
 
     def __copy__(self):
         new_queue = PriorityQueue(self.comparator)
-        new_queue.set([QueueNode(variable.variable, variable.domain,
-                      self.comparator) for variable in self.variables])
+        new_queue.set(
+            [
+                QueueNode(variable.variable, variable.domain, self.comparator)
+                for variable in self.variables
+            ]
+        )
         return new_queue
 
 

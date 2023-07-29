@@ -3,12 +3,23 @@ from src.venues.venue import Venue
 
 class Sport:
     """
-        Class defining a generic sport
+    Class defining a generic sport
     """
 
-    def __init__(self, name, possible_venues: list[Venue], teams: list[str], num_teams_per_game: int,
-                 match_duration: float, is_knockout=True, min_start_day=1, max_finish_day=None,
-                 min_start_time=10, max_finish_time=22, constraints=None) -> None:
+    def __init__(
+        self,
+        name,
+        possible_venues: list[Venue],
+        teams: list[str],
+        num_teams_per_game: int,
+        match_duration: float,
+        is_knockout=True,
+        min_start_day=1,
+        max_finish_day=None,
+        min_start_time=10,
+        max_finish_time=22,
+        constraints=None,
+    ) -> None:
         self.name = name
         self.possible_venues = possible_venues
         self.teams = teams

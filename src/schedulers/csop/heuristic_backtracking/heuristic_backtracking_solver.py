@@ -3,14 +3,26 @@ import time
 from abc import ABC
 from typing import Type
 
-from src.constraints.constraint import Constraint, get_constraint_from_string, ConstraintType
+from src.constraints.constraint import (
+    Constraint,
+    get_constraint_from_string,
+    ConstraintType,
+)
 from src.constraints.constraint_checker import constraint_check
-from src.constraints.optional_constraints import get_optional_constraint_from_string, \
-    get_inequality_operator_from_input, OptionalConstraint, take_average_of_heuristics_across_all_sports
+from src.constraints.optional_constraints import (
+    get_optional_constraint_from_string,
+    get_inequality_operator_from_input,
+    OptionalConstraint,
+    take_average_of_heuristics_across_all_sports,
+)
 from src.helper.handle_error import handle_error
 from src.helper.best_solution import BestSolutions
 
-from src.helper.helper import copy_assignments, flatten_events_by_sport_to_dict, widen_events_to_events_by_sport
+from src.helper.helper import (
+    copy_assignments,
+    flatten_events_by_sport_to_dict,
+    widen_events_to_events_by_sport,
+)
 from src.helper.priority_queue import PriorityQueue
 from src.schedulers.solver import Solver
 from src.sports.sport import Sport
@@ -39,21 +51,28 @@ class HeuristicBacktrackingSolver(Solver, ABC):
             variables[variable.variable] = variable.domain
         return variables
 
-    def add_constraint(self, function_name: str, variables: list[str] | None = None,
-                       sport: Sport | None = None, params: dict = None) -> None:
+    def add_constraint(
+        self,
+        function_name: str,
+        variables: list[str] | None = None,
+        sport: Sport | None = None,
+        params: dict = None,
+    ) -> None:
         constraint = get_constraint_from_string(function_name)
-        self.constraints.append(constraint(
-            variables, sport, copy.deepcopy(params)))
+        self.constraints.append(constraint(variables, sport, copy.deepcopy(params)))
 
-    def add_optional_constraint(self, function_name: str, sport: Sport | None = None, params=None):
+    def add_optional_constraint(
+        self, function_name: str, sport: Sport | None = None, params=None
+    ):
         params_copy = copy.deepcopy(params)
         if params_copy is None:
             params_copy = {}
             if not ("weight" in params_copy):
                 params_copy["weight"] = 1
-        if "inequality" in params_copy and type(params_copy['inequality']) == str:
+        if "inequality" in params_copy and type(params_copy["inequality"]) == str:
             params_copy["inequality"] = get_inequality_operator_from_input(
-                params_copy["inequality"])
+                params_copy["inequality"]
+            )
 
         constraint = get_optional_constraint_from_string(function_name)
         self.optional_constraints.append(constraint(None, sport, params_copy))
@@ -62,13 +81,17 @@ class HeuristicBacktrackingSolver(Solver, ABC):
         self.data["start_time"] = time.time()
         self.__preprocess()
 
-        best_solution = BestSolutions(self.data['num_results_to_collect'])
+        best_solution = BestSolutions(self.data["num_results_to_collect"])
         self.__solve_variable({}, self.queue, best_solution)
         return best_solution.get_best_solutions()
 
     def __preprocess(self):
-        unary_constraints = list(filter(lambda constraint: constraint.constraint_type == ConstraintType.UNARY,
-                                        self.constraints))
+        unary_constraints = list(
+            filter(
+                lambda constraint: constraint.constraint_type == ConstraintType.UNARY,
+                self.constraints,
+            )
+        )
         for unary_constraint in unary_constraints:
             for variable in self.queue.variables:
                 for option in variable.domain:
@@ -76,8 +99,9 @@ class HeuristicBacktrackingSolver(Solver, ABC):
                         variable.domain.remove(option)
             self.constraints.remove(unary_constraint)
 
-    def __solve_variable(self, assignments, queue: PriorityQueue, best_solution: BestSolutions) -> Type[
-            BestSolutions] | None | str:
+    def __solve_variable(
+        self, assignments, queue: PriorityQueue, best_solution: BestSolutions
+    ) -> Type[BestSolutions] | None | str:
         variable_type = self.data["variable_type"]
         assignments: dict[str, variable_type] = copy_assignments(assignments)
         queue = queue.__copy__()
@@ -97,8 +121,10 @@ class HeuristicBacktrackingSolver(Solver, ABC):
                 domain_evals.append((option, self.__heuristic(assignments)))
                 del assignments[variable.variable]
 
-            variable.domain = filter(lambda x: x[1] > best_solution.get_worst_bound(),
-                                     sorted(domain_evals, key=lambda x: x[1], reverse=True))
+            variable.domain = filter(
+                lambda x: x[1] > best_solution.get_worst_bound(),
+                sorted(domain_evals, key=lambda x: x[1], reverse=True),
+            )
             variable.domain = [x[0] for x in variable.domain]
             ###########################################
 
@@ -106,15 +132,15 @@ class HeuristicBacktrackingSolver(Solver, ABC):
                 assignments[variable.variable] = option
 
                 if self.__test_constraints(assignments, self.constraints):
-                    result = self.__solve_variable(
-                        assignments, queue, best_solution)
+                    result = self.__solve_variable(assignments, queue, best_solution)
                     if result is not None:
                         return result
 
     def __heuristic(self, assignments):
         normalising_factor = sum(
-            optional_constraint_heuristic.get_params()["weight"] for optional_constraint_heuristic in
-            self.optional_constraints)
+            optional_constraint_heuristic.get_params()["weight"]
+            for optional_constraint_heuristic in self.optional_constraints
+        )
         if normalising_factor == 0:
             handle_error("Weights of optional constraints sum to 0")
         if not self.__test_constraints(assignments, self.constraints):
@@ -127,15 +153,25 @@ class HeuristicBacktrackingSolver(Solver, ABC):
         score = 0
         for heuristic in self.optional_constraints:
             if heuristic.get_sport() is None:
-                score += take_average_of_heuristics_across_all_sports(self, assignments,
-                                                                      heuristic) * heuristic.get_params()["weight"]
+                score += (
+                    take_average_of_heuristics_across_all_sports(
+                        self, assignments, heuristic
+                    )
+                    * heuristic.get_params()["weight"]
+                )
             else:
                 if heuristic.get_sport().name in assignments:
-                    score += \
-                        heuristic.eval_constraint(self,
-                                                  {heuristic.get_sport().name: assignments[
-                                                      heuristic.get_sport().name]})[
-                            1] * heuristic.get_params()["weight"]
+                    score += (
+                        heuristic.eval_constraint(
+                            self,
+                            {
+                                heuristic.get_sport().name: assignments[
+                                    heuristic.get_sport().name
+                                ]
+                            },
+                        )[1]
+                        * heuristic.get_params()["weight"]
+                    )
                 else:
                     normalising_factor -= 1
         return score / normalising_factor
