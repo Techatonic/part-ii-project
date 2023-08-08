@@ -1,0 +1,48 @@
+{
+    "eval_score": 0.3550072760942761,
+    "events": {
+        "football": {
+            "football_1": {
+                "round": "Semi Final",
+                "sport": "football",
+                "id": "football_1",
+                "venue": "The Hive",
+                "day": 6,
+                "start_time": 16,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Brazil",
+                    "Argentina"
+                ]
+            },
+            "football_2": {
+                "round": "Semi Final",
+                "sport": "football",
+                "id": "football_2",
+                "venue": "Brentford community Stadium",
+                "day": 1,
+                "start_time": 16,
+                "duration": 1.5,
+                "teams_involved": [
+                    "France",
+                    "Belgium"
+                ]
+            },
+            "football_3": {
+                "round": "Final",
+                "sport": "football",
+                "id": "football_3",
+                "venue": "Olympic Stadium",
+                "day": 8,
+                "start_time": 20,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Brazil",
+                    "Argentina",
+                    "France",
+                    "Belgium"
+                ]
+            }
+        }
+    }
+}

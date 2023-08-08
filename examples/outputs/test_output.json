@@ -1,0 +1,3525 @@
+{
+    "eval_score": 0.7390657119836378,
+    "events": {
+        "football_men": {
+            "football_men_1": {
+                "round": "Round of 32",
+                "sport": "football_men",
+                "id": "football_men_1",
+                "venue": "Ricoh Arena",
+                "day": 2,
+                "start_time": 21,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Brazil",
+                    "Argentina"
+                ]
+            },
+            "football_men_10": {
+                "round": "Round of 32",
+                "sport": "football_men",
+                "id": "football_men_10",
+                "venue": "The Den",
+                "day": 3,
+                "start_time": 15,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Senegal",
+                    "Japan"
+                ]
+            },
+            "football_men_11": {
+                "round": "Round of 32",
+                "sport": "football_men",
+                "id": "football_men_11",
+                "venue": "Tottenham Hotspur Stadium",
+                "day": 1,
+                "start_time": 12,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Peru",
+                    "Poland"
+                ]
+            },
+            "football_men_12": {
+                "round": "Round of 32",
+                "sport": "football_men",
+                "id": "football_men_12",
+                "venue": "Emirates Stadium",
+                "day": 7,
+                "start_time": 21,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Sweden",
+                    "Iran"
+                ]
+            },
+            "football_men_13": {
+                "round": "Round of 32",
+                "sport": "football_men",
+                "id": "football_men_13",
+                "venue": "Tottenham Hotspur Stadium",
+                "day": 9,
+                "start_time": 17,
+                "duration": 1.5,
+                "teams_involved": [
+                    "South Korea",
+                    "Ukraine"
+                ]
+            },
+            "football_men_14": {
+                "round": "Round of 32",
+                "sport": "football_men",
+                "id": "football_men_14",
+                "venue": "Emirates Stadium",
+                "day": 6,
+                "start_time": 16,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Australia",
+                    "Wales"
+                ]
+            },
+            "football_men_15": {
+                "round": "Round of 32",
+                "sport": "football_men",
+                "id": "football_men_15",
+                "venue": "Ricoh Arena",
+                "day": 3,
+                "start_time": 15,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Serbia",
+                    "Tunisia"
+                ]
+            },
+            "football_men_16": {
+                "round": "Round of 32",
+                "sport": "football_men",
+                "id": "football_men_16",
+                "venue": "Brentford community Stadium",
+                "day": 1,
+                "start_time": 13,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Chile",
+                    "Costa Rica"
+                ]
+            },
+            "football_men_2": {
+                "round": "Round of 32",
+                "sport": "football_men",
+                "id": "football_men_2",
+                "venue": "Brentford community Stadium",
+                "day": 8,
+                "start_time": 20,
+                "duration": 1.5,
+                "teams_involved": [
+                    "France",
+                    "Belgium"
+                ]
+            },
+            "football_men_3": {
+                "round": "Round of 32",
+                "sport": "football_men",
+                "id": "football_men_3",
+                "venue": "Brentford community Stadium",
+                "day": 7,
+                "start_time": 13,
+                "duration": 1.5,
+                "teams_involved": [
+                    "England",
+                    "Netherlands"
+                ]
+            },
+            "football_men_4": {
+                "round": "Round of 32",
+                "sport": "football_men",
+                "id": "football_men_4",
+                "venue": "Emirates Stadium",
+                "day": 1,
+                "start_time": 16,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Croatia",
+                    "Italy"
+                ]
+            },
+            "football_men_5": {
+                "round": "Round of 32",
+                "sport": "football_men",
+                "id": "football_men_5",
+                "venue": "The Den",
+                "day": 7,
+                "start_time": 21,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Portugal",
+                    "Spain"
+                ]
+            },
+            "football_men_6": {
+                "round": "Round of 32",
+                "sport": "football_men",
+                "id": "football_men_6",
+                "venue": "Stamford Bridge",
+                "day": 8,
+                "start_time": 20,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Morocco",
+                    "Switzerland"
+                ]
+            },
+            "football_men_7": {
+                "round": "Round of 32",
+                "sport": "football_men",
+                "id": "football_men_7",
+                "venue": "Ricoh Arena",
+                "day": 4,
+                "start_time": 19,
+                "duration": 1.5,
+                "teams_involved": [
+                    "USA",
+                    "Germany"
+                ]
+            },
+            "football_men_8": {
+                "round": "Round of 32",
+                "sport": "football_men",
+                "id": "football_men_8",
+                "venue": "Stamford Bridge",
+                "day": 3,
+                "start_time": 13,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Mexico",
+                    "Uruguay"
+                ]
+            },
+            "football_men_9": {
+                "round": "Round of 32",
+                "sport": "football_men",
+                "id": "football_men_9",
+                "venue": "Tottenham Hotspur Stadium",
+                "day": 10,
+                "start_time": 21,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Colombia",
+                    "Denmark"
+                ]
+            },
+            "football_men_17": {
+                "round": "Round of 16",
+                "sport": "football_men",
+                "id": "football_men_17",
+                "venue": "The Hive",
+                "day": 12,
+                "start_time": 13,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Brazil",
+                    "Argentina",
+                    "France",
+                    "Belgium"
+                ]
+            },
+            "football_men_18": {
+                "round": "Round of 16",
+                "sport": "football_men",
+                "id": "football_men_18",
+                "venue": "Tottenham Hotspur Stadium",
+                "day": 11,
+                "start_time": 12,
+                "duration": 1.5,
+                "teams_involved": [
+                    "England",
+                    "Netherlands",
+                    "Croatia",
+                    "Italy"
+                ]
+            },
+            "football_men_19": {
+                "round": "Round of 16",
+                "sport": "football_men",
+                "id": "football_men_19",
+                "venue": "Emirates Stadium",
+                "day": 12,
+                "start_time": 20,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Portugal",
+                    "Spain",
+                    "Morocco",
+                    "Switzerland"
+                ]
+            },
+            "football_men_20": {
+                "round": "Round of 16",
+                "sport": "football_men",
+                "id": "football_men_20",
+                "venue": "Stamford Bridge",
+                "day": 12,
+                "start_time": 14,
+                "duration": 1.5,
+                "teams_involved": [
+                    "USA",
+                    "Germany",
+                    "Mexico",
+                    "Uruguay"
+                ]
+            },
+            "football_men_21": {
+                "round": "Round of 16",
+                "sport": "football_men",
+                "id": "football_men_21",
+                "venue": "The Den",
+                "day": 12,
+                "start_time": 17,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Colombia",
+                    "Denmark",
+                    "Senegal",
+                    "Japan"
+                ]
+            },
+            "football_men_22": {
+                "round": "Round of 16",
+                "sport": "football_men",
+                "id": "football_men_22",
+                "venue": "Ricoh Arena",
+                "day": 12,
+                "start_time": 15,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Peru",
+                    "Poland",
+                    "Sweden",
+                    "Iran"
+                ]
+            },
+            "football_men_23": {
+                "round": "Round of 16",
+                "sport": "football_men",
+                "id": "football_men_23",
+                "venue": "Olympic Stadium",
+                "day": 12,
+                "start_time": 17,
+                "duration": 1.5,
+                "teams_involved": [
+                    "South Korea",
+                    "Ukraine",
+                    "Australia",
+                    "Wales"
+                ]
+            },
+            "football_men_24": {
+                "round": "Round of 16",
+                "sport": "football_men",
+                "id": "football_men_24",
+                "venue": "The Den",
+                "day": 12,
+                "start_time": 13,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Serbia",
+                    "Tunisia",
+                    "Chile",
+                    "Costa Rica"
+                ]
+            },
+            "football_men_25": {
+                "round": "Quarter Final",
+                "sport": "football_men",
+                "id": "football_men_25",
+                "venue": "The Hive",
+                "day": 14,
+                "start_time": 13,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Brazil",
+                    "Argentina",
+                    "France",
+                    "Belgium",
+                    "England",
+                    "Netherlands",
+                    "Croatia",
+                    "Italy"
+                ]
+            },
+            "football_men_26": {
+                "round": "Quarter Final",
+                "sport": "football_men",
+                "id": "football_men_26",
+                "venue": "Brentford community Stadium",
+                "day": 14,
+                "start_time": 14,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Portugal",
+                    "Spain",
+                    "Morocco",
+                    "Switzerland",
+                    "USA",
+                    "Germany",
+                    "Mexico",
+                    "Uruguay"
+                ]
+            },
+            "football_men_27": {
+                "round": "Quarter Final",
+                "sport": "football_men",
+                "id": "football_men_27",
+                "venue": "Ricoh Arena",
+                "day": 14,
+                "start_time": 18,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Colombia",
+                    "Denmark",
+                    "Senegal",
+                    "Japan",
+                    "Peru",
+                    "Poland",
+                    "Sweden",
+                    "Iran"
+                ]
+            },
+            "football_men_28": {
+                "round": "Quarter Final",
+                "sport": "football_men",
+                "id": "football_men_28",
+                "venue": "Olympic Stadium",
+                "day": 14,
+                "start_time": 15,
+                "duration": 1.5,
+                "teams_involved": [
+                    "South Korea",
+                    "Ukraine",
+                    "Australia",
+                    "Wales",
+                    "Serbia",
+                    "Tunisia",
+                    "Chile",
+                    "Costa Rica"
+                ]
+            },
+            "football_men_29": {
+                "round": "Semi Final",
+                "sport": "football_men",
+                "id": "football_men_29",
+                "venue": "Ricoh Arena",
+                "day": 16,
+                "start_time": 19,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Brazil",
+                    "Argentina",
+                    "France",
+                    "Belgium",
+                    "England",
+                    "Netherlands",
+                    "Croatia",
+                    "Italy",
+                    "Portugal",
+                    "Spain",
+                    "Morocco",
+                    "Switzerland",
+                    "USA",
+                    "Germany",
+                    "Mexico",
+                    "Uruguay"
+                ]
+            },
+            "football_men_30": {
+                "round": "Semi Final",
+                "sport": "football_men",
+                "id": "football_men_30",
+                "venue": "Ricoh Arena",
+                "day": 16,
+                "start_time": 15,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Colombia",
+                    "Denmark",
+                    "Senegal",
+                    "Japan",
+                    "Peru",
+                    "Poland",
+                    "Sweden",
+                    "Iran",
+                    "South Korea",
+                    "Ukraine",
+                    "Australia",
+                    "Wales",
+                    "Serbia",
+                    "Tunisia",
+                    "Chile",
+                    "Costa Rica"
+                ]
+            },
+            "football_men_31": {
+                "round": "Final",
+                "sport": "football_men",
+                "id": "football_men_31",
+                "venue": "Olympic Stadium",
+                "day": 18,
+                "start_time": 17,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Brazil",
+                    "Argentina",
+                    "France",
+                    "Belgium",
+                    "England",
+                    "Netherlands",
+                    "Croatia",
+                    "Italy",
+                    "Portugal",
+                    "Spain",
+                    "Morocco",
+                    "Switzerland",
+                    "USA",
+                    "Germany",
+                    "Mexico",
+                    "Uruguay",
+                    "Colombia",
+                    "Denmark",
+                    "Senegal",
+                    "Japan",
+                    "Peru",
+                    "Poland",
+                    "Sweden",
+                    "Iran",
+                    "South Korea",
+                    "Ukraine",
+                    "Australia",
+                    "Wales",
+                    "Serbia",
+                    "Tunisia",
+                    "Chile",
+                    "Costa Rica"
+                ]
+            }
+        },
+        "football_women": {
+            "football_women_1": {
+                "round": "Round of 32",
+                "sport": "football_women",
+                "id": "football_women_1",
+                "venue": "Kingsmeadow",
+                "day": 2,
+                "start_time": 12,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Brazil",
+                    "Argentina"
+                ]
+            },
+            "football_women_10": {
+                "round": "Round of 32",
+                "sport": "football_women",
+                "id": "football_women_10",
+                "venue": "Wembley Stadium",
+                "day": 3,
+                "start_time": 17,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Team 19",
+                    "Team 20"
+                ]
+            },
+            "football_women_11": {
+                "round": "Round of 32",
+                "sport": "football_women",
+                "id": "football_women_11",
+                "venue": "Selhurst Park",
+                "day": 4,
+                "start_time": 21,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Team 21",
+                    "Team 22"
+                ]
+            },
+            "football_women_12": {
+                "round": "Round of 32",
+                "sport": "football_women",
+                "id": "football_women_12",
+                "venue": "Old Trafford",
+                "day": 5,
+                "start_time": 19,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Team 23",
+                    "Team 24"
+                ]
+            },
+            "football_women_13": {
+                "round": "Round of 32",
+                "sport": "football_women",
+                "id": "football_women_13",
+                "venue": "Craven Cottage",
+                "day": 1,
+                "start_time": 17,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Team 25",
+                    "Team 26"
+                ]
+            },
+            "football_women_14": {
+                "round": "Round of 32",
+                "sport": "football_women",
+                "id": "football_women_14",
+                "venue": "Twickenham Stadium",
+                "day": 4,
+                "start_time": 17,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Team 27",
+                    "Team 28"
+                ]
+            },
+            "football_women_15": {
+                "round": "Round of 32",
+                "sport": "football_women",
+                "id": "football_women_15",
+                "venue": "Selhurst Park",
+                "day": 6,
+                "start_time": 17,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Team 29",
+                    "Team 30"
+                ]
+            },
+            "football_women_16": {
+                "round": "Round of 32",
+                "sport": "football_women",
+                "id": "football_women_16",
+                "venue": "Wembley Stadium",
+                "day": 5,
+                "start_time": 18,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "football_women_2": {
+                "round": "Round of 32",
+                "sport": "football_women",
+                "id": "football_women_2",
+                "venue": "Old Trafford",
+                "day": 1,
+                "start_time": 12,
+                "duration": 1.5,
+                "teams_involved": [
+                    "France",
+                    "Belgium"
+                ]
+            },
+            "football_women_3": {
+                "round": "Round of 32",
+                "sport": "football_women",
+                "id": "football_women_3",
+                "venue": "Old Trafford",
+                "day": 2,
+                "start_time": 12,
+                "duration": 1.5,
+                "teams_involved": [
+                    "England",
+                    "Netherlands"
+                ]
+            },
+            "football_women_4": {
+                "round": "Round of 32",
+                "sport": "football_women",
+                "id": "football_women_4",
+                "venue": "Hampden Park",
+                "day": 6,
+                "start_time": 19,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Croatia",
+                    "Italy"
+                ]
+            },
+            "football_women_5": {
+                "round": "Round of 32",
+                "sport": "football_women",
+                "id": "football_women_5",
+                "venue": "Wembley Stadium",
+                "day": 5,
+                "start_time": 12,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Portugal",
+                    "Spain"
+                ]
+            },
+            "football_women_6": {
+                "round": "Round of 32",
+                "sport": "football_women",
+                "id": "football_women_6",
+                "venue": "Wembley Stadium",
+                "day": 1,
+                "start_time": 20,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Morocco",
+                    "Switzerland"
+                ]
+            },
+            "football_women_7": {
+                "round": "Round of 32",
+                "sport": "football_women",
+                "id": "football_women_7",
+                "venue": "Wembley Stadium",
+                "day": 6,
+                "start_time": 13,
+                "duration": 1.5,
+                "teams_involved": [
+                    "USA",
+                    "Germany"
+                ]
+            },
+            "football_women_8": {
+                "round": "Round of 32",
+                "sport": "football_women",
+                "id": "football_women_8",
+                "venue": "Old Trafford",
+                "day": 5,
+                "start_time": 12,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Mexico",
+                    "Uruguay"
+                ]
+            },
+            "football_women_9": {
+                "round": "Round of 32",
+                "sport": "football_women",
+                "id": "football_women_9",
+                "venue": "Twickenham Stadium",
+                "day": 3,
+                "start_time": 16,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18"
+                ]
+            },
+            "football_women_17": {
+                "round": "Round of 16",
+                "sport": "football_women",
+                "id": "football_women_17",
+                "venue": "Hampden Park",
+                "day": 8,
+                "start_time": 19,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Brazil",
+                    "Argentina",
+                    "France",
+                    "Belgium"
+                ]
+            },
+            "football_women_18": {
+                "round": "Round of 16",
+                "sport": "football_women",
+                "id": "football_women_18",
+                "venue": "Twickenham Stadium",
+                "day": 8,
+                "start_time": 14,
+                "duration": 1.5,
+                "teams_involved": [
+                    "England",
+                    "Netherlands",
+                    "Croatia",
+                    "Italy"
+                ]
+            },
+            "football_women_19": {
+                "round": "Round of 16",
+                "sport": "football_women",
+                "id": "football_women_19",
+                "venue": "Selhurst Park",
+                "day": 8,
+                "start_time": 15,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Portugal",
+                    "Spain",
+                    "Morocco",
+                    "Switzerland"
+                ]
+            },
+            "football_women_20": {
+                "round": "Round of 16",
+                "sport": "football_women",
+                "id": "football_women_20",
+                "venue": "Craven Cottage",
+                "day": 8,
+                "start_time": 19,
+                "duration": 1.5,
+                "teams_involved": [
+                    "USA",
+                    "Germany",
+                    "Mexico",
+                    "Uruguay"
+                ]
+            },
+            "football_women_21": {
+                "round": "Round of 16",
+                "sport": "football_women",
+                "id": "football_women_21",
+                "venue": "Hampden Park",
+                "day": 7,
+                "start_time": 18,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20"
+                ]
+            },
+            "football_women_22": {
+                "round": "Round of 16",
+                "sport": "football_women",
+                "id": "football_women_22",
+                "venue": "Selhurst Park",
+                "day": 7,
+                "start_time": 12,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24"
+                ]
+            },
+            "football_women_23": {
+                "round": "Round of 16",
+                "sport": "football_women",
+                "id": "football_women_23",
+                "venue": "Craven Cottage",
+                "day": 7,
+                "start_time": 14,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28"
+                ]
+            },
+            "football_women_24": {
+                "round": "Round of 16",
+                "sport": "football_women",
+                "id": "football_women_24",
+                "venue": "Old Trafford",
+                "day": 8,
+                "start_time": 13,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "football_women_25": {
+                "round": "Quarter Final",
+                "sport": "football_women",
+                "id": "football_women_25",
+                "venue": "Craven Cottage",
+                "day": 10,
+                "start_time": 18,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Brazil",
+                    "Argentina",
+                    "France",
+                    "Belgium",
+                    "England",
+                    "Netherlands",
+                    "Croatia",
+                    "Italy"
+                ]
+            },
+            "football_women_26": {
+                "round": "Quarter Final",
+                "sport": "football_women",
+                "id": "football_women_26",
+                "venue": "Selhurst Park",
+                "day": 10,
+                "start_time": 21,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Portugal",
+                    "Spain",
+                    "Morocco",
+                    "Switzerland",
+                    "USA",
+                    "Germany",
+                    "Mexico",
+                    "Uruguay"
+                ]
+            },
+            "football_women_27": {
+                "round": "Quarter Final",
+                "sport": "football_women",
+                "id": "football_women_27",
+                "venue": "Hampden Park",
+                "day": 10,
+                "start_time": 13,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20",
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24"
+                ]
+            },
+            "football_women_28": {
+                "round": "Quarter Final",
+                "sport": "football_women",
+                "id": "football_women_28",
+                "venue": "Twickenham Stadium",
+                "day": 10,
+                "start_time": 18,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28",
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "football_women_29": {
+                "round": "Semi Final",
+                "sport": "football_women",
+                "id": "football_women_29",
+                "venue": "Craven Cottage",
+                "day": 12,
+                "start_time": 12,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Brazil",
+                    "Argentina",
+                    "France",
+                    "Belgium",
+                    "England",
+                    "Netherlands",
+                    "Croatia",
+                    "Italy",
+                    "Portugal",
+                    "Spain",
+                    "Morocco",
+                    "Switzerland",
+                    "USA",
+                    "Germany",
+                    "Mexico",
+                    "Uruguay"
+                ]
+            },
+            "football_women_30": {
+                "round": "Semi Final",
+                "sport": "football_women",
+                "id": "football_women_30",
+                "venue": "Hampden Park",
+                "day": 12,
+                "start_time": 16,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20",
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24",
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28",
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "football_women_31": {
+                "round": "Final",
+                "sport": "football_women",
+                "id": "football_women_31",
+                "venue": "Wembley Stadium",
+                "day": 14,
+                "start_time": 16,
+                "duration": 1.5,
+                "teams_involved": [
+                    "Brazil",
+                    "Argentina",
+                    "France",
+                    "Belgium",
+                    "England",
+                    "Netherlands",
+                    "Croatia",
+                    "Italy",
+                    "Portugal",
+                    "Spain",
+                    "Morocco",
+                    "Switzerland",
+                    "USA",
+                    "Germany",
+                    "Mexico",
+                    "Uruguay",
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20",
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24",
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28",
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            }
+        },
+        "tennis_men": {
+            "tennis_men_1": {
+                "round": "Round of 32",
+                "sport": "tennis_men",
+                "id": "tennis_men_1",
+                "venue": "Wimbledon_Centre_Court",
+                "day": 3,
+                "start_time": 14,
+                "duration": 2,
+                "teams_involved": [
+                    "Carlos Alcaraz",
+                    "Rafael Nadal"
+                ]
+            },
+            "tennis_men_10": {
+                "round": "Round of 32",
+                "sport": "tennis_men",
+                "id": "tennis_men_10",
+                "venue": "Wimbledon_Centre_Court",
+                "day": 6,
+                "start_time": 14,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 19",
+                    "Team 20"
+                ]
+            },
+            "tennis_men_11": {
+                "round": "Round of 32",
+                "sport": "tennis_men",
+                "id": "tennis_men_11",
+                "venue": "Wimbledon_Centre_Court",
+                "day": 9,
+                "start_time": 20,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 21",
+                    "Team 22"
+                ]
+            },
+            "tennis_men_12": {
+                "round": "Round of 32",
+                "sport": "tennis_men",
+                "id": "tennis_men_12",
+                "venue": "Wimbledon_Court_5",
+                "day": 9,
+                "start_time": 16,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 23",
+                    "Team 24"
+                ]
+            },
+            "tennis_men_13": {
+                "round": "Round of 32",
+                "sport": "tennis_men",
+                "id": "tennis_men_13",
+                "venue": "Wimbledon_Court_2",
+                "day": 9,
+                "start_time": 14,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 25",
+                    "Team 26"
+                ]
+            },
+            "tennis_men_14": {
+                "round": "Round of 32",
+                "sport": "tennis_men",
+                "id": "tennis_men_14",
+                "venue": "Wimbledon_Court_4",
+                "day": 5,
+                "start_time": 15,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 27",
+                    "Team 28"
+                ]
+            },
+            "tennis_men_15": {
+                "round": "Round of 32",
+                "sport": "tennis_men",
+                "id": "tennis_men_15",
+                "venue": "Wimbledon_Court_2",
+                "day": 2,
+                "start_time": 12,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 29",
+                    "Team 30"
+                ]
+            },
+            "tennis_men_16": {
+                "round": "Round of 32",
+                "sport": "tennis_men",
+                "id": "tennis_men_16",
+                "venue": "Wimbledon_Court_6",
+                "day": 4,
+                "start_time": 17,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "tennis_men_2": {
+                "round": "Round of 32",
+                "sport": "tennis_men",
+                "id": "tennis_men_2",
+                "venue": "Wimbledon_Court_2",
+                "day": 6,
+                "start_time": 20,
+                "duration": 2,
+                "teams_involved": [
+                    "Casper Ruud",
+                    "Stefanos Tsitsipas"
+                ]
+            },
+            "tennis_men_3": {
+                "round": "Round of 32",
+                "sport": "tennis_men",
+                "id": "tennis_men_3",
+                "venue": "Wimbledon_Court_2",
+                "day": 6,
+                "start_time": 12,
+                "duration": 2,
+                "teams_involved": [
+                    "Novak Djokovic",
+                    "Felix Auger-Aliassime"
+                ]
+            },
+            "tennis_men_4": {
+                "round": "Round of 32",
+                "sport": "tennis_men",
+                "id": "tennis_men_4",
+                "venue": "Wimbledon_Court_1",
+                "day": 7,
+                "start_time": 20,
+                "duration": 2,
+                "teams_involved": [
+                    "Daniil Medvedev",
+                    "Andrey Rublev"
+                ]
+            },
+            "tennis_men_5": {
+                "round": "Round of 32",
+                "sport": "tennis_men",
+                "id": "tennis_men_5",
+                "venue": "Wimbledon_Centre_Court",
+                "day": 1,
+                "start_time": 15,
+                "duration": 2,
+                "teams_involved": [
+                    "Taylor Fritz",
+                    "Hubert Hurkacz"
+                ]
+            },
+            "tennis_men_6": {
+                "round": "Round of 32",
+                "sport": "tennis_men",
+                "id": "tennis_men_6",
+                "venue": "Wimbledon_Court_1",
+                "day": 3,
+                "start_time": 13,
+                "duration": 2,
+                "teams_involved": [
+                    "Holger Rune",
+                    "Alexander Zverev"
+                ]
+            },
+            "tennis_men_7": {
+                "round": "Round of 32",
+                "sport": "tennis_men",
+                "id": "tennis_men_7",
+                "venue": "Wimbledon_Court_4",
+                "day": 6,
+                "start_time": 16,
+                "duration": 2,
+                "teams_involved": [
+                    "Pablo Carreno Busta",
+                    "Cameron Norrie"
+                ]
+            },
+            "tennis_men_8": {
+                "round": "Round of 32",
+                "sport": "tennis_men",
+                "id": "tennis_men_8",
+                "venue": "Wimbledon_Court_4",
+                "day": 8,
+                "start_time": 19,
+                "duration": 2,
+                "teams_involved": [
+                    "Jannik Sinner",
+                    "Matteo Berrettini"
+                ]
+            },
+            "tennis_men_9": {
+                "round": "Round of 32",
+                "sport": "tennis_men",
+                "id": "tennis_men_9",
+                "venue": "Wimbledon_Court_1",
+                "day": 10,
+                "start_time": 18,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18"
+                ]
+            },
+            "tennis_men_17": {
+                "round": "Round of 16",
+                "sport": "tennis_men",
+                "id": "tennis_men_17",
+                "venue": "Wimbledon_Court_1",
+                "day": 11,
+                "start_time": 17,
+                "duration": 2,
+                "teams_involved": [
+                    "Carlos Alcaraz",
+                    "Rafael Nadal",
+                    "Casper Ruud",
+                    "Stefanos Tsitsipas"
+                ]
+            },
+            "tennis_men_18": {
+                "round": "Round of 16",
+                "sport": "tennis_men",
+                "id": "tennis_men_18",
+                "venue": "Wimbledon_Court_1",
+                "day": 11,
+                "start_time": 12,
+                "duration": 2,
+                "teams_involved": [
+                    "Novak Djokovic",
+                    "Felix Auger-Aliassime",
+                    "Daniil Medvedev",
+                    "Andrey Rublev"
+                ]
+            },
+            "tennis_men_19": {
+                "round": "Round of 16",
+                "sport": "tennis_men",
+                "id": "tennis_men_19",
+                "venue": "Wimbledon_Court_2",
+                "day": 11,
+                "start_time": 18,
+                "duration": 2,
+                "teams_involved": [
+                    "Taylor Fritz",
+                    "Hubert Hurkacz",
+                    "Holger Rune",
+                    "Alexander Zverev"
+                ]
+            },
+            "tennis_men_20": {
+                "round": "Round of 16",
+                "sport": "tennis_men",
+                "id": "tennis_men_20",
+                "venue": "Wimbledon_Centre_Court",
+                "day": 11,
+                "start_time": 13,
+                "duration": 2,
+                "teams_involved": [
+                    "Pablo Carreno Busta",
+                    "Cameron Norrie",
+                    "Jannik Sinner",
+                    "Matteo Berrettini"
+                ]
+            },
+            "tennis_men_21": {
+                "round": "Round of 16",
+                "sport": "tennis_men",
+                "id": "tennis_men_21",
+                "venue": "Wimbledon_Court_5",
+                "day": 11,
+                "start_time": 13,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20"
+                ]
+            },
+            "tennis_men_22": {
+                "round": "Round of 16",
+                "sport": "tennis_men",
+                "id": "tennis_men_22",
+                "venue": "Wimbledon_Court_4",
+                "day": 11,
+                "start_time": 17,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24"
+                ]
+            },
+            "tennis_men_23": {
+                "round": "Round of 16",
+                "sport": "tennis_men",
+                "id": "tennis_men_23",
+                "venue": "Wimbledon_Court_2",
+                "day": 11,
+                "start_time": 15,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28"
+                ]
+            },
+            "tennis_men_24": {
+                "round": "Round of 16",
+                "sport": "tennis_men",
+                "id": "tennis_men_24",
+                "venue": "Wimbledon_Court_6",
+                "day": 11,
+                "start_time": 12,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "tennis_men_25": {
+                "round": "Quarter Final",
+                "sport": "tennis_men",
+                "id": "tennis_men_25",
+                "venue": "Wimbledon_Court_2",
+                "day": 12,
+                "start_time": 19,
+                "duration": 2,
+                "teams_involved": [
+                    "Carlos Alcaraz",
+                    "Rafael Nadal",
+                    "Casper Ruud",
+                    "Stefanos Tsitsipas",
+                    "Novak Djokovic",
+                    "Felix Auger-Aliassime",
+                    "Daniil Medvedev",
+                    "Andrey Rublev"
+                ]
+            },
+            "tennis_men_26": {
+                "round": "Quarter Final",
+                "sport": "tennis_men",
+                "id": "tennis_men_26",
+                "venue": "Wimbledon_Court_5",
+                "day": 12,
+                "start_time": 17,
+                "duration": 2,
+                "teams_involved": [
+                    "Taylor Fritz",
+                    "Hubert Hurkacz",
+                    "Holger Rune",
+                    "Alexander Zverev",
+                    "Pablo Carreno Busta",
+                    "Cameron Norrie",
+                    "Jannik Sinner",
+                    "Matteo Berrettini"
+                ]
+            },
+            "tennis_men_27": {
+                "round": "Quarter Final",
+                "sport": "tennis_men",
+                "id": "tennis_men_27",
+                "venue": "Wimbledon_Court_4",
+                "day": 12,
+                "start_time": 14,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20",
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24"
+                ]
+            },
+            "tennis_men_28": {
+                "round": "Quarter Final",
+                "sport": "tennis_men",
+                "id": "tennis_men_28",
+                "venue": "Wimbledon_Centre_Court",
+                "day": 12,
+                "start_time": 12,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28",
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "tennis_men_29": {
+                "round": "Semi Final",
+                "sport": "tennis_men",
+                "id": "tennis_men_29",
+                "venue": "Wimbledon_Centre_Court",
+                "day": 13,
+                "start_time": 16,
+                "duration": 2,
+                "teams_involved": [
+                    "Carlos Alcaraz",
+                    "Rafael Nadal",
+                    "Casper Ruud",
+                    "Stefanos Tsitsipas",
+                    "Novak Djokovic",
+                    "Felix Auger-Aliassime",
+                    "Daniil Medvedev",
+                    "Andrey Rublev",
+                    "Taylor Fritz",
+                    "Hubert Hurkacz",
+                    "Holger Rune",
+                    "Alexander Zverev",
+                    "Pablo Carreno Busta",
+                    "Cameron Norrie",
+                    "Jannik Sinner",
+                    "Matteo Berrettini"
+                ]
+            },
+            "tennis_men_30": {
+                "round": "Semi Final",
+                "sport": "tennis_men",
+                "id": "tennis_men_30",
+                "venue": "Wimbledon_Court_2",
+                "day": 13,
+                "start_time": 13,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20",
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24",
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28",
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "tennis_men_31": {
+                "round": "Final",
+                "sport": "tennis_men",
+                "id": "tennis_men_31",
+                "venue": "Wimbledon_Centre_Court",
+                "day": 14,
+                "start_time": 18,
+                "duration": 2,
+                "teams_involved": [
+                    "Carlos Alcaraz",
+                    "Rafael Nadal",
+                    "Casper Ruud",
+                    "Stefanos Tsitsipas",
+                    "Novak Djokovic",
+                    "Felix Auger-Aliassime",
+                    "Daniil Medvedev",
+                    "Andrey Rublev",
+                    "Taylor Fritz",
+                    "Hubert Hurkacz",
+                    "Holger Rune",
+                    "Alexander Zverev",
+                    "Pablo Carreno Busta",
+                    "Cameron Norrie",
+                    "Jannik Sinner",
+                    "Matteo Berrettini",
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20",
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24",
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28",
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            }
+        },
+        "tennis_women": {
+            "tennis_women_1": {
+                "round": "Round of 32",
+                "sport": "tennis_women",
+                "id": "tennis_women_1",
+                "venue": "Wimbledon_Court_9",
+                "day": 9,
+                "start_time": 13,
+                "duration": 2,
+                "teams_involved": [
+                    "Iga Swiatek",
+                    "Aryna Sabalenka"
+                ]
+            },
+            "tennis_women_10": {
+                "round": "Round of 32",
+                "sport": "tennis_women",
+                "id": "tennis_women_10",
+                "venue": "Wimbledon_Court_8",
+                "day": 8,
+                "start_time": 18,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 19",
+                    "Team 20"
+                ]
+            },
+            "tennis_women_11": {
+                "round": "Round of 32",
+                "sport": "tennis_women",
+                "id": "tennis_women_11",
+                "venue": "Wimbledon_Court_12",
+                "day": 8,
+                "start_time": 15,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 21",
+                    "Team 22"
+                ]
+            },
+            "tennis_women_12": {
+                "round": "Round of 32",
+                "sport": "tennis_women",
+                "id": "tennis_women_12",
+                "venue": "Wimbledon_Court_11",
+                "day": 7,
+                "start_time": 13,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 23",
+                    "Team 24"
+                ]
+            },
+            "tennis_women_13": {
+                "round": "Round of 32",
+                "sport": "tennis_women",
+                "id": "tennis_women_13",
+                "venue": "Wimbledon_Court_10",
+                "day": 3,
+                "start_time": 20,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 25",
+                    "Team 26"
+                ]
+            },
+            "tennis_women_14": {
+                "round": "Round of 32",
+                "sport": "tennis_women",
+                "id": "tennis_women_14",
+                "venue": "Wimbledon_Court_12",
+                "day": 9,
+                "start_time": 16,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 27",
+                    "Team 28"
+                ]
+            },
+            "tennis_women_15": {
+                "round": "Round of 32",
+                "sport": "tennis_women",
+                "id": "tennis_women_15",
+                "venue": "Wimbledon_Court_8",
+                "day": 8,
+                "start_time": 12,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 29",
+                    "Team 30"
+                ]
+            },
+            "tennis_women_16": {
+                "round": "Round of 32",
+                "sport": "tennis_women",
+                "id": "tennis_women_16",
+                "venue": "Wimbledon_Court_10",
+                "day": 8,
+                "start_time": 16,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "tennis_women_2": {
+                "round": "Round of 32",
+                "sport": "tennis_women",
+                "id": "tennis_women_2",
+                "venue": "Wimbledon_Court_12",
+                "day": 6,
+                "start_time": 14,
+                "duration": 2,
+                "teams_involved": [
+                    "Jessica Pegula",
+                    "Ons Jabeur"
+                ]
+            },
+            "tennis_women_3": {
+                "round": "Round of 32",
+                "sport": "tennis_women",
+                "id": "tennis_women_3",
+                "venue": "Wimbledon_Court_11",
+                "day": 2,
+                "start_time": 16,
+                "duration": 2,
+                "teams_involved": [
+                    "Caroline Garcia",
+                    "Coco Gauff"
+                ]
+            },
+            "tennis_women_4": {
+                "round": "Round of 32",
+                "sport": "tennis_women",
+                "id": "tennis_women_4",
+                "venue": "Wimbledon_Court_12",
+                "day": 10,
+                "start_time": 12,
+                "duration": 2,
+                "teams_involved": [
+                    "Elena Rybakina",
+                    "Daria Kasatkina"
+                ]
+            },
+            "tennis_women_5": {
+                "round": "Round of 32",
+                "sport": "tennis_women",
+                "id": "tennis_women_5",
+                "venue": "Wimbledon_Court_11",
+                "day": 1,
+                "start_time": 13,
+                "duration": 2,
+                "teams_involved": [
+                    "Maria Sakkari",
+                    "Petra Kvitova"
+                ]
+            },
+            "tennis_women_6": {
+                "round": "Round of 32",
+                "sport": "tennis_women",
+                "id": "tennis_women_6",
+                "venue": "Wimbledon_Court_13",
+                "day": 7,
+                "start_time": 15,
+                "duration": 2,
+                "teams_involved": [
+                    "Belinda Bencic",
+                    "Barbora Krejcikova"
+                ]
+            },
+            "tennis_women_7": {
+                "round": "Round of 32",
+                "sport": "tennis_women",
+                "id": "tennis_women_7",
+                "venue": "Wimbledon_Court_9",
+                "day": 6,
+                "start_time": 18,
+                "duration": 2,
+                "teams_involved": [
+                    "Veronika Kudermetova",
+                    "Beatriz Haddad Maia"
+                ]
+            },
+            "tennis_women_8": {
+                "round": "Round of 32",
+                "sport": "tennis_women",
+                "id": "tennis_women_8",
+                "venue": "Wimbledon_Court_8",
+                "day": 3,
+                "start_time": 18,
+                "duration": 2,
+                "teams_involved": [
+                    "Karolina Pliskova",
+                    "Victoria Azarenka"
+                ]
+            },
+            "tennis_women_9": {
+                "round": "Round of 32",
+                "sport": "tennis_women",
+                "id": "tennis_women_9",
+                "venue": "Wimbledon_Court_11",
+                "day": 9,
+                "start_time": 16,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18"
+                ]
+            },
+            "tennis_women_17": {
+                "round": "Round of 16",
+                "sport": "tennis_women",
+                "id": "tennis_women_17",
+                "venue": "Wimbledon_Court_13",
+                "day": 11,
+                "start_time": 15,
+                "duration": 2,
+                "teams_involved": [
+                    "Iga Swiatek",
+                    "Aryna Sabalenka",
+                    "Jessica Pegula",
+                    "Ons Jabeur"
+                ]
+            },
+            "tennis_women_18": {
+                "round": "Round of 16",
+                "sport": "tennis_women",
+                "id": "tennis_women_18",
+                "venue": "Wimbledon_Court_11",
+                "day": 11,
+                "start_time": 16,
+                "duration": 2,
+                "teams_involved": [
+                    "Caroline Garcia",
+                    "Coco Gauff",
+                    "Elena Rybakina",
+                    "Daria Kasatkina"
+                ]
+            },
+            "tennis_women_19": {
+                "round": "Round of 16",
+                "sport": "tennis_women",
+                "id": "tennis_women_19",
+                "venue": "Wimbledon_Court_10",
+                "day": 11,
+                "start_time": 14,
+                "duration": 2,
+                "teams_involved": [
+                    "Maria Sakkari",
+                    "Petra Kvitova",
+                    "Belinda Bencic",
+                    "Barbora Krejcikova"
+                ]
+            },
+            "tennis_women_20": {
+                "round": "Round of 16",
+                "sport": "tennis_women",
+                "id": "tennis_women_20",
+                "venue": "Wimbledon_Court_11",
+                "day": 11,
+                "start_time": 12,
+                "duration": 2,
+                "teams_involved": [
+                    "Veronika Kudermetova",
+                    "Beatriz Haddad Maia",
+                    "Karolina Pliskova",
+                    "Victoria Azarenka"
+                ]
+            },
+            "tennis_women_21": {
+                "round": "Round of 16",
+                "sport": "tennis_women",
+                "id": "tennis_women_21",
+                "venue": "Wimbledon_Court_9",
+                "day": 11,
+                "start_time": 18,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20"
+                ]
+            },
+            "tennis_women_22": {
+                "round": "Round of 16",
+                "sport": "tennis_women",
+                "id": "tennis_women_22",
+                "venue": "Wimbledon_Court_8",
+                "day": 11,
+                "start_time": 20,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24"
+                ]
+            },
+            "tennis_women_23": {
+                "round": "Round of 16",
+                "sport": "tennis_women",
+                "id": "tennis_women_23",
+                "venue": "Wimbledon_Court_12",
+                "day": 11,
+                "start_time": 13,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28"
+                ]
+            },
+            "tennis_women_24": {
+                "round": "Round of 16",
+                "sport": "tennis_women",
+                "id": "tennis_women_24",
+                "venue": "Wimbledon_Court_8",
+                "day": 11,
+                "start_time": 14,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "tennis_women_25": {
+                "round": "Quarter Final",
+                "sport": "tennis_women",
+                "id": "tennis_women_25",
+                "venue": "Wimbledon_Court_10",
+                "day": 12,
+                "start_time": 16,
+                "duration": 2,
+                "teams_involved": [
+                    "Iga Swiatek",
+                    "Aryna Sabalenka",
+                    "Jessica Pegula",
+                    "Ons Jabeur",
+                    "Caroline Garcia",
+                    "Coco Gauff",
+                    "Elena Rybakina",
+                    "Daria Kasatkina"
+                ]
+            },
+            "tennis_women_26": {
+                "round": "Quarter Final",
+                "sport": "tennis_women",
+                "id": "tennis_women_26",
+                "venue": "Wimbledon_Court_9",
+                "day": 12,
+                "start_time": 17,
+                "duration": 2,
+                "teams_involved": [
+                    "Maria Sakkari",
+                    "Petra Kvitova",
+                    "Belinda Bencic",
+                    "Barbora Krejcikova",
+                    "Veronika Kudermetova",
+                    "Beatriz Haddad Maia",
+                    "Karolina Pliskova",
+                    "Victoria Azarenka"
+                ]
+            },
+            "tennis_women_27": {
+                "round": "Quarter Final",
+                "sport": "tennis_women",
+                "id": "tennis_women_27",
+                "venue": "Wimbledon_Court_13",
+                "day": 12,
+                "start_time": 20,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20",
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24"
+                ]
+            },
+            "tennis_women_28": {
+                "round": "Quarter Final",
+                "sport": "tennis_women",
+                "id": "tennis_women_28",
+                "venue": "Wimbledon_Court_8",
+                "day": 12,
+                "start_time": 14,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28",
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "tennis_women_29": {
+                "round": "Semi Final",
+                "sport": "tennis_women",
+                "id": "tennis_women_29",
+                "venue": "Wimbledon_Court_9",
+                "day": 13,
+                "start_time": 17,
+                "duration": 2,
+                "teams_involved": [
+                    "Iga Swiatek",
+                    "Aryna Sabalenka",
+                    "Jessica Pegula",
+                    "Ons Jabeur",
+                    "Caroline Garcia",
+                    "Coco Gauff",
+                    "Elena Rybakina",
+                    "Daria Kasatkina",
+                    "Maria Sakkari",
+                    "Petra Kvitova",
+                    "Belinda Bencic",
+                    "Barbora Krejcikova",
+                    "Veronika Kudermetova",
+                    "Beatriz Haddad Maia",
+                    "Karolina Pliskova",
+                    "Victoria Azarenka"
+                ]
+            },
+            "tennis_women_30": {
+                "round": "Semi Final",
+                "sport": "tennis_women",
+                "id": "tennis_women_30",
+                "venue": "Wimbledon_Court_13",
+                "day": 13,
+                "start_time": 15,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20",
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24",
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28",
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "tennis_women_31": {
+                "round": "Final",
+                "sport": "tennis_women",
+                "id": "tennis_women_31",
+                "venue": "Wimbledon_Court_8",
+                "day": 14,
+                "start_time": 18,
+                "duration": 2,
+                "teams_involved": [
+                    "Iga Swiatek",
+                    "Aryna Sabalenka",
+                    "Jessica Pegula",
+                    "Ons Jabeur",
+                    "Caroline Garcia",
+                    "Coco Gauff",
+                    "Elena Rybakina",
+                    "Daria Kasatkina",
+                    "Maria Sakkari",
+                    "Petra Kvitova",
+                    "Belinda Bencic",
+                    "Barbora Krejcikova",
+                    "Veronika Kudermetova",
+                    "Beatriz Haddad Maia",
+                    "Karolina Pliskova",
+                    "Victoria Azarenka",
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20",
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24",
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28",
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            }
+        },
+        "boxing_heavyweight": {
+            "boxing_heavyweight_1": {
+                "round": "Round of 32",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_1",
+                "venue": "Excel_4",
+                "day": 1,
+                "start_time": 16,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Oleksandr Usyk",
+                    "Tyson Fury"
+                ]
+            },
+            "boxing_heavyweight_10": {
+                "round": "Round of 32",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_10",
+                "venue": "Excel_4",
+                "day": 5,
+                "start_time": 20,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 19",
+                    "Team 20"
+                ]
+            },
+            "boxing_heavyweight_11": {
+                "round": "Round of 32",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_11",
+                "venue": "Excel_2",
+                "day": 6,
+                "start_time": 14,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 21",
+                    "Team 22"
+                ]
+            },
+            "boxing_heavyweight_12": {
+                "round": "Round of 32",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_12",
+                "venue": "Excel_1",
+                "day": 3,
+                "start_time": 16,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 23",
+                    "Team 24"
+                ]
+            },
+            "boxing_heavyweight_13": {
+                "round": "Round of 32",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_13",
+                "venue": "Excel_3",
+                "day": 1,
+                "start_time": 12,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 25",
+                    "Team 26"
+                ]
+            },
+            "boxing_heavyweight_14": {
+                "round": "Round of 32",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_14",
+                "venue": "Excel_1",
+                "day": 2,
+                "start_time": 16,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 27",
+                    "Team 28"
+                ]
+            },
+            "boxing_heavyweight_15": {
+                "round": "Round of 32",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_15",
+                "venue": "Excel_4",
+                "day": 4,
+                "start_time": 18,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 29",
+                    "Team 30"
+                ]
+            },
+            "boxing_heavyweight_16": {
+                "round": "Round of 32",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_16",
+                "venue": "Excel_3",
+                "day": 5,
+                "start_time": 12,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "boxing_heavyweight_2": {
+                "round": "Round of 32",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_2",
+                "venue": "Excel_2",
+                "day": 1,
+                "start_time": 20,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Deontay Wilder",
+                    "Anthony Joshua"
+                ]
+            },
+            "boxing_heavyweight_3": {
+                "round": "Round of 32",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_3",
+                "venue": "Excel_4",
+                "day": 4,
+                "start_time": 16,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Joe Joyce",
+                    "Andy Ruiz Jr"
+                ]
+            },
+            "boxing_heavyweight_4": {
+                "round": "Round of 32",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_4",
+                "venue": "Excel_3",
+                "day": 2,
+                "start_time": 19,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Dillian Whyte",
+                    "Luis Ortiz"
+                ]
+            },
+            "boxing_heavyweight_5": {
+                "round": "Round of 32",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_5",
+                "venue": "Excel_3",
+                "day": 2,
+                "start_time": 17,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 9",
+                    "Team 10"
+                ]
+            },
+            "boxing_heavyweight_6": {
+                "round": "Round of 32",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_6",
+                "venue": "Excel_1",
+                "day": 2,
+                "start_time": 14,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 11",
+                    "Team 12"
+                ]
+            },
+            "boxing_heavyweight_7": {
+                "round": "Round of 32",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_7",
+                "venue": "Excel_4",
+                "day": 2,
+                "start_time": 15,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 13",
+                    "Team 14"
+                ]
+            },
+            "boxing_heavyweight_8": {
+                "round": "Round of 32",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_8",
+                "venue": "Excel_1",
+                "day": 3,
+                "start_time": 12,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 15",
+                    "Team 16"
+                ]
+            },
+            "boxing_heavyweight_9": {
+                "round": "Round of 32",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_9",
+                "venue": "Excel_1",
+                "day": 5,
+                "start_time": 18,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18"
+                ]
+            },
+            "boxing_heavyweight_17": {
+                "round": "Round of 16",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_17",
+                "venue": "Excel_4",
+                "day": 7,
+                "start_time": 18,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Oleksandr Usyk",
+                    "Tyson Fury",
+                    "Deontay Wilder",
+                    "Anthony Joshua"
+                ]
+            },
+            "boxing_heavyweight_18": {
+                "round": "Round of 16",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_18",
+                "venue": "Excel_2",
+                "day": 8,
+                "start_time": 12,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Joe Joyce",
+                    "Andy Ruiz Jr",
+                    "Dillian Whyte",
+                    "Luis Ortiz"
+                ]
+            },
+            "boxing_heavyweight_19": {
+                "round": "Round of 16",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_19",
+                "venue": "Excel_4",
+                "day": 7,
+                "start_time": 16,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 9",
+                    "Team 10",
+                    "Team 11",
+                    "Team 12"
+                ]
+            },
+            "boxing_heavyweight_20": {
+                "round": "Round of 16",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_20",
+                "venue": "Excel_4",
+                "day": 7,
+                "start_time": 15,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 13",
+                    "Team 14",
+                    "Team 15",
+                    "Team 16"
+                ]
+            },
+            "boxing_heavyweight_21": {
+                "round": "Round of 16",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_21",
+                "venue": "Excel_1",
+                "day": 8,
+                "start_time": 15,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20"
+                ]
+            },
+            "boxing_heavyweight_22": {
+                "round": "Round of 16",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_22",
+                "venue": "Excel_1",
+                "day": 8,
+                "start_time": 12,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24"
+                ]
+            },
+            "boxing_heavyweight_23": {
+                "round": "Round of 16",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_23",
+                "venue": "Excel_4",
+                "day": 8,
+                "start_time": 20,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28"
+                ]
+            },
+            "boxing_heavyweight_24": {
+                "round": "Round of 16",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_24",
+                "venue": "Excel_1",
+                "day": 7,
+                "start_time": 19,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "boxing_heavyweight_25": {
+                "round": "Quarter Final",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_25",
+                "venue": "Excel_1",
+                "day": 10,
+                "start_time": 20,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Oleksandr Usyk",
+                    "Tyson Fury",
+                    "Deontay Wilder",
+                    "Anthony Joshua",
+                    "Joe Joyce",
+                    "Andy Ruiz Jr",
+                    "Dillian Whyte",
+                    "Luis Ortiz"
+                ]
+            },
+            "boxing_heavyweight_26": {
+                "round": "Quarter Final",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_26",
+                "venue": "Excel_1",
+                "day": 10,
+                "start_time": 14,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 9",
+                    "Team 10",
+                    "Team 11",
+                    "Team 12",
+                    "Team 13",
+                    "Team 14",
+                    "Team 15",
+                    "Team 16"
+                ]
+            },
+            "boxing_heavyweight_27": {
+                "round": "Quarter Final",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_27",
+                "venue": "Excel_2",
+                "day": 10,
+                "start_time": 18,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20",
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24"
+                ]
+            },
+            "boxing_heavyweight_28": {
+                "round": "Quarter Final",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_28",
+                "venue": "Excel_2",
+                "day": 10,
+                "start_time": 12,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28",
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "boxing_heavyweight_29": {
+                "round": "Semi Final",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_29",
+                "venue": "Excel_1",
+                "day": 12,
+                "start_time": 14,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Oleksandr Usyk",
+                    "Tyson Fury",
+                    "Deontay Wilder",
+                    "Anthony Joshua",
+                    "Joe Joyce",
+                    "Andy Ruiz Jr",
+                    "Dillian Whyte",
+                    "Luis Ortiz",
+                    "Team 9",
+                    "Team 10",
+                    "Team 11",
+                    "Team 12",
+                    "Team 13",
+                    "Team 14",
+                    "Team 15",
+                    "Team 16"
+                ]
+            },
+            "boxing_heavyweight_30": {
+                "round": "Semi Final",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_30",
+                "venue": "Excel_2",
+                "day": 12,
+                "start_time": 17,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20",
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24",
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28",
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "boxing_heavyweight_31": {
+                "round": "Final",
+                "sport": "boxing_heavyweight",
+                "id": "boxing_heavyweight_31",
+                "venue": "Excel_1",
+                "day": 14,
+                "start_time": 14,
+                "duration": 0.5,
+                "teams_involved": [
+                    "Oleksandr Usyk",
+                    "Tyson Fury",
+                    "Deontay Wilder",
+                    "Anthony Joshua",
+                    "Joe Joyce",
+                    "Andy Ruiz Jr",
+                    "Dillian Whyte",
+                    "Luis Ortiz",
+                    "Team 9",
+                    "Team 10",
+                    "Team 11",
+                    "Team 12",
+                    "Team 13",
+                    "Team 14",
+                    "Team 15",
+                    "Team 16",
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20",
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24",
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28",
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            }
+        },
+        "hockey": {
+            "hockey_1": {
+                "round": "Round of 32",
+                "sport": "hockey",
+                "id": "hockey_1",
+                "venue": "riverbank_arena_4",
+                "day": 2,
+                "start_time": 17,
+                "duration": 2,
+                "teams_involved": [
+                    "Netherlands",
+                    "Belgium"
+                ]
+            },
+            "hockey_10": {
+                "round": "Round of 32",
+                "sport": "hockey",
+                "id": "hockey_10",
+                "venue": "riverbank_arena_4",
+                "day": 5,
+                "start_time": 14,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 19",
+                    "Team 20"
+                ]
+            },
+            "hockey_11": {
+                "round": "Round of 32",
+                "sport": "hockey",
+                "id": "hockey_11",
+                "venue": "riverbank_arena_1",
+                "day": 4,
+                "start_time": 17,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 21",
+                    "Team 22"
+                ]
+            },
+            "hockey_12": {
+                "round": "Round of 32",
+                "sport": "hockey",
+                "id": "hockey_12",
+                "venue": "riverbank_arena_3",
+                "day": 6,
+                "start_time": 17,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 23",
+                    "Team 24"
+                ]
+            },
+            "hockey_13": {
+                "round": "Round of 32",
+                "sport": "hockey",
+                "id": "hockey_13",
+                "venue": "riverbank_arena_2",
+                "day": 4,
+                "start_time": 14,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 25",
+                    "Team 26"
+                ]
+            },
+            "hockey_14": {
+                "round": "Round of 32",
+                "sport": "hockey",
+                "id": "hockey_14",
+                "venue": "riverbank_arena_2",
+                "day": 2,
+                "start_time": 12,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 27",
+                    "Team 28"
+                ]
+            },
+            "hockey_15": {
+                "round": "Round of 32",
+                "sport": "hockey",
+                "id": "hockey_15",
+                "venue": "riverbank_arena_3",
+                "day": 4,
+                "start_time": 16,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 29",
+                    "Team 30"
+                ]
+            },
+            "hockey_16": {
+                "round": "Round of 32",
+                "sport": "hockey",
+                "id": "hockey_16",
+                "venue": "riverbank_arena_4",
+                "day": 3,
+                "start_time": 13,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "hockey_2": {
+                "round": "Round of 32",
+                "sport": "hockey",
+                "id": "hockey_2",
+                "venue": "riverbank_arena_4",
+                "day": 1,
+                "start_time": 13,
+                "duration": 2,
+                "teams_involved": [
+                    "Germany",
+                    "India"
+                ]
+            },
+            "hockey_3": {
+                "round": "Round of 32",
+                "sport": "hockey",
+                "id": "hockey_3",
+                "venue": "riverbank_arena_2",
+                "day": 3,
+                "start_time": 13,
+                "duration": 2,
+                "teams_involved": [
+                    "Australia",
+                    "England"
+                ]
+            },
+            "hockey_4": {
+                "round": "Round of 32",
+                "sport": "hockey",
+                "id": "hockey_4",
+                "venue": "riverbank_arena_3",
+                "day": 5,
+                "start_time": 15,
+                "duration": 2,
+                "teams_involved": [
+                    "Argentina",
+                    "Spain"
+                ]
+            },
+            "hockey_5": {
+                "round": "Round of 32",
+                "sport": "hockey",
+                "id": "hockey_5",
+                "venue": "riverbank_arena_2",
+                "day": 1,
+                "start_time": 14,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 9",
+                    "Team 10"
+                ]
+            },
+            "hockey_6": {
+                "round": "Round of 32",
+                "sport": "hockey",
+                "id": "hockey_6",
+                "venue": "riverbank_arena_2",
+                "day": 5,
+                "start_time": 12,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 11",
+                    "Team 12"
+                ]
+            },
+            "hockey_7": {
+                "round": "Round of 32",
+                "sport": "hockey",
+                "id": "hockey_7",
+                "venue": "riverbank_arena_1",
+                "day": 1,
+                "start_time": 13,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 13",
+                    "Team 14"
+                ]
+            },
+            "hockey_8": {
+                "round": "Round of 32",
+                "sport": "hockey",
+                "id": "hockey_8",
+                "venue": "riverbank_arena_4",
+                "day": 2,
+                "start_time": 12,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 15",
+                    "Team 16"
+                ]
+            },
+            "hockey_9": {
+                "round": "Round of 32",
+                "sport": "hockey",
+                "id": "hockey_9",
+                "venue": "riverbank_arena_2",
+                "day": 6,
+                "start_time": 15,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18"
+                ]
+            },
+            "hockey_17": {
+                "round": "Round of 16",
+                "sport": "hockey",
+                "id": "hockey_17",
+                "venue": "riverbank_arena_2",
+                "day": 8,
+                "start_time": 18,
+                "duration": 2,
+                "teams_involved": [
+                    "Netherlands",
+                    "Belgium",
+                    "Germany",
+                    "India"
+                ]
+            },
+            "hockey_18": {
+                "round": "Round of 16",
+                "sport": "hockey",
+                "id": "hockey_18",
+                "venue": "riverbank_arena_2",
+                "day": 8,
+                "start_time": 12,
+                "duration": 2,
+                "teams_involved": [
+                    "Australia",
+                    "England",
+                    "Argentina",
+                    "Spain"
+                ]
+            },
+            "hockey_19": {
+                "round": "Round of 16",
+                "sport": "hockey",
+                "id": "hockey_19",
+                "venue": "riverbank_arena_2",
+                "day": 7,
+                "start_time": 13,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 9",
+                    "Team 10",
+                    "Team 11",
+                    "Team 12"
+                ]
+            },
+            "hockey_20": {
+                "round": "Round of 16",
+                "sport": "hockey",
+                "id": "hockey_20",
+                "venue": "riverbank_arena_4",
+                "day": 7,
+                "start_time": 17,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 13",
+                    "Team 14",
+                    "Team 15",
+                    "Team 16"
+                ]
+            },
+            "hockey_21": {
+                "round": "Round of 16",
+                "sport": "hockey",
+                "id": "hockey_21",
+                "venue": "riverbank_arena_3",
+                "day": 8,
+                "start_time": 17,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20"
+                ]
+            },
+            "hockey_22": {
+                "round": "Round of 16",
+                "sport": "hockey",
+                "id": "hockey_22",
+                "venue": "riverbank_arena_1",
+                "day": 8,
+                "start_time": 14,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24"
+                ]
+            },
+            "hockey_23": {
+                "round": "Round of 16",
+                "sport": "hockey",
+                "id": "hockey_23",
+                "venue": "riverbank_arena_3",
+                "day": 8,
+                "start_time": 12,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28"
+                ]
+            },
+            "hockey_24": {
+                "round": "Round of 16",
+                "sport": "hockey",
+                "id": "hockey_24",
+                "venue": "riverbank_arena_3",
+                "day": 7,
+                "start_time": 12,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "hockey_25": {
+                "round": "Quarter Final",
+                "sport": "hockey",
+                "id": "hockey_25",
+                "venue": "riverbank_arena_1",
+                "day": 10,
+                "start_time": 17,
+                "duration": 2,
+                "teams_involved": [
+                    "Netherlands",
+                    "Belgium",
+                    "Germany",
+                    "India",
+                    "Australia",
+                    "England",
+                    "Argentina",
+                    "Spain"
+                ]
+            },
+            "hockey_26": {
+                "round": "Quarter Final",
+                "sport": "hockey",
+                "id": "hockey_26",
+                "venue": "riverbank_arena_1",
+                "day": 9,
+                "start_time": 14,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 9",
+                    "Team 10",
+                    "Team 11",
+                    "Team 12",
+                    "Team 13",
+                    "Team 14",
+                    "Team 15",
+                    "Team 16"
+                ]
+            },
+            "hockey_27": {
+                "round": "Quarter Final",
+                "sport": "hockey",
+                "id": "hockey_27",
+                "venue": "riverbank_arena_4",
+                "day": 10,
+                "start_time": 12,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20",
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24"
+                ]
+            },
+            "hockey_28": {
+                "round": "Quarter Final",
+                "sport": "hockey",
+                "id": "hockey_28",
+                "venue": "riverbank_arena_3",
+                "day": 10,
+                "start_time": 18,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28",
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "hockey_29": {
+                "round": "Semi Final",
+                "sport": "hockey",
+                "id": "hockey_29",
+                "venue": "riverbank_arena_3",
+                "day": 12,
+                "start_time": 16,
+                "duration": 2,
+                "teams_involved": [
+                    "Netherlands",
+                    "Belgium",
+                    "Germany",
+                    "India",
+                    "Australia",
+                    "England",
+                    "Argentina",
+                    "Spain",
+                    "Team 9",
+                    "Team 10",
+                    "Team 11",
+                    "Team 12",
+                    "Team 13",
+                    "Team 14",
+                    "Team 15",
+                    "Team 16"
+                ]
+            },
+            "hockey_30": {
+                "round": "Semi Final",
+                "sport": "hockey",
+                "id": "hockey_30",
+                "venue": "riverbank_arena_4",
+                "day": 12,
+                "start_time": 17,
+                "duration": 2,
+                "teams_involved": [
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20",
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24",
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28",
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            },
+            "hockey_31": {
+                "round": "Final",
+                "sport": "hockey",
+                "id": "hockey_31",
+                "venue": "riverbank_arena_1",
+                "day": 14,
+                "start_time": 12,
+                "duration": 2,
+                "teams_involved": [
+                    "Netherlands",
+                    "Belgium",
+                    "Germany",
+                    "India",
+                    "Australia",
+                    "England",
+                    "Argentina",
+                    "Spain",
+                    "Team 9",
+                    "Team 10",
+                    "Team 11",
+                    "Team 12",
+                    "Team 13",
+                    "Team 14",
+                    "Team 15",
+                    "Team 16",
+                    "Team 17",
+                    "Team 18",
+                    "Team 19",
+                    "Team 20",
+                    "Team 21",
+                    "Team 22",
+                    "Team 23",
+                    "Team 24",
+                    "Team 25",
+                    "Team 26",
+                    "Team 27",
+                    "Team 28",
+                    "Team 29",
+                    "Team 30",
+                    "Team 31",
+                    "Team 32"
+                ]
+            }
+        },
+        "athletics_100m": {
+            "athletics_100m_1": {
+                "round": "Quarter Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_1",
+                "venue": "london_stadium",
+                "day": 11,
+                "start_time": 12,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Tyson Gay",
+                    "Richard Thompson",
+                    "Gerald Phiri",
+                    "Jaysuma Saidy Ndure"
+                ]
+            },
+            "athletics_100m_10": {
+                "round": "Quarter Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_10",
+                "venue": "london_stadium",
+                "day": 2,
+                "start_time": 14,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Team 37",
+                    "Team 38",
+                    "Team 39",
+                    "Team 40"
+                ]
+            },
+            "athletics_100m_11": {
+                "round": "Quarter Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_11",
+                "venue": "london_stadium",
+                "day": 9,
+                "start_time": 9,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Team 41",
+                    "Team 42",
+                    "Team 43",
+                    "Team 44"
+                ]
+            },
+            "athletics_100m_12": {
+                "round": "Quarter Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_12",
+                "venue": "london_stadium",
+                "day": 8,
+                "start_time": 10,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Team 45",
+                    "Team 46",
+                    "Team 47",
+                    "Team 48"
+                ]
+            },
+            "athletics_100m_13": {
+                "round": "Quarter Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_13",
+                "venue": "london_stadium",
+                "day": 6,
+                "start_time": 18,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Team 49",
+                    "Team 50",
+                    "Team 51",
+                    "Team 52"
+                ]
+            },
+            "athletics_100m_14": {
+                "round": "Quarter Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_14",
+                "venue": "london_stadium",
+                "day": 7,
+                "start_time": 12,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Team 53",
+                    "Team 54",
+                    "Team 55",
+                    "Team 56"
+                ]
+            },
+            "athletics_100m_15": {
+                "round": "Quarter Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_15",
+                "venue": "london_stadium",
+                "day": 1,
+                "start_time": 17,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Team 57",
+                    "Team 58",
+                    "Team 59",
+                    "Team 60"
+                ]
+            },
+            "athletics_100m_16": {
+                "round": "Quarter Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_16",
+                "venue": "london_stadium",
+                "day": 8,
+                "start_time": 21,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Team 61",
+                    "Team 62",
+                    "Team 63",
+                    "Team 64"
+                ]
+            },
+            "athletics_100m_2": {
+                "round": "Quarter Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_2",
+                "venue": "london_stadium",
+                "day": 6,
+                "start_time": 14,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Angel David Rodriguez",
+                    "Jurgen Themen",
+                    "Isidro Montoya",
+                    "Yeo Foo Ee Gary"
+                ]
+            },
+            "athletics_100m_3": {
+                "round": "Quarter Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_3",
+                "venue": "london_stadium",
+                "day": 8,
+                "start_time": 9,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Justin Gatlin",
+                    "Derrick Atkins",
+                    "Rondel Sorrillo",
+                    "Dariusz Kuc"
+                ]
+            },
+            "athletics_100m_4": {
+                "round": "Quarter Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_4",
+                "venue": "london_stadium",
+                "day": 10,
+                "start_time": 18,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Nilson Andre",
+                    "Masashi Eriguchi",
+                    "Barakat Al-Harthi",
+                    "Fernando Lumain"
+                ]
+            },
+            "athletics_100m_5": {
+                "round": "Quarter Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_5",
+                "venue": "london_stadium",
+                "day": 9,
+                "start_time": 20,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Ryan Bailey",
+                    "Ben Youssef Meite",
+                    "Justyn Warner",
+                    "Kemar Hyman"
+                ]
+            },
+            "athletics_100m_6": {
+                "round": "Quarter Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_6",
+                "venue": "london_stadium",
+                "day": 7,
+                "start_time": 10,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Suwaibou Sanneh",
+                    "Rytis Sakalauskas",
+                    "Beranger Aymard Bosse",
+                    "Artur Bruno Rojas"
+                ]
+            },
+            "athletics_100m_7": {
+                "round": "Quarter Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_7",
+                "venue": "london_stadium",
+                "day": 5,
+                "start_time": 21,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Usain Bolt",
+                    "Daniel Bailey",
+                    "James Dasaolu",
+                    "Amr Ibrahim Mostafa Seoud"
+                ]
+            },
+            "athletics_100m_8": {
+                "round": "Quarter Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_8",
+                "venue": "london_stadium",
+                "day": 12,
+                "start_time": 10,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Jason Rogers",
+                    "Ogho-Oghene Egwero",
+                    "Holder da Silva",
+                    "Idrissa Adam"
+                ]
+            },
+            "athletics_100m_9": {
+                "round": "Quarter Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_9",
+                "venue": "london_stadium",
+                "day": 4,
+                "start_time": 10,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Team 33",
+                    "Team 34",
+                    "Team 35",
+                    "Team 36"
+                ]
+            },
+            "athletics_100m_17": {
+                "round": "Semi Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_17",
+                "venue": "london_stadium",
+                "day": 13,
+                "start_time": 18,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Tyson Gay",
+                    "Richard Thompson",
+                    "Gerald Phiri",
+                    "Jaysuma Saidy Ndure",
+                    "Angel David Rodriguez",
+                    "Jurgen Themen",
+                    "Isidro Montoya",
+                    "Yeo Foo Ee Gary"
+                ]
+            },
+            "athletics_100m_18": {
+                "round": "Semi Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_18",
+                "venue": "london_stadium",
+                "day": 13,
+                "start_time": 17,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Justin Gatlin",
+                    "Derrick Atkins",
+                    "Rondel Sorrillo",
+                    "Dariusz Kuc",
+                    "Nilson Andre",
+                    "Masashi Eriguchi",
+                    "Barakat Al-Harthi",
+                    "Fernando Lumain"
+                ]
+            },
+            "athletics_100m_19": {
+                "round": "Semi Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_19",
+                "venue": "london_stadium",
+                "day": 13,
+                "start_time": 13,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Ryan Bailey",
+                    "Ben Youssef Meite",
+                    "Justyn Warner",
+                    "Kemar Hyman",
+                    "Suwaibou Sanneh",
+                    "Rytis Sakalauskas",
+                    "Beranger Aymard Bosse",
+                    "Artur Bruno Rojas"
+                ]
+            },
+            "athletics_100m_20": {
+                "round": "Semi Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_20",
+                "venue": "london_stadium",
+                "day": 13,
+                "start_time": 12,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Usain Bolt",
+                    "Daniel Bailey",
+                    "James Dasaolu",
+                    "Amr Ibrahim Mostafa Seoud",
+                    "Jason Rogers",
+                    "Ogho-Oghene Egwero",
+                    "Holder da Silva",
+                    "Idrissa Adam"
+                ]
+            },
+            "athletics_100m_21": {
+                "round": "Semi Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_21",
+                "venue": "london_stadium",
+                "day": 13,
+                "start_time": 11,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Team 33",
+                    "Team 34",
+                    "Team 35",
+                    "Team 36",
+                    "Team 37",
+                    "Team 38",
+                    "Team 39",
+                    "Team 40"
+                ]
+            },
+            "athletics_100m_22": {
+                "round": "Semi Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_22",
+                "venue": "london_stadium",
+                "day": 13,
+                "start_time": 10,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Team 41",
+                    "Team 42",
+                    "Team 43",
+                    "Team 44",
+                    "Team 45",
+                    "Team 46",
+                    "Team 47",
+                    "Team 48"
+                ]
+            },
+            "athletics_100m_23": {
+                "round": "Semi Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_23",
+                "venue": "london_stadium",
+                "day": 13,
+                "start_time": 9,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Team 49",
+                    "Team 50",
+                    "Team 51",
+                    "Team 52",
+                    "Team 53",
+                    "Team 54",
+                    "Team 55",
+                    "Team 56"
+                ]
+            },
+            "athletics_100m_24": {
+                "round": "Semi Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_24",
+                "venue": "london_stadium",
+                "day": 13,
+                "start_time": 8,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Team 57",
+                    "Team 58",
+                    "Team 59",
+                    "Team 60",
+                    "Team 61",
+                    "Team 62",
+                    "Team 63",
+                    "Team 64"
+                ]
+            },
+            "athletics_100m_25": {
+                "round": "Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_25",
+                "venue": "london_stadium",
+                "day": 14,
+                "start_time": 9,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Tyson Gay",
+                    "Richard Thompson",
+                    "Gerald Phiri",
+                    "Jaysuma Saidy Ndure",
+                    "Angel David Rodriguez",
+                    "Jurgen Themen",
+                    "Isidro Montoya",
+                    "Yeo Foo Ee Gary",
+                    "Justin Gatlin",
+                    "Derrick Atkins",
+                    "Rondel Sorrillo",
+                    "Dariusz Kuc",
+                    "Nilson Andre",
+                    "Masashi Eriguchi",
+                    "Barakat Al-Harthi",
+                    "Fernando Lumain"
+                ]
+            },
+            "athletics_100m_26": {
+                "round": "Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_26",
+                "venue": "london_stadium",
+                "day": 14,
+                "start_time": 8,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Ryan Bailey",
+                    "Ben Youssef Meite",
+                    "Justyn Warner",
+                    "Kemar Hyman",
+                    "Suwaibou Sanneh",
+                    "Rytis Sakalauskas",
+                    "Beranger Aymard Bosse",
+                    "Artur Bruno Rojas",
+                    "Usain Bolt",
+                    "Daniel Bailey",
+                    "James Dasaolu",
+                    "Amr Ibrahim Mostafa Seoud",
+                    "Jason Rogers",
+                    "Ogho-Oghene Egwero",
+                    "Holder da Silva",
+                    "Idrissa Adam"
+                ]
+            },
+            "athletics_100m_27": {
+                "round": "Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_27",
+                "venue": "london_stadium",
+                "day": 14,
+                "start_time": 20,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Team 33",
+                    "Team 34",
+                    "Team 35",
+                    "Team 36",
+                    "Team 37",
+                    "Team 38",
+                    "Team 39",
+                    "Team 40",
+                    "Team 41",
+                    "Team 42",
+                    "Team 43",
+                    "Team 44",
+                    "Team 45",
+                    "Team 46",
+                    "Team 47",
+                    "Team 48"
+                ]
+            },
+            "athletics_100m_28": {
+                "round": "Final",
+                "sport": "athletics_100m",
+                "id": "athletics_100m_28",
+                "venue": "london_stadium",
+                "day": 14,
+                "start_time": 19,
+                "duration": 0.2,
+                "teams_involved": [
+                    "Team 49",
+                    "Team 50",
+                    "Team 51",
+                    "Team 52",
+                    "Team 53",
+                    "Team 54",
+                    "Team 55",
+                    "Team 56",
+                    "Team 57",
+                    "Team 58",
+                    "Team 59",
+                    "Team 60",
+                    "Team 61",
+                    "Team 62",
+                    "Team 63",
+                    "Team 64"
+                ]
+            }
+        }
+    }
+}
