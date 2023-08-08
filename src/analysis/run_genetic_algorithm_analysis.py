@@ -20,6 +20,7 @@ from src.schedulers.csop.genetic_algorithm.genetic_algorithm_scheduler import (
 from src.schedulers.csop.genetic_algorithm.genetic_algorithm_solver import (
     GeneticAlgorithmSolver,
 )
+
 from src.schedulers.csp.csp_scheduler import CSPScheduler
 from src.schedulers.csp.csp_solver import CSPSolver
 
@@ -34,7 +35,8 @@ data["general_constraints"] = general_constraints
 
 def compare_iterations_inner(n):
     _data = copy.deepcopy(data)
-    scheduler = GeneticAlgorithmScheduler(GeneticAlgorithmSolver, sports, _data, False)
+    scheduler = GeneticAlgorithmScheduler(
+        GeneticAlgorithmSolver, sports, _data, False)
     result = scheduler.schedule_events()
     return result.complete_games
 
@@ -84,7 +86,8 @@ def compare_iterations():
     df.to_csv("ga_iterations_analysis.csv", index_label="GA Iterations")
 
     fig, ax = plt.subplots()
-    line_1 = ax.plot(df["iterations"], df["avg_eval_score"], label="Eval Score")
+    line_1 = ax.plot(df["iterations"],
+                     df["avg_eval_score"], label="Eval Score")
     ax.set_xticks([i for i in range(0, ga_iterations + 1, 25)])
     ax.set_ylabel("Eval Score")
     ax.set_xlabel("GA Iterations")
@@ -105,7 +108,8 @@ def compare_iterations():
 def compare_population_size_run(run, populations, ga_iterations):
     run_start_time = time.time()
     scores = []
-    initial_population = [initialise_population(run) for _ in range(populations[-1])]
+    initial_population = [initialise_population(
+        run) for _ in range(populations[-1])]
     for size in populations:
         data["genetic_algorithm_iterations"] = ga_iterations
         data["initial_population_size"] = size
@@ -174,7 +178,8 @@ def compare_population_size():
         zip(
             *pool.starmap(
                 compare_population_size_run,
-                zip(range(iterations), repeat(populations), repeat(ga_iterations)),
+                zip(range(iterations), repeat(
+                    populations), repeat(ga_iterations)),
             )
         )
     )
@@ -208,7 +213,8 @@ def initialise_population(run):
 
 def compare_iterations_and_population_size_run(run, populations, ga_iterations):
     initialise_population_start_time = time.time()
-    initial_population = [initialise_population(run) for _ in range(max(populations))]
+    initial_population = [initialise_population(
+        run) for _ in range(max(populations))]
     initialise_population_end_time = time.time()
     initialise_time = (
         initialise_population_end_time - initialise_population_start_time
@@ -352,7 +358,8 @@ def compare_iterations_and_population_size():
             )
             avg_runtimes[size][size_iteration] = round(avg_runtime, 3)
 
-    df = pd.DataFrame(avg_eval_scores, columns=ga_iterations, index=populations)
+    df = pd.DataFrame(avg_eval_scores, columns=ga_iterations,
+                      index=populations)
     df.to_csv("./avg_eval_score.csv", index_label="Population Size")
 
     df = pd.DataFrame(avg_runtimes, columns=ga_iterations, index=populations)
@@ -362,7 +369,8 @@ def compare_iterations_and_population_size():
     df = pd.DataFrame(
         avg_performance_per_second, columns=ga_iterations, index=populations
     )
-    df.to_csv("./avg_performance_per_second.csv", index_label="Population Size")
+    df.to_csv("./avg_performance_per_second.csv",
+              index_label="Population Size")
 
     cmap = LinearSegmentedColormap.from_list(
         "rg", ["darkred", "red", "lightcoral", "palegreen", "green", "darkgreen"], N=256
@@ -411,7 +419,8 @@ def compare_iterations_and_population_size():
 
 
 parser = ArgumentParser("Analysis of Genetic Algorithms")
-parser.add_argument("-i", action="store_true", help="iterations vs performance")
+parser.add_argument("-i", action="store_true",
+                    help="iterations vs performance")
 parser.add_argument(
     "-ip", action="store_true", help="initial population size vs performance"
 )

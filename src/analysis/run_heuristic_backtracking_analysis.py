@@ -80,7 +80,8 @@ df = pd.DataFrame(
 df.to_csv("heuristic_backtracking_analysis.csv")
 
 fig, ax = plt.subplots()
-line_1 = ax.plot(df["num_results_to_collect"], df["avg_eval_score"], label="Eval Score")
+line_1 = ax.plot(df["num_results_to_collect"],
+                 df["avg_eval_score"], label="Eval Score")
 ax.set_xticks([i for i in range(0, n_range.stop, 5)])
 ax.set_ylabel("Eval Score")
 ax.set_xlabel("Num Results to Collect")

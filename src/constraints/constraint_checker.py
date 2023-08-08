@@ -36,7 +36,8 @@ def constraint_checker(
         if not (constraint_string in constraints_list):
             handle_error("Constraint not valid: " + constraint_string)
 
-        constraint = get_constraint_from_string(constraint_string)(events, sports, None)
+        constraint = get_constraint_from_string(
+            constraint_string)(events, sports, None)
         all_events = get_alL_events(events)
         curr_conflicts = constraint_check(
             constraint, all_events, constraint_checker_flag=True
@@ -51,11 +52,14 @@ def constraint_check(
     constraint: Type[Constraint], events, constraint_checker_flag=False
 ) -> list:
     if constraint.get_constraint_type() == ConstraintType.UNARY:
-        result = unary_constraint_check(constraint, events, constraint_checker_flag)
+        result = unary_constraint_check(
+            constraint, events, constraint_checker_flag)
     elif constraint.get_constraint_type() == ConstraintType.BINARY:
-        result = binary_constraint_check(constraint, events, constraint_checker_flag)
+        result = binary_constraint_check(
+            constraint, events, constraint_checker_flag)
     else:
-        result = all_event_constraint_check(constraint, events, constraint_checker_flag)
+        result = all_event_constraint_check(
+            constraint, events, constraint_checker_flag)
     # print(result)
     return result
 

@@ -38,7 +38,8 @@ class ConstraintFixingSolver:
         params: dict = None,
     ) -> None:
         constraint = get_constraint_from_string(function_name)
-        self.constraints.append(constraint(variables, sport, copy.deepcopy(params)))
+        self.constraints.append(constraint(
+            variables, sport, copy.deepcopy(params)))
 
     def add_optional_constraint(
         self, function_name: str, sport: Sport | None = None, params: object = None
@@ -61,7 +62,8 @@ class ConstraintFixingSolver:
             value for variable in self.variables for value in self.variables[variable]
         ]
 
-        constraints_failed = self.__test_constraints(self.assignments, self.constraints)
+        constraints_failed = self.__test_constraints(
+            self.assignments, self.constraints)
         if constraints_failed == 0:
             return self.assignments, 0
 

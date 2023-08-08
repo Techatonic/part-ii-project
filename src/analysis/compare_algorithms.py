@@ -1,9 +1,10 @@
-import main
+'''Import relevant modules'''
 import copy
 import json
 import sys
 import multiprocessing
 from multiprocessing import Queue
+import main
 
 sys.path.append("")
 
@@ -31,8 +32,8 @@ algorithms = {
     "base": ["-m"],
 }
 
-num_runs = 10
-timeout_time = 1800
+NUM_RUNS = 10
+TIMEOUT_TIME = 1800
 
 results = {}
 
@@ -47,26 +48,28 @@ for algorithm in algorithms:
     should_break = False
     for import_path in range(len(inputs)):
         if should_break:
-            results[algorithm][import_path] = {"time_taken": "N/A", "eval_score": "N/A"}
+            results[algorithm][import_path] = {
+                "time_taken": "N/A", "eval_score": "N/A"}
             continue
         runtimes = []
         eval_scores = []
-        for iteration in range(num_runs):
+        for iteration in range(NUM_RUNS):
             base_args[2] = inputs[import_path]
             sys.argv = base_args + algorithms[algorithm]
 
             Q = Queue()
-            p = multiprocessing.Process(target=call_main, name="main", args=(Q,))
+            p = multiprocessing.Process(
+                target=call_main, name="main", args=(Q,))
             p.start()
-            p.join(timeout=timeout_time)
+            p.join(timeout=TIMEOUT_TIME)
 
             if p.is_alive():
                 p.terminate()
                 p.join()
 
-                print(f"Failed to finish in {timeout_time} seconds")
-                runtimes += ["N/A"] * (num_runs - iteration)
-                eval_scores += ["N/A"] * (num_runs - iteration)
+                print(f"Failed to finish in {TIMEOUT_TIME} seconds")
+                runtimes += ["N/A"] * (NUM_RUNS - iteration)
+                eval_scores += ["N/A"] * (NUM_RUNS - iteration)
                 should_break = True
                 break
 
@@ -76,7 +79,8 @@ for algorithm in algorithms:
             eval_scores.append(result["eval_score"])
 
         if "N/A" in runtimes:
-            results[algorithm][import_path] = {"time_taken": "N/A", "eval_score": "N/A"}
+            results[algorithm][import_path] = {
+                "time_taken": "N/A", "eval_score": "N/A"}
         else:
             results[algorithm][import_path] = {
                 "time_taken": sum(runtimes) / len(runtimes),

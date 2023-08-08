@@ -15,6 +15,7 @@ import time
 import pandas as pd
 from matplotlib import pyplot as plt
 
+
 sys.path.append("./")
 
 
@@ -22,7 +23,8 @@ export_path = "examples/outputs/test_output.json"
 
 
 def run(n, run):
-    import_path = "examples/inputs/example_input_constraint_checker_" + str(n) + ".json"
+    import_path = "examples/inputs/example_input_constraint_checker_" + \
+        str(n) + ".json"
 
     input_json = read_and_validate_input(
         import_path, "schemata/input_schema_constraint_checker.json"

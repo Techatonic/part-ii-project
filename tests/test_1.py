@@ -1,14 +1,17 @@
+import sys
+
+
+sys.path.append("./")
+
+import main
 import json
 
 import pytest
 import hashlib
 from jsonschema.exceptions import ValidationError, SchemaError
 from jsonschema.validators import validate
-import sys
 import copy
 
-sys.path.append("./")
-import main
 
 base_args = [
     "main.py",

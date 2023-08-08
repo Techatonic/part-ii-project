@@ -55,7 +55,7 @@ class OptionalConstraint(ABC):
         pass
 
     @abstractmethod
-    def eval_constraint(self, csp_instance, variables):
+    def eval_constraint(self, csp_instance, assignments):
         pass
 
     def __str__(self) -> str:
@@ -73,7 +73,7 @@ class OptionalConstraint(ABC):
         )
 
     def __hash__(self):
-        hash(
+        return hash(
             (
                 self._constraint_string,
                 self._sport,
@@ -95,9 +95,9 @@ def take_average_of_heuristics_across_all_sports(
 
     heuristic_count = 0
     sport_count = 0
-    for sport in assignments_by_sport:
+    for sport, sport_assignment in assignments_by_sport.items():
         _, score = heuristic.eval_constraint(
-            csp_instance, {sport: assignments_by_sport[sport]}
+            csp_instance, {sport: sport_assignment}
         )
         heuristic_count += score
         sport_count += 1
@@ -126,7 +126,7 @@ class MaxMatchesPerDayHeuristic(OptionalConstraint):
         def get_matches_per_day(temp_assignments: list[Event]):
             temp_assignments_by_day = {}
             for event in temp_assignments:
-                if not (event.day in temp_assignments_by_day):
+                if not event.day in temp_assignments_by_day:
                     temp_assignments_by_day[event.day] = 1
                 else:
                     temp_assignments_by_day[event.day] += 1
@@ -136,9 +136,9 @@ class MaxMatchesPerDayHeuristic(OptionalConstraint):
 
         def get_new_assignment_day(events):
             days = [event.day for event in events]
-            return min(days, key=lambda x: days.count(x))
+            return min(days, key=days.count)
 
-        for index in range(num_events_to_add):
+        for _ in range(num_events_to_add):
             new_assignment = events[0].__copy__()
             new_assignment.day = get_new_assignment_day(events)
             events.append(new_assignment)
@@ -180,7 +180,8 @@ class AvgCapacityHeuristic(OptionalConstraint):
             count = sum(event.venue.capacity for event in assignments)
             current += count
             sport = assignments[0].sport
-            max_venue_capacity = max(venue.capacity for venue in sport.possible_venues)
+            max_venue_capacity = max(
+                venue.capacity for venue in sport.possible_venues)
             max_possible += len(assignments) * max_venue_capacity
             event_count += len(assignments)
 
@@ -209,9 +210,9 @@ class AvgDistanceToTravel(OptionalConstraint):
 
         for sport_name in sports:
             assignments = list(assignments[sport_name].values())
-            if not ("distances_to_travel" in csp_instance.data):
+            if not "distances_to_travel" in csp_instance.data:
                 csp_instance.data["distances_to_travel"] = {}
-            if not (sport_name in csp_instance.data["distances_to_travel"]):
+            if not sport_name in csp_instance.data["distances_to_travel"]:
                 dist = pgeocode.GeoDistance("GB")
                 distances_to_travel = {}
                 accommodation = csp_instance.data["athletes_accommodation_postcode"]
@@ -295,7 +296,8 @@ class AvgRestBetweenMatches(OptionalConstraint):
     ) -> tuple[float, float]:
         def get_avg_rest(rest_dict) -> tuple[float, float]:
             rest_team_list = []
-            rest_dict = {k: v for k, v in rest_dict.items() if len(rest_dict[k]) > 1}
+            rest_dict = {k: v for k, v in rest_dict.items()
+                         if len(rest_dict[k]) > 1}
             if rest_dict == {}:
                 return 0, 0
             for temp_team in rest_dict:
@@ -317,7 +319,7 @@ class AvgRestBetweenMatches(OptionalConstraint):
             rest_between_matches: dict[str, list[int]] = {}
             for event in assignments:
                 for team in event.teams_involved:
-                    if not (team in rest_between_matches):
+                    if not team in rest_between_matches:
                         rest_between_matches[team] = [event.day]
                     else:
                         insort(rest_between_matches[team], event.day)
@@ -353,7 +355,7 @@ class AvgRestBetweenMatches(OptionalConstraint):
 
 # Helper functions
 def get_optional_constraint_from_string(string: str):
-    if not (string in optional_constraints_list):
+    if not string in optional_constraints_list:
         handle_error("Constraint does not exist: " + string)
     return optional_constraints_list[string]
 
