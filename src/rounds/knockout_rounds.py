@@ -1,7 +1,8 @@
 from src.helper.handle_error import handle_error
+from src.rounds.rounds import Round
 
 
-class Round:
+class KnockoutRound(Round):
     """
     Defines a generic round of a tournament
     """
@@ -10,6 +11,7 @@ class Round:
         self.round_name = round_name
         self.num_matches = num_matches
         self.round_index = round_index
+        super().__init__(round_name, True, self, num_matches)
 
     def __str__(self) -> str:
         return self.__repr__()
@@ -25,13 +27,13 @@ class Round:
 
 
 knockout_rounds = [
-    Round("Final", 1, 0),
-    Round("Semi Final", 2, 1),
-    Round("Quarter Final", 4, 2),
-    Round("Round of 16", 8, 3),
-    Round("Round of 32", 16, 4),
-    Round("Round of 64", 32, 5),
-    Round("Round of 128", 64, 6),
+    KnockoutRound("Final", 1, 0),
+    KnockoutRound("Semi Final", 2, 1),
+    KnockoutRound("Quarter Final", 4, 2),
+    KnockoutRound("Round of 16", 8, 3),
+    KnockoutRound("Round of 32", 16, 4),
+    KnockoutRound("Round of 64", 32, 5),
+    KnockoutRound("Round of 128", 64, 6),
 ]
 
 

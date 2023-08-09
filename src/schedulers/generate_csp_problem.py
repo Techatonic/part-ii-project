@@ -6,7 +6,8 @@ import numpy as np
 
 from src.helper.handle_error import handle_error
 from src.events.event import Event
-from src.rounds.knockout_rounds import Round, generate_round_order
+from src.rounds.knockout_rounds import KnockoutRound, generate_round_order
+from src.rounds.rounds import Round
 from src.schedulers.solver import Solver
 from src.sports.sport import Sport
 from src.venues.venue import Venue
@@ -60,9 +61,7 @@ def generate_csp_problem(
         max_per_day = sum(venue.max_matches_per_day for venue in venues)
 
     for _round in range(1, len(round_order)):
-        num_matches = len(matches) / 2 ** (
-            round_order[0].round_index - round_order[_round - 1].round_index
-        )
+        num_matches = round_order[_round].num_matches
         min_starts.append(
             min_starts[_round - 1]
             + max(
@@ -74,9 +73,7 @@ def generate_csp_problem(
         )
 
     for _round in range(len(round_order) - 2, -1, -1):
-        num_matches = len(matches) / 2 ** (
-            round_order[0].round_index - round_order[_round + 1].round_index
-        )
+        num_matches = round_order[_round].num_matches
         max_finishes.insert(
             0,
             max_finishes[0]
@@ -91,10 +88,10 @@ def generate_csp_problem(
     for event_round in round_order:
         if round_order.index(event_round) > 0:
             matches = [x + y for x, y in zip(matches[0::2], matches[1::2])]
+        specific_min_start_day = min_starts[round_order.index(event_round)]
+        specific_max_finish_day = max_finishes[round_order.index(event_round)]
         for match in matches:
             options = []
-            specific_min_start_day = min_starts[round_order.index(event_round)]
-            specific_max_finish_day = max_finishes[round_order.index(event_round)]
 
             if (
                 specific_min_start_day > specific_max_finish_day
