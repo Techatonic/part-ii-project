@@ -1,6 +1,9 @@
 # Code Coverage files
 cov_html/
 
+# Gantt chart directory
+schedule_imgs/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
