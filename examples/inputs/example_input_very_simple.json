@@ -89,8 +89,11 @@
         "Belgium"
       ],
       "num_teams_per_game": 2,
-      "is_knockout": true,
-      "group_stage": null,
+      "is_knockout": false,
+      "group_stage": {
+        "num_groups": 2,
+        "num_qualify_per_group": 1
+      },
       "min_start_day": 1,
       "max_finish_day": 10,
       "min_start_time": 12,
@@ -108,7 +111,9 @@
           },
           "no_later_rounds_before_earlier_rounds": {},
           "max_capacity_at_final": {},
-          "max_matches_per_day": {"max_matches_per_day":  2}
+          "max_matches_per_day": {
+            "max_matches_per_day": 2
+          }
         },
         "optional": {
           "avg_distance_to_travel": {

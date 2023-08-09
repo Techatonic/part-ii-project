@@ -5,7 +5,7 @@ from typing import Type
 from src.events.event import Event
 from src.games.complete_games import CompleteGames
 from src.helper.helper import calculate_fitness
-from src.rounds.knockout_rounds import generate_round_order, KnockoutRound
+from src.rounds.knockout_rounds import generate_knockout_round_order, KnockoutRound
 from src.schedulers.scheduler import Scheduler
 from src.schedulers.generate_csp_problem import generate_csp_problem
 from src.schedulers.solver import Solver
@@ -50,7 +50,9 @@ class CSPScheduler(Scheduler, ABC):
             )
             round_order: list[KnockoutRound] = list(
                 reversed(
-                    generate_round_order(sport.num_teams, sport.num_teams_per_game)
+                    generate_knockout_round_order(
+                        sport.num_teams, sport.num_teams_per_game, sport.group_stage
+                    )
                 )
             )
 

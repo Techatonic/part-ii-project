@@ -4,3 +4,4 @@ class Round:
         self.is_knockout = is_knockout
         self.round_object = round_object
         self.num_matches = num_matches
+        self.round_index = float("inf")  # Set by default to infinity for group stage

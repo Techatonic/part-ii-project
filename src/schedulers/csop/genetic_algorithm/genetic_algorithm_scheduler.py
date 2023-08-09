@@ -7,7 +7,7 @@ from typing import Type
 from src.helper.handle_error import handle_error
 from src.events.event import Event
 from src.games.complete_games import CompleteGames
-from src.rounds.knockout_rounds import generate_round_order, KnockoutRound
+from src.rounds.knockout_rounds import generate_knockout_round_order, KnockoutRound
 from src.schedulers.scheduler import Scheduler
 from src.schedulers.csop.genetic_algorithm.genetic_algorithm_solver import (
     GeneticAlgorithmSolver,
@@ -56,7 +56,9 @@ class GeneticAlgorithmScheduler(Scheduler, ABC):
             )
             round_order: list[KnockoutRound] = list(
                 reversed(
-                    generate_round_order(sport.num_teams, sport.num_teams_per_game)
+                    generate_knockout_round_order(
+                        sport.num_teams, sport.num_teams_per_game, sport.group_stage
+                    )
                 )
             )
 
@@ -91,7 +93,9 @@ class GeneticAlgorithmScheduler(Scheduler, ABC):
             ]
             round_order: list[KnockoutRound] = list(
                 reversed(
-                    generate_round_order(sport.num_teams, sport.num_teams_per_game)
+                    generate_knockout_round_order(
+                        sport.num_teams, sport.num_teams_per_game, sport.group_stage
+                    )
                 )
             )
             min_start_day: int = (

@@ -143,8 +143,11 @@
         "Costa Rica"
       ],
       "num_teams_per_game": 2,
-      "is_knockout": true,
-      "group_stage": null,
+      "is_knockout": false,
+      "group_stage": {
+        "num_groups": 8,
+        "num_qualify_per_group": 2
+      },
       "min_start_day": 1,
       "max_finish_day": 18,
       "min_start_time": 12,
@@ -162,7 +165,9 @@
           },
           "no_later_rounds_before_earlier_rounds": {},
           "max_capacity_at_final": {},
-          "max_matches_per_day": {"max_matches_per_day":  32}
+          "max_matches_per_day": {
+            "max_matches_per_day": 32
+          }
         },
         "optional": {
           "avg_distance_to_travel": {
@@ -332,7 +337,9 @@
           },
           "no_later_rounds_before_earlier_rounds": {},
           "max_capacity_at_final": {},
-          "max_matches_per_day": {"max_matches_per_day":  32}
+          "max_matches_per_day": {
+            "max_matches_per_day": 32
+          }
         },
         "optional": {
           "avg_distance_to_travel": {
@@ -489,7 +496,9 @@
           },
           "no_later_rounds_before_earlier_rounds": {},
           "max_capacity_at_final": {},
-          "max_matches_per_day": {"max_matches_per_day":  32}
+          "max_matches_per_day": {
+            "max_matches_per_day": 32
+          }
         },
         "optional": {
           "avg_distance_to_travel": {
@@ -646,7 +655,9 @@
           },
           "no_later_rounds_before_earlier_rounds": {},
           "max_capacity_at_final": {},
-          "max_matches_per_day": {"max_matches_per_day":  32}
+          "max_matches_per_day": {
+            "max_matches_per_day": 32
+          }
         },
         "optional": {
           "avg_distance_to_travel": {
@@ -777,7 +788,9 @@
           },
           "no_later_rounds_before_earlier_rounds": {},
           "max_capacity_at_final": {},
-          "max_matches_per_day": {"max_matches_per_day":  16}
+          "max_matches_per_day": {
+            "max_matches_per_day": 16
+          }
         },
         "optional": {
           "avg_distance_to_travel": {
@@ -798,63 +811,63 @@
         }
       }
     },
-    "hockey":{
-      "name":"hockey",
-      "venues":[
+    "hockey": {
+      "name": "hockey",
+      "venues": [
         {
-          "name":"riverbank_arena_1",
-          "location_coordinates":[
+          "name": "riverbank_arena_1",
+          "location_coordinates": [
             51.542997828,
             -0.018999924
           ],
-          "location_address":"Olympic Park, Stratford, London E20 3ZH",
-          "location_postcode":"E20 3ZH",
-          "min_start_time":12,
-          "max_finish_time":20,
-          "capacity":15000,
-          "max_matches_per_day":3
+          "location_address": "Olympic Park, Stratford, London E20 3ZH",
+          "location_postcode": "E20 3ZH",
+          "min_start_time": 12,
+          "max_finish_time": 20,
+          "capacity": 15000,
+          "max_matches_per_day": 3
         },
         {
-          "name":"riverbank_arena_2",
-          "location_coordinates":[
+          "name": "riverbank_arena_2",
+          "location_coordinates": [
             51.542997828,
             -0.018999924
           ],
-          "location_address":"Olympic Park, Stratford, London E20 3ZH",
-          "location_postcode":"E20 3ZH",
-          "min_start_time":12,
-          "max_finish_time":20,
-          "capacity":15000,
-          "max_matches_per_day":3
+          "location_address": "Olympic Park, Stratford, London E20 3ZH",
+          "location_postcode": "E20 3ZH",
+          "min_start_time": 12,
+          "max_finish_time": 20,
+          "capacity": 15000,
+          "max_matches_per_day": 3
         },
         {
-          "name":"riverbank_arena_3",
-          "location_coordinates":[
+          "name": "riverbank_arena_3",
+          "location_coordinates": [
             51.542997828,
             -0.018999924
           ],
-          "location_address":"Olympic Park, Stratford, London E20 3ZH",
-          "location_postcode":"E20 3ZH",
-          "min_start_time":12,
-          "max_finish_time":20,
-          "capacity":15000,
-          "max_matches_per_day":3
+          "location_address": "Olympic Park, Stratford, London E20 3ZH",
+          "location_postcode": "E20 3ZH",
+          "min_start_time": 12,
+          "max_finish_time": 20,
+          "capacity": 15000,
+          "max_matches_per_day": 3
         },
         {
-          "name":"riverbank_arena_4",
-          "location_coordinates":[
+          "name": "riverbank_arena_4",
+          "location_coordinates": [
             51.542997828,
             -0.018999924
           ],
-          "location_address":"Olympic Park, Stratford, London E20 3ZH",
-          "location_postcode":"E20 3ZH",
-          "min_start_time":12,
-          "max_finish_time":20,
-          "capacity":15000,
-          "max_matches_per_day":3
+          "location_address": "Olympic Park, Stratford, London E20 3ZH",
+          "location_postcode": "E20 3ZH",
+          "min_start_time": 12,
+          "max_finish_time": 20,
+          "capacity": 15000,
+          "max_matches_per_day": 3
         }
       ],
-      "teams":[
+      "teams": [
         "Netherlands",
         "Belgium",
         "Germany",
@@ -888,65 +901,67 @@
         "Team 31",
         "Team 32"
       ],
-      "num_teams_per_game":2,
-      "is_knockout":true,
-      "group_stage":null,
-      "min_start_day":1,
-      "max_finish_day":14,
-      "min_start_time":12,
-      "max_finish_time":22,
-      "duration":2,
-      "constraints":{
-        "required":{
-          "same_venue_overlapping_time":{},
-          "same_venue_max_matches_per_day":{},
-          "team_time_between_matches":{
-            "min_time_between_matches":2
+      "num_teams_per_game": 2,
+      "is_knockout": true,
+      "group_stage": null,
+      "min_start_day": 1,
+      "max_finish_day": 14,
+      "min_start_time": 12,
+      "max_finish_time": 22,
+      "duration": 2,
+      "constraints": {
+        "required": {
+          "same_venue_overlapping_time": {},
+          "same_venue_max_matches_per_day": {},
+          "team_time_between_matches": {
+            "min_time_between_matches": 2
           },
-          "venue_time_between_matches":{
-            "min_time_between_matches":0.5
+          "venue_time_between_matches": {
+            "min_time_between_matches": 0.5
           },
-          "no_later_rounds_before_earlier_rounds":{},
-          "max_capacity_at_final":{},
-          "max_matches_per_day": {"max_matches_per_day":  12}
+          "no_later_rounds_before_earlier_rounds": {},
+          "max_capacity_at_final": {},
+          "max_matches_per_day": {
+            "max_matches_per_day": 12
+          }
         },
-        "optional":{
-          "avg_distance_to_travel":{
-            "weight":1,
-            "inequality":"MINIMISE",
-            "acceptable":10
+        "optional": {
+          "avg_distance_to_travel": {
+            "weight": 1,
+            "inequality": "MINIMISE",
+            "acceptable": 10
           },
-          "avg_rest_between_matches":{
-            "weight":1,
-            "inequality":"MAXIMISE",
-            "acceptable":1
+          "avg_rest_between_matches": {
+            "weight": 1,
+            "inequality": "MAXIMISE",
+            "acceptable": 1
           },
-          "avg_capacity":{
-            "weight":1,
-            "inequality":"MAXIMISE",
-            "acceptable":15000
+          "avg_capacity": {
+            "weight": 1,
+            "inequality": "MAXIMISE",
+            "acceptable": 15000
           }
         }
       }
     },
-    "athletics_100m":{
-      "name":"athletics_100m",
-      "venues":[
+    "athletics_100m": {
+      "name": "athletics_100m",
+      "venues": [
         {
-          "name":"london_stadium",
-          "location_coordinates":[
+          "name": "london_stadium",
+          "location_coordinates": [
             51.538811,
             -0.017136
           ],
-          "location_address":"London Stadium, Queen Elizabeth Olympic Park, London, UK, E20 2ST",
-          "location_postcode":"E20 2ST",
-          "min_start_time":8,
-          "max_finish_time":22,
-          "capacity":60000,
-          "max_matches_per_day":16
+          "location_address": "London Stadium, Queen Elizabeth Olympic Park, London, UK, E20 2ST",
+          "location_postcode": "E20 2ST",
+          "min_start_time": 8,
+          "max_finish_time": 22,
+          "capacity": 60000,
+          "max_matches_per_day": 16
         }
       ],
-      "teams":[
+      "teams": [
         "Tyson Gay",
         "Richard Thompson",
         "Gerald Phiri",
@@ -1012,43 +1027,45 @@
         "Team 63",
         "Team 64"
       ],
-      "num_teams_per_game":4,
-      "is_knockout":true,
-      "group_stage":null,
-      "min_start_day":1,
-      "max_finish_day":14,
-      "min_start_time":8,
-      "max_finish_time":22,
-      "duration":0.2,
-      "constraints":{
-        "required":{
-          "same_venue_overlapping_time":{},
-          "same_venue_max_matches_per_day":{},
-          "team_time_between_matches":{
-            "min_time_between_matches":1
+      "num_teams_per_game": 4,
+      "is_knockout": true,
+      "group_stage": null,
+      "min_start_day": 1,
+      "max_finish_day": 14,
+      "min_start_time": 8,
+      "max_finish_time": 22,
+      "duration": 0.2,
+      "constraints": {
+        "required": {
+          "same_venue_overlapping_time": {},
+          "same_venue_max_matches_per_day": {},
+          "team_time_between_matches": {
+            "min_time_between_matches": 1
           },
-          "venue_time_between_matches":{
-            "min_time_between_matches":0.2
+          "venue_time_between_matches": {
+            "min_time_between_matches": 0.2
           },
-          "no_later_rounds_before_earlier_rounds":{},
-          "max_capacity_at_final":{},
-          "max_matches_per_day": {"max_matches_per_day":  8}
+          "no_later_rounds_before_earlier_rounds": {},
+          "max_capacity_at_final": {},
+          "max_matches_per_day": {
+            "max_matches_per_day": 8
+          }
         },
-        "optional":{
-          "avg_distance_to_travel":{
-            "weight":1,
-            "inequality":"MINIMISE",
-            "acceptable":10
+        "optional": {
+          "avg_distance_to_travel": {
+            "weight": 1,
+            "inequality": "MINIMISE",
+            "acceptable": 10
           },
-          "avg_rest_between_matches":{
-            "weight":1,
-            "inequality":"MAXIMISE",
-            "acceptable":1
+          "avg_rest_between_matches": {
+            "weight": 1,
+            "inequality": "MAXIMISE",
+            "acceptable": 1
           },
-          "avg_capacity":{
-            "weight":1,
-            "inequality":"MAXIMISE",
-            "acceptable":15000
+          "avg_capacity": {
+            "weight": 1,
+            "inequality": "MAXIMISE",
+            "acceptable": 15000
           }
         }
       }
@@ -1062,25 +1079,26 @@
         "acceptable": 10,
         "inequality": "MINIMISE"
       },
-      "avg_distance_to_travel":{
-        "weight":1,
-        "inequality":"MINIMISE",
-        "acceptable":10
+      "avg_distance_to_travel": {
+        "weight": 1,
+        "inequality": "MINIMISE",
+        "acceptable": 10
       },
-      "avg_rest_between_matches":{
-        "weight":1,
-        "inequality":"MAXIMISE",
-        "acceptable":1
+      "avg_rest_between_matches": {
+        "weight": 1,
+        "inequality": "MAXIMISE",
+        "acceptable": 1
       },
-      "avg_capacity":{
-        "weight":1,
-        "inequality":"MAXIMISE",
-        "acceptable":15000
+      "avg_capacity": {
+        "weight": 1,
+        "inequality": "MAXIMISE",
+        "acceptable": 15000
       }
     }
   },
   "data": {
     "tournament_length": 14,
-    "athletes_accommodation_postcode": "E15 2ER"
+    "athletes_accommodation_postcode": "E15 2ER",
+    "start_date": "25-07-2023"
   }
 }

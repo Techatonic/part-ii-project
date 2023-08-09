@@ -1,215 +1,227 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
-    "$ref": "#/definitions/Welcome1",
-    "definitions": {
-        "Welcome1": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "sports": {
-                    "$ref": "#/definitions/Sports"
-                },
-                "general_constraints": {
-                    "$ref": "#/definitions/GeneralConstraints"
-                },
-                "data": {
-                    "$ref": "#/definitions/Data"
-                }
-            },
-            "required": [
-                "data",
-                "general_constraints",
-                "sports"
-            ],
-            "title": "Welcome1"
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/Welcome1",
+  "definitions": {
+    "Welcome1": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sports": {
+          "$ref": "#/definitions/Sports"
         },
-        "Data": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "tournament_length": {
-                    "type": "integer"
-                },
-                "athletes_accommodation_postcode": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "athletes_accommodation_postcode",
-                "tournament_length"
-            ],
-            "title": "Data"
+        "general_constraints": {
+          "$ref": "#/definitions/GeneralConstraints"
         },
-        "GeneralConstraints": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "required": {
-                    "$ref": "#/definitions/GeneralConstraintsRequired"
-                },
-                "optional": {
-                    "$ref": "#/definitions/GeneralConstraintsOptional"
-                }
-            },
-            "required": [
-                "optional",
-                "required"
-            ],
-            "title": "GeneralConstraints"
-        },
-        "GeneralConstraintsOptional": {
-            "type": "object",
-            "title": "GeneralConstraintsOptional"
-        },
-        "GeneralConstraintsRequired": {
-            "type": "object",
-            "title": "GeneralConstraintsRequired"
-        },
-        "Sports": {
-            "type": "object",
-            "items": {
-                "$ref": "#/definitions/Sport"
-            },
-            "title": "Sports"
-        },
-        "Sport": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "venues": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Venue"
-                    }
-                },
-                "teams": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "num_teams_per_game": {
-                    "type": "integer"
-                },
-                "is_knockout": {
-                    "type": "boolean"
-                },
-                "group_stage": {
-                    "type": "null"
-                },
-                "min_start_day": {
-                    "type": "integer"
-                },
-                "max_finish_day": {
-                    "type": "integer"
-                },
-                "min_start_time": {
-                    "type": "integer"
-                },
-                "max_finish_time": {
-                    "type": "integer"
-                },
-                "duration": {
-                    "type": "number"
-                },
-                "constraints": {
-                    "$ref": "#/definitions/Constraints"
-                }
-            },
-            "required": [
-                "constraints",
-                "duration",
-                "group_stage",
-                "is_knockout",
-                "max_finish_day",
-                "max_finish_time",
-                "min_start_day",
-                "min_start_time",
-                "name",
-                "num_teams_per_game",
-                "teams",
-                "venues"
-            ],
-            "title": "Sport"
-        },
-        "Constraints": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "required": {
-                    "$ref": "#/definitions/ConstraintsRequired"
-                },
-                "optional": {
-                    "$ref": "#/definitions/ConstraintsOptional"
-                }
-            },
-            "required": [
-                "optional",
-                "required"
-            ],
-            "title": "Constraints"
-        },
-        "ConstraintsOptional": {
-            "type": "object",
-            "title": "ConstraintsOptional"
-        },
-        "ConstraintsRequired": {
-            "type": "object",
-            "title": "ConstraintsRequired"
-        },
-        "Venue": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "location_coordinates": {
-                    "type": "array",
-                    "items": {
-                        "type": "number"
-                    }
-                },
-                "location_address": {
-                    "type": "string"
-                },
-                "location_postcode": {
-                    "type": "string"
-                },
-                "min_start_time": {
-                    "type": "integer"
-                },
-                "max_finish_time": {
-                    "type": "integer"
-                },
-                "capacity": {
-                    "type": "integer"
-                },
-                "max_matches_per_day": {
-                    "type": "integer"
-                }
-            },
-            "required": [
-                "capacity",
-                "location_address",
-                "location_coordinates",
-                "location_postcode",
-                "max_finish_time",
-                "max_matches_per_day",
-                "min_start_time",
-                "name"
-            ],
-            "title": "Venue"
-        },
-        "Inequality": {
-            "type": "string",
-            "enum": [
-                "MINIMISE",
-                "MAXIMISE"
-            ],
-            "title": "Inequality"
+        "data": {
+          "$ref": "#/definitions/Data"
         }
+      },
+      "required": [
+        "data",
+        "general_constraints",
+        "sports"
+      ],
+      "title": "Welcome1"
+    },
+    "Data": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tournament_length": {
+          "type": "integer"
+        },
+        "athletes_accommodation_postcode": {
+          "type": "string"
+        },
+        "start_date": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "athletes_accommodation_postcode",
+        "tournament_length",
+        "start_date"
+      ],
+      "title": "Data"
+    },
+    "GeneralConstraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required": {
+          "$ref": "#/definitions/GeneralConstraintsRequired"
+        },
+        "optional": {
+          "$ref": "#/definitions/GeneralConstraintsOptional"
+        }
+      },
+      "required": [
+        "optional",
+        "required"
+      ],
+      "title": "GeneralConstraints"
+    },
+    "GeneralConstraintsOptional": {
+      "type": "object",
+      "title": "GeneralConstraintsOptional"
+    },
+    "GeneralConstraintsRequired": {
+      "type": "object",
+      "title": "GeneralConstraintsRequired"
+    },
+    "Sports": {
+      "type": "object",
+      "items": {
+        "$ref": "#/definitions/Sport"
+      },
+      "title": "Sports"
+    },
+    "Sport": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "venues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Venue"
+          }
+        },
+        "teams": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "num_teams_per_game": {
+          "type": "integer"
+        },
+        "is_knockout": {
+          "type": "boolean"
+        },
+        "group_stage": {
+          "type": "object",
+          "properties": {
+            "num_groups": {
+              "type": "integer"
+            },
+            "num_qualify_per_group": {
+              "type": "integer"
+            }
+          }
+        },
+        "min_start_day": {
+          "type": "integer"
+        },
+        "max_finish_day": {
+          "type": "integer"
+        },
+        "min_start_time": {
+          "type": "integer"
+        },
+        "max_finish_time": {
+          "type": "integer"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "constraints": {
+          "$ref": "#/definitions/Constraints"
+        }
+      },
+      "required": [
+        "constraints",
+        "duration",
+        "group_stage",
+        "is_knockout",
+        "max_finish_day",
+        "max_finish_time",
+        "min_start_day",
+        "min_start_time",
+        "name",
+        "num_teams_per_game",
+        "teams",
+        "venues"
+      ],
+      "title": "Sport"
+    },
+    "Constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required": {
+          "$ref": "#/definitions/ConstraintsRequired"
+        },
+        "optional": {
+          "$ref": "#/definitions/ConstraintsOptional"
+        }
+      },
+      "required": [
+        "optional",
+        "required"
+      ],
+      "title": "Constraints"
+    },
+    "ConstraintsOptional": {
+      "type": "object",
+      "title": "ConstraintsOptional"
+    },
+    "ConstraintsRequired": {
+      "type": "object",
+      "title": "ConstraintsRequired"
+    },
+    "Venue": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "location_coordinates": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "location_address": {
+          "type": "string"
+        },
+        "location_postcode": {
+          "type": "string"
+        },
+        "min_start_time": {
+          "type": "integer"
+        },
+        "max_finish_time": {
+          "type": "integer"
+        },
+        "capacity": {
+          "type": "integer"
+        },
+        "max_matches_per_day": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "capacity",
+        "location_address",
+        "location_coordinates",
+        "location_postcode",
+        "max_finish_time",
+        "max_matches_per_day",
+        "min_start_time",
+        "name"
+      ],
+      "title": "Venue"
+    },
+    "Inequality": {
+      "type": "string",
+      "enum": [
+        "MINIMISE",
+        "MAXIMISE"
+      ],
+      "title": "Inequality"
     }
+  }
 }

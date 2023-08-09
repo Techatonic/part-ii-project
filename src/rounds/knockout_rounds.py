@@ -37,7 +37,9 @@ knockout_rounds = [
 ]
 
 
-def generate_round_order(num_teams, num_teams_per_game):
+def generate_knockout_round_order(num_teams, num_teams_per_game, group_stage):
+    if group_stage is not None:
+        num_teams = group_stage.num_groups * group_stage.num_qualify_per_group
     rounds = []
     teams = 2
     index = 0

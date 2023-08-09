@@ -52,8 +52,7 @@ def main():
         metavar="N",
         help="run input_path on constraint checker and allow up to N changed events",
     )
-    parser.add_argument("-m", action="store_true",
-                        help="run on CSP base solver")
+    parser.add_argument("-m", action="store_true", help="run on CSP base solver")
     parser.add_argument(
         "-b", action="store_true", help="run on CSP backtracking solver"
     )
@@ -77,6 +76,8 @@ def main():
         action="store_true",
         help="run forward checking algorithm on solver",
     )
+
+    parser.add_argument("-v", action="store_true", help="save Gantt chart of schedule")
 
     args = parser.parse_args()
 
@@ -104,7 +105,8 @@ def main():
     result = None
     if args.c:
         result = run_constraint_checker(
-            args.import_path, args.export_path, args.c)
+            args.import_path, args.export_path, args.c, args.v
+        )
     else:
         result = run_solver(
             args.import_path,
@@ -114,6 +116,7 @@ def main():
             args.g,
             args.forward_check,
             args.export_path,
+            args.v,
         )
 
     end_time = time.time()
@@ -122,7 +125,7 @@ def main():
 
 
 def run_constraint_checker(
-    input_path: str, export_path: str | None = None, num_changes=1
+    input_path: str, export_path: str | None = None, num_changes=1, visualise=True
 ):
     input_json = read_and_validate_input(
         input_path, "schemata/input_schema_constraint_checker.json"
@@ -157,7 +160,7 @@ def run_constraint_checker(
 
         if export_path is not None:
             try:
-                result.export(export_path)
+                result.export(export_path, visualise, data["start_date"])
 
             except Exception as e:
                 print(e)
@@ -178,9 +181,9 @@ def run_solver(
     use_genetic_algorithm: list | None,
     forward_check: bool,
     export_path: str | None = None,
+    visualise: bool = True,
 ):
-    input_json = read_and_validate_input(
-        input_path, "schemata/input_schema.json")
+    input_json = read_and_validate_input(input_path, "schemata/input_schema.json")
 
     [sports, general_constraints, data] = parse_input(input_json)
     add_global_variables(sports, data, general_constraints)
@@ -215,7 +218,7 @@ def run_solver(
 
     if export_path is not None:
         try:
-            result.export(export_path)
+            result.export(export_path, visualise, data["start_date"])
 
         except Exception as e:
             print(e)

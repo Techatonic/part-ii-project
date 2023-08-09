@@ -20,6 +20,7 @@ class Sport:
         min_start_time=10,
         max_finish_time=22,
         constraints=None,
+        group_stage=None,
     ) -> None:
         self.name = name
         self.possible_venues = possible_venues
@@ -33,6 +34,7 @@ class Sport:
         self.min_start_time = min_start_time
         self.max_finish_time = max_finish_time
         self.constraints = constraints
+        self.group_stage = group_stage
 
     def __str__(self):
         return self.__repr__()

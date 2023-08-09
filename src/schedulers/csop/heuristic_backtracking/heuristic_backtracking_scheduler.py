@@ -10,7 +10,7 @@ from src.helper.helper import (
     flatten_events_by_sport_to_dict,
     remove_scores_from_dict,
 )
-from src.rounds.knockout_rounds import generate_round_order, KnockoutRound
+from src.rounds.knockout_rounds import generate_knockout_round_order, KnockoutRound
 from src.schedulers.csp.csp_solver import CSPSolver
 from src.schedulers.scheduler import Scheduler
 from src.schedulers.generate_csp_problem import generate_csp_problem
@@ -59,7 +59,9 @@ class HeuristicBacktrackingScheduler(Scheduler, ABC):
             )
             round_order: list[KnockoutRound] = list(
                 reversed(
-                    generate_round_order(sport.num_teams, sport.num_teams_per_game)
+                    generate_knockout_round_order(
+                        sport.num_teams, sport.num_teams_per_game, sport.group_stage
+                    )
                 )
             )
 

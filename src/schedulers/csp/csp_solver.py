@@ -95,7 +95,12 @@ class CSPSolver:
         queue = queue.__copy__()
 
         while len(queue.variables) > 0:
+            # print(sum(len(variable.domain) for variable in queue.variables))
             variable = queue.pop()
+            if variable.domain[0].round.round_name == "Final":
+                # print(variable.domain[0])
+                # exit()
+                pass
 
             for option in variable.domain:
                 assignments[variable.variable] = option

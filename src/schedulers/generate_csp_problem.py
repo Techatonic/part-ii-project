@@ -6,7 +6,8 @@ import numpy as np
 
 from src.helper.handle_error import handle_error
 from src.events.event import Event
-from src.rounds.knockout_rounds import KnockoutRound, generate_round_order
+from src.rounds.group_stage import GroupStage
+from src.rounds.knockout_rounds import KnockoutRound, generate_knockout_round_order
 from src.rounds.rounds import Round
 from src.schedulers.solver import Solver
 from src.sports.sport import Sport
@@ -27,8 +28,14 @@ def generate_csp_problem(
         else sport.max_finish_day
     )
     round_order: list[Round] = list(
-        reversed(generate_round_order(sport.num_teams, sport.num_teams_per_game))
+        reversed(
+            generate_knockout_round_order(
+                sport.num_teams, sport.num_teams_per_game, sport.group_stage
+            )
+        )
     )
+    if sport.group_stage is not None:
+        round_order.insert(0, sport.group_stage)
 
     for optional_constraint in sport.constraints["optional"]:
         csp_problem.add_optional_constraint(
@@ -39,16 +46,6 @@ def generate_csp_problem(
 
     variable_list = []
     match_num = 1
-    matches = []
-    for i in range(sport.num_teams // sport.num_teams_per_game):
-        matches.append(
-            [
-                sport.teams[x]
-                for x in range(
-                    sport.num_teams_per_game * i, sport.num_teams_per_game * (i + 1)
-                )
-            ]
-        )
 
     min_starts = [min_start_day]
     max_finishes = [max_finish_day]
@@ -71,7 +68,6 @@ def generate_csp_problem(
                 ],
             )
         )
-
     for _round in range(len(round_order) - 2, -1, -1):
         num_matches = round_order[_round].num_matches
         max_finishes.insert(
@@ -84,10 +80,40 @@ def generate_csp_problem(
                 ],
             ),
         )
+    matches = []
 
-    for event_round in round_order:
-        if round_order.index(event_round) > 0:
-            matches = [x + y for x, y in zip(matches[0::2], matches[1::2])]
+    for event_round_index, event_round in enumerate(round_order):
+        if event_round.round_name == "Group Stage":
+            assert isinstance(event_round, GroupStage)
+            matches = event_round.generate_group_stage_matches()
+            # print(matches)
+        elif round_order.index(event_round) == 0:
+            for i in range(sport.num_teams // sport.num_teams_per_game):
+                matches.append(
+                    [
+                        sport.teams[x]
+                        for x in range(
+                            sport.num_teams_per_game * i,
+                            sport.num_teams_per_game * (i + 1),
+                        )
+                    ]
+                )
+        elif round_order.index(event_round) > 0:
+            if round_order[event_round_index - 1].round_name == "Group Stage":
+                matches = round_order[
+                    event_round_index - 1
+                ].generate_knockout_round_matches()
+
+            random.shuffle(matches)
+
+            # This should NOT be put in an else
+            match_lists_to_zip = [
+                matches[i :: sport.num_teams_per_game]
+                for i in range(sport.num_teams_per_game)
+            ]
+            matches = [sum(match_tuple, []) for match_tuple in zip(*match_lists_to_zip)]
+        else:
+            handle_error("Invalid event round found")
         specific_min_start_day = min_starts[round_order.index(event_round)]
         specific_max_finish_day = max_finishes[round_order.index(event_round)]
         for match in matches:
